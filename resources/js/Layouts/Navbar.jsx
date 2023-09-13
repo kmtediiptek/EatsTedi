@@ -1,34 +1,46 @@
 import React from 'react'
-import { useState } from 'react';
-import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link, usePage } from '@inertiajs/react';
+import { useState } from 'react'
+import Dropdown from '@/Components/Dropdown'
+import NavLink from '@/Components/NavLink'
+import ResponsiveNavLink from '@/Components/ResponsiveNavLink'
+import { Link, usePage } from '@inertiajs/react'
 
 export default function Navbar() {
-    const {auth} = usePage().props
-    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const { auth } = usePage().props
+    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false)
     return (
-        <nav className="bg-white border-b border-gray-100 fixed w-full top-0">
+        <nav className="bg-white fixed z-[100] top-0 border-b border-gray-300 w-full">
             <div className="max-w-8xl mx-auto px-4 sm:px-4 lg:px-8">
                 <div className="flex justify-between h-16">
-                    <div className="flex">
+                    <div className="flex w-3/4 justify-between">
                         <div className="shrink-0 flex items-center">
                             <Link href="/" className="text-3xl font-bold text-orange-600">
                                 RANDA
                                 {/* <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" /> */}
                             </Link>
+                            <form className='p-2'>
+                                <input type='search' className='rounded border-gray-300' placeholder='Cari menu..' />
+                            </form>
                         </div>
 
-                        <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex flex ml-auto">
                             <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-                                Dashboard
+                                Menu
+                            </NavLink>
+                            <NavLink>
+                                Employee
+                            </NavLink>
+                            <NavLink>
+                                Category
+                            </NavLink>
+                            <NavLink>
+
                             </NavLink>
                         </div>
                     </div>
 
-                    <div className="hidden sm:flex sm:items-center sm:ml-6">
-                        <div className="ml-3 relative">
+                    <div className="hidden w-1/4 flex justify-end sm:flex sm:items-center sm:ml-6">
+                        <div className="ml-3">
                             <Dropdown>
                                 <Dropdown.Trigger>
                                     <span className="inline-flex rounded-md">
@@ -36,7 +48,10 @@ export default function Navbar() {
                                             type="button"
                                             className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                         >
-                                            {auth.user.name}
+                                            <div className="flex items-center gap-2">
+                                                <img src="https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Free-File-Download.png" className='w-10 h-10 rounded-full' />
+                                                {auth.user.name}
+                                            </div>
 
                                             <svg
                                                 className="ml-2 -mr-0.5 h-4 w-4"
@@ -94,6 +109,15 @@ export default function Navbar() {
                 <div className="pt-2 pb-3 space-y-1">
                     <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
                         Dashboard
+                    </ResponsiveNavLink>
+                    <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                        Menu
+                    </ResponsiveNavLink>
+                    <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                        Employee
+                    </ResponsiveNavLink>
+                    <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                        Setting
                     </ResponsiveNavLink>
                 </div>
 
