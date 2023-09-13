@@ -13,13 +13,13 @@ export default function Navbar() {
             <div className="max-w-8xl mx-auto px-4 sm:px-4 lg:px-8">
                 <div className="flex justify-between h-16">
                     <div className="flex w-3/4 justify-between">
-                        <div className="shrink-0 flex items-center">
+                        <div className="shrink-0 w-full flex items-center">
                             <Link href="/" className="text-3xl font-bold text-orange-600">
                                 RANDA
                                 {/* <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" /> */}
                             </Link>
-                            <form className='p-2'>
-                                <input type='search' className='rounded border-gray-300' placeholder='Cari menu..' />
+                            <form className='p-2 w-1/3'>
+                                <input type='search' className='w-full rounded border-gray-300' placeholder='Cari menu..' />
                             </form>
                         </div>
 
@@ -31,7 +31,7 @@ export default function Navbar() {
                                 Employee
                             </NavLink>
                             <NavLink>
-                                Category
+                                Setting
                             </NavLink>
                             <NavLink>
 
