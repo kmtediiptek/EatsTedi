@@ -1,17 +1,28 @@
 import Container from '@/Components/Container'
 import App from '@/Layouts/App'
 import { Head } from '@inertiajs/react'
-import { IconCategory, IconCoffee, IconMinus, IconPlus, IconX } from '@tabler/icons-react'
-import React from 'react'
+import { IconArrowsMaximize, IconArrowsMinimize, IconCards, IconCategory, IconCoffee, IconLockOpen, IconMinus, IconPlus, IconX } from '@tabler/icons-react'
+import React, { useState } from 'react'
 
 
 export default function Dashboard(props) {
+    const [isOrderListOpen, setIsOrderListOpen] = useState(true)
+
+    const toggleOrderList = () => {
+        setIsOrderListOpen(!isOrderListOpen)
+    }
     return (
         <>
             <Head title="Dashboard" />
             <Container>
                 <div className="flex w-full">
-                    <div className="w-3/4">
+                        <button
+                            className="block sm:hidden fixed z-[100] top-18 right-0  p-4 text-orange-600"
+                            onClick={toggleOrderList}
+                        >
+                            {isOrderListOpen ? <IconArrowsMinimize /> : <IconArrowsMaximize />}
+                        </button>
+                    <div className="sm:w-3/4 w-full bg-white">
                         <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Categories</h3>
                         <div className="flex w-full overflow-x-scroll flex-nowrap gap-x-4">
                             <div className="flex rounded text-white">
@@ -23,116 +34,116 @@ export default function Dashboard(props) {
                             </div>
 
                             <div className="flex rounded text-white">
-                            <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
-                                <IconCoffee className='my-2' />
-                                <p className='text-slate-500'>Coffe</p>
-                                <h6 className='text-lg font-semibold'>10 items</h6>
-                            </div>
-                            </div>
-                            <div className="flex rounded text-white">
-                            <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
-                                <IconCoffee className='my-2' />
-                                <p className='text-slate-500'>Coffe</p>
-                                <h6 className='text-lg font-semibold'>10 items</h6>
-                            </div>
+                                <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
+                                    <IconCoffee className='my-2' />
+                                    <p className='text-slate-500'>Coffe</p>
+                                    <h6 className='text-lg font-semibold'>10 items</h6>
+                                </div>
                             </div>
                             <div className="flex rounded text-white">
-                            <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
-                                <IconCoffee className='my-2' />
-                                <p className='text-slate-500'>Coffe</p>
-                                <h6 className='text-lg font-semibold'>10 items</h6>
-                            </div>
-                            </div>
-                            <div className="flex rounded text-white">
-                            <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
-                                <IconCoffee className='my-2' />
-                                <p className='text-slate-500'>Coffe</p>
-                                <h6 className='text-lg font-semibold'>10 items</h6>
-                            </div>
+                                <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
+                                    <IconCoffee className='my-2' />
+                                    <p className='text-slate-500'>Coffe</p>
+                                    <h6 className='text-lg font-semibold'>10 items</h6>
+                                </div>
                             </div>
                             <div className="flex rounded text-white">
-                            <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
-                                <IconCoffee className='my-2' />
-                                <p className='text-slate-500'>Coffe</p>
-                                <h6 className='text-lg font-semibold'>10 items</h6>
-                            </div>
-                            </div>
-                            <div className="flex rounded text-white">
-                            <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
-                                <IconCoffee className='my-2' />
-                                <p className='text-slate-500'>Coffe</p>
-                                <h6 className='text-lg font-semibold'>10 items</h6>
-                            </div>
+                                <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
+                                    <IconCoffee className='my-2' />
+                                    <p className='text-slate-500'>Coffe</p>
+                                    <h6 className='text-lg font-semibold'>10 items</h6>
+                                </div>
                             </div>
                             <div className="flex rounded text-white">
-                            <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
-                                <IconCoffee className='my-2' />
-                                <p className='text-slate-500'>Coffe</p>
-                                <h6 className='text-lg font-semibold'>10 items</h6>
-                            </div>
-                            </div>
-                            <div className="flex rounded text-white">
-                            <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
-                                <IconCoffee className='my-2' />
-                                <p className='text-slate-500'>Coffe</p>
-                                <h6 className='text-lg font-semibold'>10 items</h6>
-                            </div>
+                                <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
+                                    <IconCoffee className='my-2' />
+                                    <p className='text-slate-500'>Coffe</p>
+                                    <h6 className='text-lg font-semibold'>10 items</h6>
+                                </div>
                             </div>
                             <div className="flex rounded text-white">
-                            <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
-                                <IconCoffee className='my-2' />
-                                <p className='text-slate-500'>Coffe</p>
-                                <h6 className='text-lg font-semibold'>10 items</h6>
-                            </div>
-                            </div>
-                            <div className="flex rounded text-white">
-                            <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
-                                <IconCoffee className='my-2' />
-                                <p className='text-slate-500'>Coffe</p>
-                                <h6 className='text-lg font-semibold'>10 items</h6>
-                            </div>
+                                <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
+                                    <IconCoffee className='my-2' />
+                                    <p className='text-slate-500'>Coffe</p>
+                                    <h6 className='text-lg font-semibold'>10 items</h6>
+                                </div>
                             </div>
                             <div className="flex rounded text-white">
-                            <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
-                                <IconCoffee className='my-2' />
-                                <p className='text-slate-500'>Coffe</p>
-                                <h6 className='text-lg font-semibold'>10 items</h6>
-                            </div>
-                            </div>
-                            <div className="flex rounded text-white">
-                            <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
-                                <IconCoffee className='my-2' />
-                                <p className='text-slate-500'>Coffe</p>
-                                <h6 className='text-lg font-semibold'>10 items</h6>
-                            </div>
+                                <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
+                                    <IconCoffee className='my-2' />
+                                    <p className='text-slate-500'>Coffe</p>
+                                    <h6 className='text-lg font-semibold'>10 items</h6>
+                                </div>
                             </div>
                             <div className="flex rounded text-white">
-                            <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
-                                <IconCoffee className='my-2' />
-                                <p className='text-slate-500'>Coffe</p>
-                                <h6 className='text-lg font-semibold'>10 items</h6>
-                            </div>
-                            </div>
-                            <div className="flex rounded text-white">
-                            <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
-                                <IconCoffee className='my-2' />
-                                <p className='text-slate-500'>Coffe</p>
-                                <h6 className='text-lg font-semibold'>10 items</h6>
-                            </div>
+                                <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
+                                    <IconCoffee className='my-2' />
+                                    <p className='text-slate-500'>Coffe</p>
+                                    <h6 className='text-lg font-semibold'>10 items</h6>
+                                </div>
                             </div>
                             <div className="flex rounded text-white">
-                            <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
-                                <IconCoffee className='my-2' />
-                                <p className='text-slate-500'>Coffe</p>
-                                <h6 className='text-lg font-semibold'>10 items</h6>
-                            </div>
+                                <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
+                                    <IconCoffee className='my-2' />
+                                    <p className='text-slate-500'>Coffe</p>
+                                    <h6 className='text-lg font-semibold'>10 items</h6>
+                                </div>
                             </div>
                             <div className="flex rounded text-white">
-                            <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
-                                <IconCoffee className='my-2' />
-                                <p className='text-slate-500'>Coffe</p>
-                                <h6 className='text-lg font-semibold'>10 items</h6>
+                                <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
+                                    <IconCoffee className='my-2' />
+                                    <p className='text-slate-500'>Coffe</p>
+                                    <h6 className='text-lg font-semibold'>10 items</h6>
+                                </div>
                             </div>
+                            <div className="flex rounded text-white">
+                                <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
+                                    <IconCoffee className='my-2' />
+                                    <p className='text-slate-500'>Coffe</p>
+                                    <h6 className='text-lg font-semibold'>10 items</h6>
+                                </div>
+                            </div>
+                            <div className="flex rounded text-white">
+                                <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
+                                    <IconCoffee className='my-2' />
+                                    <p className='text-slate-500'>Coffe</p>
+                                    <h6 className='text-lg font-semibold'>10 items</h6>
+                                </div>
+                            </div>
+                            <div className="flex rounded text-white">
+                                <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
+                                    <IconCoffee className='my-2' />
+                                    <p className='text-slate-500'>Coffe</p>
+                                    <h6 className='text-lg font-semibold'>10 items</h6>
+                                </div>
+                            </div>
+                            <div className="flex rounded text-white">
+                                <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
+                                    <IconCoffee className='my-2' />
+                                    <p className='text-slate-500'>Coffe</p>
+                                    <h6 className='text-lg font-semibold'>10 items</h6>
+                                </div>
+                            </div>
+                            <div className="flex rounded text-white">
+                                <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
+                                    <IconCoffee className='my-2' />
+                                    <p className='text-slate-500'>Coffe</p>
+                                    <h6 className='text-lg font-semibold'>10 items</h6>
+                                </div>
+                            </div>
+                            <div className="flex rounded text-white">
+                                <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
+                                    <IconCoffee className='my-2' />
+                                    <p className='text-slate-500'>Coffe</p>
+                                    <h6 className='text-lg font-semibold'>10 items</h6>
+                                </div>
+                            </div>
+                            <div className="flex rounded text-white">
+                                <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
+                                    <IconCoffee className='my-2' />
+                                    <p className='text-slate-500'>Coffe</p>
+                                    <h6 className='text-lg font-semibold'>10 items</h6>
+                                </div>
                             </div>
 
                         </div>
@@ -177,7 +188,8 @@ export default function Dashboard(props) {
                             </div>
                         </div>
                     </div>
-                    <div className="w-1/4 right-0 fixed h-screen border-l border-gray-300 ml-4 ">
+
+                    <div className={`w-3/4 sm:w-1/4 bg-white right-0 fixed h-screen border-l border-gray-300 ml-4 ${isOrderListOpen ? 'block' : 'hidden'}`}>
                         <div className="px-4 py-8">
                             <h3 className='text-xl font-semibold text-slate-700 mb-8'>Order Details</h3>
                             <hr />
