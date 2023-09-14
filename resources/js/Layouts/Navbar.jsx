@@ -12,18 +12,18 @@ export default function Navbar() {
         <nav className="bg-white fixed z-[100] top-0 border-b border-gray-300 w-full">
             <div className="max-w-8xl mx-auto px-4 sm:px-4 lg:px-8">
                 <div className="flex justify-between h-16">
-                    <div className="flex w-3/4 justify-between">
-                        <div className="shrink-0 w-full flex items-center">
+                    <div className="flex w-full md:w-3/4 justify-between">
+                    <div className='flex items-center w-full'>
                             <Link href="/" className="text-3xl font-bold text-orange-600">
                                 RANDA
                                 {/* <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" /> */}
                             </Link>
-                            <form className='p-2 w-1/3'>
+                            <form className='px-8 w-full '>
                                 <input type='search' className='w-full rounded border-gray-300' placeholder='Cari menu..' />
                             </form>
-                        </div>
+                    </div>
 
-                        <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex flex ml-auto">
+                        <div className="hidden sm:-my-px sm:flex flex justify-between gap-8">
                             <NavLink href={route('dashboard')} active={route().current('dashboard')}>
                                 Menu
                             </NavLink>
@@ -39,8 +39,8 @@ export default function Navbar() {
                         </div>
                     </div>
 
-                    <div className="hidden w-1/4 flex justify-end sm:flex sm:items-center sm:ml-6">
-                        <div className="ml-3">
+                    <div className="hidden w-1/4 flex justify-end sm:flex sm:items-center">
+                        <div>
                             <Dropdown>
                                 <Dropdown.Trigger>
                                     <span className="inline-flex rounded-md">
