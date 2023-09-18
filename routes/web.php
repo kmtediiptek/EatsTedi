@@ -46,6 +46,7 @@ Route::prefix('admin')->middleware('auth')->group(function() {
     // Category
     // Route::resource('/setting/category', AdminCategoryController::class);
     Route::get('/setting/category', [AdminCategoryController::class, 'index'])->name('setting.category.index');
+    Route::post('/setting/category', [AdminCategoryController::class, 'store'])->name('setting.category.store');
 });
 
 require __DIR__.'/auth.php';

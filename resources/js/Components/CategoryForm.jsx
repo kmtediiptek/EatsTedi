@@ -12,13 +12,13 @@ export default function CategoryForm({ data, setData }) {
     }
     return (
         <>
-            <div className="mb-6">
-                <InputLabel htmlFor="name" value="Title" />
+            <div className="mb-4">
+                <InputLabel htmlFor="name" value="Name" />
                 <TextInput name='name' id='name' className="w-full" onChange={onChange} value={data.name} />
                 {errors.name ? <Error className='' value={errors.name} /> : null}
             </div>
-            <div className="mb-6">
-                <InputLabel htmlFor="icon" value="Location" />
+            <div className="mb-4">
+                <InputLabel htmlFor="icon" value="Icon" />
                 <TextInput name='icon' id='icon' className="w-full" onChange={onChange} value={data.icon} />
                 {errors.icon ? <Error className='' value={errors.icon} /> : null}
             </div>

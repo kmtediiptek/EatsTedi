@@ -21,6 +21,8 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "@tabler/icons-react": "^2.34.0"
+        "@tabler/icons-react": "^2.34.0",
+        "clsx": "^2.0.0",
+        "react-hot-toast": "^2.4.1"
     }
 }
