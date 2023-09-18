@@ -26,6 +26,7 @@ export default function Login({ status, canResetPassword }) {
 
     const submit = (e) => {
         e.preventDefault();
+        console.log("Tes");
 
         post(route('login'));
     };

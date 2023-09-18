@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminCategoryController;
-use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;

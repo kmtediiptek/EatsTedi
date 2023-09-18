@@ -14,7 +14,7 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 
 
-export default function Index() {
+export default function Index({ categories }) {
 
     const { post, data, setData } = useForm({
         name: '',
@@ -57,7 +57,7 @@ export default function Index() {
             onSuccess: () => {
                 toast.success('Category has been created!')
                 setIsOpen(false)
-                setData({name : '', icon: ''})
+                setData({ name: '', icon: '' })
             }
 
         })
@@ -97,17 +97,20 @@ export default function Index() {
                         </tr>
                     </Table.Thead>
                     <Table.Tbody>
-                        <tr className="bg-white border-b text-gray-500">
-                            <Table.Td className="w-5">1</Table.Td>
-                            <Table.Td>Coffe</Table.Td>
-                            <Table.Td><IconCoffee /></Table.Td>
-                            <Table.Td className="w-10" >
-                                <div className='flex flex-nowrap gap-2'>
-                                    <ActionButton className='bg-yellow-400' type="button" onClick={() => openModalCategory("edit")}><IconEdit size={18} /></ActionButton>
-                                    <ActionButton className='bg-red-500' type="button" onClick={() => openToast("Coffe")}><IconTrash size={18} /></ActionButton>
-                                </div>
-                            </Table.Td>
-                        </tr>
+                        {categories.map((category, index) => (
+                            <tr className="bg-white border-b text-gray-500" key={index}>
+                                <Table.Td className="w-5">{index + 1}</Table.Td>
+                                <Table.Td>{category.name}</Table.Td>
+
+                                <Table.Td> <div className='w-10 h-10 p-2 border border-gray rounded' dangerouslySetInnerHTML={{ __html: category.icon }} /></Table.Td>
+                                <Table.Td className="w-10" >
+                                    <div className='flex flex-nowrap gap-2'>
+                                        <ActionButton className='bg-yellow-400' type="button" onClick={() => openModalCategory("edit")}><IconEdit size={18} /></ActionButton>
+                                        <ActionButton className='bg-red-500' type="button" onClick={() => openToast("Coffe")}><IconTrash size={18} /></ActionButton>
+                                    </div>
+                                </Table.Td>
+                            </tr>
+                        ))}
                     </Table.Tbody>
                 </Table>
                 {/* End Categories */}

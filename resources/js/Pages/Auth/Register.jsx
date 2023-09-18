@@ -26,7 +26,7 @@ export default function Register() {
 
     const submit = (e) => {
         e.preventDefault();
-
+        console.log("Tes");
         post(route('register'));
     };
 

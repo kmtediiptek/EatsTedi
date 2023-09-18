@@ -15,7 +15,9 @@ class AdminCategoryController extends Controller
      */
     public function index()
     {
-        return inertia('Admin/Category/Index');
+        return inertia('Admin/Category/Index', [
+            "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get()
+        ]);
     }
 
     public function store(Request $request)
