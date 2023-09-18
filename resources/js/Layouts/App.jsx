@@ -1,7 +1,6 @@
+    import Navbar from './Navbar';
 
-import Navbar from './Navbar';
-
-export default function App({children, ...props}) {
+export default function App({children}) {
     return (
         <div className="min-h-screen bg-white">
             <Navbar/>

@@ -1,57 +1,54 @@
-import { Fragment } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
+    import { Dialog, Transition } from '@headlessui/react'
+    import { IconX } from '@tabler/icons-react'
+    import { Children, Fragment, useState } from 'react'
 
-export default function Modal({ children, show = false, maxWidth = '2xl', closeable = true, onClose = () => {} }) {
-    const close = () => {
-        if (closeable) {
-            onClose();
-        }
-    };
+    export default function MyModal({isOpen, onClose, size, title, children}) {
+        // const [closeModal, setcloseModal] = useState(false)
+        return (
+            <>
+                <Transition appear show={isOpen} as={Fragment}>
+                    <Dialog as="div" className="relative z-10" onClose={onClose}>
+                        <Transition.Child
+                            as={Fragment}
+                            enter="ease-out duration-300"
+                            enterFrom="opacity-0"
+                            enterTo="opacity-100"
+                            leave="ease-in duration-200"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                        >
+                            <div className="fixed inset-0 bg-black bg-opacity-25" />
+                        </Transition.Child>
 
-    const maxWidthClass = {
-        sm: 'sm:max-w-sm',
-        md: 'sm:max-w-md',
-        lg: 'sm:max-w-lg',
-        xl: 'sm:max-w-xl',
-        '2xl': 'sm:max-w-2xl',
-    }[maxWidth];
+                        <div className="fixed inset-0 overflow-y-auto">
+                            <div className="flex min-h-full items-center justify-center p-4 text-center">
+                                <Transition.Child
+                                    as={Fragment}
+                                    enter="ease-out duration-300"
+                                    enterFrom="opacity-0 scale-95"
+                                    enterTo="opacity-100 scale-100"
+                                    leave="ease-in duration-200"
+                                    leaveFrom="opacity-100 scale-100"
+                                    leaveTo="opacity-0 scale-95"
+                                >
+                                    <Dialog.Panel className={`w-full max-w-${size} transform overflow-hidden rounded bg-white p-6 text-left align-middle shadow-xl transition-all`}>
+                                        <Dialog.Title
+                                            as="h3"
+                                            className="text-lg font-medium leading-6 mb-5 text-gray-900"
+                                        >
+                                            {title}
+                                            <button className='absolute right-2 top-2 py-2 px-2 bg-transparent text-slate-700' onClick={onClose}><IconX /></button>
+                                        </Dialog.Title>
+                                        <div className="mt-2">
+                                            {children}
+                                        </div>
 
-    return (
-        <Transition show={show} as={Fragment} leave="duration-200">
-            <Dialog
-                as="div"
-                id="modal"
-                className="fixed inset-0 flex overflow-y-auto px-4 py-6 sm:px-0 items-center z-50 transform transition-all"
-                onClose={close}
-            >
-                <Transition.Child
-                    as={Fragment}
-                    enter="ease-out duration-300"
-                    enterFrom="opacity-0"
-                    enterTo="opacity-100"
-                    leave="ease-in duration-200"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                >
-                    <div className="absolute inset-0 bg-gray-500/75" />
-                </Transition.Child>
-
-                <Transition.Child
-                    as={Fragment}
-                    enter="ease-out duration-300"
-                    enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    enterTo="opacity-100 translate-y-0 sm:scale-100"
-                    leave="ease-in duration-200"
-                    leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                    leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                >
-                    <Dialog.Panel
-                        className={`mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto ${maxWidthClass}`}
-                    >
-                        {children}
-                    </Dialog.Panel>
-                </Transition.Child>
-            </Dialog>
-        </Transition>
-    );
-}
+                                    </Dialog.Panel>
+                                </Transition.Child>
+                            </div>
+                        </div>
+                    </Dialog>
+                </Transition>
+            </>
+        )
+    }

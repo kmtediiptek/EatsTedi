@@ -14,7 +14,7 @@ export default function Navbar() {
                 <div className="flex justify-between h-16">
                     <div className="flex w-full md:w-3/4 justify-between">
                     <div className='flex items-center w-full'>
-                            <Link href="/" className="text-3xl font-bold text-orange-600">
+                            <Link href="/" className="text-3xl font-bold text-orange-500">
                                 RANDA
                                 {/* <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" /> */}
                             </Link>
@@ -24,17 +24,20 @@ export default function Navbar() {
                     </div>
 
                         <div className="hidden sm:-my-px sm:flex flex justify-between gap-8">
+                            <NavLink>
+                                Dashboard
+                            </NavLink>
                             <NavLink href={route('dashboard')} active={route().current('dashboard')}>
                                 Menu
                             </NavLink>
                             <NavLink>
-                                Employee
+                                History
                             </NavLink>
                             <NavLink>
+                                Log
+                            </NavLink>
+                            <NavLink href={route('setting')} active={route().current('setting')}>
                                 Setting
-                            </NavLink>
-                            <NavLink>
-
                             </NavLink>
                         </div>
                     </div>
@@ -114,7 +117,10 @@ export default function Navbar() {
                         Menu
                     </ResponsiveNavLink>
                     <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                        Employee
+                        History
+                    </ResponsiveNavLink>
+                    <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                        Log
                     </ResponsiveNavLink>
                     <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
                         Setting
