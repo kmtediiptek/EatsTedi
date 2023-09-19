@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminCategoryController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminTransactionController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -27,9 +29,9 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -40,7 +42,13 @@ Route::middleware('auth')->group(function () {
 
 // Admin
 Route::prefix('admin')->middleware('auth')->group(function() {
+
+
+    Route::get('/dashboard', AdminDashboardController::class)->name('dashboard');
+    Route::get('/transaction', [AdminTransactionController::class, 'index'])->name('transaction');
     Route::get('/setting', SettingController::class)->name('setting');
+
+
 
     // Category
     // Route::resource('/setting/category', AdminCategoryController::class);
