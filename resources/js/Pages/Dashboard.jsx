@@ -1,20 +1,22 @@
 import Container from '@/Components/Container'
-import MyModal from '@/Components/Modal'
 import App from '@/Layouts/App'
 import { Head, Link } from '@inertiajs/react'
 import { IconCategory, IconCreditCard, IconReportMoney, IconTable, IconUsers } from '@tabler/icons-react'
 import { IconMenuOrder } from '@tabler/icons-react'
-// import { } from '@tabler/icons-react'
-import React, { useState } from 'react'
+import Chart from 'react-apexcharts'
+import React, { Component, useState } from 'react'
 
 
-export default function Dashboard({total_categories, total_tables}) {
+export default function Dashboard ({total_categories, total_tables}) {
     let [isOpen, setIsOpen] = useState(false)
     const [modalTitle, setModalTitle] = useState("")
     function openModalAddCategory(title) {
         setIsOpen(true)
         setModalTitle(title)
     }
+
+
+
     return (
         <>
             <Head title="Dashboard" />

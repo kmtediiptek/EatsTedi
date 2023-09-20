@@ -24,13 +24,14 @@ export default function Navbar() {
                     </div>
 
                         <div className="hidden sm:-my-px sm:flex flex justify-between gap-8">
-                            <NavLink  href={route('dashboard')} active={route().current('dashboard')}>
+                            <NavLink  href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
                                 Dashboard
                             </NavLink>
-                            <NavLink href={route('admin.transaction')} active={route().current('transaction')}>
+                            <NavLink href={route('admin.transaction')} active={route().current('admin.transaction')}>
                                 Menu
                             </NavLink>
                             <NavLink>
+                            {route().current('transaction')}
                                 History
                             </NavLink>
                             <NavLink>
@@ -107,16 +108,16 @@ export default function Navbar() {
 
             <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                 <div className="pt-2 pb-3 space-y-1">
-                    <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                    <ResponsiveNavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
                         Dashboard
                     </ResponsiveNavLink>
-                    <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                    <ResponsiveNavLink href={route('admin.dashboard')} active={route().current('dashboard')}>
                         Menu
                     </ResponsiveNavLink>
-                    <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                    <ResponsiveNavLink href={route('admin.dashboard')} active={route().current('dashboard')}>
                         History
                     </ResponsiveNavLink>
-                    <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                    <ResponsiveNavLink href={route('admin.dashboard')} active={route().current('dashboard')}>
                         Log
                     </ResponsiveNavLink>
                 </div>
