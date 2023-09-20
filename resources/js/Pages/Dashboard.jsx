@@ -7,15 +7,32 @@ import Chart from 'react-apexcharts'
 import React, { Component, useState } from 'react'
 
 
-export default function Dashboard ({total_categories, total_tables}) {
-    let [isOpen, setIsOpen] = useState(false)
-    const [modalTitle, setModalTitle] = useState("")
-    function openModalAddCategory(title) {
-        setIsOpen(true)
-        setModalTitle(title)
+export default function Dashboard({ total_categories, total_tables }) {
+    const options = {
+        chart: {
+            id: 'apexchart-example',
+        },
+        xaxis: {
+            categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+        },
+        title: {
+            text: 'Statistic Income ',  // Add a title for the chart
+            align: 'center',
+            margin: 12,
+            offsetY: 20,
+            style: {
+                fontSize: '20px',
+                fontWeight: '500',
+                color: '#333',
+                fontFamily: 'Figtree'
+            },
+        }
     }
 
-
+    const series = [{
+        name: 'series-1',
+        data: [30, 40, 45, 50, 49, 60, 70, 91]
+    }]
 
     return (
         <>
@@ -67,12 +84,14 @@ export default function Dashboard ({total_categories, total_tables}) {
                 {/* End Dashboard */}
 
                 {/* Start Dashboard */}
-                <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Cash</h3>
+                </Container>
+                <Container>
+                <h3 className='text-2xl mb-4 font-semibold text-slate-700'>Cash</h3>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full gap-x-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 w-full gap-x-4">
                     {/* Start Order */}
                     <Link href={route('admin.category.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
-                    <div className="rounded bg-green-500 w-24 h-24 flex justify-center items-center">
+                        <div className="rounded bg-green-500 w-24 h-24 flex justify-center items-center">
                             <h3 className='text-4xl font-semibold text-center'><IconReportMoney size={72} /></h3>
                         </div>
                         <div className='text-slate-500 flex flex-col flex-1 justify-around'>
@@ -101,6 +120,13 @@ export default function Dashboard ({total_categories, total_tables}) {
                     {/* End Order */}
                 </div>
                 {/* End Dashboard */}
+            </Container>
+            <Container className="mb-12">
+                <h3 className='text-2xl mb-4 font-semibold text-slate-700'>Statistics</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 w-full gap-x-4">
+                    <Chart options={options} series={series} type="bar" className="w-full min-h-screen border border-gray-300 p-4 rounded"  />
+                    <Chart options={options} series={series} type="bar" className="w-full min-h-screen border border-gray-300 p-4 rounded"  />
+                </div>
             </Container>
         </>
     )
