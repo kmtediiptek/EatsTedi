@@ -14,7 +14,7 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 
 
-export default function Index({ categories }) {
+export default function Index({ categories, total_categories }) {
 
     const { post, data, setData } = useForm({
         name: '',
@@ -85,7 +85,7 @@ export default function Index({ categories }) {
                     >
                         <IconPlus size={18} />
                     </button>
-                    <p className='text-sm text-slate-500'>Total Categories: <span className='font-bold'>10</span> </p>
+                    <p className='text-sm text-slate-500'>Total Categories: <span className='font-bold'>{total_categories}</span> </p>
                 </div>
                 <Table>
                     <Table.Thead>

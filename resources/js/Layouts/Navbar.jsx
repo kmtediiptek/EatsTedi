@@ -24,10 +24,10 @@ export default function Navbar() {
                     </div>
 
                         <div className="hidden sm:-my-px sm:flex flex justify-between gap-8">
-                            <NavLink>
+                            <NavLink  href={route('dashboard')} active={route().current('dashboard')}>
                                 Dashboard
                             </NavLink>
-                            <NavLink href={route('dashboard')} active={route().current('dashboard')}>
+                            <NavLink href={route('transaction')} active={route().current('transaction')}>
                                 Menu
                             </NavLink>
                             <NavLink>
@@ -35,9 +35,6 @@ export default function Navbar() {
                             </NavLink>
                             <NavLink>
                                 Log
-                            </NavLink>
-                            <NavLink href={route('setting')} active={route().current('setting')}>
-                                Setting
                             </NavLink>
                         </div>
                     </div>
@@ -121,9 +118,6 @@ export default function Navbar() {
                     </ResponsiveNavLink>
                     <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
                         Log
-                    </ResponsiveNavLink>
-                    <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                        Setting
                     </ResponsiveNavLink>
                 </div>
 

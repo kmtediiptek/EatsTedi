@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Table;
 use Illuminate\Http\Request;
 
-class AdminCategoryController extends Controller
+class TableController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,32 +14,37 @@ class AdminCategoryController extends Controller
      */
     public function index()
     {
-
-        $total_category = Category::all()->count();
-        return inertia('Admin/Category/Index', [
-            "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get(),
-            "total_categories" => $total_category
-        ]);
+        //
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
-        Category::create([
-            "name" => $name = $request->name,
-            "slug" => str($name)->slug(),
-            "icon" => $request->icon,
-        ]);
-
-        return back();
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Table  $table
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Table $table)
     {
         //
     }
@@ -48,10 +52,10 @@ class AdminCategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Table  $table
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Table $table)
     {
         //
     }
@@ -60,10 +64,10 @@ class AdminCategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Table  $table
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Table $table)
     {
         //
     }
@@ -71,10 +75,10 @@ class AdminCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Table  $table
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Table $table)
     {
         //
     }

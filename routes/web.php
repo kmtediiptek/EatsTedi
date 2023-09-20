@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminTableController;
 use App\Http\Controllers\Admin\AdminTransactionController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\ProfileController;
@@ -42,18 +43,18 @@ Route::middleware('auth')->group(function () {
 
 // Admin
 Route::prefix('admin')->middleware('auth')->group(function() {
-
-
+    // Dashboard
     Route::get('/dashboard', AdminDashboardController::class)->name('dashboard');
+
+    // Transaction
     Route::get('/transaction', [AdminTransactionController::class, 'index'])->name('transaction');
-    Route::get('/setting', SettingController::class)->name('setting');
 
-
-
-    // Category
-    // Route::resource('/setting/category', AdminCategoryController::class);
+    // Admin Category
     Route::get('/setting/category', [AdminCategoryController::class, 'index'])->name('setting.category.index');
     Route::post('/setting/category', [AdminCategoryController::class, 'store'])->name('setting.category.store');
+
+    // Admin Table
+    Route::get('/setting/table', [AdminTableController::class, 'index'])->name('setting.table.index');
 });
 
 require __DIR__.'/auth.php';
