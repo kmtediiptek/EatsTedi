@@ -47,14 +47,15 @@ Route::prefix('admin')->middleware('auth')->group(function() {
     Route::get('/dashboard', AdminDashboardController::class)->name('dashboard');
 
     // Transaction
-    Route::get('/transaction', [AdminTransactionController::class, 'index'])->name('transaction');
+    Route::get('/transaction', [AdminTransactionController::class, 'index'])->name('admin.transaction');
 
     // Admin Category
-    Route::get('/setting/category', [AdminCategoryController::class, 'index'])->name('setting.category.index');
-    Route::post('/setting/category', [AdminCategoryController::class, 'store'])->name('setting.category.store');
+    Route::get('/setting/category', [AdminCategoryController::class, 'index'])->name('admin.category.index');
+    Route::post('/setting/category', [AdminCategoryController::class, 'store'])->name('admin.category.store');
 
     // Admin Table
-    Route::get('/setting/table', [AdminTableController::class, 'index'])->name('setting.table.index');
+    Route::get('/setting/table', [AdminTableController::class, 'index'])->name('admin.table.index');
+    Route::post('/setting/table', [AdminTableController::class, 'store'])->name('admin.table.store');
 });
 
 require __DIR__.'/auth.php';

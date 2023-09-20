@@ -16,7 +16,7 @@ class AdminTableController extends Controller
     public function index()
     {
         return inertia('Admin/Table/Index', [
-            "categories" => Table::query()->select('id', 'name', 'icon', 'slug')->get()
+            "tables" => Table::query()->select('id', 'number')->get()
         ]);
     }
 
@@ -38,7 +38,11 @@ class AdminTableController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Table::create([
+            "number" => $request->number,
+        ]);
+
+        return back();
     }
 
     /**

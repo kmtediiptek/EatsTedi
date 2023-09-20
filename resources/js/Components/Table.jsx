@@ -3,7 +3,7 @@ import React from 'react'
 
 const Table = ({children, className}) => {
     return (
-        <div className={clsx('w-full relative overflow-x-auto', className)}>
+        <div className={clsx(className, 'w-full relative overflow-x-auto')}>
             <table className={clsx('w-full text-sm text-left text-gray-500 text-gray-400', className)}>
                 {children}
             </table>

@@ -18,7 +18,7 @@ export default function Navbar() {
                                 RANDA
                                 {/* <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" /> */}
                             </Link>
-                            <form className='px-8 w-full '>
+                            <form className='px-4 w-full '>
                                 <input type='search' className='w-full rounded border-gray-300' placeholder='Cari menu..' />
                             </form>
                     </div>
@@ -27,7 +27,7 @@ export default function Navbar() {
                             <NavLink  href={route('dashboard')} active={route().current('dashboard')}>
                                 Dashboard
                             </NavLink>
-                            <NavLink href={route('transaction')} active={route().current('transaction')}>
+                            <NavLink href={route('admin.transaction')} active={route().current('transaction')}>
                                 Menu
                             </NavLink>
                             <NavLink>
