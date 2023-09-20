@@ -3,90 +3,56 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\AdminTableRequest;
+use App\Http\Resources\Admin\AdminTableResource;
 use App\Models\Table;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminTableController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
+
+        $total_table = Table::get()->count();
+        $tables = Table::query()
+            ->select('id', 'number', 'slug')
+            ->latest()
+            ->fastPaginate();
         return inertia('Admin/Table/Index', [
-            "tables" => Table::query()->select('id', 'number')->get()
+            "tables" => AdminTableResource::collection($tables),
+            "total_tables" => $total_table
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(AdminTableRequest $request)
     {
         Table::create([
-            "number" => $request->number,
+            "number" => $number = $request->number,
+            "slug" => 'table-' . rand(1,100) . '-' . str($number)->slug(),
         ]);
 
         return back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Table  $table
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Table $table)
+
+    public function update(AdminTableRequest $request, Table $table)
     {
-        //
+        $table->update([
+            "number" => $number = $request->number ? $request->number : $table->number,
+            "slug" => str($number)->slug(),
+        ]);
+
+        return back();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Table  $table
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Table $table)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Table  $table
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Table $table)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Table  $table
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Table $table)
     {
-        //
+        if ($table->picture) {
+            Storage::delete($table->picture);
+        }
+
+        $table->delete();
+        return back();
     }
 }

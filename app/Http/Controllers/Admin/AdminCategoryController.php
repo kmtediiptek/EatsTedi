@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\AdminCategoryRequest;
+use App\Http\Requests\Admin\AdminTableRequest;
 use App\Http\Resources\Admin\AdminCategoriesResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -10,11 +12,6 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminCategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
 
@@ -29,7 +26,7 @@ class AdminCategoryController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(AdminCategoryRequest $request)
     {
         Category::create([
             "name" => $name = $request->name,
@@ -40,38 +37,9 @@ class AdminCategoryController extends Controller
         return back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(AdminTableRequest $request, Category $category)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Category $category)
-    {
-        $picture = $request->file('picture');
         $category->update([
             "name" => $name = $request->name ? $request->name : $category->name,
             "slug" => str($name)->slug(),
@@ -81,12 +49,6 @@ class AdminCategoryController extends Controller
         return back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Category $category)
     {
         if ($category->picture) {

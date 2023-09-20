@@ -31,27 +31,28 @@ export default function Index({ total_categories, ...props }) {
 
     const [modalType, setModalType] = useState("")
 
-    const [categorySlug, setCategorySlug] = useState("");
+    const [categorySlug, setCategorySlug] = useState("")
 
     function openModalCategory(categorySlug, type) {
-        setIsOpen(true);
-        setModalCategory("Category");
-        setModalType(type);
-        setCategorySlug(categorySlug);
+        console.log(type)
+        setIsOpen(true)
+        setModalCategory("Category")
+        setModalType(type)
+        setCategorySlug(categorySlug)
         if (categorySlug) {
-            const selectedCategory = categories.find(category => category.slug === categorySlug);
+            const selectedCategory = categories.find(category => category.slug === categorySlug)
 
-            setCategorySlug(categorySlug);
+            setCategorySlug(categorySlug)
             setData({
                 name: selectedCategory.name,
                 icon: selectedCategory.icon
-            });
+            })
         } else {
-            setCategorySlug("");
+            setCategorySlug("")
             setData({
                 name: '',
                 icon: ''
-            });
+            })
         }
     }
 
@@ -87,14 +88,19 @@ export default function Index({ total_categories, ...props }) {
         e.preventDefault()
         put(route('admin.category.update', categorySlug), {
             ...data,
-            onSuccess: () => toast.success('Category has been added!')
+            onSuccess: () => {
+                toast.success('Category has been updated!'),
+                    setIsOpen(false)
+            }
         })
     }
 
     const onDelete = (categorySlug) => {
-        console.log(categorySlug);
         destroy(route('admin.category.destroy', categorySlug), {
-            onSuccess: () => toast.success('Category has been deleted!')
+            onSuccess: () => {
+                toast.success('Category has been deleted!'),
+                    setIsToast(false)
+            }
         })
     }
     return (
@@ -105,7 +111,7 @@ export default function Index({ total_categories, ...props }) {
                 <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Categories</h3>
                 <div className="flex justify-between w-full item-center my-2">
                     <button
-                        onClick={() => openModalCategory("create")}
+                        onClick={() => openModalCategory("", "create")}
                         type="button"
                         className='w-8 h-8 flex justify-center items-center bg-orange-500 text-white rounded'
                     >
@@ -123,25 +129,33 @@ export default function Index({ total_categories, ...props }) {
                         </tr>
                     </Table.Thead>
                     <Table.Tbody>
-                        {categories.map((category, index) => (
-                            <tr className="bg-white border-b text-gray-500" key={index}>
-                                <Table.Td className="w-5">{index + 1}</Table.Td>
-                                <Table.Td>{category.name}</Table.Td>
+                        {categories.length > 0 ? <>
+                            {categories.map((category, index) => (
+                                <tr className="bg-white border-b text-gray-500" key={index}>
+                                    <Table.Td className="w-5">{index + 1}</Table.Td>
+                                    <Table.Td>{category.name}</Table.Td>
 
-                                <Table.Td> <div className='w-10 h-10 p-2 border border-gray rounded' dangerouslySetInnerHTML={{ __html: category.icon }} /></Table.Td>
-                                <Table.Td className="w-10" >
-                                    <div className='flex flex-nowrap gap-2'>
-                                        <ActionButton className='bg-yellow-400' type="button" onClick={() => openModalCategory(category.slug, "edit")}><IconEdit size={18} /></ActionButton>
-                                        <ActionButton className='bg-red-500' type="button" onClick={() => openToast(category.slug, category.name)}><IconTrash size={18} /></ActionButton>
-                                    </div>
-                                </Table.Td>
+                                    <Table.Td> <div className='w-10 h-10 p-2 border border-gray rounded' dangerouslySetInnerHTML={{ __html: category.icon }} /></Table.Td>
+                                    <Table.Td className="w-10" >
+                                        <div className='flex flex-nowrap gap-2'>
+                                            <ActionButton className='bg-yellow-400' type="button" onClick={() => openModalCategory(category.slug, "edit")}><IconEdit size={18} /></ActionButton>
+                                            <ActionButton className='bg-red-500' type="button" onClick={() => openToast(category.slug, category.name)}><IconTrash size={18} /></ActionButton>
+                                        </div>
+                                    </Table.Td>
+                                </tr>
+                            ))}
+                        </> :
+                        <tr className="bg-white border-b text-gray-500 text-center">
+                                <Table.Td colSpan="4">No data</Table.Td>
                             </tr>
-                        ))}
+                        }
                     </Table.Tbody>
                 </Table>
-                <div className="flex w-full justify-center">
-                    <Pagination meta={meta} links={links} />
-                </div>
+                {categories.length > 0 &&
+                    <div className="flex w-full justify-center">
+                        <Pagination meta={meta} links={links} />
+                    </div>
+                }
                 {/* End Categories */}
 
                 {/* Modal */}

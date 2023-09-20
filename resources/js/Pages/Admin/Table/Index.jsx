@@ -1,11 +1,11 @@
 import ActionButton from '@/Components/Actionbutton'
-import CategoryForm from '@/Components/CategoryForm'
+import TableForm from '@/Components/TableForm'
 import Container from '@/Components/Container'
 import MyModal from '@/Components/Modal'
+import Pagination from '@/Components/Pagination'
 import PrimaryButton from '@/Components/PrimaryButton'
 import SecondaryButton from '@/Components/SecondaryButton'
 import Table from '@/Components/Table'
-import TableForm from '@/Components/TableForm'
 import Toast from '@/Components/Toast'
 import App from '@/Layouts/App'
 import { Head, useForm } from '@inertiajs/react'
@@ -14,31 +14,48 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 
 
-export default function Index({ tables, total_categories }) {
+export default function Index({ total_tables, ...props }) {
+    const { data: tables, meta, links } = props.tables
 
-    const { post, data, setData } = useForm({
-        name: '',
-        icon: '',
+    const { delete: destroy, post, put, data, setData } = useForm({
+        number: '',
     })
 
     let [isOpen, setIsOpen] = useState(false)
     let [isToast, setIsToast] = useState(false)
 
-    const [modalCategory, setModalCategory] = useState("")
+    const [modalTable, setModalTable] = useState("")
 
     const [toastTitle, setToastTitle] = useState("")
 
     const [modalType, setModalType] = useState("")
 
-    function openModalTable(type) {
+    const [TableSlug, setTableSlug] = useState("")
+
+    function openModalTable(TableSlug, type) {
         setIsOpen(true)
-        setModalCategory("Table")
+        setModalTable("Table")
         setModalType(type)
+        setTableSlug(TableSlug)
+        if (TableSlug) {
+            const selectedTable = tables.find(table => table.slug === TableSlug)
+
+            setTableSlug(TableSlug)
+            setData({
+                number: selectedTable.number,
+            })
+        } else {
+            setTableSlug("")
+            setData({
+                number: '',
+            })
+        }
     }
 
-    function openToast(title) {
+    function openToast(TableSlug, title) {
         setIsToast(true)
         setToastTitle(title)
+        setTableSlug(TableSlug)
     }
 
     function onCancelModal() {
@@ -63,29 +80,40 @@ export default function Index({ tables, total_categories }) {
         })
     }
 
-    const onUpdate = (e) => {
+    const onUpdate = (TableSlug) => (e) => {
         e.preventDefault()
-        toast.success('Achievement has been added!')
-        post(route('admin.table.store'), {
+        put(route('admin.table.update', TableSlug), {
             ...data,
-            onSuccess: () => toast.success('Achievement has been added!')
+            onSuccess: () => {
+                toast.success('Table has been updated!'),
+                    setIsOpen(false)
+            }
+        })
+    }
+
+    const onDelete = (TableSlug) => {
+        destroy(route('admin.table.destroy', TableSlug), {
+            onSuccess: () => {
+                toast.success('Table has been deleted!'),
+                    setIsToast(false)
+            }
         })
     }
     return (
         <>
-            <Head title="Setting - Table" />
+            <Head title="Setting" />
             <Container>
-                {/* Start Categories */}
+                {/* Start Tables */}
                 <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Tables</h3>
                 <div className="flex justify-between w-full item-center my-2">
                     <button
-                        onClick={() => openModalTable("create")}
+                        onClick={() => openModalTable("", "create")}
                         type="button"
                         className='w-8 h-8 flex justify-center items-center bg-orange-500 text-white rounded'
                     >
                         <IconPlus size={18} />
                     </button>
-                    <p className='text-sm text-slate-500'>Total Categories: <span className='font-bold'>{total_categories}</span> </p>
+                    <p className='text-sm text-slate-500'>Total Tables: <span className='font-bold'>{total_tables}</span> </p>
                 </div>
                 <Table>
                     <Table.Thead>
@@ -96,25 +124,37 @@ export default function Index({ tables, total_categories }) {
                         </tr>
                     </Table.Thead>
                     <Table.Tbody>
-                        {tables.map((table, index) => (
-                            <tr className="bg-white border-b text-gray-500" key={index}>
-                                <Table.Td className="w-5">{index + 1}</Table.Td>
-                                <Table.Td>{table.number}</Table.Td>
-                                <Table.Td className="w-10" >
-                                    <div className='flex flex-nowrap gap-2'>
-                                        <ActionButton className='bg-yellow-400' type="button" onClick={() => openModalCategory("edit")}><IconEdit size={18} /></ActionButton>
-                                        <ActionButton className='bg-red-500' type="button" onClick={() => openToast("Coffe")}><IconTrash size={18} /></ActionButton>
-                                    </div>
-                                </Table.Td>
+                        {tables.length > 0 ? <>
+
+                            {tables.map((table, index) => (
+                                <tr className="bg-white border-b text-gray-500" key={index}>
+                                    <Table.Td className="w-5">{index + 1}</Table.Td>
+                                    <Table.Td>Table {table.number}</Table.Td>
+                                    <Table.Td className="w-10" >
+                                        <div className='flex flex-nowrap gap-2'>
+                                            <ActionButton className='bg-yellow-400' type="button" onClick={() => openModalTable(table.slug, "edit")}><IconEdit size={18} /></ActionButton>
+                                            <ActionButton className='bg-red-500' type="button" onClick={() => openToast(table.slug, 'Table ' + table.number)}><IconTrash size={18} /></ActionButton>
+                                        </div>
+                                    </Table.Td>
+                                </tr>
+                            ))}
+                        </> :
+                            <tr className="bg-white border-b text-gray-500 text-center">
+                                <Table.Td colSpan="3">No data</Table.Td>
                             </tr>
-                        ))}
+                        }
                     </Table.Tbody>
                 </Table>
-                {/* End Categories */}
+                {tables.length > 0 &&
+                    <div className="flex w-full justify-center">
+                        <Pagination meta={meta} links={links} />
+                    </div>
+                }
+                {/* End Tables */}
 
                 {/* Modal */}
-                <MyModal isOpen={isOpen} onClose={() => setIsOpen(false)} size="2xl" type={modalType} title={modalCategory}>
-                    <form onSubmit={modalType == "create" ? onSubmit : onUpdate} className='mt-6'>
+                <MyModal isOpen={isOpen} onClose={() => setIsOpen(false)} size={`1/3`} type={modalType} title={modalTable}>
+                    <form onSubmit={modalType == "create" ? onSubmit : onUpdate(TableSlug)} className='mt-6'>
                         <TableForm {...{ data, setData }} />
                         <div className="flex justify-end gap-2">
                             <SecondaryButton onClick={() => onCancelModal()}>Cancel</SecondaryButton>
@@ -127,7 +167,7 @@ export default function Index({ tables, total_categories }) {
                 <Toast isToast={isToast} onClose={() => setIsToast(false)} title={toastTitle}>
                     <div className="flex justify-end gap-2 justify-center">
                         <SecondaryButton onClick={() => onCancelToast()}>No</SecondaryButton>
-                        <PrimaryButton>Yes</PrimaryButton>
+                        <PrimaryButton onClick={() => onDelete(TableSlug)}>Yes</PrimaryButton>
                     </div>
                 </Toast>
 

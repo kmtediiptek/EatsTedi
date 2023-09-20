@@ -36,9 +36,9 @@ const Th = ({ children, className }) => {
 }
 
 
-const Td = ({ children, className }) => {
+const Td = ({ children, className, colSpan}) => {
     return (
-        <td className={clsx("px-6 py-3", className)}>
+        <td className={clsx("px-6 py-3", className)} colSpan={colSpan}>
             {children}
         </td>
     )

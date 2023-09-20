@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('tables', function (Blueprint $table) {
             $table->id();
             $table->integer('number')->unsigned()->nullable();
+            $table->string('slug', 30)->unique();
             $table->timestamps();
         });
     }

@@ -13,7 +13,7 @@ export default function TableForm({ data, setData }) {
     return (
         <>
             <div className="mb-4">
-                <InputLabel htmlFor="number" value="number" />
+                <InputLabel htmlFor="number" value="Number" />
                 <TextInput name='number' id='number' className="w-full" onChange={onChange} value={data.number} />
                 {errors.number ? <Error className='' value={errors.number} /> : null}
             </div>

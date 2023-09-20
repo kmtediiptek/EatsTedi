@@ -30,7 +30,7 @@ export default function MyModal({ isOpen, onClose, size, title, children, type }
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className={`w-${size} transform overflow-hidden rounded bg-white p-6 text-left align-middle shadow-xl transition-all`}>
+                                <Dialog.Panel className={`w-full sm:w-${size} transform overflow-hidden rounded bg-white p-6 text-left align-middle shadow-xl transition-all`}>
                                     <Dialog.Title
                                         as="h3"
                                         className="text-lg text-slate-700 font-medium leading-6 mt-4 text-gray-700"
