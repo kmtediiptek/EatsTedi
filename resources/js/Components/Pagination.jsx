@@ -7,7 +7,7 @@ export default function Pagination({ meta, links }) {
         <div>
             {meta.links.length > 2 && (
                 <>
-                    <ul className="flex mt-10 justify-between md:hidden items-center gap-x-0.5 bg-fourth">
+                    <ul className="flex mt-10 justify-between md:hidden items-center gap-x-0.5 bg-white">
                         {links.prev ? (
                             <li>
                                 <Link

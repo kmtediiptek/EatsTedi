@@ -17,6 +17,12 @@ import toast from 'react-hot-toast'
 export default function Index({ total_categories, ...props }) {
     const { data: categories, meta, links } = props.categories
 
+    const [searchQuery, setSearchQuery] = useState('')
+
+    const filteredCategories = categories.filter(category =>
+        category.name.toLowerCase().includes(searchQuery.toLowerCase())
+    ).slice(0, 10)
+
     const { delete: destroy, post, put, data, setData } = useForm({
         name: '',
         icon: '',
@@ -110,14 +116,17 @@ export default function Index({ total_categories, ...props }) {
                 {/* Start Categories */}
                 <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Categories</h3>
                 <div className="flex justify-between w-full item-center my-2">
-                    <button
+                    <ActionButton
                         onClick={() => openModalCategory("", "create")}
                         type="button"
-                        className='w-8 h-8 flex justify-center items-center bg-orange-500 text-white rounded'
                     >
                         <IconPlus size={18} />
-                    </button>
-                    <p className='text-sm text-slate-500'>Total Categories: <span className='font-bold'>{total_categories}</span> </p>
+                    </ActionButton>
+                    <input id="searchQuery" type="text" className='w-3/4 sm:w-1/4 rounded border-gray-300 py-1 focus:ring-puple-300 focus:border-purple-600' placeholder='Search category..'
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)} />
+                </div>
+                <div className='w-full'>
                 </div>
                 <Table>
                     <Table.Thead>
@@ -129,8 +138,8 @@ export default function Index({ total_categories, ...props }) {
                         </tr>
                     </Table.Thead>
                     <Table.Tbody>
-                        {categories.length > 0 ? <>
-                            {categories.map((category, index) => (
+                        {filteredCategories.length > 0 ? <>
+                            {filteredCategories.map((category, index) => (
                                 <tr className="bg-white border-b text-gray-500" key={index}>
                                     <Table.Td className="w-5">{index + 1}</Table.Td>
                                     <Table.Td>{category.name}</Table.Td>
@@ -145,16 +154,17 @@ export default function Index({ total_categories, ...props }) {
                                 </tr>
                             ))}
                         </> :
-                        <tr className="bg-white border-b text-gray-500 text-center">
+                            <tr className="bg-white border-b text-gray-500 text-center">
                                 <Table.Td colSpan="4">No data</Table.Td>
                             </tr>
                         }
                     </Table.Tbody>
                 </Table>
                 {categories.length > 0 &&
-                    <div className="flex w-full justify-center">
+                <div className='flex w-full justify-between items-center'>
                         <Pagination meta={meta} links={links} />
-                    </div>
+                            <p className='text-sm text-slate-500 mt-10'>Total Categories: <span className='font-bold'>{total_categories}</span> </p>
+                </div>
                 }
                 {/* End Categories */}
 
