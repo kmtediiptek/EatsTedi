@@ -20,7 +20,6 @@ export default function App({ children }) {
                         height: '3.5rem',
                         fontSize: '1rem',
                         backgroundColor: 'white',
-                        borderRadius: '0.375rem',
                         boxShadow : '2px 2px 2px #aaa'
                     },
                 }}
