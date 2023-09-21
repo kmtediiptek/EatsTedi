@@ -88,7 +88,7 @@ export default function Dashboard({ total_categories, total_tables }) {
                 <Container>
                 <h3 className='text-2xl mb-4 font-semibold text-slate-700'>Cash</h3>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 w-full gap-x-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 w-full gap-x-4">
                     {/* Start Order */}
                     <Link href={route('admin.category.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
                         <div className="rounded bg-green-500 w-24 h-24 flex justify-center items-center">
@@ -97,6 +97,15 @@ export default function Dashboard({ total_categories, total_tables }) {
                         <div className='text-slate-500 flex flex-col flex-1 justify-around'>
                             <h5 className='font-semibold text-xl'>Total Income</h5>
                             <span className='text-slate-800 text-3xl font-bold'>Rp. 1.500.000</span>
+                        </div>
+                    </Link>
+                    <Link href={route('admin.category.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
+                        <div className="rounded bg-yellow-500 w-24 h-24 flex justify-center items-center">
+                            <h3 className='text-4xl font-semibold text-center'><IconCreditCard size={72} /></h3>
+                        </div>
+                        <div className='text-slate-500 flex flex-col flex-1 justify-around'>
+                            <h5 className='font-semibold text-xl'>Today's Income</h5>
+                            <span className='text-slate-800 text-3xl font-bold'>Rp. 1.000.000</span>
                         </div>
                     </Link>
                     <Link href={route('admin.category.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
@@ -109,7 +118,7 @@ export default function Dashboard({ total_categories, total_tables }) {
                         </div>
                     </Link>
                     <Link href={route('admin.category.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
-                        <div className="rounded bg-yellow-400 w-24 h-24 flex justify-center items-center">
+                        <div className="rounded bg-red-500 w-24 h-24 flex justify-center items-center">
                             <h3 className='text-4xl font-semibold text-center'><IconCreditCard size={72} /></h3>
                         </div>
                         <div className='text-slate-500 flex flex-col flex-1 justify-around'>

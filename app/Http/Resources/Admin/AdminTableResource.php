@@ -17,7 +17,7 @@ class AdminTableResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "number" => $this->number,
+            "number" => 'Table ' .  Str::lower($this->number),
             "slug" => $this->slug,
         ];
     }

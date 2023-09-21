@@ -17,6 +17,12 @@ import toast from 'react-hot-toast'
 export default function Index({ total_tables, ...props }) {
     const { data: tables, meta, links } = props.tables
 
+    const [searchQuery, setSearchQuery] = useState('')
+
+    const filteredTables = tables.filter(table =>
+        table.number.toLowerCase().includes(searchQuery.toLowerCase())
+    ).slice(0, 10)
+
     const { delete: destroy, post, put, data, setData } = useForm({
         number: '',
     })
@@ -113,7 +119,9 @@ export default function Index({ total_tables, ...props }) {
                     >
                         <IconPlus size={18} />
                     </button>
-                    <p className='text-sm text-slate-500'>Total Tables: <span className='font-bold'>{total_tables}</span> </p>
+                    <input id="searchQuery" type="text" className='w-3/4 sm:w-1/4 rounded border-gray-300 py-1 focus:ring-puple-300 focus:border-purple-600' placeholder='Search category..'
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)} />
                 </div>
                 <Table>
                     <Table.Thead>
@@ -124,12 +132,12 @@ export default function Index({ total_tables, ...props }) {
                         </tr>
                     </Table.Thead>
                     <Table.Tbody>
-                        {tables.length > 0 ? <>
+                        {filteredTables.length > 0 ? <>
 
-                            {tables.map((table, index) => (
+                            {filteredTables.map((table, index) => (
                                 <tr className="bg-white border-b text-gray-500" key={index}>
                                     <Table.Td className="w-5">{index + 1}</Table.Td>
-                                    <Table.Td>Table {table.number}</Table.Td>
+                                    <Table.Td>{table.number}</Table.Td>
                                     <Table.Td className="w-10" >
                                         <div className='flex flex-nowrap gap-2'>
                                             <ActionButton className='bg-yellow-400' type="button" onClick={() => openModalTable(table.slug, "edit")}><IconEdit size={18} /></ActionButton>
@@ -146,8 +154,9 @@ export default function Index({ total_tables, ...props }) {
                     </Table.Tbody>
                 </Table>
                 {tables.length > 0 &&
-                    <div className="flex w-full justify-center">
+                    <div className='flex w-full justify-between items-center'>
                         <Pagination meta={meta} links={links} />
+                        <p className='text-sm text-slate-500 mt-10'>Total Tables: <span className='font-bold'>{total_tables}</span> </p>
                     </div>
                 }
                 {/* End Tables */}

@@ -20,6 +20,10 @@ class DatabaseSeeder extends Seeder
             'name' => 'Rachel Ginting',
             'email' => 'rachelardanaputraginting@gmail.com',
             'password' => bcrypt("password"),
+            'number_phone' => '081535458207',
+            'address' => 'Aceh',
+            'picture' => 'picture1.jpg',
+            'status' => 'owner',
         ]);
     }
 }
