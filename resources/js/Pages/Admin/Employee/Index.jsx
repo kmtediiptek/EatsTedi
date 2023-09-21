@@ -14,9 +14,8 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 
 
-export default function Index({ total_categories, statuses, ...props }) {
+export default function Index({ total_employees, statuses, ...props }) {
     const { data: employees, meta, links } = props.employees
-
     const [searchQuery, setSearchQuery] = useState('')
 
     const filteredEmployees = employees.filter(employee =>
@@ -32,7 +31,10 @@ export default function Index({ total_categories, statuses, ...props }) {
         address: '',
         picture: '',
         status: statuses[0],
+        password_confirmation: '',
+
     })
+
 
     let [isOpen, setIsOpen] = useState(false)
     let [isToast, setIsToast] = useState(false)
@@ -43,17 +45,17 @@ export default function Index({ total_categories, statuses, ...props }) {
 
     const [modalType, setModalType] = useState("")
 
-    const [categorySlug, setCategorySlug] = useState("")
+    const [userName, setCategorySlug] = useState("")
 
-    function openModalCategory(categorySlug, type) {
+    function openModalCategory(userName, type) {
         setIsOpen(true)
         setModalCategory("Employee")
         setModalType(type)
-        setCategorySlug(categorySlug)
-        if (categorySlug) {
-            const selectedEmployee = employees.find(employee => employee.username === categorySlug)
+        setCategorySlug(userName)
+        if (userName) {
+            const selectedEmployee = employees.find(employee => employee.username === userName)
 
-            setCategorySlug(categorySlug)
+            setCategorySlug(userName)
             setData({
                 name: selectedEmployee.name,
                 username: selectedEmployee.username,
@@ -79,10 +81,10 @@ export default function Index({ total_categories, statuses, ...props }) {
         }
     }
 
-    function openToast(categorySlug, title) {
+    function openToast(userName, title) {
         setIsToast(true)
         setToastTitle(title)
-        setCategorySlug(categorySlug)
+        setCategorySlug(userName)
     }
 
     function onCancelModal() {
@@ -100,29 +102,29 @@ export default function Index({ total_categories, statuses, ...props }) {
             ...data,
             status: data.status.id,
             onSuccess: () => {
-                toast.success('Category has been created!')
+                toast.success('Employee has been created!')
                 setIsOpen(false)
-                setData({ name: '', icon: '' })
+                setData({ name: '', username: '', password: '', email: '', address: '', status: '',  picture: '', number_phone: ''})
             }
 
         })
     }
 
-    const onUpdate = (categorySlug) => (e) => {
+    const onUpdate = (userName) => (e) => {
         e.preventDefault()
-        put(route('admin.employee.update', categorySlug), {
+        put(route('admin.employee.update', userName), {
             ...data,
             onSuccess: () => {
-                toast.success('Category has been updated!'),
+                toast.success('Employee has been updated!'),
                     setIsOpen(false)
             }
         })
     }
 
-    const onDelete = (categorySlug) => {
-        destroy(route('admin.employee.destroy', categorySlug), {
+    const onDelete = (userName) => {
+        destroy(route('admin.employee.destroy', userName), {
             onSuccess: () => {
-                toast.success('Category has been deleted!'),
+                toast.success('Employee has been deleted!'),
                     setIsToast(false)
             }
         })
@@ -155,8 +157,8 @@ export default function Index({ total_categories, statuses, ...props }) {
                             <Table.Th>Email</Table.Th>
                             <Table.Th>Number Phone</Table.Th>
                             <Table.Th>Address</Table.Th>
-                            <Table.Th>Picture</Table.Th>
                             <Table.Th>Status</Table.Th>
+                            <Table.Th>Picture</Table.Th>
                             <Table.Th>Action</Table.Th>
                         </tr>
                     </Table.Thead>
@@ -164,7 +166,7 @@ export default function Index({ total_categories, statuses, ...props }) {
                         {filteredEmployees.length > 0 ? <>
                             {filteredEmployees.map((employee, index) => (
                                 <tr className="bg-white border-b text-gray-500" key={index}>
-                                    <Table.Td className="w-5">{index + 1}</Table.Td>
+                                    <Table.Td className="w-5">{meta.from + index}</Table.Td>
                                     <Table.Td>{employee.name}</Table.Td>
                                     <Table.Td>{employee.username}</Table.Td>
                                     <Table.Td>{employee.email}</Table.Td>
@@ -182,7 +184,7 @@ export default function Index({ total_categories, statuses, ...props }) {
                             ))}
                         </> :
                             <tr className="bg-white border-b text-gray-500 text-center">
-                                <Table.Td colSpan="4">No data</Table.Td>
+                                <Table.Td colSpan="9">No data</Table.Td>
                             </tr>
                         }
                     </Table.Tbody>
@@ -190,14 +192,14 @@ export default function Index({ total_categories, statuses, ...props }) {
                 {employees.length > 0 &&
                     <div className='flex w-full justify-between items-center'>
                         <Pagination meta={meta} links={links} />
-                        <p className='text-sm text-slate-500 mt-10'>Total employees: <span className='font-bold'>{total_categories}</span> </p>
+                        <p className='text-sm text-slate-500 mt-10'>Total employees: <span className='font-bold'>{total_employees}</span> </p>
                     </div>
                 }
                 {/* End employees */}
 
                 {/* Modal */}
                 <MyModal isOpen={isOpen} onClose={() => setIsOpen(false)} size={`2/3`} type={modalType} title={modalCategory}>
-                    <form onSubmit={modalType == "create" ? onSubmit : onUpdate(categorySlug)} className='mt-6'>
+                    <form onSubmit={modalType == "create" ? onSubmit : onUpdate(userName)} className='mt-6'>
                         <EmployeeForm {...{ data, setData }} />
                         <div className="flex justify-end gap-2">
                             <SecondaryButton onClick={() => onCancelModal()}>Cancel</SecondaryButton>
@@ -210,7 +212,7 @@ export default function Index({ total_categories, statuses, ...props }) {
                 <Toast isToast={isToast} onClose={() => setIsToast(false)} title={toastTitle}>
                     <div className="flex justify-end gap-2 justify-center">
                         <SecondaryButton onClick={() => onCancelToast()}>No</SecondaryButton>
-                        <PrimaryButton onClick={() => onDelete(categorySlug)}>Yes</PrimaryButton>
+                        <PrimaryButton onClick={() => onDelete(userName)}>Yes</PrimaryButton>
                     </div>
                 </Toast>
 

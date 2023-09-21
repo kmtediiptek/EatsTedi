@@ -7,7 +7,6 @@ use App\Http\Requests\Admin\AdminCategoryRequest;
 use App\Http\Requests\Admin\AdminTableRequest;
 use App\Http\Resources\Admin\AdminCategoriesResource;
 use App\Models\Category;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class AdminCategoryController extends Controller

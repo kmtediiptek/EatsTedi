@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Admin;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class AdminUserResource extends JsonResource
 {
@@ -14,6 +15,7 @@ class AdminUserResource extends JsonResource
      */
     public function toArray($request)
     {
+        // return $this->status;
         return [
             "id" => $this->id,
             "username" => $this->username,
@@ -22,7 +24,8 @@ class AdminUserResource extends JsonResource
             "number_phone" => $this->number_phone,
             "address" => $this->address,
             "status" => $this->status,
-            "picture" => $this->picture,
+            "picture" => $this->picture ? Storage::url($this->picture) : 'https://flowbite.com/docs/images/blog/image-1.jpg',
+            "password" => $this->password,
         ];
     }
 }

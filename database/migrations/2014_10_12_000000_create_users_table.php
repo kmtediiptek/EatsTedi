@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('number_phone');
+            $table->string('number_phone')->unique();
             $table->text('address');
-            $table->text('picture');
+            $table->text('picture')->nullable();
             $table->enum('status', ['owner', 'admin', 'employee']);
             $table->rememberToken();
             $table->timestamps();

@@ -16,7 +16,7 @@ export default function EmployeeForm({ data, setData }) {
     return (
         <>
             <div className="mb-4">
-                <InputFile name='picture' id='picture' className="w-full" onChange={onChange} value={data.picture} />
+                <InputFile name='picture' id='picture' className="w-full" onChange={(e) => setData('picture', e.target.files[0])} value={data.picture} />
                 {errors.picture ? <Error className='' value={errors.picture} /> : null}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
@@ -32,16 +32,16 @@ export default function EmployeeForm({ data, setData }) {
                 </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-            <div className="mb-4">
-                <InputLabel htmlFor="email" value="Email" />
-                <TextInput name='email' id='email' className="w-full" onChange={onChange} value={data.email} />
-                {errors.email ? <Error className='' value={errors.email} /> : null}
-            </div>
-            <div className="mb-4">
-                <InputLabel htmlFor="number_phone" value="Number Phone" />
-                <TextInput type="number" name='number_phone' id='number_phone' className="w-full" onChange={onChange} value={data.number_phone} />
-                {errors.number_phone ? <Error className='' value={errors.number_phone} /> : null}
-            </div>
+                <div className="mb-4">
+                    <InputLabel htmlFor="email" value="Email" />
+                    <TextInput type="email" name='email' id='email' className="w-full" onChange={onChange} value={data.email} />
+                    {errors.email ? <Error className='' value={errors.email} /> : null}
+                </div>
+                <div className="mb-4">
+                    <InputLabel htmlFor="number_phone" value="Number Phone" />
+                    <TextInput type="number" name='number_phone' id='number_phone' className="w-full" onChange={onChange} value={data.number_phone} />
+                    {errors.number_phone ? <Error className='' value={errors.number_phone} /> : null}
+                </div>
             </div>
             <div className="mb-4">
                 <InputLabel htmlFor="address" value="Address" />
@@ -51,12 +51,19 @@ export default function EmployeeForm({ data, setData }) {
             <div className="mb-4 w-1/2">
                 <InputLabel htmlFor="status" value="Status" />
                 <Select value={data.status} data={statuses} onChange={(e) => setData('status', e)} />
-                    {errors.status ? <Error className='' value={errors.status} /> : null}
+                {errors.status ? <Error className='' value={errors.status} /> : null}
             </div>
-            <div className="mb-4">
-                <InputLabel htmlFor="password" value="Password" />
-                <TextInput name='password' id='password' className="w-full" onChange={onChange} value={data.password} />
-                {errors.password ? <Error className='' value={errors.password} /> : null}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+                <div className="mb-4">
+                    <InputLabel htmlFor="password" value="Password" />
+                    <TextInput type="password" name='password' id='password' className="w-full" onChange={onChange} value={data.password} />
+                    {errors.password ? <Error className='' value={errors.password} /> : null}
+                </div>
+                <div className="mb-4">
+                    <InputLabel htmlFor="password_confirmation" value="Password Confirmation" />
+                    <TextInput type="password" name='password_confirmation' id='password_confirmation' className="w-full" onChange={onChange} value={data.password_confirmation || ''} />
+                    {errors.password_confirmation ? <Error className='' value={errors.password_confirmation} /> : null}
+                </div>
             </div>
         </>
     )
