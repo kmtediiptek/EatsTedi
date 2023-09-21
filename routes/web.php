@@ -64,8 +64,8 @@ Route::prefix('admin')->middleware('auth')->group(function() {
     // Admin Table
     Route::get('/setting/employee', [AdminUserController::class, 'index'])->name('admin.employee.index');
     Route::post('/setting/employee', [AdminUserController::class, 'store'])->name('admin.employee.store');
-    Route::put('/setting/{employee:username}/employee', [AdminUserController::class, 'update'])->name('admin.employee.update');
-    Route::delete('/setting/employee/{employee:username}', [AdminUserController::class, 'destroy'])->name('admin.employee.destroy');
+    Route::put('/setting/{user:username}/employee', [AdminUserController::class, 'update'])->name('admin.employee.update');
+    Route::delete('/setting/employee/{user:username}', [AdminUserController::class, 'destroy'])->name('admin.employee.destroy');
 });
 
 require __DIR__.'/auth.php';

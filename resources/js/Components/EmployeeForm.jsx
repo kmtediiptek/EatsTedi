@@ -9,6 +9,7 @@ import Textarea from './Textarea'
 
 export default function EmployeeForm({ data, setData }) {
     const { errors, statuses } = usePage().props
+
     const onChange = (e) => {
         setData(e.target.name, e.target.value)
     }
@@ -16,7 +17,7 @@ export default function EmployeeForm({ data, setData }) {
     return (
         <>
             <div className="mb-4">
-                <InputFile name='picture' id='picture' className="w-full" onChange={(e) => setData('picture', e.target.files[0])} value={data.picture} />
+            <InputFile name='picture' id='picture' onChange={(e) => setData('picture', e.target.files[0])} />
                 {errors.picture ? <Error className='' value={errors.picture} /> : null}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">

@@ -33,7 +33,7 @@ class AdminUserRequest extends FormRequest
                 'email' => ['required', 'string', 'min:3', 'unique:users,email'],
                 'number_phone' => ['numeric', 'required', 'min:3', 'unique:users,number_phone'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
-                'picture' => ['nullable', 'mimes:png,jpg,jpeg', 'image'],
+                'picture' => ['nullable', 'mimes:png,jpg,jpeg', 'image', 'max:2048'],
             ];
         }
 

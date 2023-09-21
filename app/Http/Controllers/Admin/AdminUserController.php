@@ -24,10 +24,10 @@ class AdminUserController extends Controller
 
         $statuses = new Collection($collection);
 
-        $total_employee = User::get()->count();
+        $total_employee = User::where('status', 'employee')->get()->count();
         $users = User::query()
             ->select('id', 'name', 'username', 'email', 'number_phone', 'address', 'status', 'picture', 'password')
-            // ->where('status', 'employee')
+            ->where('status', 'employee')
             ->latest()
             ->fastPaginate();
         return inertia('Admin/Employee/Index', [
@@ -48,30 +48,30 @@ class AdminUserController extends Controller
             "address" => $request->address,
             "status" => $request->status['name'],
             "password" => Hash::make($request->password),
-            "picture" => $request->hasFile('picture') ? $picture->storeAs('images/experiences', $name . '.' . $picture->extension()) : null
+            "picture" => $request->hasFile('picture') ? $picture->storeAs('images/employees', $name . '.' . $picture->extension()) : 'hahas'
         ]);
 
         return back();
     }
 
 
-    public function update(AdminUserRequest $request, User $User)
+    public function update(AdminUserRequest $request, User $user)
     {
-        $User->update([
-            "number" => $number = $request->number ? $request->number : $User->number,
+        $user->update([
+            "number" => $number = $request->number ? $request->number : $user->number,
             "slug" => str($number)->slug(),
         ]);
 
         return back();
     }
 
-    public function destroy(User $User)
+    public function destroy(User $user)
     {
-        if ($User->picture) {
-            Storage::delete($User->picture);
+        if ($user->picture) {
+            Storage::delete($user->picture);
         }
 
-        $User->delete();
+        $user->delete();
         return back();
     }
 }

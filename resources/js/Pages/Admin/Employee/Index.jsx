@@ -122,6 +122,7 @@ export default function Index({ total_employees, statuses, ...props }) {
     }
 
     const onDelete = (userName) => {
+        console.log(userName);
         destroy(route('admin.employee.destroy', userName), {
             onSuccess: () => {
                 toast.success('Employee has been deleted!'),
@@ -173,7 +174,9 @@ export default function Index({ total_employees, statuses, ...props }) {
                                     <Table.Td>{employee.number_phone}</Table.Td>
                                     <Table.Td>{employee.address}</Table.Td>
                                     <Table.Td>{employee.status}</Table.Td>
-                                    <Table.Td>{employee.picture}</Table.Td>
+                                    <Table.Td>
+                                        <img src={employee.picture} className='rounded w-12 h-12' />
+                                    </Table.Td>
                                     <Table.Td className="w-10" >
                                         <div className='flex flex-nowrap gap-2'>
                                             <ActionButton className='bg-yellow-400' type="button" onClick={() => openModalCategory(employee.username, "edit")}><IconEdit size={18} /></ActionButton>
