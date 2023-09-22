@@ -24,7 +24,7 @@ class AdminUserResource extends JsonResource
             "number_phone" => $this->number_phone,
             "address" => $this->address,
             "status" => $this->status,
-            "picture" => $this->picture ? Storage::url($this->picture) : 'https://flowbite.com/docs/images/blog/image-1.jpg',
+            "picture" => $this->picture ? Storage::url($this->picture) : null,
             "password" => $this->password,
         ];
     }

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('number_phone')->unique();
             $table->text('address');
-            $table->text('picture')->nullable();
+            $table->string('picture')->nullable();
             $table->enum('status', ['owner', 'admin', 'employee']);
             $table->rememberToken();
             $table->timestamps();

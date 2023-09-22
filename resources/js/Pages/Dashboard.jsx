@@ -7,7 +7,7 @@ import Chart from 'react-apexcharts'
 import React, { Component, useState } from 'react'
 
 
-export default function Dashboard({ total_categories, total_tables }) {
+export default function Dashboard({ total_categories, total_tables, total_employees }) {
     const options = {
         chart: {
             id: 'apexchart-example',
@@ -76,7 +76,7 @@ export default function Dashboard({ total_categories, total_tables }) {
                         </div>
                         <div className='text-slate-800 flex flex-col flex-1 justify-around'>
                             <h5 className='font-semibold text-xl'>Employees</h5>
-                            <span className='text-slate-500'>2 Item</span>
+                            <span className='text-slate-500'>{total_employees} Item</span>
                         </div>
                     </Link>
                     {/* End Order */}

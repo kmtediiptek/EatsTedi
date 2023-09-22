@@ -22,10 +22,10 @@ class DatabaseSeeder extends Seeder
             'number_phone' => '081535458207',
             'address' => 'Aceh',
             'picture' => 'picture1.jpg',
-            'status' => 'owner',
+            'status' => 'employee',
         ]);
 
-        \App\Models\User::factory(50)->create();
+        // \App\Models\User::factory(500)->create();
 
     }
 }

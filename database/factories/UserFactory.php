@@ -26,7 +26,7 @@ class UserFactory extends Factory
             'number_phone' => fake()->numberBetween(),
             'address' => fake()->address(),
             'status' => "employee",
-            'picture' => "picture" . rand(1, 100),
+            'picture' => null,
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         ];
     }

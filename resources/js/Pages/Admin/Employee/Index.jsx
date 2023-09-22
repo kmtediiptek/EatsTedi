@@ -8,13 +8,13 @@ import SecondaryButton from '@/Components/SecondaryButton'
 import Table from '@/Components/Table'
 import Toast from '@/Components/Toast'
 import App from '@/Layouts/App'
-import { Head, useForm } from '@inertiajs/react'
+import { Head, router, useForm } from '@inertiajs/react'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 
 
-export default function Index({ total_employees, statuses, ...props }) {
+export default function Index({ total_employees, ...props }) {
     const { data: employees, meta, links } = props.employees
     const [searchQuery, setSearchQuery] = useState('')
 
@@ -22,7 +22,7 @@ export default function Index({ total_employees, statuses, ...props }) {
         employee.name.toLowerCase().includes(searchQuery.toLowerCase())
     ).slice(0, 10)
 
-    const { delete: destroy, post, put, data, setData } = useForm({
+    const { delete: destroy, data, setData } = useForm({
         name: '',
         username: '',
         email: '',
@@ -30,50 +30,45 @@ export default function Index({ total_employees, statuses, ...props }) {
         number_phone: '',
         address: '',
         picture: '',
-        status: statuses[0],
-        password_confirmation: '',
-
+        status: '',
     })
 
 
     let [isOpen, setIsOpen] = useState(false)
     let [isToast, setIsToast] = useState(false)
 
-    const [modalCategory, setModalCategory] = useState("")
+    const [modalEmployee, setModalEmployee] = useState("")
 
     const [toastTitle, setToastTitle] = useState("")
 
     const [modalType, setModalType] = useState("")
 
-    const [userName, setCategorySlug] = useState("")
+    const [userName, setUserName] = useState("")
 
     function openModalCategory(userName, type) {
         setIsOpen(true)
-        setModalCategory("Employee")
+        setModalEmployee("Employee")
         setModalType(type)
-        setCategorySlug(userName)
+        setUserName(userName)
         if (userName) {
             const selectedEmployee = employees.find(employee => employee.username === userName)
-
-            setCategorySlug(userName)
+            setUserName(userName)
             setData({
                 name: selectedEmployee.name,
                 username: selectedEmployee.username,
                 email: selectedEmployee.email,
                 number_phone: selectedEmployee.number_phone,
-                password: selectedEmployee.password,
                 address: selectedEmployee.address,
-                picture: selectedEmployee.picture,
+                picture: '',
                 status: selectedEmployee.status,
             })
         } else {
-            setCategorySlug("")
+            setUserName("")
             setData({
                 name: '',
                 username: '',
                 email: '',
                 number_phone: '',
-                password: '',
                 address: '',
                 picture: '',
                 status: '',
@@ -84,7 +79,7 @@ export default function Index({ total_employees, statuses, ...props }) {
     function openToast(userName, title) {
         setIsToast(true)
         setToastTitle(title)
-        setCategorySlug(userName)
+        setUserName(userName)
     }
 
     function onCancelModal() {
@@ -98,31 +93,34 @@ export default function Index({ total_employees, statuses, ...props }) {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        post(route('admin.employee.index'), {
+        router.post(`/admin/setting/employee`, {
             ...data,
-            status: data.status.id,
+            status: data.status.name,
+        }, {
             onSuccess: () => {
-                toast.success('Employee has been created!')
-                setIsOpen(false)
-                setData({ name: '', username: '', password: '', email: '', address: '', status: '',  picture: '', number_phone: ''})
+                setData({ name: '', username: '', email: '', address: '', status: '', picture: '', number_phone: '' }),
+                    setIsOpen(false),
+                    toast.success('Employee has been created!')
             }
-
         })
     }
 
-    const onUpdate = (userName) => (e) => {
+    const onUpdate = (e) => {
         e.preventDefault()
-        put(route('admin.employee.update', userName), {
+        router.post(`/admin/setting/employee/${data.username}`, {
+            _method: 'put',
             ...data,
+            status: data.status.name
+        }, {
             onSuccess: () => {
-                toast.success('Employee has been updated!'),
-                    setIsOpen(false)
+                setIsOpen(false),
+                    setData({ name: '', username: '', email: '', address: '', status: '', picture: '', number_phone: '' }),
+                    toast.success('Employee has been updated!')
             }
         })
     }
 
     const onDelete = (userName) => {
-        console.log(userName);
         destroy(route('admin.employee.destroy', userName), {
             onSuccess: () => {
                 toast.success('Employee has been deleted!'),
@@ -173,9 +171,13 @@ export default function Index({ total_employees, statuses, ...props }) {
                                     <Table.Td>{employee.email}</Table.Td>
                                     <Table.Td>{employee.number_phone}</Table.Td>
                                     <Table.Td>{employee.address}</Table.Td>
-                                    <Table.Td>{employee.status}</Table.Td>
                                     <Table.Td>
-                                        <img src={employee.picture} className='rounded w-12 h-12' />
+                                        <span className={`text-xs p-2 ${employee.status == 'employee' ? 'bg-green-500 text-white rounded' : employee.status == 'admin' ? 'bg-yellow-400 text-white rounded' : 'bg-red-500 text-white rounded'}`}>
+                                            {employee.status.toUpperCase()}
+                                        </span>
+                                    </Table.Td>
+                                    <Table.Td>
+                                        <img src={employee.picture ? employee.picture : 'https://flowbite.com/docs/images/blog/image-1.jpg'} className='rounded w-12 h-12' />
                                     </Table.Td>
                                     <Table.Td className="w-10" >
                                         <div className='flex flex-nowrap gap-2'>
@@ -201,8 +203,8 @@ export default function Index({ total_employees, statuses, ...props }) {
                 {/* End employees */}
 
                 {/* Modal */}
-                <MyModal isOpen={isOpen} onClose={() => setIsOpen(false)} size={`2/3`} type={modalType} title={modalCategory}>
-                    <form onSubmit={modalType == "create" ? onSubmit : onUpdate(userName)} className='mt-6'>
+                <MyModal isOpen={isOpen} onClose={() => setIsOpen(false)} size={`2/3`} type={modalType} title={modalEmployee}>
+                    <form onSubmit={modalType == "create" ? onSubmit : onUpdate} className='mt-6'>
                         <EmployeeForm {...{ data, setData }} />
                         <div className="flex justify-end gap-2">
                             <SecondaryButton onClick={() => onCancelModal()}>Cancel</SecondaryButton>

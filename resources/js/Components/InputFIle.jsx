@@ -19,7 +19,8 @@ export default function InputFile({ onChange, accept = '.jpg, .png, .jpeg' }) {
     const renderImage = () => {
         if (imagePreview) {
             return <img src={imagePreview} alt="Preview" className="w-32 h-32 object-cover rounded mb-2" />;
-        } else {
+        }
+        else {
             // Placeholder image URL
             const placeholderImageUrl = 'https://via.placeholder.com/150';  // You can replace this with any placeholder image URL
             return <img src={placeholderImageUrl} alt="Placeholder" className="w-32 h-32 object-cover rounded mb-2" />;

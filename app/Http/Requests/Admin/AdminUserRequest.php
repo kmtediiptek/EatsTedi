@@ -4,6 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;  // Perlu mengimpor Rule dari Illuminate\Validation
 
 class AdminUserRequest extends FormRequest
 {
@@ -24,31 +25,36 @@ class AdminUserRequest extends FormRequest
      */
     public function rules()
     {
-        if ($this->isMethod('post')) {
+        if ($this->isMethod('put') || $this->isMethod('patch')) {
+            $userId = $this->route('user');
             return [
+                "picture" => ['nullable', 'mimes:png,jpg,jpeg', 'image'],
                 'name' => ['required', 'string', 'min:3'],
-                'status' => ['required'],
-                'username' => ['required', 'string', 'min:3', 'unique:users,username'],
+                'username' => ['required', 'string', 'min:3', Rule::unique('users')->ignore($userId)],
                 'address' => ['required', 'string', 'min:3'],
-                'email' => ['required', 'string', 'min:3', 'unique:users,email'],
-                'number_phone' => ['numeric', 'required', 'min:3', 'unique:users,number_phone'],
-                'password' => ['required', 'string', 'min:8', 'confirmed'],
-                'picture' => ['nullable', 'mimes:png,jpg,jpeg', 'image', 'max:2048'],
+                'email' => [
+                    'required',
+                    'string',
+                    'min:3',
+                    Rule::unique('users')->ignore($userId),
+                ],
+                'number_phone' => ['numeric', 'required', 'min:3', Rule::unique('users')->ignore($userId)],
+                'status' => ['nullable'],
             ];
         }
 
-        if ($this->isMethod('put') || $this->isMethod('patch')) {
-            $employeeId = $this->route('employee');
-            return [
-                'status' => ['required'],
-                'name' => ['required', 'string', 'min:3'],
-                'username' => ['required', 'string', 'min:3', 'unique:users,username'],
-                'address' => ['required', 'string', 'min:3'],
-                "email" => ['required', 'string', 'min:3', 'unique:users,email,' . $employeeId->id],
-                "number_phone" => ['numeric', 'required', 'min:3', 'unique:users,<number_phone></number_phone>,' . $employeeId->id],
-                'password' => ['nullable', 'string', 'min:8', 'confirmed'],
-                'picture' => ['nullable', 'mimes:png,jpg, jpeg', 'image'],
-            ];
-        }
+        return [
+            "picture" => ['nullable', 'mimes:png,jpg,jpeg', 'image'],
+            'name' => ['required', 'string', 'min:3'],
+            'username' => ['required', 'string', 'min:3', 'unique:users,username'],
+            'address' => ['required', 'string', 'min:3'],
+            'email' => [
+                'required',
+                'string',
+                'min:3', 'unique:users,email',
+            ],
+            'number_phone' => ['numeric', 'required', 'min:3', 'unique:users,number_phone'],
+            'status' => ['required'],
+        ];
     }
 }

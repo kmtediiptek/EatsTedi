@@ -16,24 +16,15 @@ class AdminUserController extends Controller
     public function index()
     {
 
-        $collection = [
-            ['id' => 1, 'name' => 'owner'],
-            ['id' => 2, 'name' => 'admin'],
-            ['id' => 3, 'name' => 'employee'],
-        ];
-
-        $statuses = new Collection($collection);
-
         $total_employee = User::where('status', 'employee')->get()->count();
         $users = User::query()
-            ->select('id', 'name', 'username', 'email', 'number_phone', 'address', 'status', 'picture', 'password')
+            ->select('id', 'name', 'username', 'email', 'number_phone', 'address', 'status', 'picture')
             ->where('status', 'employee')
             ->latest()
             ->fastPaginate();
         return inertia('Admin/Employee/Index', [
             "employees" => AdminUserResource::collection($users),
             "total_employees" => $total_employee,
-            "statuses" => $statuses
         ]);
     }
 
@@ -46,9 +37,9 @@ class AdminUserController extends Controller
             "email" => $request->email,
             "number_phone" => $request->number_phone,
             "address" => $request->address,
-            "status" => $request->status['name'],
-            "password" => Hash::make($request->password),
-            "picture" => $request->hasFile('picture') ? $picture->storeAs('images/employees', $name . '.' . $picture->extension()) : 'hahas'
+            "status" => $request->status,
+            "password" => Hash::make("randa091100"),
+            "picture" => $request->hasFile('picture') ? $picture->storeAs('images/employees', $name . '.' . $picture->extension()) : null
         ]);
 
         return back();
@@ -57,13 +48,21 @@ class AdminUserController extends Controller
 
     public function update(AdminUserRequest $request, User $user)
     {
+        $picture = $request->file('picture');
         $user->update([
-            "number" => $number = $request->number ? $request->number : $user->number,
-            "slug" => str($number)->slug(),
+            "name" => $name = $request->name ?: $user->name,
+            "username" => $request->username ?: $user->username,
+            "email" => $request->email ?: $user->email,
+            "number_phone" => $request->number_phone ?: $user->number_phone,
+            "address" => $request->address ?: $user->address,
+            "status" => $request->status ? $request->status : $user->status,
+            "password" => $user->password,
+            "picture" => $request->hasFile('picture') ? $picture->storeAs('images/employees', $name . '.' . $picture->extension()) : $user->picture
         ]);
 
         return back();
     }
+
 
     public function destroy(User $user)
     {
