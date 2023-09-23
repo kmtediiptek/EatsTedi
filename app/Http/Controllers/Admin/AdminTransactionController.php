@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Admin\AdminProductResource;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class AdminTransactionController extends Controller
@@ -15,8 +17,18 @@ class AdminTransactionController extends Controller
      */
     public function index()
     {
+
+        $products = Product::query()
+            ->select('id', 'category_id', 'name', 'slug', 'price', 'picture')
+            ->with([
+                "category" => fn ($query) => $query->select('name', 'slug', 'id'),
+            ])
+            ->latest()
+            ->fastPaginate(10);
+
         return inertia('Admin/Transaction/Index', [
-            "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get()
+            "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get(),
+            "products" => AdminProductResource::collection($products)
         ]);
     }
 

@@ -141,7 +141,7 @@ export default function Index({ total_categories, ...props }) {
                         {filteredCategories.length > 0 ? <>
                             {filteredCategories.map((category, index) => (
                                 <tr className="bg-white border-b text-gray-500" key={index}>
-                                    <Table.Td className="w-5">{index + 1}</Table.Td>
+                                    <Table.Td className="w-5">{meta.from + index}</Table.Td>
                                     <Table.Td>{category.name}</Table.Td>
 
                                     <Table.Td> <div className='w-10 h-10 p-2 border border-gray rounded' dangerouslySetInnerHTML={{ __html: category.icon }} /></Table.Td>

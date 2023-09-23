@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'employee',
         ]);
 
-        // \App\Models\User::factory(500)->create();
+        \App\Models\User::factory(500)->create();
 
         $this->call([
             CategorySeeder::class,

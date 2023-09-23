@@ -28,7 +28,7 @@ class AdminProductController extends Controller
                 "category" => fn ($query) => $query->select('name', 'slug', 'id'),
             ])
             ->latest()
-            ->paginate(10);
+            ->fastPaginate();
         return inertia('Admin/Product/Index', [
             "products" => AdminProductResource::collection($products),
             "total_categories" => $total_category,

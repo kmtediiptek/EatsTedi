@@ -136,7 +136,7 @@ export default function Index({ total_tables, ...props }) {
 
                             {filteredTables.map((table, index) => (
                                 <tr className="bg-white border-b text-gray-500" key={index}>
-                                    <Table.Td className="w-5">{index + 1}</Table.Td>
+                                    <Table.Td className="w-5">{meta.from + index}</Table.Td>
                                     <Table.Td>{table.number}</Table.Td>
                                     <Table.Td className="w-10" >
                                         <div className='flex flex-nowrap gap-2'>

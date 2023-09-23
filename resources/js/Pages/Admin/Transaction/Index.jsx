@@ -1,14 +1,15 @@
 import Container from '@/Components/Container'
 import MyModal from '@/Components/Modal'
+import PrimaryButton from '@/Components/PrimaryButton'
 import App from '@/Layouts/App'
 import { Head } from '@inertiajs/react'
-import { IconArrowsMaximize, IconArrowsMinimize, IconBox, IconCards, IconCategory, IconCheck, IconChecklist, IconChecks, IconCircle, IconCircle0Filled, IconCircleFilled, IconCoffee, IconLockOpen, IconMinus, IconPlus, IconX } from '@tabler/icons-react'
+import { IconArrowsMaximize, IconArrowsMinimize, IconBox, IconCards, IconCategory, IconCheck, IconChecklist, IconChecks, IconCircle, IconCircle0Filled, IconCircleFilled, IconCoffee, IconLockOpen, IconMinus, IconPlus, IconShoppingBag, IconShoppingBagPlus, IconX } from '@tabler/icons-react'
 import React, { useState } from 'react'
 
 
 export default function Index({ categories, ...props }) {
     const [isOrderListOpen, setIsOrderListOpen] = useState(true)
-
+    const { data: products, meta, links } = props.products
     const toggleOrderList = () => {
         setIsOrderListOpen(!isOrderListOpen)
     }
@@ -88,43 +89,20 @@ export default function Index({ categories, ...props }) {
                         {/* Start Special Menu */}
                         <div className="w-full">
                             <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Special menu for you</h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-lg-4 gap-4 w-full flex-wrap">
-                                <div className="h-[400px] mb-4 relative">
-                                    <span className='bg-white opacity-4 text-sm text-black absolute p-1 px-1.5 rounded opacity-[0.8] shadow right-2 top-2'>Coffe</span>
-                                    <img src="https://assets-pergikuliner.com/sjuhly1RSlpU40nj40K59-4lfXg=/fit-in/1366x768/smart/filters:no_upscale()/https://assets-pergikuliner.com/uploads/bootsy/image/19888/coffee_shop_di_bekasiip.jpg" alt="" className='rounded max-h-[260px] w-full' />
-                                    <div className="py-2">
-                                        <p className='text-slate-500 py-4 text-lg'>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                        <h6 className='text-3xl font-semibold text-slate-700'>Rp. 10.000</h6>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-lg-4 gap-4 gap-y-8 w-full flex-wrap">
+                                {products.map((product, index) => (
+                                    <div className="max-h-[420px] mb-4 relative flex flex-1 justify-between flex-col">
+                                        <span className='bg-white opacity-50 text-sm text-black absolute p-1 px-1.5 rounded opacity-[0.8] shadow right-4 top-4'>{product.category.name}</span>
+                                        <div>
+                                            <button className='rounded text-center hover:bg-orange-500 hover:text-white flex items-center justify-center bg-white w-16 text-purple-500 h-16 absolute right-4 bottom-32'><IconShoppingBagPlus size={32} />  </button>
+                                            <img src={product.picture ? product.picture : `https://via.placeholder.com/400`} alt={product.name} className='rounded h-[300px] w-full' />
+                                        </div>
+                                        <div className="py-2">
+                                            <p className='text-slate-500 py-4 text-lg'>{product.name}</p>
+                                            <h6 className='text-3xl font-bold text-slate-700'> <sup className='font-light'> Rp.</sup> {product.price}</h6>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="h-[400px] mb-4">
-                                    <img src="https://assets-pergikuliner.com/sjuhly1RSlpU40nj40K59-4lfXg=/fit-in/1366x768/smart/filters:no_upscale()/https://assets-pergikuliner.com/uploads/bootsy/image/19888/coffee_shop_di_bekasiip.jpg" alt="" className='rounded' />
-                                    <div className="py-2">
-                                        <p className='text-slate-500 py-4 text-lg'>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                        <h6 className='text-3xl font-semibold text-slate-700'>Rp. 10.000</h6>
-                                    </div>
-                                </div>
-                                <div className="h-[400px] mb-4">
-                                    <img src="https://assets-pergikuliner.com/sjuhly1RSlpU40nj40K59-4lfXg=/fit-in/1366x768/smart/filters:no_upscale()/https://assets-pergikuliner.com/uploads/bootsy/image/19888/coffee_shop_di_bekasiip.jpg" alt="" className='rounded' />
-                                    <div className="py-2">
-                                        <p className='text-slate-500 py-4 text-lg'>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                        <h6 className='text-3xl font-semibold text-slate-700'>Rp. 10.000</h6>
-                                    </div>
-                                </div>
-                                <div className="h-[400px] mb-4">
-                                    <img src="https://assets-pergikuliner.com/sjuhly1RSlpU40nj40K59-4lfXg=/fit-in/1366x768/smart/filters:no_upscale()/https://assets-pergikuliner.com/uploads/bootsy/image/19888/coffee_shop_di_bekasiip.jpg" alt="" className='rounded' />
-                                    <div className="py-2">
-                                        <p className='text-slate-500 py-4 text-lg'>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                        <h6 className='text-3xl font-semibold text-slate-700'>Rp. 10.000</h6>
-                                    </div>
-                                </div>
-                                <div className="h-[400px] mb-4">
-                                    <img src="https://assets-pergikuliner.com/sjuhly1RSlpU40nj40K59-4lfXg=/fit-in/1366x768/smart/filters:no_upscale()/https://assets-pergikuliner.com/uploads/bootsy/image/19888/coffee_shop_di_bekasiip.jpg" alt="" className='rounded' />
-                                    <div className="py-2">
-                                        <p className='text-slate-500 py-4 text-lg'>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                        <h6 className='text-3xl font-semibold text-slate-700'>Rp. 10.000</h6>
-                                    </div>
-                                </div>
+                                ))}
                             </div>
                         </div>
                         {/* End Special Menu */}
@@ -137,7 +115,7 @@ export default function Index({ categories, ...props }) {
                             <h3 className='text-xl pl-4 bg-white font-semibold text-slate-700 py-5'>Order Details</h3>
                             <hr />
                         </div>
-                        <div className="px-4 h-3/6 flex flex-col h-full justify-start flex-1 pt-16 overflow-y-scroll">
+                        <div className="px-4 h-3/6 flex flex-col h-full justify-start bg-white flex-1 pt-16 overflow-y-scroll">
                             <div className="flex flex-col flex-1">
                                 <div className="flex order py-4 flex-flex-column gap-4">
                                     <div className="flex gap-2 w-1/2 sm:w-2/3 overflow-hidden">

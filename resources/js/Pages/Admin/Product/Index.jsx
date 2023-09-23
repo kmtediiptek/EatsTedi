@@ -156,7 +156,7 @@ export default function Index({ total_categories, ...props }) {
                         {filteredProducts.length > 0 ? <>
                             {filteredProducts.map((product, index) => (
                                 <tr className="bg-white border-b text-gray-500" key={index}>
-                                    <Table.Td className="w-5">{index + 1}</Table.Td>
+                                    <Table.Td className="w-5">{meta.from + index}</Table.Td>
                                     <Table.Td>{product.name}</Table.Td>
                                     <Table.Td>
                                         <span className={`text-xs p-2 ${product.category.id == 1 ? 'bg-sky-500 text-white rounded' : product.category.id == 2 ? 'bg-emerald-400 text-white rounded' : 'bg-purple-500 text-white rounded'}`}>
