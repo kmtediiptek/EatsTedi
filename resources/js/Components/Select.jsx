@@ -4,7 +4,6 @@ import clsx from 'clsx'
 
 export default function Select({ data, value, onChange, placeholder = 'Select one' }) {
     const [isOpen, setIsOpen] = useState(false)
-
     // Filter the data to remove the selected value
     const filteredData = data.filter(item => item.id !== value.id)
 

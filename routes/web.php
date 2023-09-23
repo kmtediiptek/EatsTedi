@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminTableController;
 use App\Http\Controllers\Admin\AdminTransactionController;
 use App\Http\Controllers\Admin\AdminUserController;
@@ -66,6 +67,12 @@ Route::prefix('admin')->middleware('auth')->group(function() {
     Route::post('/setting/employee', [AdminUserController::class, 'store'])->name('admin.employee.store');
     Route::put('/setting/employee/{user:username}', [AdminUserController::class, 'update'])->name('admin.employee.update');
     Route::delete('/setting/employee/{user:username}', [AdminUserController::class, 'destroy'])->name('admin.employee.destroy');
+
+    // Admin Product
+    Route::get('/setting/product', [AdminProductController::class, 'index'])->name('admin.product.index');
+    Route::post('/setting/product', [AdminProductController::class, 'store'])->name('admin.product.store');
+    Route::put('/setting/product/{product:slug}', [AdminProductController::class, 'update'])->name('admin.product.update');
+    Route::delete('/setting/product/{product:slug}', [AdminProductController::class, 'destroy'])->name('admin.product.destroy');
 });
 
 require __DIR__.'/auth.php';

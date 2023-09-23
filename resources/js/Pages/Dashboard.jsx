@@ -52,7 +52,7 @@ export default function Dashboard({ total_categories, total_tables, total_employ
                             <span className='text-slate-500'>{total_categories} Item</span>
                         </div>
                     </Link>
-                    <Link href={route('admin.table.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
+                    <Link href={route('admin.product.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
                         <div className="rounded bg-sky-500 w-16 h-16 flex justify-center items-center">
                             <h3 className='text-4xl font-semibold text-center'><IconMenuOrder size={36} /></h3>
                         </div>
