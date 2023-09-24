@@ -49,7 +49,7 @@ export default function Index({ categories, carts, ...props }) {
 
                         {/* Start Order List */}
                         <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Order List</h3>
-                        <div className="flex w-full overflow-x-scroll flex-nowrap gap-x-4">
+                        <div className="flex w-full scrolling-wrapper overflow-x-scroll pb-1 flex-nowrap gap-x-4">
                             {/* Start Order */}
                             <div className="flex gap-x-4 p-2 border border-gray-300 rounded text-white">
                                 <div className="w-16 h-16 bg-sky-500 rounded p-2 flex justify-center items-center">
@@ -72,7 +72,7 @@ export default function Index({ categories, carts, ...props }) {
 
                         {/* Start Categories */}
                         <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Categories</h3>
-                        <div className="flex w-full overflow-x-scroll flex-nowrap gap-x-4">
+                        <div className="flex w-full scrolling-wrapper overflow-x-scroll pb-1 flex-nowrap gap-x-4">
                             <Link href={route('admin.transaction')} className="flex text-white">
                                 <div className="w-32 h-32 bg-orange-500 rounded p-2 shadow">
                                     <IconCategory className='my-2' />
@@ -116,7 +116,7 @@ export default function Index({ categories, carts, ...props }) {
                             <h3 className='text-xl pl-4 bg-white font-semibold text-slate-700 py-5'>Order Details</h3>
                             <hr />
                         </div>
-                        <div className="px-4 h-3/6 flex flex-col h-full justify-start bg-white flex-1 pt-16 overflow-y-scroll">
+                        <div className="px-4 h-3/6 flex flex-col h-full justify-start bg-white flex-1 pt-16 scrolling-wrapper overflow-y-scroll">
                             <div className="flex flex-col flex-1">
                                 {carts.length > 0 ? <>
                                     {carts.map((cart, index) => (

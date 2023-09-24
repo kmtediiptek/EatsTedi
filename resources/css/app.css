@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.scrolling-wrapper::-webkit-scrollbar {
+    display: none;
+    width: 4px;
+    height: 4px;
+    display: var(--scroll-display);
+}
+
+.scrolling-wrapper::-webkit-scrollbar-track {
+    @apply bg-slate-200/80 rounded;
+}
+
+.scrolling-wrapper::-webkit-scrollbar-thumb {
+    @apply bg-gradient-to-b from-slate-300 to-orange-500 rounded border;
+}
