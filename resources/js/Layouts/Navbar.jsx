@@ -33,7 +33,7 @@ export default function Navbar() {
                                 <div className="px-4 w-full">
                                     <TextInput
                                         type="search"
-                                        className="w-full"
+                                        className="w-full border-gray-400"
                                         placeholder="Search menu.."
                                         defaultValue={searchQuery}  // Use defaultValue
                                         onChange={handleSearch}

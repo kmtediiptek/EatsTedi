@@ -12,6 +12,7 @@ import { Head, useForm, router } from '@inertiajs/react'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
+import { numberFormat } from '@/Libs/Helper'
 
 
 export default function Index({ total_categories, ...props }) {
@@ -45,7 +46,7 @@ export default function Index({ total_categories, ...props }) {
     function openModalCategory(productSlug, type) {
         console.log(type)
         setIsOpen(true)
-        setModalProduct("Product")
+        setModalProduct("Menu")
         setModalType(type)
         setProductSlug(productSlug)
         if (productSlug) {
@@ -95,7 +96,7 @@ export default function Index({ total_categories, ...props }) {
             onSuccess: () => {
                 setData({ name: '', slug: '', price: '', category_id: '', picture: '' }),
                     setIsOpen(false),
-                    toast.success('Product has been created!')
+                    toast.success('Menu has been created!')
             }
         })
     }
@@ -110,14 +111,14 @@ export default function Index({ total_categories, ...props }) {
             onSuccess: () => {
                 setIsOpen(false),
                     setData({ name: '', slug: '', price: '', picture: '', category_id: '' }),
-                    toast.success('Product has been updated!')
+                    toast.success('Menu has been updated!')
             }
         })
     }
     const onDelete = (productSlug) => {
         destroy(route('admin.product.destroy', productSlug), {
             onSuccess: () => {
-                toast.success('Product has been deleted!'),
+                toast.success('Menu has been deleted!'),
                     setIsToast(false)
             }
         })
@@ -126,8 +127,8 @@ export default function Index({ total_categories, ...props }) {
         <>
             <Head title="Setting" />
             <Container>
-                {/* Start Products */}
-                <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Products</h3>
+                {/* Start Menus */}
+                <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Menus</h3>
                 <div className="flex justify-between w-full item-center my-2">
                     <ActionButton
                         onClick={() => openModalCategory("", "create")}
@@ -135,7 +136,7 @@ export default function Index({ total_categories, ...props }) {
                     >
                         <IconPlus size={18} />
                     </ActionButton>
-                    <input id="searchQuery" type="text" className='w-3/4 sm:w-1/4 rounded border-gray-300 py-1 focus:ring-puple-300 focus:border-purple-600' placeholder='Search product..'
+                    <input id="searchQuery" type="text" className='w-3/4 sm:w-1/4 rounded border-gray-300 py-1 focus:ring-puple-300 focus:border-purple-600' placeholder='Search menu..'
                         value={searchQuery}
                         onChange={e => setSearchQuery(e.target.value)} />
                 </div>
@@ -163,7 +164,7 @@ export default function Index({ total_categories, ...props }) {
                                             {product.category.name.toUpperCase()}
                                         </span>
                                     </Table.Td>
-                                    <Table.Td>{product.price}</Table.Td>
+                                    <Table.Td><sup> Rp.</sup> {numberFormat(product.price)}</Table.Td>
                                     <Table.Td>
                                         <img src={product.picture ? product.picture : 'https://flowbite.com/docs/images/blog/image-1.jpg'} className='rounded w-12 h-12' />
                                     </Table.Td>
@@ -185,10 +186,10 @@ export default function Index({ total_categories, ...props }) {
                 {products.length > 0 &&
                     <div className='flex w-full justify-between items-center'>
                         <Pagination meta={meta} links={links} />
-                        <p className='text-sm text-slate-500 mt-10'>Total Products: <span className='font-bold'>{total_categories}</span> </p>
+                        <p className='text-sm text-slate-500 mt-10'>Total Menus: <span className='font-bold'>{total_categories}</span> </p>
                     </div>
                 }
-                {/* End Products */}
+                {/* End Menus */}
 
                 {/* Modal */}
                 <MyModal isOpen={isOpen} onClose={() => setIsOpen(false)} size={`1/3`} type={modalType} title={modalProduct}>

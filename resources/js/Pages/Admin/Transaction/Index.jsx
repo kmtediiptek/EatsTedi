@@ -4,6 +4,7 @@ import Pagination from '@/Components/Pagination'
 import ProductItem from '@/Components/ProductItem'
 import TextInput from '@/Components/TextInput'
 import App from '@/Layouts/App'
+import { numberFormat } from '@/Libs/Helper'
 import { Head, Link } from '@inertiajs/react'
 import { IconArrowsMaximize, IconArrowsMinimize, IconCategory, IconChecks, IconCircleFilled, IconTrashX } from '@tabler/icons-react'
 import React, { useState } from 'react'
@@ -72,13 +73,13 @@ export default function Index({ categories, carts, ...props }) {
                         {/* Start Categories */}
                         <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Categories</h3>
                         <div className="flex w-full overflow-x-scroll flex-nowrap gap-x-4">
-                            <div className="flex text-white">
+                            <Link href={route('admin.transaction')} className="flex text-white">
                                 <div className="w-32 h-32 bg-orange-500 rounded p-2 shadow">
                                     <IconCategory className='my-2' />
                                     <p className='block'>All Menu</p>
                                     <h6 className='text-lg font-semibold'>10 items</h6>
                                 </div>
-                            </div>
+                            </Link>
                             {categories.map((category, index) => (
                                 <Link href={`/admin/transaction?category=${category.slug}`} className="flex rounded text-white" key={index}>
                                     <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2" >
@@ -139,7 +140,7 @@ export default function Index({ categories, carts, ...props }) {
                                 </div>
                                 <div className="flex justify-between">
                                     <p className='text-lg font-semibold text-slate-500'>Total</p>
-                                    <p className='text-lg font-bold text-slate-600'>Rp. {total}</p>
+                                    <p className='text-lg font-bold text-slate-600'>Rp. {numberFormat(total)}</p>
                                 </div>
                                 <input type='text' className='w-full rounded border-gray-300 py-2.5 focus:ring-puple-300 focus:border-purple-600' placeholder='Customer name..' />
                                 <div className='flex items-center gap-4'>

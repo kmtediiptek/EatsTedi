@@ -5,6 +5,7 @@ import TextInput from './TextInput'
 import { IconMinus } from '@tabler/icons-react'
 import { router } from '@inertiajs/react'
 import toast from 'react-hot-toast'
+import { numberFormat } from '@/Libs/Helper'
 
 export default function CartItem({ cart }) {
 
@@ -29,7 +30,7 @@ export default function CartItem({ cart }) {
                     <img src={cart.product_picture ? cart.product_picture : `https://via.placeholder.com/80`} alt="" className='rounded h-16 w-16 hidden md:block' />
                     <div className="flex flex flex-col justify-between">
                         <h6 className='text-base text-slate-700'>{cart.product_name}</h6>
-                        <h5 className='text-lg font-semibold text-slate-700'>Rp. {cart.product_price}</h5>
+                        <h5 className='text-lg font-semibold text-slate-700'>Rp. {numberFormat(cart.product_price)}</h5>
                     </div>
                 </div>
                 <div className="w-1/2 sm:w-1/3 text-end flex flex-col flex-1 justify-between">

@@ -5,6 +5,7 @@ import { IconCategory, IconCreditCard, IconReportMoney, IconTable, IconUsers } f
 import { IconMenuOrder } from '@tabler/icons-react'
 import Chart from 'react-apexcharts'
 import React, { Component, useState } from 'react'
+import { numberFormat } from '@/Libs/Helper'
 
 
 export default function Dashboard({ total_categories, total_tables, total_employees, total_products }) {
@@ -96,7 +97,7 @@ export default function Dashboard({ total_categories, total_tables, total_employ
                         </div>
                         <div className='text-slate-500 flex flex-col flex-1 justify-around'>
                             <h5 className='font-semibold text-xl'>Total Income</h5>
-                            <span className='text-slate-800 text-3xl font-bold'>Rp. 1.500.000</span>
+                            <span className='text-slate-800 text-3xl font-bold'> <sup>Rp.</sup> {numberFormat(' 1500000')}</span>
                         </div>
                     </Link>
                     <Link href={route('admin.category.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
@@ -105,7 +106,7 @@ export default function Dashboard({ total_categories, total_tables, total_employ
                         </div>
                         <div className='text-slate-500 flex flex-col flex-1 justify-around'>
                             <h5 className='font-semibold text-xl'>Today's Income</h5>
-                            <span className='text-slate-800 text-3xl font-bold'>Rp. 1.000.000</span>
+                            <span className='text-slate-800 text-3xl font-bold'> <sup>Rp.</sup> {numberFormat(' 1000000')}</span>
                         </div>
                     </Link>
                     <Link href={route('admin.category.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
@@ -114,7 +115,7 @@ export default function Dashboard({ total_categories, total_tables, total_employ
                         </div>
                         <div className='text-slate-500 flex flex-col flex-1 justify-around'>
                             <h5 className='font-semibold text-xl'>Paid Now</h5>
-                            <span className='text-slate-800 text-3xl font-bold'>Rp. 1.000.000</span>
+                            <span className='text-slate-800 text-3xl font-bold'> <sup>Rp.</sup> {numberFormat(' 1000000')}</span>
                         </div>
                     </Link>
                     <Link href={route('admin.category.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
@@ -123,7 +124,7 @@ export default function Dashboard({ total_categories, total_tables, total_employ
                         </div>
                         <div className='text-slate-500 flex flex-col flex-1 justify-around'>
                             <h5 className='font-semibold text-xl'>Paid Later</h5>
-                            <span className='text-slate-800 text-3xl font-bold'>Rp. 500.000</span>
+                            <span className='text-slate-800 text-3xl font-bold'> <sup>Rp.</sup> {numberFormat(' 500000')}</span>
                         </div>
                     </Link>
                     {/* End Order */}

@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, router } from '@inertiajs/react'
 import { toast } from 'react-hot-toast'
 import { IconShoppingBagPlus } from '@tabler/icons-react'
+import { numberFormat } from '@/Libs/Helper'
 
 export default function ProductItem({ product }) {
 
@@ -24,7 +25,7 @@ export default function ProductItem({ product }) {
             </div>
             <div className="py-2">
                 <p className='text-slate-500 py-4 text-lg'>{product.name}</p>
-                <h6 className='text-3xl font-bold text-slate-700'> <sup className='font-light'> Rp.</sup> {product.price}</h6>
+                <h6 className='text-3xl font-bold text-slate-700'> <sup className='font-light'> Rp.</sup> {numberFormat(product.price)}</h6>
             </div>
         </div>
     )
