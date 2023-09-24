@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminCartController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminProductController;
@@ -43,7 +44,7 @@ Route::middleware('auth')->group(function () {
 
 
 // Admin
-Route::prefix('admin')->middleware('auth')->group(function() {
+Route::prefix('admin')->middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', AdminDashboardController::class)->name('admin.dashboard');
 
@@ -73,6 +74,12 @@ Route::prefix('admin')->middleware('auth')->group(function() {
     Route::post('/setting/product', [AdminProductController::class, 'store'])->name('admin.product.store');
     Route::put('/setting/product/{product:slug}', [AdminProductController::class, 'update'])->name('admin.product.update');
     Route::delete('/setting/product/{product:slug}', [AdminProductController::class, 'destroy'])->name('admin.product.destroy');
+
+    // Add To Cart
+    Route::controller(AdminCartController::class)->group(function () {
+        Route::delete('/cart/{cart}', 'destroy')->name('admin.cart.delete');
+        Route::post('/cart/{product:slug}', 'store')->name('admin.cart.store');
+    });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -1,11 +1,9 @@
 import Container from '@/Components/Container'
-import MyModal from '@/Components/Modal'
-import PrimaryButton from '@/Components/PrimaryButton'
+import ProductItem from '@/Components/ProductItem'
 import App from '@/Layouts/App'
-import { Head } from '@inertiajs/react'
-import { IconArrowsMaximize, IconArrowsMinimize, IconBox, IconCards, IconCategory, IconCheck, IconChecklist, IconChecks, IconCircle, IconCircle0Filled, IconCircleFilled, IconCoffee, IconLockOpen, IconMinus, IconPlus, IconShoppingBag, IconShoppingBagPlus, IconX } from '@tabler/icons-react'
+import { Head, Link } from '@inertiajs/react'
+import { IconArrowsMaximize, IconArrowsMinimize, IconCategory, IconChecks, IconCircleFilled, IconMinus, IconPlus, IconX } from '@tabler/icons-react'
 import React, { useState } from 'react'
-
 
 export default function Index({ categories, ...props }) {
     const [isOrderListOpen, setIsOrderListOpen] = useState(true)
@@ -74,13 +72,13 @@ export default function Index({ categories, ...props }) {
                                 </div>
                             </div>
                             {categories.map((category, index) => (
-                                <div className="flex rounded text-white" key={index}>
+                                <Link href={`/admin/transaction?category=${category.slug}`} className="flex rounded text-white" key={index}>
                                     <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
                                         <div className='w-8 h-8 mb-2' dangerouslySetInnerHTML={{ __html: category.icon }} />
                                         <p className='text-slate-500'>{category.name}</p>
                                         <h6 className='text-lg font-semibold'>10 items</h6>
                                     </div>
-                                </div>
+                                </Link>
                             ))}
 
                         </div>
@@ -91,17 +89,7 @@ export default function Index({ categories, ...props }) {
                             <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Special menu for you</h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-lg-4 gap-4 gap-y-8 w-full flex-wrap">
                                 {products.map((product, index) => (
-                                    <div className="max-h-[420px] mb-4 relative flex flex-1 justify-between flex-col">
-                                        <span className='bg-white opacity-50 text-sm text-black absolute p-1 px-1.5 rounded opacity-[0.8] shadow right-4 top-4'>{product.category.name}</span>
-                                        <div>
-                                            <button className='rounded text-center hover:bg-orange-500 hover:text-white flex items-center justify-center bg-white w-16 text-purple-500 h-16 absolute right-4 bottom-32'><IconShoppingBagPlus size={32} />  </button>
-                                            <img src={product.picture ? product.picture : `https://via.placeholder.com/400`} alt={product.name} className='rounded h-[300px] w-full' />
-                                        </div>
-                                        <div className="py-2">
-                                            <p className='text-slate-500 py-4 text-lg'>{product.name}</p>
-                                            <h6 className='text-3xl font-bold text-slate-700'> <sup className='font-light'> Rp.</sup> {product.price}</h6>
-                                        </div>
-                                    </div>
+                                    <ProductItem product={product} key={index} />
                                 ))}
                             </div>
                         </div>

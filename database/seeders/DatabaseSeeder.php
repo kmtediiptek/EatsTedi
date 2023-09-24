@@ -26,11 +26,23 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\User::factory(500)->create();
+        \App\Models\Table::create([
+            'number' => 1,
+            'slug' => 1
+        ]);
+        \App\Models\Table::create([
+            'number' => 2,
+            'slug' => 2
+        ]);
+        \App\Models\Table::create([
+            'number' => 3,
+            'slug' => 3
+        ]);
 
         $this->call([
             CategorySeeder::class,
         ]);
 
-        \App\Models\Product::factory(50)->create();
+        \App\Models\Product::factory(500)->create();
     }
 }
