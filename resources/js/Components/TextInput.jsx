@@ -1,6 +1,7 @@
+import clsx from 'clsx';
 import { forwardRef, useEffect, useRef } from 'react';
 
-export default forwardRef(function TextInput({ value='', type = 'text', className = '', isFocused = false, ...props }, ref) {
+export default forwardRef(function TextInput({ type = 'text', className = '', isFocused = false, ...props }, ref) {
     const input = ref ? ref : useRef();
 
     useEffect(() => {
@@ -10,18 +11,12 @@ export default forwardRef(function TextInput({ value='', type = 'text', classNam
     }, []);
 
     return (
-        <div className="flex flex-col items-start">
             <input
                 {...props}
                 type={type}
-                value={value}
-                className={
-                    'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm ' +
-                    className
+                className={clsx('border-third text-third focus:border-third focus:bg-primary rounded-md shadow-sm bg-fourth', className)
                 }
-                autoComplete='off'
                 ref={input}
             />
-        </div>
     );
 });

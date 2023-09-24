@@ -63,7 +63,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/setting/{table:slug}/table', [AdminTableController::class, 'update'])->name('admin.table.update');
     Route::delete('/setting/table/{table:slug}', [AdminTableController::class, 'destroy'])->name('admin.table.destroy');
 
-    // Admin Table
+    // Admin Employee
     Route::get('/setting/employee', [AdminUserController::class, 'index'])->name('admin.employee.index');
     Route::post('/setting/employee', [AdminUserController::class, 'store'])->name('admin.employee.store');
     Route::put('/setting/employee/{user:username}', [AdminUserController::class, 'update'])->name('admin.employee.update');

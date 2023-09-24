@@ -20,12 +20,21 @@ class AdminTransactionController extends Controller
      */
     public function index(Request $request)
     {
-
-        $products = Product::query()
-            ->select('id', 'category_id', 'name', 'slug', 'price', 'picture')
-            ->when($request->category, fn ($q, $v) => $q->whereBelongsTo(Category::where('slug', $v)->first()))
-            ->latest()
-            ->fastPaginate(10);
+        $search_products = $request->input('query');
+        if ($search_products) {
+            $products = Product::query()
+                ->where('name', 'LIKE', "%$search_products%")
+                ->select('id', 'category_id', 'name', 'slug', 'price', 'picture')
+                ->when($request->category, fn ($q, $v) => $q->whereBelongsTo(Category::where('slug', $v)->first()))
+                ->latest()
+                ->fastPaginate(10)->withQueryString();
+        } else {
+            $products = Product::query()
+                ->select('id', 'category_id', 'name', 'slug', 'price', 'picture')
+                ->when($request->category, fn ($q, $v) => $q->whereBelongsTo(Category::where('slug', $v)->first()))
+                ->latest()
+                ->fastPaginate(10)->withQueryString();
+        }
 
         $carts = DB::table('carts')
             ->join('products', 'carts.product_id', '=', 'products.id')

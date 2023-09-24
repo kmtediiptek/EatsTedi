@@ -1,5 +1,6 @@
 import CartItem from '@/Components/CartItem'
 import Container from '@/Components/Container'
+import Pagination from '@/Components/Pagination'
 import ProductItem from '@/Components/ProductItem'
 import TextInput from '@/Components/TextInput'
 import App from '@/Layouts/App'
@@ -25,9 +26,9 @@ export default function Index({ categories, carts, ...props }) {
         }
     }
 
-    const total = carts.reduce((acc, cart) => acc + cart.price, 0);
+    const total = carts.reduce((acc, cart) => acc + cart.price, 0)
 
-    const quantity = carts.reduce((acc, cart) => acc + cart.quantity, 0);
+    const quantity = carts.reduce((acc, cart) => acc + cart.quantity, 0)
     return (
         <>
             <Head title="Menu" />
@@ -80,7 +81,7 @@ export default function Index({ categories, carts, ...props }) {
                             </div>
                             {categories.map((category, index) => (
                                 <Link href={`/admin/transaction?category=${category.slug}`} className="flex rounded text-white" key={index}>
-                                    <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
+                                    <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2" >
                                         <div className='w-8 h-8 mb-2' dangerouslySetInnerHTML={{ __html: category.icon }} />
                                         <p className='text-slate-500'>{category.name}</p>
                                         <h6 className='text-lg font-semibold'>10 items</h6>
@@ -98,7 +99,11 @@ export default function Index({ categories, carts, ...props }) {
                                 {products.map((product, index) => (
                                     <ProductItem product={product} key={index} />
                                 ))}
+
                             </div>
+                            {products.length > 0 &&
+                                    <Pagination meta={meta} links={links} />
+                            }
                         </div>
                         {/* End Special Menu */}
                     </div>
@@ -112,15 +117,15 @@ export default function Index({ categories, carts, ...props }) {
                         </div>
                         <div className="px-4 h-3/6 flex flex-col h-full justify-start bg-white flex-1 pt-16 overflow-y-scroll">
                             <div className="flex flex-col flex-1">
-                            {carts.length > 0 ? <>
-                                {carts.map((cart, index) => (
+                                {carts.length > 0 ? <>
+                                    {carts.map((cart, index) => (
                                         <CartItem key={index} cart={cart} />
-                                ))}
-                            </> :
-                            <div className="flex justify-center items-center flex-1">
-                                <h1 className='text-slate-300'><IconTrashX size={64} />  </h1>
-                            </div>
-                            }
+                                    ))}
+                                </> :
+                                    <div className="flex justify-center items-center flex-1">
+                                        <h1 className='text-slate-300'><IconTrashX size={64} />  </h1>
+                                    </div>
+                                }
 
                             </div>
 
@@ -133,7 +138,7 @@ export default function Index({ categories, carts, ...props }) {
                                     <p className='text-lg font-bold text-slate-600'>{quantity}</p>
                                 </div>
                                 <div className="flex justify-between">
-                                <p className='text-lg font-semibold text-slate-500'>Total</p>
+                                    <p className='text-lg font-semibold text-slate-500'>Total</p>
                                     <p className='text-lg font-bold text-slate-600'>Rp. {total}</p>
                                 </div>
                                 <input type='text' className='w-full rounded border-gray-300 py-2.5 focus:ring-puple-300 focus:border-purple-600' placeholder='Customer name..' />

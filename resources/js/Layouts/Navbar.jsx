@@ -3,35 +3,56 @@ import { useState } from 'react'
 import Dropdown from '@/Components/Dropdown'
 import NavLink from '@/Components/NavLink'
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink'
-import { Link, usePage } from '@inertiajs/react'
+import { Link, useForm, usePage } from '@inertiajs/react'
+import TextInput from '@/Components/TextInput'
 
 export default function Navbar() {
     const { auth } = usePage().props
+    const { get } = useForm()
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false)
+
+    const [searchQuery, setSearchQuery] = useState('')
+
+    const handleSearch = (e) => {
+        e.preventDefault()
+        setSearchQuery(e.target.value)
+        get(`/admin/transaction?query=${e.target.value}`)
+    }
+
     return (
         <nav className="bg-white fixed z-[100] top-0 border-b border-gray-300 w-full">
             <div className="max-w-8xl mx-auto px-4 sm:px-4 lg:px-8">
                 <div className="flex justify-between h-16">
                     <div className="flex w-full md:w-3/4 justify-between">
-                    <div className='flex items-center w-full'>
+                        <div className='flex items-center w-full'>
                             <Link href="/" className="text-3xl font-bold text-orange-500">
                                 RANDA
                                 {/* <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" /> */}
                             </Link>
-                            <form className='px-4 w-full '>
-                                <input type='search' className='w-full rounded border-gray-300' placeholder='Cari menu..' />
-                            </form>
-                    </div>
+                            {route().current('admin.transaction') ?
+                                <div className="px-4 w-full">
+                                    <TextInput
+                                        type="search"
+                                        className="w-full"
+                                        placeholder="Search menu.."
+                                        defaultValue={searchQuery}  // Use defaultValue
+                                        onChange={handleSearch}
+                                    />
+                                </div>
+                                :
+                                null}
+
+                        </div>
 
                         <div className="hidden sm:-my-px sm:flex flex justify-between gap-8">
-                            <NavLink  href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
+                            <NavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
                                 Dashboard
                             </NavLink>
                             <NavLink href={route('admin.transaction')} active={route().current('admin.transaction')}>
                                 Menu
                             </NavLink>
                             <NavLink>
-                            {route().current('transaction')}
+                                {route().current('transaction')}
                                 History
                             </NavLink>
                             <NavLink>
