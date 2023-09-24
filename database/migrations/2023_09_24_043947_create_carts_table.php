@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained();
             $table->double('price');
             $table->double('status')->default(0);
+            $table->integer('quantity')->default(0);
             $table->dateTime('paid_at')->nullable();
             $table->timestamps();
         });

@@ -1,13 +1,16 @@
+import CartItem from '@/Components/CartItem'
 import Container from '@/Components/Container'
 import ProductItem from '@/Components/ProductItem'
+import TextInput from '@/Components/TextInput'
 import App from '@/Layouts/App'
 import { Head, Link } from '@inertiajs/react'
-import { IconArrowsMaximize, IconArrowsMinimize, IconCategory, IconChecks, IconCircleFilled, IconMinus, IconPlus, IconX } from '@tabler/icons-react'
+import { IconArrowsMaximize, IconArrowsMinimize, IconCategory, IconChecks, IconCircleFilled, IconTrashX } from '@tabler/icons-react'
 import React, { useState } from 'react'
 
-export default function Index({ categories, ...props }) {
+export default function Index({ categories, carts, ...props }) {
     const [isOrderListOpen, setIsOrderListOpen] = useState(true)
     const { data: products, meta, links } = props.products
+
     const toggleOrderList = () => {
         setIsOrderListOpen(!isOrderListOpen)
     }
@@ -21,9 +24,13 @@ export default function Index({ categories, ...props }) {
             setShowPaymentOptions(false)
         }
     }
+
+    const total = carts.reduce((acc, cart) => acc + cart.price, 0);
+
+    const quantity = carts.reduce((acc, cart) => acc + cart.quantity, 0);
     return (
         <>
-            <Head title="Index" />
+            <Head title="Menu" />
             <Container>
                 <div className="flex w-full">
                     {/* Start Button Card Order */}
@@ -105,165 +112,29 @@ export default function Index({ categories, ...props }) {
                         </div>
                         <div className="px-4 h-3/6 flex flex-col h-full justify-start bg-white flex-1 pt-16 overflow-y-scroll">
                             <div className="flex flex-col flex-1">
-                                <div className="flex order py-4 flex-flex-column gap-4">
-                                    <div className="flex gap-2 w-1/2 sm:w-2/3 overflow-hidden">
-                                        <img src="https://assets-pergikuliner.com/sjuhly1RSlpU40nj40K59-4lfXg=/fit-in/1366x768/smart/filters:no_upscale()/https://assets-pergikuliner.com/uploads/bootsy/image/19888/coffee_shop_di_bekasiip.jpg" alt="" className='rounded h-16 w-16 hidden md:block' />
-                                        <div className="flex flex flex-col justify-between">
-                                            <h6 className='text-base text-slate-700'>wdwqs</h6>
-                                            <h5 className='text-lg font-semibold text-slate-700'>Rp. 10.000</h5>
-                                        </div>
-                                    </div>
-                                    <div className="w-1/2 sm:w-1/3 text-end flex flex-col flex-1 justify-between">
-                                        <IconX size={16} color='red' className='ml-auto' />
-                                        <div className="flex justify-between align-center  mt-5 ">
-                                            <IconPlus size={32} className='text-white bg-orange-500 border p-1 rounded' />
-                                            <p className='text-center mx-auto text-lg'>100</p>
-                                            <IconMinus size={32} color='red' className='border p-1 rounded' />
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="flex order py-4 flex-flex-column gap-4">
-                                    <div className="flex gap-2 w-1/2 sm:w-2/3 overflow-hidden">
-                                        <img src="https://assets-pergikuliner.com/sjuhly1RSlpU40nj40K59-4lfXg=/fit-in/1366x768/smart/filters:no_upscale()/https://assets-pergikuliner.com/uploads/bootsy/image/19888/coffee_shop_di_bekasiip.jpg" alt="" className='rounded h-16 w-16 hidden md:block' />
-                                        <div className="flex flex flex-col justify-between">
-                                            <h6 className='text-base text-slate-700'>wdwqs</h6>
-                                            <h5 className='text-lg font-semibold text-slate-700'>Rp. 10.000</h5>
-                                        </div>
-                                    </div>
-                                    <div className="w-1/2 sm:w-1/3 text-end flex flex-col flex-1 justify-between">
-                                        <IconX size={16} color='red' className='ml-auto' />
-                                        <div className="flex justify-between align-center  mt-5 ">
-                                            <IconPlus size={32} className='text-white bg-orange-500 border p-1 rounded' />
-                                            <p className='text-center mx-auto text-lg'>100</p>
-                                            <IconMinus size={32} color='red' className='border p-1 rounded' />
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="flex order py-4 flex-flex-column gap-4">
-                                    <div className="flex gap-2 w-1/2 sm:w-2/3 overflow-hidden">
-                                        <img src="https://assets-pergikuliner.com/sjuhly1RSlpU40nj40K59-4lfXg=/fit-in/1366x768/smart/filters:no_upscale()/https://assets-pergikuliner.com/uploads/bootsy/image/19888/coffee_shop_di_bekasiip.jpg" alt="" className='rounded h-16 w-16 hidden md:block' />
-                                        <div className="flex flex flex-col justify-between">
-                                            <h6 className='text-base text-slate-700'>wdwqs</h6>
-                                            <h5 className='text-lg font-semibold text-slate-700'>Rp. 10.000</h5>
-                                        </div>
-                                    </div>
-                                    <div className="w-1/2 sm:w-1/3 text-end flex flex-col flex-1 justify-between">
-                                        <IconX size={16} color='red' className='ml-auto' />
-                                        <div className="flex justify-between align-center  mt-5 ">
-                                            <IconPlus size={32} className='text-white bg-orange-500 border p-1 rounded' />
-                                            <p className='text-center mx-auto text-lg'>100</p>
-                                            <IconMinus size={32} color='red' className='border p-1 rounded' />
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="flex order py-4 flex-flex-column gap-4">
-                                    <div className="flex gap-2 w-1/2 sm:w-2/3 overflow-hidden">
-                                        <img src="https://assets-pergikuliner.com/sjuhly1RSlpU40nj40K59-4lfXg=/fit-in/1366x768/smart/filters:no_upscale()/https://assets-pergikuliner.com/uploads/bootsy/image/19888/coffee_shop_di_bekasiip.jpg" alt="" className='rounded h-16 w-16 hidden md:block' />
-                                        <div className="flex flex flex-col justify-between">
-                                            <h6 className='text-base text-slate-700'>wdwqs</h6>
-                                            <h5 className='text-lg font-semibold text-slate-700'>Rp. 10.000</h5>
-                                        </div>
-                                    </div>
-                                    <div className="w-1/2 sm:w-1/3 text-end flex flex-col flex-1 justify-between">
-                                        <IconX size={16} color='red' className='ml-auto' />
-                                        <div className="flex justify-between align-center  mt-5 ">
-                                            <IconPlus size={32} className='text-white bg-orange-500 border p-1 rounded' />
-                                            <p className='text-center mx-auto text-lg'>100</p>
-                                            <IconMinus size={32} color='red' className='border p-1 rounded' />
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="flex order py-4 flex-flex-column gap-4">
-                                    <div className="flex gap-2 w-1/2 sm:w-2/3 overflow-hidden">
-                                        <img src="https://assets-pergikuliner.com/sjuhly1RSlpU40nj40K59-4lfXg=/fit-in/1366x768/smart/filters:no_upscale()/https://assets-pergikuliner.com/uploads/bootsy/image/19888/coffee_shop_di_bekasiip.jpg" alt="" className='rounded h-16 w-16 hidden md:block' />
-                                        <div className="flex flex flex-col justify-between">
-                                            <h6 className='text-base text-slate-700'>wdwqs</h6>
-                                            <h5 className='text-lg font-semibold text-slate-700'>Rp. 10.000</h5>
-                                        </div>
-                                    </div>
-                                    <div className="w-1/2 sm:w-1/3 text-end flex flex-col flex-1 justify-between">
-                                        <IconX size={16} color='red' className='ml-auto' />
-                                        <div className="flex justify-between align-center  mt-5 ">
-                                            <IconPlus size={32} className='text-white bg-orange-500 border p-1 rounded' />
-                                            <p className='text-center mx-auto text-lg'>100</p>
-                                            <IconMinus size={32} color='red' className='border p-1 rounded' />
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="flex order py-4 flex-flex-column gap-4">
-                                    <div className="flex gap-2 w-1/2 sm:w-2/3 overflow-hidden">
-                                        <img src="https://assets-pergikuliner.com/sjuhly1RSlpU40nj40K59-4lfXg=/fit-in/1366x768/smart/filters:no_upscale()/https://assets-pergikuliner.com/uploads/bootsy/image/19888/coffee_shop_di_bekasiip.jpg" alt="" className='rounded h-16 w-16 hidden md:block' />
-                                        <div className="flex flex flex-col justify-between">
-                                            <h6 className='text-base text-slate-700'>wdwqs</h6>
-                                            <h5 className='text-lg font-semibold text-slate-700'>Rp. 10.000</h5>
-                                        </div>
-                                    </div>
-                                    <div className="w-1/2 sm:w-1/3 text-end flex flex-col flex-1 justify-between">
-                                        <IconX size={16} color='red' className='ml-auto' />
-                                        <div className="flex justify-between align-center  mt-5 ">
-                                            <IconPlus size={32} className='text-white bg-orange-500 border p-1 rounded' />
-                                            <p className='text-center mx-auto text-lg'>100</p>
-                                            <IconMinus size={32} color='red' className='border p-1 rounded' />
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="flex order py-4 flex-flex-column gap-4">
-                                    <div className="flex gap-2 w-1/2 sm:w-2/3 overflow-hidden">
-                                        <img src="https://assets-pergikuliner.com/sjuhly1RSlpU40nj40K59-4lfXg=/fit-in/1366x768/smart/filters:no_upscale()/https://assets-pergikuliner.com/uploads/bootsy/image/19888/coffee_shop_di_bekasiip.jpg" alt="" className='rounded h-16 w-16 hidden md:block' />
-                                        <div className="flex flex flex-col justify-between">
-                                            <h6 className='text-base text-slate-700'>wdwqs</h6>
-                                            <h5 className='text-lg font-semibold text-slate-700'>Rp. 10.000</h5>
-                                        </div>
-                                    </div>
-                                    <div className="w-1/2 sm:w-1/3 text-end flex flex-col flex-1 justify-between">
-                                        <IconX size={16} color='red' className='ml-auto' />
-                                        <div className="flex justify-between align-center  mt-5 ">
-                                            <IconPlus size={32} className='text-white bg-orange-500 border p-1 rounded' />
-                                            <p className='text-center mx-auto text-lg'>100</p>
-                                            <IconMinus size={32} color='red' className='border p-1 rounded' />
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="flex order py-4 flex-flex-column gap-4">
-                                    <div className="flex gap-2 w-1/2 sm:w-2/3 overflow-hidden">
-                                        <img src="https://assets-pergikuliner.com/sjuhly1RSlpU40nj40K59-4lfXg=/fit-in/1366x768/smart/filters:no_upscale()/https://assets-pergikuliner.com/uploads/bootsy/image/19888/coffee_shop_di_bekasiip.jpg" alt="" className='rounded h-16 w-16 hidden md:block' />
-                                        <div className="flex flex flex-col justify-between">
-                                            <h6 className='text-base text-slate-700'>wdwqs</h6>
-                                            <h5 className='text-lg font-semibold text-slate-700'>Rp. 10.000</h5>
-                                        </div>
-                                    </div>
-                                    <div className="w-1/2 sm:w-1/3 text-end flex flex-col flex-1 justify-between">
-                                        <IconX size={16} color='red' className='ml-auto' />
-                                        <div className="flex justify-between align-center  mt-5 ">
-                                            <IconPlus size={32} className='text-white bg-orange-500 border p-1 rounded' />
-                                            <p className='text-center mx-auto text-lg'>100</p>
-                                            <IconMinus size={32} color='red' className='border p-1 rounded' />
-                                        </div>
-                                    </div>
-                                </div>
+                            {carts.length > 0 ? <>
+                                {carts.map((cart, index) => (
+                                        <CartItem key={index} cart={cart} />
+                                ))}
+                            </> :
+                            <div className="flex justify-center items-center flex-1">
+                                <h1 className='text-slate-300'><IconTrashX size={64} />  </h1>
                             </div>
+                            }
+
+                            </div>
+
                         </div>
                         <div className="h-max w-full px-4 pb-0 flex flex-col justify-start flex-1 bg-white">
                             <div className='space-y-3 flex flex-col justify-start mb-4'>
                                 <hr />
                                 <div className="flex justify-between">
                                     <p className='text-lg text-slate-500'>Quantity</p>
-                                    <p className='text-lg font-bold text-slate-600'>9</p>
+                                    <p className='text-lg font-bold text-slate-600'>{quantity}</p>
                                 </div>
                                 <div className="flex justify-between">
-                                    <p className='text-lg text-slate-500'>Subtotal</p>
-                                    <p className='text-lg font-bold text-slate-600'>Rp. 40.000</p>
-                                </div>
-                                <div className="flex justify-between">
-                                    <p className='text-lg font-semibold text-slate-500'>Total</p>
-                                    <p className='text-lg font-bold text-slate-600'>#000099</p>
+                                <p className='text-lg font-semibold text-slate-500'>Total</p>
+                                    <p className='text-lg font-bold text-slate-600'>Rp. {total}</p>
                                 </div>
                                 <input type='text' className='w-full rounded border-gray-300 py-2.5 focus:ring-puple-300 focus:border-purple-600' placeholder='Customer name..' />
                                 <div className='flex items-center gap-4'>

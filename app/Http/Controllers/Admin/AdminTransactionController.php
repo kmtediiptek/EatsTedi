@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Admin\AdminCartResource;
 use App\Http\Resources\Admin\AdminProductResource;
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminTransactionController extends Controller
 {
@@ -24,9 +27,17 @@ class AdminTransactionController extends Controller
             ->latest()
             ->fastPaginate(10);
 
+        $carts = DB::table('carts')
+            ->join('products', 'carts.product_id', '=', 'products.id')
+            ->select('carts.id', 'carts.price', 'carts.quantity', 'products.name AS product_name', 'products.slug AS product_slug', 'products.price AS product_price', 'products.picture AS product_picture')
+            ->where('carts.paid_at', null)
+            ->where('carts.user_id', $request->user()->id)
+            ->get();
+
         return inertia('Admin/Transaction/Index', [
             "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get(),
-            "products" => AdminProductResource::collection($products)
+            "products" => AdminProductResource::collection($products),
+            "carts" => $carts
         ]);
     }
 

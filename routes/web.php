@@ -79,6 +79,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::controller(AdminCartController::class)->group(function () {
         Route::delete('/cart/{cart}', 'destroy')->name('admin.cart.delete');
         Route::post('/cart/{product:slug}', 'store')->name('admin.cart.store');
+        Route::post('/cart/increment/{product:slug}', 'increment')->name('admin.cart.store');
+        Route::post('/cart/decrement/{product:slug}', 'decrement')->name('admin.cart.store');
     });
 });
 

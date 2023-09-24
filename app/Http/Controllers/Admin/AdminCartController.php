@@ -37,15 +37,19 @@ class AdminCartController extends Controller
      */
     public function store(Request $request, Product $product)
     {
-        $cart = Cart::where('user_id', $request->user()->id)->where('product_id', $product->id)->where('status', 0)->whereNull('paid_at')->first();
+        $cart = Cart::where('user_id', $request->user()->id)
+            ->where('product_id', $product->id)
+            ->where('status', 0)
+            ->whereNull('paid_at')
+            ->first();
+
         if ($cart) {
             $cart->update([
-                "user_id" => $request->user()->id,
-                "product_id" => $product->id,
-                "quantity" => ++$cart->quantity,
-                "price" => $cart->price * $cart->quantity,
+                "quantity" => $cart->quantity + 1,
+                "price" => $product->price * ($cart->quantity + 1),
             ]);
         } else {
+            // Tidak ditemukan item di keranjang, tambahkan item baru
             Cart::create([
                 "user_id" => $request->user()->id,
                 "product_id" => $product->id,
@@ -57,23 +61,64 @@ class AdminCartController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Cart $cart)
+    public function increment(Request $request, Product $product)
     {
-        //
+        $cart = Cart::where('user_id', $request->user()->id)
+            ->where('product_id', $product->id)
+            ->where('status', 0)
+            ->whereNull('paid_at')
+            ->first();
+
+        if ($cart) {
+            $cart->update([
+                "quantity" => $cart->quantity + 1,
+                "price" => $product->price * ($cart->quantity + 1),
+            ]);
+        } else {
+            // Tidak ditemukan item di keranjang, tambahkan item baru
+            Cart::create([
+                "user_id" => $request->user()->id,
+                "product_id" => $product->id,
+                "quantity" => 1,
+                "price" => $product->price,
+            ]);
+        }
+
+        return redirect()->back();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
+    public function decrement(Request $request, Product $product)
+    {
+        $cart = Cart::where('user_id', $request->user()->id)
+            ->where('product_id', $product->id)
+            ->where('status', 0)
+            ->whereNull('paid_at')
+            ->first();
+
+        if ($cart) {
+            if ($cart->quantity > 1) {
+                $cart->update([
+                    "quantity" => $cart->quantity - 1,
+                    "price" => $product->price * ($cart->quantity - 1),
+                ]);
+            } else {
+                // Jika kuantitas adalah 1, hapus item dari keranjang
+                $cart->delete();
+            }
+        } else {
+            // Tidak ditemukan item di keranjang, tambahkan item baru
+            Cart::create([
+                "user_id" => $request->user()->id,
+                "product_id" => $product->id,
+                "quantity" => 1,
+                "price" => $product->price,
+            ]);
+        }
+
+        return redirect()->back();
+    }
+
+
     public function edit(Cart $cart)
     {
         //
@@ -99,6 +144,8 @@ class AdminCartController extends Controller
      */
     public function destroy(Cart $cart)
     {
-        //
+        $cart->delete();
+
+        return back();
     }
 }
