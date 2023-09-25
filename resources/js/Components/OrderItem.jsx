@@ -1,4 +1,4 @@
-import { IconChecks, IconCircleFilled } from '@tabler/icons-react'
+import { IconChecks, IconCircleFilled, IconProgress } from '@tabler/icons-react'
 import React from 'react'
 
 export default function OrderItem({ invoice }) {
@@ -14,8 +14,14 @@ export default function OrderItem({ invoice }) {
                     <span className='text-slate-500'>2 Item</span>
                 </div>
                 <div className='flex justify-center items-end flex-col flex-1 justify-between h-16 w-32 text-slate-800'>
-                    <h5 className='font-semibold text-xs flex items-center gap-x-2 py-1 px-2 bg-green-500 rounded text-white'><IconChecks size={18} />  Done</h5>
-                    <div className='text-slate-500 flex items-center gap-x-2'> <IconCircleFilled size={16} className={`${invoice.charge !== 0 ? 'text-green-500' : 'text-yellow-400'}`} />{invoice.charge !== 0 ? 'Already paid' : 'Not Yet Paid' }</div>
+                    <h5 className={`font-semibold text-xs flex items-center gap-x-2 py-1 px-2 rounded text-white ${invoice.status ===1 ? 'bg-green-500' : 'bg-yellow-400'} `}>{invoice.status === 1 ? <>
+                        <IconChecks size={18} />  Done
+                    </> :
+                        <>
+                            <IconProgress size={18} />  In Progress
+                        </>
+                    } </h5>
+                    <div className='text-slate-500 flex items-center gap-x-2'> <IconCircleFilled size={16} className={`${invoice.charge !== 0 ? 'text-green-500' : 'text-red-500'}`} />{invoice.charge !== 0 ? 'Already paid' : 'Not Yet Paid'}</div>
                 </div>
             </div>
         </div>

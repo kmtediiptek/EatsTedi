@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\AdminInvoiceRequest;
 use App\Models\Cart;
 use App\Models\Invoice;
 use App\Models\Table;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -40,9 +41,12 @@ class AdminInvoiceController extends Controller
      */
     public function store(AdminInvoiceRequest $request)
     {
+
+        $order = Cart::select('order_id')->where('user_id', Auth::user()->id)->where('status', 0)->first();
+
         $total = (int) $request->total;
         $cart_ids = $request->collect('carts')->pluck('id');
-        $order_id = 'order-' . $request->user()->id . $cart_ids->implode('') . date('d:m:Y');
+        $order_id = $order->order_id;
         $table_id = $request->table_id;
 
         // Update carts based on paid status
@@ -70,14 +74,15 @@ class AdminInvoiceController extends Controller
 
         if ($request->paid == '1') {
             // Only update these fields if paid is 1
+            $today = Carbon::now()->format('Y-m-d');
             $invoiceData['total_price'] = $total_price;
-            $invoiceData['succeeded_at'] = now();
+            $invoiceData['succeeded_at'] = $today;
             $invoiceData['payment_id'] = $request->payment_id;
             $invoiceData['charge'] = $request->charge;
             $invoiceData['name'] = $request->name;
         }
 
-        $invoice = Auth::user()->invoices()->updateOrcreate(compact('table_id'), $invoiceData);
+        $invoice = Auth::user()->invoices()->updateOrcreate(compact('order_id'), $invoiceData);
 
         Table::where('id', $table_id)->update([
             "status" => 0

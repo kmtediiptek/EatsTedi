@@ -2,18 +2,16 @@ import React, { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import clsx from 'clsx'
 
-export default function SelectTable({ className="", value, onChange, placeholder = 'Select one', ...props }) {
+export default function SelectTable({ className = "", value, onChange, placeholder = 'Table', ...props }) {
     const [isOpen, setIsOpen] = useState(false)
     // Filter the data to remove the selected value
 
-    const { data: data} = props.data
-
-    const filteredData = data.filter(item => item.id !== value.id)
+    const { data: data } = props.data
 
     return (
         <Listbox
             as="div"
-            className="relative rounded w-full"
+            className="relative rounded"
             value={value}
             onChange={(e) => {
                 onChange(e)
@@ -21,8 +19,8 @@ export default function SelectTable({ className="", value, onChange, placeholder
             }}
             open={isOpen}
         >
-            <Listbox.Button className={clsx("flex h-11 w-full items-center justify-between gap-x-2 rounded border border-gray-300 px-4 focus:outline-none", className) }>
-                <span className="capitalize line-clamp-1">{ value.name ||  value || placeholder}</span>
+            <Listbox.Button className="flex h-11 w-full items-center justify-between gap-x-2 rounded border border-gray-300 px-3 focus:outline-none">
+                <span className="capitalize line-clamp-1"> Table  {value.name}</span>
                 <div onClick={() => setIsOpen(!isOpen)}>
                     <svg
                         className="h-5 w-5 text-gray-400"
@@ -49,12 +47,12 @@ export default function SelectTable({ className="", value, onChange, placeholder
                 leaveTo="transform opacity-0 scale-95"
             >
                 <Listbox.Options className="z-50 absolute right-0 mt-1 max-h-[10rem] w-full overflow-y-auto rounded border border-gray-300 bg-white py-1 shadow-sm">
-                    {filteredData.map((item) => (
+                    {data.map((item) => (
                         <Listbox.Option key={item.id} value={item}>
                             {({ selected, active }) => (
                                 <div
                                     className={clsx(
-                                        'flex cursor-pointer items-center py-1.5 px-4',
+                                        'flex cursor-pointer text-sm items-center py-1.5 px-4',
                                         active && 'bg-gray-100',
                                         selected &&
                                         'bg-primary-50 font-semibold text-primary-600 hover:bg-primary-100'

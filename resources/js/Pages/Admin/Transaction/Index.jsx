@@ -34,7 +34,7 @@ export default function Index({ categories, carts, invoices, ...props }) {
         total: '',
         table_id: '',
         payment_id: '',
-        charge: ''
+        charge: '',
     })
 
 

@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\Table;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -48,7 +49,8 @@ class AdminTransactionController extends Controller
             ->where('carts.user_id', $request->user()->id)
             ->get();
 
-        $invoices = Invoice::where('status', 0)->get();
+            $today = Carbon::now()->format('Y-m-d');
+        $invoices = Invoice::where('succeeded_at', $today)->get();
 
         return inertia('Admin/Transaction/Index', [
             "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get(),
