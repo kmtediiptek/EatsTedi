@@ -8,6 +8,7 @@ use App\Http\Resources\Admin\AdminProductResource;
 use App\Http\Resources\Admin\AdminTableResource;
 use App\Models\Cart;
 use App\Models\Category;
+use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\Table;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class AdminTransactionController extends Controller
 
     public function __construct()
     {
-        $this->tables = Table::select('id', 'name', 'slug')->get();
+        $this->tables = Table::select('id', 'name', 'slug')->where('status', 1)->get();
     }
 
     public function index(Request $request)
@@ -47,11 +48,14 @@ class AdminTransactionController extends Controller
             ->where('carts.user_id', $request->user()->id)
             ->get();
 
+        $invoices = Invoice::where('status', 0)->get();
+
         return inertia('Admin/Transaction/Index', [
             "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get(),
             "products" => AdminProductResource::collection($products),
             "carts" => $carts,
-            "tables" =>  AdminTableResource::collection($this->tables)
+            "tables" =>  AdminTableResource::collection($this->tables),
+            "invoices" => $invoices
         ]);
     }
 

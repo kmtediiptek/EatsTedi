@@ -1,6 +1,7 @@
 import CartItem from '@/Components/CartItem'
 import Container from '@/Components/Container'
 import InvoiceForm from '@/Components/InvoiceForm'
+import OrderItem from '@/Components/OrderItem'
 import Pagination from '@/Components/Pagination'
 import PrimaryButton from '@/Components/PrimaryButton'
 import ProductItem from '@/Components/ProductItem'
@@ -12,7 +13,7 @@ import { IconArrowsMaximize, IconArrowsMinimize, IconCategory, IconChecks, IconC
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 
-export default function Index({ categories, carts, ...props }) {
+export default function Index({ categories, carts, invoices, ...props }) {
     const [isOrderListOpen, setIsOrderListOpen] = useState(true)
     const { data: products, meta, links } = props.products
 
@@ -31,9 +32,9 @@ export default function Index({ categories, carts, ...props }) {
         name: '',
         carts: '',
         total: '',
-        table_id : '',
-        payment_id : '',
-        charge : ''
+        table_id: '',
+        payment_id: '',
+        charge: ''
     })
 
 
@@ -47,7 +48,7 @@ export default function Index({ categories, carts, ...props }) {
             payment_id: data.payment_id.id,
         }, {
             onSuccess: () => {
-                setData({ id: '', name: '', carts: '', total: '', table_id: '', payment_id: '', charge: ''}),
+                setData({ id: '', name: '', carts: '', total: '', table_id: '', payment_id: '', charge: '' }),
                     toast.success('Invoice has been added!')
             }
         })
@@ -72,24 +73,10 @@ export default function Index({ categories, carts, ...props }) {
 
                         {/* Start Order List */}
                         <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Order List</h3>
-                        <div className="flex w-full scrolling-wrapper overflow-x-scroll pb-1 flex-nowrap gap-x-4">
-                            {/* Start Order */}
-                            <div className="flex gap-x-4 p-2 border border-gray-300 rounded text-white">
-                                <div className="w-16 h-16 bg-sky-500 rounded p-2 flex justify-center items-center">
-                                    <h3 className='text-4xl font-semibold text-center'>T1</h3>
-                                </div>
-                                <div className="flex">
-                                    <div className='h-16 w-32 text-slate-800 flex flex-col flex-1 justify-between'>
-                                        <h5 className='font-semibold text-xl'>Rachel</h5>
-                                        <span className='text-slate-500'>2 Item</span>
-                                    </div>
-                                    <div className='flex justify-center items-end flex-col flex-1 justify-between h-16 w-32 text-slate-800'>
-                                        <h5 className='font-semibold text-xs flex items-center gap-x-2 py-1 px-2 bg-green-500 rounded text-white'><IconChecks size={18} />  Done</h5>
-                                        <div className='text-slate-500 flex items-center gap-x-2'> <IconCircleFilled size={16} className='text-green-500' />Already Paid</div>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* End Order */}
+                        <div className="flex w-full scrolling-wrapper overflow-x-scroll overflow-y-hidden pb-1 flex-nowrap gap-x-4">
+                        {invoices.map((invoice, index) => (
+                            <OrderItem invoice={invoice} key={index} />
+                        ))}
                         </div>
                         {/* End Order List */}
 
@@ -119,12 +106,20 @@ export default function Index({ categories, carts, ...props }) {
                         {/* Start Special Menu */}
                         <div className="w-full">
                             <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Special menu for you</h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-lg-4 gap-4 gap-y-8 w-full flex-wrap">
-                                {products.map((product, index) => (
-                                    <ProductItem product={product} key={index} />
-                                ))}
+                            {products.length > 0 ?
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-lg-4 gap-4 gap-y-8 w-full flex-wrap">
+                                    {
+                                        products.map((product, index) => (
+                                            <ProductItem product={product} key={index} />
+                                        ))
+                                    }
+                                </div>
+                                : <div className="flex justify-center items-center flex-col flex-1 h-[280px]">
+                                    <h1 className='text-slate-300'><IconTrashX size={64} />  </h1>
+                                    <p className='text-slate-500 mt-4 text-lg'>Empty Menu</p>
+                                </div>
+                            }
 
-                            </div>
                             {products.length > 0 &&
                                 <Pagination meta={meta} links={links} />
                             }
@@ -146,8 +141,9 @@ export default function Index({ categories, carts, ...props }) {
                                         <CartItem key={index} cart={cart} />
                                     ))}
                                 </> :
-                                    <div className="flex justify-center items-center flex-1">
+                                    <div className="flex justify-center items-center flex-col flex-1 h-[280px]">
                                         <h1 className='text-slate-300'><IconTrashX size={64} />  </h1>
+                                        <p className='text-slate-500 mt-4 text-lg'>Empty Order</p>
                                     </div>
                                 }
 

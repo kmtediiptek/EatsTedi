@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminInvoiceRequest;
 use App\Models\Cart;
 use App\Models\Invoice;
+use App\Models\Table;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -77,6 +78,10 @@ class AdminInvoiceController extends Controller
         }
 
         $invoice = Auth::user()->invoices()->updateOrcreate(compact('table_id'), $invoiceData);
+
+        Table::where('id', $table_id)->update([
+            "status" => 0
+        ]);
 
         return back();
     }

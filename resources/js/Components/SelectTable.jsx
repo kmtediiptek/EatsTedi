@@ -22,7 +22,7 @@ export default function SelectTable({ className="", value, onChange, placeholder
             open={isOpen}
         >
             <Listbox.Button className={clsx("flex h-11 w-full items-center justify-between gap-x-2 rounded border border-gray-300 px-4 focus:outline-none", className) }>
-                <span className="capitalize line-clamp-1">{value.name || value || placeholder}</span>
+                <span className="capitalize line-clamp-1">{ value.name ||  value || placeholder}</span>
                 <div onClick={() => setIsOpen(!isOpen)}>
                     <svg
                         className="h-5 w-5 text-gray-400"
@@ -60,7 +60,7 @@ export default function SelectTable({ className="", value, onChange, placeholder
                                         'bg-primary-50 font-semibold text-primary-600 hover:bg-primary-100'
                                     )}
                                 >
-                                    <span className="capitalize line-clamp-1">{item.name}</span>
+                                    <span className="capitalize line-clamp-1">{`Table ` +  item.name}</span>
                                 </div>
                             )}
                         </Listbox.Option>
