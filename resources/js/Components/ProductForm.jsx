@@ -8,7 +8,6 @@ import TextInput from './TextInput'
 
 export default function ProductForm({ data, setData }) {
     const { errors, categories } = usePage().props;
-    console.log(data.category_id)
     const onChange = (e) => {
         setData(e.target.name, e.target.value)
     }

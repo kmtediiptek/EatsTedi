@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminCartController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminInvoiceController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminTableController;
 use App\Http\Controllers\Admin\AdminTransactionController;
@@ -75,13 +76,19 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/setting/product/{product:slug}', [AdminProductController::class, 'update'])->name('admin.product.update');
     Route::delete('/setting/product/{product:slug}', [AdminProductController::class, 'destroy'])->name('admin.product.destroy');
 
-    // Add To Cart
+    // Admin Cart
     Route::controller(AdminCartController::class)->group(function () {
         Route::delete('/cart/{cart}', 'destroy')->name('admin.cart.delete');
         Route::post('/cart/{product:slug}', 'store')->name('admin.cart.store');
         Route::post('/cart/increment/{product:slug}', 'increment')->name('admin.cart.store');
         Route::post('/cart/decrement/{product:slug}', 'decrement')->name('admin.cart.store');
     });
+
+    // Admin Invoice
+    Route::get('/invoice', [AdminInvoiceController::class, 'index'])->name('admin.invoice.index');
+    Route::post('/invoice', [AdminInvoiceController::class, 'store'])->name('admin.invoice.store');
+    Route::put('/invoice/{invoice:slug}', [AdminInvoiceController::class, 'update'])->name('admin.invoice.update');
+    Route::delete('/invoice/{invoice:slug}', [AdminInvoiceController::class, 'destroy'])->name('admin.invoice.destroy');
 });
 
 require __DIR__ . '/auth.php';

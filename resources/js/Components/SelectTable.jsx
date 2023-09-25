@@ -2,9 +2,11 @@ import React, { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import clsx from 'clsx'
 
-export default function Select({ className = "", data, value, onChange, placeholder = 'Select one' }) {
+export default function SelectTable({ className="", value, onChange, placeholder = 'Select one', ...props }) {
     const [isOpen, setIsOpen] = useState(false)
     // Filter the data to remove the selected value
+
+    const { data: data} = props.data
 
     const filteredData = data.filter(item => item.id !== value.id)
 
@@ -19,7 +21,7 @@ export default function Select({ className = "", data, value, onChange, placehol
             }}
             open={isOpen}
         >
-            <Listbox.Button className={clsx("flex h-11 w-full items-center justify-between rounded border border-gray-300 px-4 focus:outline-none", className)}>
+            <Listbox.Button className={clsx("flex h-11 w-full items-center justify-between gap-x-2 rounded border border-gray-300 px-4 focus:outline-none", className) }>
                 <span className="capitalize line-clamp-1">{value.name || value || placeholder}</span>
                 <div onClick={() => setIsOpen(!isOpen)}>
                     <svg

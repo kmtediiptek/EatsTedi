@@ -24,7 +24,7 @@ class AdminTableRequest extends FormRequest
     public function rules()
     {
         return [
-            "number" => ['required', 'numeric', 'min:1'],
+            "name" => ['required', 'numeric', 'min:1'],
         ];
     }
 }

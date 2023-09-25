@@ -1,11 +1,13 @@
 import CartItem from '@/Components/CartItem'
 import Container from '@/Components/Container'
+import InvoiceForm from '@/Components/InvoiceForm'
 import Pagination from '@/Components/Pagination'
+import PrimaryButton from '@/Components/PrimaryButton'
 import ProductItem from '@/Components/ProductItem'
 import TextInput from '@/Components/TextInput'
 import App from '@/Layouts/App'
 import { numberFormat } from '@/Libs/Helper'
-import { Head, Link } from '@inertiajs/react'
+import { Head, Link, useForm, router } from '@inertiajs/react'
 import { IconArrowsMaximize, IconArrowsMinimize, IconCategory, IconChecks, IconCircleFilled, IconTrashX } from '@tabler/icons-react'
 import React, { useState } from 'react'
 
@@ -17,19 +19,38 @@ export default function Index({ categories, carts, ...props }) {
         setIsOrderListOpen(!isOrderListOpen)
     }
 
-    const [showPaymentOptions, setShowPaymentOptions] = useState(false)
-
-    const handleRadioChange = (e) => {
-        if (e.target.value === '1') {
-            setShowPaymentOptions(true)
-        } else {
-            setShowPaymentOptions(false)
-        }
-    }
 
     const total = carts.reduce((acc, cart) => acc + cart.price, 0)
 
     const quantity = carts.reduce((acc, cart) => acc + cart.quantity, 0)
+
+
+    const { data, setData } = useForm({
+        id: '',
+        name: '',
+        carts: '',
+        total: '',
+        table_id : '',
+        payment_id : ''
+    })
+
+
+    const onSubmit = (e) => {
+        e.preventDefault()
+        router.post(`/admin/invoice`, {
+            ...data,
+            carts: carts,
+            total: total,
+            id: data.id.id,
+        }, {
+            onSuccess: () => {
+                setData({ id: '', name: '', carts: '', total: '', table_id: '' }),
+                    setIsOpen(false),
+                    toast.success('Invoice has been added!')
+            }
+        })
+    }
+
     return (
         <>
             <Head title="Menu" />
@@ -103,7 +124,7 @@ export default function Index({ categories, carts, ...props }) {
 
                             </div>
                             {products.length > 0 &&
-                                    <Pagination meta={meta} links={links} />
+                                <Pagination meta={meta} links={links} />
                             }
                         </div>
                         {/* End Special Menu */}
@@ -131,7 +152,7 @@ export default function Index({ categories, carts, ...props }) {
                             </div>
 
                         </div>
-                        <div className="h-max w-full px-4 pb-0 flex flex-col justify-start flex-1 bg-white">
+                        <div className="h-max w-full px-4 pb-0 bg-white">
                             <div className='space-y-3 flex flex-col justify-start mb-4'>
                                 <hr />
                                 <div className="flex justify-between">
@@ -142,53 +163,18 @@ export default function Index({ categories, carts, ...props }) {
                                     <p className='text-lg font-semibold text-slate-500'>Total</p>
                                     <p className='text-lg font-bold text-slate-600'>Rp. {numberFormat(total)}</p>
                                 </div>
-                                <input type='text' className='w-full rounded border-gray-300 py-2.5 focus:ring-puple-300 focus:border-purple-600' placeholder='Customer name..' />
-                                <div className='flex items-center gap-4'>
-                                    <div className="w-1/2 flex items-center pl-4 border border-gray-300 rounded">
-                                        <input id="bordered-radio-1" type="radio" value="1" name="bordered-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                                            onChange={handleRadioChange} />
-                                        <label htmlFor="bordered-radio-1" className="w-full py-3 ml-2 text-sm font-medium text-slate-500">Paid Now</label>
+                                <form onSubmit={onSubmit} className='w-full space-y-4'>
+                                    <InvoiceForm {...{ data, setData }} />
+                                    <hr />
+                                    <div className="pb-4 flex items-end flex-1 justify-end">
+                                        <PrimaryButton className='bg-purple-600 text-white px-3 py-4 w-full rounded'>
+                                            Confirm
+                                        </PrimaryButton>
                                     </div>
-                                    <div className="w-1/2 flex items-center pl-4 border border-gray-300 rounded">
-                                        <input id="bordered-radio-2" type="radio" value="2" name="bordered-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                                            onChange={handleRadioChange} />
-                                        <label htmlFor="bordered-radio-2" className="w-full py-3 ml-2 text-sm font-medium text-slate-500">Paid Later</label>
-                                    </div>
-                                </div>
-                                <div className='flex justify-between gap-4'>
-                                    <select id="countries" className="bg-white border-gray-300 text-gray-900 rounded focus:ring-puple-300 focus:border-purple-600 block w-full p-2.5">
-                                        <option selected disabled>Table</option>
-                                        <option>T-1</option>
-                                        <option>T-2</option>
-                                        <option>T-3</option>
-                                        <option>T-4</option>
-                                        <option>T-4</option>
-                                        <option>T-4</option>
-                                        <option>T-4</option>
-                                        <option>T-4</option>
-                                        <option>T-4</option>
-                                        <option>T-4</option>
-                                    </select>
-                                    {showPaymentOptions && (
-                                        <select id="countries" className="bg-white border-gray-300 text-gray-900 rounded focus:ring-gray-300 focus:border-gray-300 border-[1px] focus:border-[1px] block w-full p-2.5">
-                                            <option selected disabled>Payment</option>
-                                            <option>Gopay</option>
-                                            <option>QRIS</option>
-                                            <option>Cash</option>
-                                        </select>
-                                    )}
+                                </form>
+                            </div>
 
-                                </div>
-                                {showPaymentOptions && (
-                                    <input type='number' className='w-full rounded border-gray-300 py-2.5 focus:ring-puple-300 focus:border-purple-600' placeholder='Money..' />
-                                )}
-                                <hr />
-                            </div>
-                            <div className="pb-4 flex items-end flex-1 justify-end">
-                                <button className='bg-purple-600 text-white px-3 py-4 w-full rounded'>
-                                    Confirm
-                                </button>
-                            </div>
+
                         </div>
                     </div>
                     {/* End Order Details */}

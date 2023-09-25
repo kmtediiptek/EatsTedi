@@ -5,19 +5,23 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\AdminCartResource;
 use App\Http\Resources\Admin\AdminProductResource;
+use App\Http\Resources\Admin\AdminTableResource;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Table;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AdminTransactionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public $tables;
+
+    public function __construct()
+    {
+        $this->tables = Table::select('id', 'name', 'slug')->get();
+    }
+
     public function index(Request $request)
     {
         $search_products = $request->input('query');
@@ -46,7 +50,8 @@ class AdminTransactionController extends Controller
         return inertia('Admin/Transaction/Index', [
             "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get(),
             "products" => AdminProductResource::collection($products),
-            "carts" => $carts
+            "carts" => $carts,
+            "tables" =>  AdminTableResource::collection($this->tables)
         ]);
     }
 

@@ -20,11 +20,11 @@ export default function Index({ total_tables, ...props }) {
     const [searchQuery, setSearchQuery] = useState('')
 
     const filteredTables = tables.filter(table =>
-        table.number.toLowerCase().includes(searchQuery.toLowerCase())
+        table.name.toLowerCase().includes(searchQuery.toLowerCase())
     ).slice(0, 10)
 
     const { delete: destroy, post, put, data, setData } = useForm({
-        number: '',
+        name: '',
     })
 
     let [isOpen, setIsOpen] = useState(false)
@@ -48,12 +48,12 @@ export default function Index({ total_tables, ...props }) {
 
             setTableSlug(TableSlug)
             setData({
-                number: selectedTable.number,
+                name: selectedTable.name,
             })
         } else {
             setTableSlug("")
             setData({
-                number: '',
+                name: '',
             })
         }
     }
@@ -137,11 +137,11 @@ export default function Index({ total_tables, ...props }) {
                             {filteredTables.map((table, index) => (
                                 <tr className="bg-white border-b text-gray-500" key={index}>
                                     <Table.Td className="w-5">{meta.from + index}</Table.Td>
-                                    <Table.Td>{table.number}</Table.Td>
+                                    <Table.Td>{table.name}</Table.Td>
                                     <Table.Td className="w-10" >
                                         <div className='flex flex-nowrap gap-2'>
                                             <ActionButton className='bg-yellow-400' type="button" onClick={() => openModalTable(table.slug, "edit")}><IconEdit size={18} /></ActionButton>
-                                            <ActionButton className='bg-red-500' type="button" onClick={() => openToast(table.slug, 'Table ' + table.number)}><IconTrash size={18} /></ActionButton>
+                                            <ActionButton className='bg-red-500' type="button" onClick={() => openToast(table.slug, 'Table ' + table.name)}><IconTrash size={18} /></ActionButton>
                                         </div>
                                     </Table.Td>
                                 </tr>

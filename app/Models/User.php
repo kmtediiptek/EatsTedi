@@ -53,5 +53,9 @@ class User extends Authenticatable
         return 'username';
     }
 
+    public function invoices() {
+        return $this->hasMany(Invoice::class);
+    }
+
 
 }
