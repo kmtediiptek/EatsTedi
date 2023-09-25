@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\AdminInvoiceRequest;
 use App\Models\Cart;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
@@ -36,42 +37,50 @@ class AdminInvoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AdminInvoiceRequest $request)
     {
-        dd($request->all());
         $total = (int) $request->total;
         $cart_ids = $request->collect('carts')->pluck('id');
-        $order_id = 'order-' . $request->user()->id . $cart_ids->implode('');
-        $table_id = $request->id;
-        // $invoiceExists = Invoice::where('order_id', $order_id)->firstOr(fn () => false);
-        // if ($invoiceExists) {
-        //     return to_route('products.index');
-        // } else {
-        // $invoce = Invoice::where('table_id', $table_id)->first();
-        Cart::where('table_id', 0)->update([
-            'status' => 1,
-            'paid_at' => now(),
-            'table_id' => $table_id,
-        ]);
+        $order_id = 'order-' . $request->user()->id . $cart_ids->implode('') . date('d:m:Y');
+        $table_id = $request->table_id;
 
-        $total_price = Cart::where('table_id', $table_id)->get()->sum('price');
-        $invoice = Auth::user()->invoices()->updateOrcreate(compact('table_id'), [
+        // Update carts based on paid status
+        if ($request->paid == '1') {
+            Cart::where('user_id', Auth::user()->id)->update([
+                'paid_at' => now(),
+                'status' => 1,
+            ]);
+        }
+        if($request->paid == '2') {
+            Cart::where('user_id', Auth::user()->id)->update([
+                'status' => 1,
+            ]);
+        }
+
+        $total_price = Cart::where('user_id', Auth::user()->id)->get()->sum('price');
+
+        // Create or update the invoice
+        $invoiceData = [
             'order_id' => $order_id,
             'total_price' => $total_price,
-            // 'card_ids' => $cart_ids,
             'table_id' => $table_id,
-        ]);
-        // $invoice_order_id = Invoice::where('order_id', $order_id)->first();
-        // $card = Cart::where('table_id', $table_id)->first();
+            'name' => $request->name,
+        ];
 
-        $invoice->update([
-            "succeeded_at" => now(),
-        ]);
+        if ($request->paid == '1') {
+            // Only update these fields if paid is 1
+            $invoiceData['total_price'] = $total_price;
+            $invoiceData['succeeded_at'] = now();
+            $invoiceData['payment_id'] = $request->payment_id;
+            $invoiceData['charge'] = $request->charge;
+            $invoiceData['name'] = $request->name;
+        }
 
-
+        $invoice = Auth::user()->invoices()->updateOrcreate(compact('table_id'), $invoiceData);
 
         return back();
     }
+
 
     /**
      * Display the specified resource.

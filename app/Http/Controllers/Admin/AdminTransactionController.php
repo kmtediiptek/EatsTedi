@@ -43,7 +43,7 @@ class AdminTransactionController extends Controller
         $carts = DB::table('carts')
             ->join('products', 'carts.product_id', '=', 'products.id')
             ->select('carts.id', 'carts.price', 'carts.quantity', 'products.name AS product_name', 'products.slug AS product_slug', 'products.price AS product_price', 'products.picture AS product_picture')
-            ->where('carts.paid_at', null)
+            ->where('carts.status', 0)
             ->where('carts.user_id', $request->user()->id)
             ->get();
 

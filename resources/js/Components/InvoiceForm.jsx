@@ -53,20 +53,22 @@ export default function InvoiceForm({ data, setData }) {
                 </div>
             </div>
             <div className='flex justify-between w-full gap-x-4'>
+            <div className='flex flex-col w-full'>
                 <SelectTable value={data.table_id} data={tables} className="w-full" placeholder='Tables' onChange={(e) => setData('table_id', e)} />
                 {errors.table_id ? <Error className='' value={errors.table_id} /> : null}
+            </div>
                 {showPaymentOptions && (
-                    <>
+                    <div className='flex flex-col w-full'>
                         <Select value={data.payment_id} data={payments} className="w-full" placeholder='Payment' onChange={(e) => setData('payment_id', e)} />
                         {errors.payment_id ? <Error className='' value={errors.payment_id} /> : null}
-                    </>
+                    </div>
                 )}
 
             </div>
             {showPaymentOptions && (
                 <>
-                    <TextInput type="number" name='paid_price' id='paid_price' className="w-full" onChange={onChange} value={data.paid_price} placeholder="Customer paid_price.." />
-                    {errors.paid_price ? <Error className='' value={errors.paid_price} /> : null}
+                    <TextInput type="number" name='charge' id='charge' className="w-full" value={data.charge} onChange={onChange} placeholder="Charge.." />
+                    {errors.charge ? <Error className='' value={errors.charge} /> : null}
                 </>
             )}
         </>

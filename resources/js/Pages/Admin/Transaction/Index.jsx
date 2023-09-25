@@ -10,6 +10,7 @@ import { numberFormat } from '@/Libs/Helper'
 import { Head, Link, useForm, router } from '@inertiajs/react'
 import { IconArrowsMaximize, IconArrowsMinimize, IconCategory, IconChecks, IconCircleFilled, IconTrashX } from '@tabler/icons-react'
 import React, { useState } from 'react'
+import toast from 'react-hot-toast'
 
 export default function Index({ categories, carts, ...props }) {
     const [isOrderListOpen, setIsOrderListOpen] = useState(true)
@@ -31,7 +32,8 @@ export default function Index({ categories, carts, ...props }) {
         carts: '',
         total: '',
         table_id : '',
-        payment_id : ''
+        payment_id : '',
+        charge : ''
     })
 
 
@@ -41,11 +43,11 @@ export default function Index({ categories, carts, ...props }) {
             ...data,
             carts: carts,
             total: total,
-            id: data.id.id,
+            table_id: data.table_id.id,
+            payment_id: data.payment_id.id,
         }, {
             onSuccess: () => {
-                setData({ id: '', name: '', carts: '', total: '', table_id: '' }),
-                    setIsOpen(false),
+                setData({ id: '', name: '', carts: '', total: '', table_id: '', payment_id: '', charge: ''}),
                     toast.success('Invoice has been added!')
             }
         })

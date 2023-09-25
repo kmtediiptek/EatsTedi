@@ -41,7 +41,7 @@ export default function CartItem({ cart }) {
                             className="text-white bg-orange-500 border p-1 rounded cursor-pointer"
                             onClick={quantityIncrement}
                         />
-                        <TextInput className="border-0 w-12 px-0 h-8 text-lg text-center mx-auto text-lg" value={cart.quantity} />
+                        <span className="border-0 w-12 px-0 h-8 text-lg text-center mx-auto text-lg">{cart.quantity}</span>
                         <IconMinus
                             size={32}
                             className={cart.quantity == 1 ? "bg-gray-400 text-white border p-1 rounded" : "text-red-500 border p-1 rounded cursor-pointer"}
