@@ -45,7 +45,7 @@ export default function SelectTable({ className = "", value, onChange, placehold
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
             >
-                <Listbox.Options className="z-50 absolute right-0 mt-1 max-h-[10rem] w-full overflow-y-auto rounded border border-gray-300 bg-white py-1 shadow-sm">
+                <Listbox.Options className="z-50 absolute right-0 bottom-10 mt-1 max-h-[10rem] w-full overflow-y-auto rounded border border-gray-300 bg-white py-1 shadow-sm">
                     {data.map((item) => (
                         <Listbox.Option key={item.id} value={item}>
                             {({ selected, active }) => (

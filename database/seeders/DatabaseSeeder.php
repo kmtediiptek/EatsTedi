@@ -41,11 +41,48 @@ class DatabaseSeeder extends Seeder
             'slug' => 3,
             'status' => 1
         ]);
+        \App\Models\Table::create([
+            'name' => 4,
+            'slug' => 4,
+            'status' => 1
+        ]);
+        \App\Models\Table::create([
+            'name' => 5,
+            'slug' => 5,
+            'status' => 1
+        ]);
+        \App\Models\Table::create([
+            'name' => 6,
+            'slug' => 6,
+            'status' => 1
+        ]);
+        \App\Models\Table::create([
+            'name' => 7,
+            'slug' => 7,
+            'status' => 1
+        ]);
+        \App\Models\Table::create([
+            'name' => 8,
+            'slug' => 8,
+            'status' => 1
+        ]);
+        \App\Models\Table::create([
+            'name' => 9,
+            'slug' => 9,
+            'status' => 1
+        ]);
+        \App\Models\Table::create([
+            'name' => 10,
+            'slug' => 10,
+            'status' => 1
+        ]);
 
         $this->call([
             CategorySeeder::class,
         ]);
 
         \App\Models\Product::factory(500)->create();
+        \App\Models\Invoice::factory(50)->create();
+        \App\Models\Cart::factory(50)->create();
     }
 }

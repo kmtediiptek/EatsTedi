@@ -8,16 +8,33 @@ import React, { Component, useState } from 'react'
 import { numberFormat } from '@/Libs/Helper'
 
 
-export default function Dashboard({ total_categories, total_tables, total_employees, total_products, total_income, today_income, paid_later, paid_now }) {
-    const options = {
+export default function Dashboard({ total_categories, total_tables, total_employees, total_products, total_income, today_income, paid_later, paid_now, weeklyIncome, dailyIncome, monthlyIncome }) {
+    const weekLabels = weeklyIncome.map(item => "Week " + item.week + ", " + item.year)
+    const weekData = weeklyIncome.map(item => item.total)
+
+    console.log(dailyIncome);
+
+    const dayLabels = dailyIncome.map(item => "Date " + item.date + ", " + item.year)
+    const dayData = dailyIncome.map(item => item.total)
+
+
+    const monthLabels = monthlyIncome.map(item => "Month " + item.month + ' ' + item.year)
+    const monthData = monthlyIncome.map(item => item.total)
+
+    const optionsWeekly = {
         chart: {
-            id: 'apexchart-example',
+            id: 'apexchart-weekly',
         },
         xaxis: {
-            categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+            categories: weekLabels
+        },
+        yaxis: {
+            title: {
+                text: 'Rp. (thousands)'
+            }
         },
         title: {
-            text: 'Statistic Income ',  // Add a title for the chart
+            text: 'Weekly Income',
             align: 'center',
             margin: 12,
             offsetY: 20,
@@ -27,12 +44,94 @@ export default function Dashboard({ total_categories, total_tables, total_employ
                 color: '#333',
                 fontFamily: 'Figtree'
             },
+        },
+        tooltip: {
+            y: {
+                formatter: function (val) {
+                    return "Rp. " + val
+                }
+            }
         }
     }
 
-    const series = [{
-        name: 'series-1',
-        data: [30, 40, 45, 50, 49, 60, 70, 91]
+    const seriesWeekly = [{
+        name: 'Total Price (Weekly)',
+        data: weekData
+    }]
+
+    const optionsDaily = {
+        chart: {
+            id: 'apexchart-daily',
+        },
+        xaxis: {
+            categories: dayLabels
+        },
+        yaxis: {
+            title: {
+                text: 'Rp. (thousands)'
+            }
+        },
+        title: {
+            text: 'Daily Income',
+            align: 'center',
+            margin: 12,
+            offsetY: 20,
+            style: {
+                fontSize: '20px',
+                fontWeight: '500',
+                color: '#333',
+                fontFamily: 'Figtree'
+            },
+        },
+        tooltip: {
+            y: {
+                formatter: function (val) {
+                    return "Rp. " + val
+                }
+            }
+        }
+    }
+    const seriesDaily = [{
+        name: 'Total Price (Daily)',
+        data: dayData
+    }]
+
+    const optionsMonthly = {
+        chart: {
+            id: 'apexchart-monthly',
+        },
+        xaxis: {
+            categories: monthLabels
+        },
+        yaxis: {
+            title: {
+                text: 'Rp. (thousands)'
+            }
+        },
+        title: {
+            text: 'Monthly Income',
+            align: 'center',
+            margin: 12,
+            offsetY: 20,
+            style: {
+                fontSize: '20px',
+                fontWeight: '500',
+                color: '#333',
+                fontFamily: 'Figtree'
+            },
+        },
+        tooltip: {
+            y: {
+                formatter: function (val) {
+                    return "Rp. " + val
+                }
+            }
+        }
+    }
+
+    const seriesMonthly = [{
+        name: 'Total Price (Monthly)',
+        data: monthData
     }]
 
     return (
@@ -85,8 +184,8 @@ export default function Dashboard({ total_categories, total_tables, total_employ
                 {/* End Dashboard */}
 
                 {/* Start Dashboard */}
-                </Container>
-                <Container>
+            </Container>
+            <Container>
                 <h3 className='text-2xl mb-4 font-semibold text-slate-700'>Cash</h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 w-full gap-x-4">
@@ -133,9 +232,10 @@ export default function Dashboard({ total_categories, total_tables, total_employ
             </Container>
             <Container className="mb-12">
                 <h3 className='text-2xl mb-4 font-semibold text-slate-700'>Statistics</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 w-full gap-x-4">
-                    <Chart options={options} series={series} type="bar" className="w-full min-h-screen border border-gray-300 p-4 rounded"  />
-                    <Chart options={options} series={series} type="bar" className="w-full min-h-screen border border-gray-300 p-4 rounded"  />
+                <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 w-full gap-4">
+                    <Chart options={optionsMonthly} series={seriesMonthly} type="bar" className="w-full min-h-screen border border-gray-300 p-4 rounded" />
+                    <Chart options={optionsWeekly} series={seriesWeekly} type="line" className="w-full min-h-screen border border-gray-300 p-4 rounded" />
+                    <Chart options={optionsDaily} series={seriesDaily} type="bar" className="w-full min-h-screen border border-gray-300 p-4 rounded" />
                 </div>
             </Container>
         </>

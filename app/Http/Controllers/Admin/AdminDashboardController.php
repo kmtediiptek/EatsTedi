@@ -8,9 +8,8 @@ use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\Table;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AdminDashboardController extends Controller
 {
@@ -32,6 +31,36 @@ class AdminDashboardController extends Controller
         $paid_now = Invoice::whereNot('succeeded_at', null)->whereDate('created_at', today())->sum('total_price');
         $paid_later = Invoice::where('succeeded_at', null)->whereDate('created_at', today())->sum('total_price');
 
+        $weeklyIncome = Invoice::select(
+            \DB::raw('YEAR(created_at) as year'),
+            \DB::raw('WEEK(created_at) as week'),
+            \DB::raw('SUM(total_price) as total')
+        )
+            ->groupBy('year', 'week')
+            ->orderBy('year', 'asc')
+            ->orderBy('week', 'asc')
+            ->get();
+
+        $dailyIncome = Invoice::select(
+            DB::raw('YEAR(created_at) as year'),
+            \DB::raw('DATE(created_at) as date'),
+            \DB::raw('SUM(total_price) as total')
+        )
+            ->groupBy('year', 'date')
+            ->groupBy('date')
+            ->orderBy('date', 'asc')
+            ->get();
+
+        $monthlyIncome = Invoice::select(
+            \DB::raw('YEAR(created_at) as year'),
+            \DB::raw('MONTHNAME(created_at) as month'),
+            \DB::raw('SUM(total_price) as total')
+        )
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'asc')
+            ->orderBy('month', 'asc')
+            ->get();
+
         return inertia('Dashboard', [
             "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get(),
             "total_categories" => $total_categories,
@@ -42,6 +71,9 @@ class AdminDashboardController extends Controller
             "today_income" => $today_income,
             "paid_now" => $paid_now,
             "paid_later" => $paid_later,
+            "monthlyIncome" => $monthlyIncome,
+            "weeklyIncome" => $weeklyIncome,
+            "dailyIncome" => $dailyIncome,
         ]);
     }
 }
