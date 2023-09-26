@@ -7,7 +7,7 @@ import { router } from '@inertiajs/react'
 import toast from 'react-hot-toast'
 import { numberFormat } from '@/Libs/Helper'
 
-export default function CartItem({ cart }) {
+export default function CartItem({ cart}) {
 
     const quantityIncrement = () => {
         router.post(`/admin/cart/increment/${cart.product_slug}`)

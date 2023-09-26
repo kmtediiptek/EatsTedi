@@ -16,11 +16,10 @@ import toast from 'react-hot-toast'
 export default function Index({ categories, carts, invoices, tables, ...props }) {
 
     const [isOrderListOpen, setIsOrderListOpen] = useState(true)
+    const [selectedOrder, setSelectedOrder] = useState(null)
+
     const { data: products, meta, links } = props.products
 
-    const toggleOrderList = () => {
-        setIsOrderListOpen(!isOrderListOpen)
-    }
 
 
     const total = carts.reduce((acc, cart) => acc + cart.price, 0)
@@ -35,6 +34,25 @@ export default function Index({ categories, carts, invoices, tables, ...props })
         payment_id: '',
         charge: '',
     })
+
+    const toggleOrderList = (order) => {
+        if (order) {
+            setSelectedOrder(order);
+
+            setData({
+                id: order.id,
+                name: order.name,
+                table_id: order.table_id,
+                payment_id: order.payment_id,
+                charge: order.charge,
+            });
+        } else {
+
+            setSelectedOrder(null);
+        }
+
+    };
+
 
 
     const onSubmit = (e) => {
@@ -77,7 +95,7 @@ export default function Index({ categories, carts, invoices, tables, ...props })
                             {invoices.length > 0 ? <>
                                 {
                                     invoices.map((invoice, index) => (
-                                        <OrderItem invoice={invoice} key={index} />
+                                            <OrderItem invoice={invoice} key={index} onClick={() => toggleOrderList(invoice)} />
                                     ))
                                 }
                             </>
@@ -148,7 +166,7 @@ export default function Index({ categories, carts, invoices, tables, ...props })
                             <div className="flex flex-col flex-1">
                                 {carts.length > 0 ? <>
                                     {carts.map((cart, index) => (
-                                        <CartItem key={index} cart={cart} />
+                                        <CartItem key={index} cart={cart} selectedOrder={selectedOrder} />
                                     ))}
                                 </> :
                                     <div className="flex justify-center items-center flex-col flex-1 h-[280px]">
