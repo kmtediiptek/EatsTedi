@@ -40,19 +40,19 @@ class AdminCartController extends Controller
      */
     public function store(Request $request, Product $product)
     {
-        $checkOrder = Invoice::where('user_id', Auth::user()->id)->where('status', 0)->first();
+        $checkOrder = Invoice::where('user_id', Auth::user()->id)->where('table_id', '-')->first();
 
-        $order_id = Auth::user()->id . date('Ymdhis');
+        $order_id = Auth::user()->id . date('Ymd') . rand(1, 100);
 
-        $today = Carbon::now()->format('Y-m-d');
         if (empty($checkOrder)) {
             $dataOrder['user_id'] = Auth::user()->id;
-            $dataOrder['succeeded_at'] = $today;
+            $dataOrder['succeeded_at'] = now();
             $dataOrder['status'] = 0;
             $dataOrder['order_id'] = $order_id;
             $dataOrder['table_id'] = '-';
             $dataOrder['name'] = '-';
-            $dataOrder['total_price'] = $product->price * $request->quantity;
+            $dataOrder['total_price'] = 0;
+            $dataOrder['total_quantity'] = 1;
             Auth::user()->invoices()->create($dataOrder);
         } else {
             $newDataOrderPrice = $product->price * $request->quantity;
@@ -60,28 +60,21 @@ class AdminCartController extends Controller
             Auth::user()->invoices()->where('id', $checkOrder->id)->update($newDataOrder);
         }
 
+
         // Invoice Details
-        $idOrder = Invoice::where('user_id', Auth::user()->id)->where('status', 0)->first();
-        // dd($idOrder);
+        $checkInvoice = Invoice::where('user_id', Auth::user()->id)->where('status', 0)->where('table_id', '-')->first();
 
-        $checkOrderDetails = Cart::where('product_id', $product->id)->where('order_id', $idOrder->id)->first();
-
-        $cart = Cart::where('user_id', $request->user()->id)
-            ->where('product_id', $product->id)
-            ->where('status', 0)
-            ->whereNull('paid_at')
-            ->first();
+        $checkOrderDetails = Cart::where('product_id', $product->id)->where('order_id', $checkInvoice->order_id)->where('status', 0)->first();
 
         if (empty($checkOrderDetails)) {
             $dataOrderDetails['product_id'] = $product->id;
-            $dataOrderDetails['order_id'] = $order_id;
+            $dataOrderDetails['order_id'] = $checkInvoice->order_id;
             $dataOrderDetails['quantity'] = 1;
-            $dataOrderDetails['price'] = $request->quantity *
-             $product->price;
-             Auth::user()->carts()->create($dataOrderDetails);
+            $dataOrderDetails['price'] = $product->price;
+            Auth::user()->carts()->create($dataOrderDetails);
         } else {
-            $newDataOrderDetails['quantity'] = $cart->quantity + 1;
-            $newDataOrderDetails['price'] = $request->quantity * $product->price;
+            $newDataOrderDetails['quantity'] = $checkOrderDetails->quantity + 1;
+            $newDataOrderDetails['price'] = $checkOrderDetails->quantity * $product->price;
             Auth::user()->carts()->where('id', $checkOrderDetails->id)->update($newDataOrderDetails);
         }
 

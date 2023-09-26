@@ -49,8 +49,8 @@ class AdminTransactionController extends Controller
             ->where('carts.user_id', $request->user()->id)
             ->get();
 
-            $today = Carbon::now()->format('Y-m-d');
-        $invoices = Invoice::where('succeeded_at', $today)->get();
+        $today = Carbon::now()->format('Y-m-d');
+        $invoices = Invoice::whereDate('created_at', today())->whereNot('name', '-')->get();
 
         return inertia('Admin/Transaction/Index', [
             "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get(),

@@ -4,7 +4,6 @@ import clsx from 'clsx'
 
 export default function SelectTable({ className = "", value, onChange, placeholder = 'Table', ...props }) {
     const [isOpen, setIsOpen] = useState(false)
-    // Filter the data to remove the selected value
 
     const { data: data } = props.data
 
@@ -20,7 +19,7 @@ export default function SelectTable({ className = "", value, onChange, placehold
             open={isOpen}
         >
             <Listbox.Button className="flex h-11 w-full items-center justify-between gap-x-2 rounded border border-gray-300 px-3 focus:outline-none">
-                <span className="capitalize line-clamp-1"> Table  {value.name}</span>
+                <span className="capitalize line-clamp-1"> {value.name ? 'Table ' + value.name : 'Table' || data.length == 0 ? 'Table'  : 'Empty Table' }</span>
                 <div onClick={() => setIsOpen(!isOpen)}>
                     <svg
                         className="h-5 w-5 text-gray-400"

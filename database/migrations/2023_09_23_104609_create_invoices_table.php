@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('table_id');
             $table->string('payment_id')->default(0);
             $table->double('total_price');
+            $table->double('total_quantity');
             $table->string('status')->default(0);
             $table->double('charge')->default(0);
             $table->string('name');

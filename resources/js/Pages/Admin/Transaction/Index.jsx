@@ -9,11 +9,12 @@ import TextInput from '@/Components/TextInput'
 import App from '@/Layouts/App'
 import { numberFormat } from '@/Libs/Helper'
 import { Head, Link, useForm, router } from '@inertiajs/react'
-import { IconArrowsMaximize, IconArrowsMinimize, IconCategory, IconChecks, IconCircleFilled, IconTrashX } from '@tabler/icons-react'
+import { IconArrowsMaximize, IconArrowsMinimize, IconCategory, IconTrashX } from '@tabler/icons-react'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 
-export default function Index({ categories, carts, invoices, ...props }) {
+export default function Index({ categories, carts, invoices, tables, ...props }) {
+
     const [isOrderListOpen, setIsOrderListOpen] = useState(true)
     const { data: products, meta, links } = props.products
 
@@ -30,8 +31,6 @@ export default function Index({ categories, carts, invoices, ...props }) {
     const { data, setData } = useForm({
         id: '',
         name: '',
-        carts: '',
-        total: '',
         table_id: '',
         payment_id: '',
         charge: '',
@@ -44,6 +43,7 @@ export default function Index({ categories, carts, invoices, ...props }) {
             ...data,
             carts: carts,
             total: total,
+            quantity: quantity,
             table_id: data.table_id.id,
             payment_id: data.payment_id.id,
         }, {
@@ -74,9 +74,19 @@ export default function Index({ categories, carts, invoices, ...props }) {
                         {/* Start Order List */}
                         <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Order List</h3>
                         <div className="flex w-full scrolling-wrapper overflow-x-scroll overflow-y-hidden pb-1 flex-nowrap gap-x-4">
-                        {invoices.map((invoice, index) => (
-                            <OrderItem invoice={invoice} key={index} />
-                        ))}
+                            {invoices.length > 0 ? <>
+                                {
+                                    invoices.map((invoice, index) => (
+                                        <OrderItem invoice={invoice} key={index} />
+                                    ))
+                                }
+                            </>
+                                :
+                                <div className="flex justify-start items-center flex-1">
+                                    <h1 className='text-slate-300 mr-2'><IconTrashX size={32} />  </h1>
+                                    <p className='text-slate-500 text-lg'>Empty Order List</p>
+                                </div>
+                            }
                         </div>
                         {/* End Order List */}
 
@@ -165,9 +175,17 @@ export default function Index({ categories, carts, invoices, ...props }) {
                                     <InvoiceForm {...{ data, setData }} />
                                     <hr />
                                     <div className="pb-4 flex items-end flex-1 justify-end">
-                                        <PrimaryButton className='bg-purple-600 text-white px-3 py-4 w-full rounded'>
-                                            Confirm
-                                        </PrimaryButton>
+                                        {
+                                            tables.length > 1 ?
+                                                <PrimaryButton className='bg-slate-600 text-white px-3 py-4 w-full rounded'>
+                                                    Empty Table
+                                                </PrimaryButton>
+                                                :
+                                                <PrimaryButton className='bg-purple-600 text-white px-3 py-4 w-full rounded'>
+                                                    Confirm
+                                                </PrimaryButton>
+                                        }
+
                                     </div>
                                 </form>
                             </div>
