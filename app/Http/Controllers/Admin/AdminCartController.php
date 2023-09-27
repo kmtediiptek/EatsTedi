@@ -40,9 +40,12 @@ class AdminCartController extends Controller
      */
     public function store(Request $request, Product $product)
     {
-        $checkOrder = Invoice::where('user_id', Auth::user()->id)->where('table_id', '-')->first();
-
-        $order_id = Auth::user()->id . date('Ymd') . rand(1, 100);
+        if ($request->order_id) {
+            $checkOrder = Invoice::where('user_id', Auth::user()->id)->where('order_id', $request->order_id)->first();
+        }else {
+            $checkOrder = Invoice::where('user_id', Auth::user()->id)->where('table_id', '-')->first();
+            $order_id = Auth::user()->id . date('Ymd') . rand(1, 100);
+        }
 
         if (empty($checkOrder)) {
             $dataOrder['user_id'] = Auth::user()->id;
@@ -62,9 +65,15 @@ class AdminCartController extends Controller
 
 
         // Invoice Details
-        $checkInvoice = Invoice::where('user_id', Auth::user()->id)->where('status', 0)->where('table_id', '-')->first();
+        if ($request->order_id) {
+            $checkInvoice = Invoice::where('user_id', Auth::user()->id)->where('status', 0)->where('order_id', $request->order_id)->first();
+            $checkOrderDetails = Cart::where('product_id', $product->id)->where('order_id', $request->order_id)->first();
+        }else {
+            $checkInvoice = Invoice::where('user_id', Auth::user()->id)->where('status', 0)->where('table_id', '-')->first();
+            $checkOrderDetails = Cart::where('product_id', $product->id)->where('order_id', $checkInvoice->order_id)->where('status', 0)->first();
+        }
 
-        $checkOrderDetails = Cart::where('product_id', $product->id)->where('order_id', $checkInvoice->order_id)->where('status', 0)->first();
+
 
         if (empty($checkOrderDetails)) {
             $dataOrderDetails['product_id'] = $product->id;
@@ -83,11 +92,20 @@ class AdminCartController extends Controller
 
     public function increment(Request $request, Product $product)
     {
-        $cart = Cart::where('user_id', $request->user()->id)
+        if($request->order_id) {
+            $cart = Cart::where('user_id', $request->user()->id)
+            ->where('product_id', $product->id)
+            ->where('order_id', $request->order_id)
+            ->whereNull('paid_at')
+            ->first();
+        }else {
+            $cart = Cart::where('user_id', $request->user()->id)
             ->where('product_id', $product->id)
             ->where('status', 0)
             ->whereNull('paid_at')
             ->first();
+        }
+
 
         if ($cart) {
             $cart->update([
@@ -109,12 +127,19 @@ class AdminCartController extends Controller
 
     public function decrement(Request $request, Product $product)
     {
-        $cart = Cart::where('user_id', $request->user()->id)
+        if($request->order_id) {
+            $cart = Cart::where('user_id', $request->user()->id)
+            ->where('product_id', $product->id)
+            ->where('order_id', $request->order_id)
+            ->whereNull('paid_at')
+            ->first();
+        }else {
+            $cart = Cart::where('user_id', $request->user()->id)
             ->where('product_id', $product->id)
             ->where('status', 0)
             ->whereNull('paid_at')
             ->first();
-
+        }
         if ($cart) {
             if ($cart->quantity > 1) {
                 $cart->update([

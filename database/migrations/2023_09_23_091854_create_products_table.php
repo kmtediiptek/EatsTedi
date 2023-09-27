@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('picture')->nullable();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->double('price');
+            $table->bigInteger('price');
             $table->timestamps();
         });
     }

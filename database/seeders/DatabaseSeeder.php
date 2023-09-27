@@ -29,42 +29,42 @@ class DatabaseSeeder extends Seeder
         \App\Models\Table::create([
             'name' => 1,
             'slug' => 1,
-            'status' => 1
+            'status' => 0
         ]);
         \App\Models\Table::create([
             'name' => 2,
             'slug' => 2,
-            'status' => 1
+            'status' => 0
         ]);
         \App\Models\Table::create([
             'name' => 3,
             'slug' => 3,
-            'status' => 1
+            'status' => 0
         ]);
         \App\Models\Table::create([
             'name' => 4,
             'slug' => 4,
-            'status' => 1
+            'status' => 0
         ]);
         \App\Models\Table::create([
             'name' => 5,
             'slug' => 5,
-            'status' => 1
+            'status' => 0
         ]);
         \App\Models\Table::create([
             'name' => 6,
             'slug' => 6,
-            'status' => 1
+            'status' => 0
         ]);
         \App\Models\Table::create([
             'name' => 7,
             'slug' => 7,
-            'status' => 1
+            'status' => 0
         ]);
         \App\Models\Table::create([
             'name' => 8,
             'slug' => 8,
-            'status' => 1
+            'status' => 0
         ]);
         \App\Models\Table::create([
             'name' => 9,
@@ -82,7 +82,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\Product::factory(500)->create();
-        \App\Models\Invoice::factory(50)->create();
-        \App\Models\Cart::factory(50)->create();
+        // \App\Models\Invoice::factory(9)->create();
+        // \App\Models\Cart::factory(9)->create();
     }
 }

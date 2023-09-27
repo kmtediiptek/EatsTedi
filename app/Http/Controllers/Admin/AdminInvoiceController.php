@@ -42,7 +42,12 @@ class AdminInvoiceController extends Controller
     public function store(AdminInvoiceRequest $request)
     {
 
-        $order = Cart::select('order_id')->where('user_id', Auth::user()->id)->where('status', 0)->first();
+        if ($request->id) {
+            $order = Cart::select('order_id')->where('user_id', Auth::user()->id)->where('order_id', $request->id)->first();
+        }else {
+            $order = Cart::select('order_id')->where('user_id', Auth::user()->id)->where('status', 0)->first();
+        }
+
 
         $total = (int) $request->total;
         $quantity = (int) $request->quantity;
@@ -62,7 +67,6 @@ class AdminInvoiceController extends Controller
             ]);
         }
 
-        // Create or update the invoice
         $invoiceData = [
             'order_id' => $order_id,
             'total_price' => $total,
@@ -80,9 +84,14 @@ class AdminInvoiceController extends Controller
             $invoiceData['name'] = $request->name;
         }
 
-        $invoice = Auth::user()->invoices()->where('order_id', $order_id)
-            ->where('table_id', '-')
-            ->first();
+        if($request->id) {
+            $invoice = Auth::user()->invoices()->where('order_id', $order_id)
+                ->first();
+            }else {
+            $invoice = Auth::user()->invoices()->where('order_id', $order_id)
+                ->where('table_id', '-')
+                ->first();
+        }
 
         if (!$invoice) {
             // Invoice doesn't exist, create a new one
@@ -99,7 +108,7 @@ class AdminInvoiceController extends Controller
             "status" => 0
         ]);
 
-        return back();
+        return to_route('admin.transaction');
     }
 
 

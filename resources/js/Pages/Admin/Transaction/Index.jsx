@@ -20,8 +20,6 @@ export default function Index({ categories, carts, invoices, tables, ...props })
 
     const { data: products, meta, links } = props.products
 
-
-
     const total = carts.reduce((acc, cart) => acc + cart.price, 0)
 
     const quantity = carts.reduce((acc, cart) => acc + cart.quantity, 0)
@@ -33,35 +31,43 @@ export default function Index({ categories, carts, invoices, tables, ...props })
         table_id: '',
         payment_id: '',
         charge: '',
+        'order_id': ''
     })
 
     const toggleOrderList = (order) => {
         if (order) {
-            setSelectedOrder(order);
-
             setData({
-                id: order.id,
+                id: order.order_id,
                 name: order.name,
                 table_id: order.table_id,
                 payment_id: order.payment_id,
-                charge: order.charge,
-            });
+                carts: order.carts,
+                total: order.total,
+                quantity: order.quantity,
+            })
+            router.get(`/admin/transaction`, {
+                order_id: order.order_id,
+            }, {
+                preserveState: true
+            })
+            setSelectedOrder(order)
+
         } else {
 
-            setSelectedOrder(null);
+            setSelectedOrder(null)
         }
 
-    };
-
-
+    }
 
     const onSubmit = (e) => {
         e.preventDefault()
+        console.log(data);
         router.post(`/admin/invoice`, {
             ...data,
             carts: carts,
             total: total,
             quantity: quantity,
+            order_id: data.order_id,
             table_id: data.table_id.id,
             payment_id: data.payment_id.id,
         }, {
@@ -95,7 +101,7 @@ export default function Index({ categories, carts, invoices, tables, ...props })
                             {invoices.length > 0 ? <>
                                 {
                                     invoices.map((invoice, index) => (
-                                            <OrderItem invoice={invoice} key={index} onClick={() => toggleOrderList(invoice)} />
+                                        <OrderItem invoice={invoice} key={index} onClick={() => toggleOrderList(invoice)} />
                                     ))
                                 }
                             </>
