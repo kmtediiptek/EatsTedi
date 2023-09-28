@@ -3,11 +3,11 @@ import TextInput from './TextInput'
 import Error from './Error'
 import { usePage } from '@inertiajs/react'
 import SelectTable from './SelectTable'
-import Select from './Select'
+import SelectPayment from './SelectPayment'
 
 export default function InvoiceForm({ data, setData }) {
 
-    const { errors, tables } = usePage().props
+    const { errors, tables, payments } = usePage().props
     const onChange = (e) => {
         setData(e.target.name, e.target.value)
     }
@@ -20,23 +20,6 @@ export default function InvoiceForm({ data, setData }) {
             setShowPaymentOptions(false)
         }
     }
-
-
-    const payments = [
-        {
-            id: 1,
-            name: "Cash"
-
-        },
-        {
-            id: 2,
-            name: "QRIS"
-        },
-        {
-            id: 3,
-            name: "Lainnya"
-        }
-    ]
 
     return (
         <>
@@ -59,7 +42,7 @@ export default function InvoiceForm({ data, setData }) {
             </div>
                 {showPaymentOptions && (
                     <div className='flex flex-col w-full'>
-                        <Select value={data.payment_id} data={payments} className="w-full" placeholder='Payment' onChange={(e) => setData('payment_id', e)} />
+                        <SelectPayment value={data.payment_id} data={payments} className="w-full" placeholder='Payment' onChange={(e) => setData('payment_id', e)} />
                         {errors.payment_id ? <Error className='' value={errors.payment_id} /> : null}
                     </div>
                 )}

@@ -1,5 +1,5 @@
 import ActionButton from '@/Components/Actionbutton'
-import TableForm from '@/Components/TableForm'
+import PaymentForm from '@/Components/PaymentForm'
 import Container from '@/Components/Container'
 import MyModal from '@/Components/Modal'
 import Pagination from '@/Components/Pagination'
@@ -14,13 +14,13 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 
 
-export default function Index({ total_tables, ...props }) {
-    const { data: tables, meta, links } = props.tables
+export default function Index({ total_payments, ...props }) {
+    const { data: payments, meta, links } = props.payments
 
     const [searchQuery, setSearchQuery] = useState('')
 
-    const filteredTables = tables.filter(table =>
-        table.name.toLowerCase().includes(searchQuery.toLowerCase())
+    const filteredPayments = payments.filter(payment =>
+        payment.name.toLowerCase().includes(searchQuery.toLowerCase())
     ).slice(0, 10)
 
     const { delete: destroy, post, put, data, setData } = useForm({
@@ -30,29 +30,29 @@ export default function Index({ total_tables, ...props }) {
     let [isOpen, setIsOpen] = useState(false)
     let [isToast, setIsToast] = useState(false)
 
-    const [modalTable, setModalTable] = useState("")
+    const [modalPayment, setModalPayment] = useState("")
 
     const [toastTitle, setToastTitle] = useState("")
 
     const [modalType, setModalType] = useState("")
 
-    const [TableSlug, setTableSlug] = useState("")
+    const [PaymentSlug, setPaymentSlug] = useState("")
 
-    function openModalTable(TableSlug, type) {
+    function openModalTable(PaymentSlug, type) {
         setIsOpen(true)
-        setModalTable("Table")
+        setModalPayment("Payment")
         setModalType(type)
-        setTableSlug(TableSlug)
-        if (TableSlug) {
-            const selectedTable = tables.find(table => table.slug === TableSlug)
+        setPaymentSlug(PaymentSlug)
+        if (PaymentSlug) {
+            const selectedPayment = payments.find(payment => payment.slug === PaymentSlug)
 
-            setTableSlug(TableSlug)
+            setPaymentSlug(PaymentSlug)
             setData({
-                name: selectedTable.name,
-                status: selectedTable.status,
+                name: selectedPayment.name,
+                status: selectedPayment.status,
             })
         } else {
-            setTableSlug("")
+            setPaymentSlug("")
             setData({
                 name: '',
                 status: '',
@@ -60,10 +60,10 @@ export default function Index({ total_tables, ...props }) {
         }
     }
 
-    function openToast(TableSlug, title) {
+    function openToast(PaymentSlug, title) {
         setIsToast(true)
         setToastTitle(title)
-        setTableSlug(TableSlug)
+        setPaymentSlug(PaymentSlug)
     }
 
     function onCancelModal() {
@@ -77,32 +77,32 @@ export default function Index({ total_tables, ...props }) {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        post(route('admin.table.index'), {
+        post(route('admin.payment.index'), {
             data,
             onSuccess: () => {
-                toast.success('Table has been created!')
+                toast.success('Payment has been created!')
                 setIsOpen(false)
-                setData({ name: '', status: '' })
+                setData({ name: '' })
             }
 
         })
     }
 
-    const onUpdate = (TableSlug) => (e) => {
+    const onUpdate = (PaymentSlug) => (e) => {
         e.preventDefault()
-        put(route('admin.table.update', TableSlug), {
+        put(route('admin.payment.update', PaymentSlug), {
             ...data,
             onSuccess: () => {
-                toast.success('Table has been updated!'),
+                toast.success('Payment has been updated!'),
                     setIsOpen(false)
             }
         })
     }
 
-    const onDelete = (TableSlug) => {
-        destroy(route('admin.table.destroy', TableSlug), {
+    const onDelete = (PaymentSlug) => {
+        destroy(route('admin.payment.destroy', PaymentSlug), {
             onSuccess: () => {
-                toast.success('Table has been deleted!'),
+                toast.success('Payment has been deleted!'),
                     setIsToast(false)
             }
         })
@@ -111,8 +111,8 @@ export default function Index({ total_tables, ...props }) {
         <>
             <Head title="Setting" />
             <Container>
-                {/* Start Tables */}
-                <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Tables</h3>
+                {/* Start Payments */}
+                <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Payments</h3>
                 <div className="flex justify-between w-full item-center my-2">
                     <button
                         onClick={() => openModalTable("", "create")}
@@ -129,27 +129,27 @@ export default function Index({ total_tables, ...props }) {
                     <Table.Thead>
                         <tr>
                             <Table.Th>No.</Table.Th>
-                            <Table.Th>Number</Table.Th>
+                            <Table.Th>Name</Table.Th>
                             <Table.Th>Status</Table.Th>
                             <Table.Th>Action</Table.Th>
                         </tr>
                     </Table.Thead>
                     <Table.Tbody>
-                        {filteredTables.length > 0 ? <>
+                        {filteredPayments.length > 0 ? <>
 
-                            {filteredTables.map((table, index) => (
+                            {filteredPayments.map((payment, index) => (
                                 <tr className="bg-white border-b text-gray-500" key={index}>
                                     <Table.Td className="w-5">{meta.from + index}</Table.Td>
-                                    <Table.Td>{table.name.toUpperCase()}</Table.Td>
+                                    <Table.Td>{payment.name.toUpperCase()}</Table.Td>
                                     <Table.Td className="text-left">
-                                    <span className={`text-xs p-2 ${table.status == 1 ? 'bg-sky-500 text-white rounded' : 'bg-emerald-400 text-white rounded'}`}>
-                                            {table.status == 1 ? "Active" : "Non Active"}
+                                        <span className={`text-xs p-2 ${payment.status == 1 ? 'bg-sky-500 text-white rounded' : 'bg-emerald-400 text-white rounded'}`}>
+                                            {payment.status == 1 ? "Active" : "Non Active"}
                                         </span>
                                     </Table.Td>
                                     <Table.Td className="w-10" >
                                         <div className='flex flex-nowrap gap-2'>
-                                            <ActionButton className='bg-yellow-400' type="button" onClick={() => openModalTable(table.slug, "edit")}><IconEdit size={18} /></ActionButton>
-                                            <ActionButton className='bg-red-500' type="button" onClick={() => openToast(table.slug, 'Table ' + table.name)}><IconTrash size={18} /></ActionButton>
+                                            <ActionButton className='bg-yellow-400' type="button" onClick={() => openModalTable(payment.slug, "edit")}><IconEdit size={18} /></ActionButton>
+                                            <ActionButton className='bg-red-500' type="button" onClick={() => openToast(payment.slug, 'Payment ' + payment.name)}><IconTrash size={18} /></ActionButton>
                                         </div>
                                     </Table.Td>
                                 </tr>
@@ -161,18 +161,18 @@ export default function Index({ total_tables, ...props }) {
                         }
                     </Table.Tbody>
                 </Table>
-                {tables.length > 0 &&
+                {payments.length > 0 &&
                     <div className='flex w-full justify-between items-center'>
                         <Pagination meta={meta} links={links} />
-                        <p className='text-sm text-slate-500 mt-10'>Total Tables: <span className='font-bold'>{total_tables}</span> </p>
+                        <p className='text-sm text-slate-500 mt-10'>Total Payments: <span className='font-bold'>{total_payments}</span> </p>
                     </div>
                 }
-                {/* End Tables */}
+                {/* End Payments */}
 
                 {/* Modal */}
-                <MyModal isOpen={isOpen} onClose={() => setIsOpen(false)} size={`1/3`} type={modalType} title={modalTable}>
-                    <form onSubmit={modalType == "create" ? onSubmit : onUpdate(TableSlug)} className='mt-6'>
-                        <TableForm {...{ data, setData }} />
+                <MyModal isOpen={isOpen} onClose={() => setIsOpen(false)} size={`1/3`} type={modalType} title={modalPayment}>
+                    <form onSubmit={modalType == "create" ? onSubmit : onUpdate(PaymentSlug)} className='mt-6'>
+                        <PaymentForm {...{ data, setData }} />
                         <div className="flex justify-end gap-2">
                             <SecondaryButton onClick={() => onCancelModal()}>Cancel</SecondaryButton>
                             <PrimaryButton type='submit'>{modalType == "create" ? "Create" : "Update"}</PrimaryButton>
@@ -184,7 +184,7 @@ export default function Index({ total_tables, ...props }) {
                 <Toast isToast={isToast} onClose={() => setIsToast(false)} title={toastTitle}>
                     <div className="flex justify-end gap-2 justify-center">
                         <SecondaryButton onClick={() => onCancelToast()}>No</SecondaryButton>
-                        <PrimaryButton onClick={() => onDelete(TableSlug)}>Yes</PrimaryButton>
+                        <PrimaryButton onClick={() => onDelete(PaymentSlug)}>Yes</PrimaryButton>
                     </div>
                 </Toast>
 

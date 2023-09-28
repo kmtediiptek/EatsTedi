@@ -7,6 +7,8 @@ export default function SelectTable({ className = "", value, onChange, placehold
 
     const { data: data } = props.data
 
+    const filteredData = data.filter(item => item.id !== value.id)
+
     return (
         <Listbox
             as="div"
@@ -19,7 +21,7 @@ export default function SelectTable({ className = "", value, onChange, placehold
             open={isOpen}
         >
             <Listbox.Button className="flex h-11 w-full items-center justify-between gap-x-2 rounded border border-gray-300 px-3 focus:outline-none">
-                <span className="capitalize line-clamp-1"> {value.name ? 'Table ' + value.name : 'Table' || data.length == 0 ? 'Table'  : 'Empty Table' }</span>
+                <span className="capitalize line-clamp-1">Table {value.name || value }</span>
                 <div onClick={() => setIsOpen(!isOpen)}>
                     <svg
                         className="h-5 w-5 text-gray-400"
@@ -46,7 +48,7 @@ export default function SelectTable({ className = "", value, onChange, placehold
                 leaveTo="transform opacity-0 scale-95"
             >
                 <Listbox.Options className="z-50 absolute right-0 bottom-10 mt-1 max-h-[10rem] w-full overflow-y-auto rounded border border-gray-300 bg-white py-1 shadow-sm">
-                    {data.map((item) => (
+                    {filteredData.map((item) => (
                         <Listbox.Option key={item.id} value={item}>
                             {({ selected, active }) => (
                                 <div

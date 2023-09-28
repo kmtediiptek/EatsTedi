@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminCartController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminInvoiceController;
+use App\Http\Controllers\Admin\AdminPaymentController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminTableController;
 use App\Http\Controllers\Admin\AdminTransactionController;
@@ -64,6 +65,12 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/setting/{table:slug}/table', [AdminTableController::class, 'update'])->name('admin.table.update');
     Route::delete('/setting/table/{table:slug}', [AdminTableController::class, 'destroy'])->name('admin.table.destroy');
 
+    // Admin Table
+    Route::get('/setting/payment', [AdminPaymentController::class, 'index'])->name('admin.payment.index');
+    Route::post('/setting/payment', [AdminPaymentController::class, 'store'])->name('admin.payment.store');
+    Route::put('/setting/{payment:slug}/payment', [AdminPaymentController::class, 'update'])->name('admin.payment.update');
+    Route::delete('/setting/payment/{payment:slug}', [AdminPaymentController::class, 'destroy'])->name('admin.payment.destroy');
+
     // Admin Employee
     Route::get('/setting/employee', [AdminUserController::class, 'index'])->name('admin.employee.index');
     Route::post('/setting/employee', [AdminUserController::class, 'store'])->name('admin.employee.store');
@@ -87,8 +94,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     // Admin Invoice
     Route::get('/invoice', [AdminInvoiceController::class, 'index'])->name('admin.invoice.index');
     Route::post('/invoice', [AdminInvoiceController::class, 'store'])->name('admin.invoice.store');
-    Route::put('/invoice/{invoice:slug}', [AdminInvoiceController::class, 'update'])->name('admin.invoice.update');
-    Route::delete('/invoice/{invoice:slug}', [AdminInvoiceController::class, 'destroy'])->name('admin.invoice.destroy');
+    Route::put('/invoice/{invoice}', [AdminInvoiceController::class, 'update'])->name('admin.invoice.update');
+    Route::delete('/invoice/{invoice}', [AdminInvoiceController::class, 'destroy'])->name('admin.invoice.destroy');
 });
 
 require __DIR__ . '/auth.php';

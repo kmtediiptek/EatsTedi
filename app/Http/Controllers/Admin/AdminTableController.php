@@ -16,9 +16,9 @@ class AdminTableController extends Controller
 
         $total_table = Table::get()->count();
         $tables = Table::query()
-            ->select('id', 'name', 'slug')
+            ->select('id', 'name', 'slug', 'status')
             ->latest()
-            ->fastPaginate();
+            ->fastPaginate(10);
         return inertia('Admin/Table/Index', [
             "tables" => AdminTableResource::collection($tables),
             "total_tables" => $total_table
@@ -30,6 +30,7 @@ class AdminTableController extends Controller
         Table::create([
             "name" => $name = $request->name,
             "slug" => 'table-' . rand(1,100) . '-' . str($name)->slug(),
+            "status" => $request->status
         ]);
 
         return back();
@@ -41,6 +42,7 @@ class AdminTableController extends Controller
         $table->update([
             "name" => $name = $request->name ? $request->name : $table->name,
             "slug" => str($name)->slug(),
+            "status" => $request->status,
         ]);
 
         return back();

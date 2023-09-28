@@ -77,6 +77,22 @@ class DatabaseSeeder extends Seeder
             'status' => 1
         ]);
 
+        \App\Models\Payment::create([
+            'name' => 'cash',
+            'slug' => 'cash',
+            'status' => 1
+        ]);
+        \App\Models\Payment::create([
+            'name' => 'qris',
+            'slug' => 'qris',
+            'status' => 1
+        ]);
+        \App\Models\Payment::create([
+            'name' => 'lainnya',
+            'slug' => 'lainnya',
+            'status' => 1
+        ]);
+
         $this->call([
             CategorySeeder::class,
         ]);

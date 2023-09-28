@@ -5,7 +5,7 @@ namespace App\Http\Resources\Admin;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
 
-class AdminTableResource extends JsonResource
+class AdminPaymentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

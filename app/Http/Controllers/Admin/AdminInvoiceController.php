@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\AdminInvoiceRequest;
+use App\Http\Requests\Admin\AdminTableInvoiceRequest;
 use App\Models\Cart;
 use App\Models\Invoice;
 use App\Models\Table;
@@ -39,13 +39,16 @@ class AdminInvoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AdminInvoiceRequest $request)
+    public function store(AdminTableInvoiceRequest $request)
     {
-
         if ($request->id) {
             $order = Cart::select('order_id')->where('user_id', Auth::user()->id)->where('order_id', $request->id)->first();
         }else {
             $order = Cart::select('order_id')->where('user_id', Auth::user()->id)->where('status', 0)->first();
+        }
+
+        if ($request->id) {
+            $invoice = Invoice::select('table_id', 'payment_id')->where('user_id', Auth::user()->id)->where('order_id', $request->id)->first();
         }
 
 
@@ -53,6 +56,7 @@ class AdminInvoiceController extends Controller
         $quantity = (int) $request->quantity;
         $order_id = $order->order_id;
         $table_id = $request->table_id;
+        $payment_id = $request->payment_id;
 
         // Update carts based on paid status
         if ($request->paid == '1') {
@@ -71,7 +75,8 @@ class AdminInvoiceController extends Controller
             'order_id' => $order_id,
             'total_price' => $total,
             'total_quantity' => $quantity,
-            'table_id' => $table_id,
+            'table_id' => $table_id ? $table_id : $invoice->table_id,
+            'payment_id' => $payment_id = $payment_id ?? ($invoice->payment_id ?? 1),
             'name' => $request->name,
         ];
 
@@ -79,7 +84,8 @@ class AdminInvoiceController extends Controller
             // Only update these fields if paid is 1
             $invoiceData['total_price'] = $total;
             $invoiceData['succeeded_at'] = now();
-            $invoiceData['payment_id'] = $request->payment_id;
+            $invoiceData['table_id'] = $table_id ?? ($invoice->table_id ?? 1);
+            $invoiceData['payment_id'] = $payment_id ?? ($invoice->payment_id ?? 1);
             $invoiceData['charge'] = $request->charge;
             $invoiceData['name'] = $request->name;
         }

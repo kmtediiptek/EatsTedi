@@ -53,6 +53,7 @@ class AdminCartController extends Controller
             $dataOrder['status'] = 0;
             $dataOrder['order_id'] = $order_id;
             $dataOrder['table_id'] = '-';
+            $dataOrder['payment_id'] = 1;
             $dataOrder['name'] = '-';
             $dataOrder['total_price'] = 0;
             $dataOrder['total_quantity'] = 1;

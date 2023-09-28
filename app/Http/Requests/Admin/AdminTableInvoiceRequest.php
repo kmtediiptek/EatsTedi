@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdminTableRequest extends FormRequest
+class AdminTableInvoiceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,10 @@ class AdminTableRequest extends FormRequest
     public function rules()
     {
         return [
-            "name" => ['required', 'numeric', 'min:1'],
-            "status" => ['required'],
+            "name" => ['required', 'string', 'min:3'],
+            "paid" => ['required', 'numeric', 'min:1'],
+            'table_id' => ['nullable'],
+            'payment_id' => ['nullable']
         ];
     }
 }

@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\AdminCartResource;
 use App\Http\Resources\Admin\AdminInvoiceResource;
+use App\Http\Resources\Admin\AdminPaymentResource;
 use App\Http\Resources\Admin\AdminProductResource;
 use App\Http\Resources\Admin\AdminTableResource;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Invoice;
+use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Table;
 use Carbon\Carbon;
@@ -24,7 +26,13 @@ class AdminTransactionController extends Controller
         if ($request->order_id) {
             $tables = Table::select('id', 'name', 'slug')->where('status', 0)->get();
         } else {
-            $tables = Table::select('id', 'name', 'slug')->where('status', 1)->get();
+            $tables = Table::select('id', 'name', 'slug')->where('status', 0)->get();
+        }
+
+        if ($request->order_id) {
+            $payments = Payment::select('id', 'name', 'slug')->where('status', 1)->get();
+        } else {
+            $payments = Payment::select('id', 'name', 'slug')->where('status', 1)->get();
         }
 
         if ($request->order_id) {
@@ -74,6 +82,7 @@ class AdminTransactionController extends Controller
             "products" => AdminProductResource::collection($products),
             "carts" => $carts,
             "tables" =>  AdminTableResource::collection($tables),
+            "payments" =>  AdminTableResource::collection($payments),
             "invoices" => $invoices
         ]);
     }

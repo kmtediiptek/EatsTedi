@@ -13,7 +13,7 @@ import { IconArrowsMaximize, IconArrowsMinimize, IconCategory, IconTrashX } from
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 
-export default function Index({ categories, carts, invoices, tables, ...props }) {
+export default function Index({ categories, carts, invoices, tables, payments, ...props }) {
 
     const [isOrderListOpen, setIsOrderListOpen] = useState(true)
     const [selectedOrder, setSelectedOrder] = useState(null)
@@ -39,6 +39,7 @@ export default function Index({ categories, carts, invoices, tables, ...props })
             setData({
                 id: order.order_id,
                 name: order.name,
+                charge: order.charge,
                 table_id: order.table_id,
                 payment_id: order.payment_id,
                 carts: order.carts,
@@ -61,7 +62,6 @@ export default function Index({ categories, carts, invoices, tables, ...props })
 
     const onSubmit = (e) => {
         e.preventDefault()
-        console.log(data);
         router.post(`/admin/invoice`, {
             ...data,
             carts: carts,

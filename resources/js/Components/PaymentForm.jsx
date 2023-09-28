@@ -14,7 +14,7 @@ export default function TableForm({ data, setData }) {
     return (
         <>
             <div className="mb-4">
-                <InputLabel htmlFor="name" value="Number" />
+                <InputLabel htmlFor="name" value="Name" />
                 <TextInput
                     name="name"
                     id="name"

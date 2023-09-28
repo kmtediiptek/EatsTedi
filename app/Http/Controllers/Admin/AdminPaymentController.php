@@ -3,84 +3,59 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\AdminPaymentRequest;
+use App\Http\Resources\Admin\AdminPaymentResource;
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminPaymentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+
+        $total_payment = Payment::get()->count();
+        $payments = Payment::query()
+            ->select('id', 'name', 'slug', 'status')
+            ->latest()
+            ->fastPaginate(10);
+
+        return inertia('Admin/Payment/Index', [
+            "payments" => AdminPaymentResource::collection($payments),
+            "total_payments" => $total_payment
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(AdminPaymentRequest $request)
     {
-        //
+        Payment::create([
+            "name" => $name = $request->name,
+            "slug" => 'payment-' . rand(1,100) . '-' . str($name)->slug(),
+            "status" => $request->status,
+        ]);
+
+        return back();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function update(AdminPaymentRequest $request, Payment $payment)
     {
-        //
+        $payment->update([
+            "name" => $name = $request->name ? $request->name : $payment->name,
+            "slug" => str($name)->slug(),
+            "status" => $request->status
+        ]);
+
+        return back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Payment  $payment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Payment  $payment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Payment  $payment
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Payment  $payment
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Payment $payment)
     {
-        //
+        if ($payment->picture) {
+            Storage::delete($payment->picture);
+        }
+
+        $payment->delete();
+        return back();
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Invoice;
+use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Table;
 use App\Models\User;
@@ -23,6 +24,7 @@ class AdminDashboardController extends Controller
     {
         $total_categories = Category::get()->count();
         $total_tables = Table::get()->count();
+        $total_payments = Payment::get()->count();
         $total_products = Product::get()->count();
         $total_employees = User::where('status', 'employee')->get()->count();
 
@@ -65,6 +67,7 @@ class AdminDashboardController extends Controller
             "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get(),
             "total_categories" => $total_categories,
             "total_tables" => $total_tables,
+            "total_payments" => $total_payments,
             "total_products" => $total_products,
             "total_employees" => $total_employees,
             "total_income" => $total_income,
