@@ -74,8 +74,7 @@ class AdminTransactionController extends Controller
             ->fastPaginate(10)->withQueryString();
         }
 
-        $invoices = Invoice::whereDate('created_at', today())->whereNot('name', '-')->get();
-
+        $invoices = Invoice::whereDate('created_at', today())->whereNot('name', '-')->latest()->get();
 
         return inertia('Admin/Transaction/Index', [
             "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get(),

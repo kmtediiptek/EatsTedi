@@ -2,7 +2,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { IconX } from '@tabler/icons-react'
 import { Children, Fragment, useState } from 'react'
 
-export default function MyModal({isToast, onClose, title, children}) {
+export default function MyModal({isToast, name = 'Delete', onClose, title, children}) {
     return (
         <>
             <Transition appear show={isToast} as={Fragment}>
@@ -35,8 +35,9 @@ export default function MyModal({isToast, onClose, title, children}) {
                                         as="h3"
                                         className="text-center mt-5 text-slate-700 leading-6 mb-5 mt-4 text-gray-700"
                                     >
-                                        <p className='font-medium text-lg'>Deleted</p>
-                                        <p className='font-normal text-slate-500'>Are you sure want to delete {title}</p>
+                                        <p className='font-medium text-lg'>{name}</p>
+
+                                        <p className='font-normal text-slate-500'>{name ? `Are you sure ${title} is finished?` : `Are you sure want to delete ${title}`}  </p>
                                     </Dialog.Title>
                                         <button className='absolute right-2 top-2 py-2 px-2 bg-transparent text-slate-500' onClick={onClose}><IconX /></button>
                                     <div className="mt-2">

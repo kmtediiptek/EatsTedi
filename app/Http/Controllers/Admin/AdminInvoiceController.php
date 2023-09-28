@@ -149,7 +149,16 @@ class AdminInvoiceController extends Controller
      */
     public function update(Request $request, Invoice $invoice)
     {
-        //
+
+        $invoice->update([
+            "status" => 1
+        ]);
+
+        Table::where('name', $invoice->table_id)->update([
+            "status" => 1
+        ]);
+
+        return back();
     }
 
     /**

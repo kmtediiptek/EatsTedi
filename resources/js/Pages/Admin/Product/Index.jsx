@@ -44,14 +44,12 @@ export default function Index({ total_categories, ...props }) {
     const [productSlug, setProductSlug] = useState("")
 
     function openModalCategory(productSlug, type) {
-        console.log(type)
         setIsOpen(true)
         setModalProduct("Menu")
         setModalType(type)
         setProductSlug(productSlug)
         if (productSlug) {
             const selectedProduct = products.find(product => product.slug === productSlug)
-            console.log(selectedProduct.category);
             setProductSlug(productSlug)
             setData({
                 name: selectedProduct.name,
