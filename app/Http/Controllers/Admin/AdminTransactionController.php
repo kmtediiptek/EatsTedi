@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\AdminCartResource;
+use App\Http\Resources\Admin\AdminInvoiceResource;
 use App\Http\Resources\Admin\AdminProductResource;
 use App\Http\Resources\Admin\AdminTableResource;
 use App\Models\Cart;
@@ -66,6 +67,7 @@ class AdminTransactionController extends Controller
         }
 
         $invoices = Invoice::whereDate('created_at', today())->whereNot('name', '-')->get();
+
 
         return inertia('Admin/Transaction/Index', [
             "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get(),
