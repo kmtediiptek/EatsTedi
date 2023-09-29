@@ -66,7 +66,7 @@ export default function InvoiceForm({ data, setData, onSubmit }) {
                 </div>
                 {showPaymentOptions && (
                     <div className='flex flex-col w-full'>
-                        <SelectPayment value={data.payment_id} data={payments} className="w-full" placeholder='Invoice' onChange={(e) => setData('payment_id', e)} />
+                        <SelectPayment value={data.payment_id} data={payments} className="w-full" placeholder='Payment' onChange={(e) => setData('payment_id', e)} />
                         {errors.payment_id ? <Error className='' value={errors.payment_id} /> : null}
                     </div>
                 )}

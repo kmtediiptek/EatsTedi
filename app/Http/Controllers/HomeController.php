@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Admin\AdminProductResource;
 use App\Models\Category;
+use App\Models\Payment;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -28,6 +29,7 @@ class HomeController extends Controller
 
         return inertia('Home/Index', [
             "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get(),
+            "payments" => Payment::query()->select('id', 'name', 'slug')->get(),
             "products" => AdminProductResource::collection($products),
         ]);
     }

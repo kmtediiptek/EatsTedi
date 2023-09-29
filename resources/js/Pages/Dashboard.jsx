@@ -169,7 +169,7 @@ export default function Dashboard({ total_categories, total_tables, total_paymen
                         </div>
                     </Link>
                     <Link href={route('admin.payment.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
-                        <div className="rounded bg-purple-500 w-16 h-16 flex justify-center items-center">
+                        <div className="rounded bg-red-500 w-16 h-16 flex justify-center items-center">
                             <h3 className='text-4xl font-semibold text-center'><IconMoneybag size={36} /></h3>
                         </div>
                         <div className='text-slate-800 flex flex-col flex-1 justify-around'>
@@ -178,7 +178,7 @@ export default function Dashboard({ total_categories, total_tables, total_paymen
                         </div>
                     </Link>
                     <Link href={route('admin.employee.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
-                        <div className="rounded bg-pink-600 w-16 h-16 flex justify-center items-center">
+                        <div className="rounded bg-pink-500 w-16 h-16 flex justify-center items-center">
                             <h3 className='text-4xl font-semibold text-center'><IconUsers size={36} /></h3>
                         </div>
                         <div className='text-slate-800 flex flex-col flex-1 justify-around'>
@@ -207,7 +207,7 @@ export default function Dashboard({ total_categories, total_tables, total_paymen
                         </div>
                     </Link>
                     <Link href={route('admin.category.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
-                        <div className="rounded bg-yellow-500 w-24 h-24 flex justify-center items-center">
+                        <div className="rounded bg-yellow-400 w-24 h-24 flex justify-center items-center">
                             <h3 className='text-4xl font-semibold text-center'><IconCreditCard size={72} /></h3>
                         </div>
                         <div className='text-slate-500 flex flex-col flex-1 justify-around'>
