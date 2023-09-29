@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminActivityController;
 use App\Http\Controllers\Admin\AdminCartController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -87,6 +88,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/invoice', [AdminInvoiceController::class, 'store'])->name('admin.invoice.store');
     Route::put('/invoice/{invoice:order_id}', [AdminInvoiceController::class, 'update'])->name('admin.invoice.update');
     Route::delete('/invoice/{invoice}', [AdminInvoiceController::class, 'destroy'])->name('admin.invoice.destroy');
+
+     // Admin Log
+     Route::get('/activity', [AdminActivityController::class, 'index'])->name('admin.activity.index');
 });
 
 require __DIR__ . '/auth.php';

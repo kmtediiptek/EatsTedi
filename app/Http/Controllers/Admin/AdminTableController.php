@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminTableRequest;
 use App\Http\Resources\Admin\AdminTableResource;
+use App\Models\Activity;
 use App\Models\Table;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class AdminTableController extends Controller
@@ -33,6 +35,11 @@ class AdminTableController extends Controller
             "status" => $request->status
         ]);
 
+
+        Activity::create([
+            "activity" => Auth::user()->name . " Created Table " . $request->name
+        ]);
+
         return back();
     }
 
@@ -45,6 +52,10 @@ class AdminTableController extends Controller
             "status" => $request->status,
         ]);
 
+        Activity::create([
+            "activity" => Auth::user()->name . " Updated Table " . $request->name ?: $table->name
+        ]);
+
         return back();
     }
 
@@ -53,6 +64,10 @@ class AdminTableController extends Controller
         if ($table->picture) {
             Storage::delete($table->picture);
         }
+
+        Activity::create([
+            "activity" => Auth::user()->name . " Deleted Table " . $table->name
+        ]);
 
         $table->delete();
         return back();

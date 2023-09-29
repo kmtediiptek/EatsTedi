@@ -99,9 +99,6 @@ export default function Index({ total_invoices, ...props }) {
         }
     };
 
-
-
-
     return (
         <>
             <Head title="Setting" />

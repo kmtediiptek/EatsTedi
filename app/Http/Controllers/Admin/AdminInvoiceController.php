@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminTableInvoiceRequest;
 use App\Http\Resources\Admin\AdminInvoiceResource;
+use App\Models\Activity;
 use App\Models\Cart;
 use App\Models\Invoice;
 use App\Models\Table;
@@ -51,58 +52,6 @@ class AdminInvoiceController extends Controller
         ]);
     }
 
-    public function generatePdf(Request $request)
-    {
-
-        $start_date = $request->input('start_date');
-        $end_date = $request->input('end_date');
-
-        // Assuming 'created_at' is the column for date filtering
-        if ($start_date && $end_date) {
-            $invoices = Invoice::query()
-                ->select('id', 'name', 'order_id', 'status', 'table_id', 'payment_id', 'charge', 'succeeded_at', 'total_price', 'total_quantity')
-                ->where('status', 1)
-                ->whereBetween('created_at', [$start_date, $end_date])
-                ->latest()
-                ->get();
-        } else {
-
-            $invoices = Invoice::query()
-                ->select('id', 'name', 'order_id', 'status', 'table_id', 'payment_id', 'charge', 'succeeded_at', 'total_price', 'total_quantity')
-                ->where('status', 1)
-                ->latest()
-                ->get();
-        }
-
-        $pdfContent = view('invoice.php', ['invoices' => $invoices])->render();
-
-        // Initialize Dompdf
-        $options = new Options();
-        $options->set('isPhpEnabled', true); // Enable PHP in the HTML
-        $dompdf = new Dompdf($options);
-
-        // Load HTML content into Dompdf
-        $dompdf->loadHtml($pdfContent);
-
-        // Set paper size and render PDF (optional)
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-
-        // Stream the PDF to the client for download
-        return $dompdf->stream('invoice.php');
-    }
-
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(AdminTableInvoiceRequest $request)
     {
         if ($request->id) {
@@ -114,7 +63,6 @@ class AdminInvoiceController extends Controller
         if ($request->id) {
             $invoice = Invoice::select('table_id', 'payment_id')->where('user_id', Auth::user()->id)->where('order_id', $request->id)->first();
         }
-
 
         $total = (int) $request->total;
         $quantity = (int) $request->quantity;
@@ -178,39 +126,14 @@ class AdminInvoiceController extends Controller
             "status" => 0
         ]);
 
+
+        Activity::create([
+            "activity" => Auth::user()->name . " Create Invoices " . $request->name ?: $invoice->name . " Table " . $table_id ?: $invoice->table_id
+        ]);
+
         return to_route('admin.transaction');
     }
 
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Invoice  $invoice
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Invoice $invoice)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Invoice  $invoice
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Invoice $invoice)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Invoice  $invoice
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Invoice $invoice)
     {
 
@@ -222,17 +145,10 @@ class AdminInvoiceController extends Controller
             "status" => 1
         ]);
 
-        return back();
-    }
+        Activity::create([
+            "activity" => Auth::user()->name . " Confirm Order " . $invoice->name . " Table " . $invoice->table_id
+        ]);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Invoice  $invoice
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Invoice $invoice)
-    {
-        //
+        return back();
     }
 }

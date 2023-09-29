@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminProductRequest;
 use App\Http\Resources\Admin\AdminProductResource;
+use App\Models\Activity;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class AdminProductController extends Controller
@@ -48,6 +50,10 @@ class AdminProductController extends Controller
             "picture" => $request->hasFile('picture') ? $picture->storeAs('images/products', $slug . '.' . $picture->extension()) : null
         ]);
 
+        Activity::create([
+            "activity" => Auth::user()->name . " Created Menu " . $request->name
+        ]);
+
         return back();
     }
 
@@ -56,11 +62,15 @@ class AdminProductController extends Controller
     {
         $picture = $request->file('picture');
         $product->update([
-            "name" => $request->name,
+            "name" => $request->name ? $request->name : $product->name,
             "slug" => str($request->name . '-' .  rand(10, 100))->slug(),
-            "category_id" => $request->category_id,
-            "price" => $request->price,
+            "category_id" => $request->category_id ? $request->category_id : $product->category_id,
+            "price" => $request->price ? $request->price : $product->price,
             "picture" => $request->hasFile('picture') ? $picture->storeAs('images/products', $product->slug . '.' . $picture->extension()) : $product->picture
+        ]);
+
+        Activity::create([
+            "activity" => Auth::user()->name . " Updated Menu " . $request->name ?: $product->price
         ]);
 
         return back();
@@ -73,6 +83,10 @@ class AdminProductController extends Controller
         }
 
         $product->delete();
+
+        Activity::create([
+            "activity" => Auth::user()->name . " Delete Menu " . $product->name
+        ]);
         return back();
     }
 }

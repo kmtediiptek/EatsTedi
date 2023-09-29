@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, router } from '@inertiajs/react'
+import { router } from '@inertiajs/react'
 import { toast } from 'react-hot-toast'
 import { IconShoppingBagPlus } from '@tabler/icons-react'
 import { numberFormat } from '@/Libs/Helper'

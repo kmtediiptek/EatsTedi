@@ -3,18 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Admin\AdminCartResource;
-use App\Http\Resources\Admin\AdminInvoiceResource;
-use App\Http\Resources\Admin\AdminPaymentResource;
 use App\Http\Resources\Admin\AdminProductResource;
 use App\Http\Resources\Admin\AdminTableResource;
-use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Table;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

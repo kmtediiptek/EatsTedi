@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminUserRequest;
 use App\Http\Resources\Admin\AdminUserResource;
+use App\Models\Activity;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AdminUserController extends Controller
@@ -42,6 +44,10 @@ class AdminUserController extends Controller
             "picture" => $request->hasFile('picture') ? $picture->storeAs('images/employees', $name . '.' . $picture->extension()) : null
         ]);
 
+        Activity::create([
+            "activity" => Auth::user()->name . " Added Employee " . $request->name
+        ]);
+
         return back();
     }
 
@@ -60,6 +66,10 @@ class AdminUserController extends Controller
             "picture" => $request->hasFile('picture') ? $picture->storeAs('images/employees', $name . '.' . $picture->extension()) : $user->picture
         ]);
 
+        Activity::create([
+            "activity" => Auth::user()->name . " Updated Employee " . $request->name ? : $user->name
+        ]);
+
         return back();
     }
 
@@ -69,6 +79,10 @@ class AdminUserController extends Controller
         if ($user->picture) {
             Storage::delete($user->picture);
         }
+
+        Activity::create([
+            "activity" => Auth::user()->name . " Deleted Employee " . $user->name
+        ]);
 
         $user->delete();
         return back();

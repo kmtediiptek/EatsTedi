@@ -8,10 +8,10 @@ import PrimaryButton from './PrimaryButton'
 import MyModal from './Modal'
 import SecondaryButton from './SecondaryButton'
 import { IconCash, IconExchange } from '@tabler/icons-react'
+import PrintBill from './PrintBill'
+
 
 export default function InvoiceForm({ data, setData, onSubmit }) {
-
-
     let [isOpen, setIsOpen] = useState(false)
     const [modalType, setModalType] = useState("")
     const [modalPayment, setModalPayment] = useState("")
@@ -82,11 +82,11 @@ export default function InvoiceForm({ data, setData, onSubmit }) {
             <div className="pb-4 flex items-end flex-1 justify-end">
                 {
                     data.charge != 0 || data.paid == 1 ? <>
-                        <PrimaryButton type="button" onClick={() => openModalOrder("create")} disabled={charge < total_price || data.payment_id == "" || data.name == "" || data.table_id == "" } className='bg-purple-600 text-white px-3 py-4 w-full rounded'>
+                        <PrimaryButton type="button" onClick={() => openModalOrder("create")} disabled={charge < total_price || data.payment_id == "" || data.name == "" || data.table_id == ""} className='bg-purple-600 text-white px-3 py-4 w-full rounded'>
                             Buy
                         </PrimaryButton>
                     </> : <>
-                        <PrimaryButton className='bg-purple-600 text-white px-3 py-4 w-full rounded' disabled={tables.length == 0 ||  data.name == "" || data.table_id == "" }>
+                        <PrimaryButton className='bg-purple-600 text-white px-3 py-4 w-full rounded' disabled={tables.length == 0 || data.name == "" || data.table_id == ""}>
                             Confirm
                         </PrimaryButton>
                     </>
@@ -109,12 +109,10 @@ export default function InvoiceForm({ data, setData, onSubmit }) {
                     <input type="number" readOnly disabled name='change' id='change' className="w-full pl-16" value={difference} placeholder="Change.." />
                 </div>
                 <div className="flex gap-4">
-                    <SecondaryButton  onClick={() => onCancelModal()}>
+                    <SecondaryButton onClick={() => onCancelModal()}>
                         Cancel
                     </SecondaryButton>
-                    <PrimaryButton className='bg-orange-600 text-white px-3 py-4 w-full rounded' disabled={charge < total_price}>
-                        Cetak & Confirm
-                    </PrimaryButton>
+                        <PrintBill invoice={data} />
                     <PrimaryButton
                         onClick={(e) => {
                             e.preventDefault()  // Prevent the default form submission

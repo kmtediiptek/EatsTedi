@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Activity;
 use App\Models\Cart;
 use App\Models\Invoice;
 use App\Models\Product;
@@ -74,8 +75,6 @@ class AdminCartController extends Controller
             $checkOrderDetails = Cart::where('product_id', $product->id)->where('order_id', $checkInvoice->order_id)->where('status', 0)->first();
         }
 
-
-
         if (empty($checkOrderDetails)) {
             $dataOrderDetails['product_id'] = $product->id;
             $dataOrderDetails['order_id'] = $checkInvoice->order_id;
@@ -87,6 +86,10 @@ class AdminCartController extends Controller
             $newDataOrderDetails['price'] = $checkOrderDetails->quantity * $product->price;
             Auth::user()->carts()->where('id', $checkOrderDetails->id)->update($newDataOrderDetails);
         }
+
+        Activity::create([
+            "activity" => Auth::user()->name . " Added Order " . $product->name ?: $checkOrderDetails->name
+        ]);
 
         return redirect()->back();
     }

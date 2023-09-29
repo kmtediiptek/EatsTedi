@@ -12,8 +12,6 @@ export default function Dashboard({ total_categories, total_tables, total_paymen
     const weekLabels = weeklyIncome.map(item => "Week " + item.week + ", " + item.year)
     const weekData = weeklyIncome.map(item => item.total)
 
-    console.log(dailyIncome);
-
     const dayLabels = dailyIncome.map(item => "Date " + item.date + ", " + item.year)
     const dayData = dailyIncome.map(item => item.total)
 

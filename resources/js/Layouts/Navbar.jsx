@@ -54,7 +54,7 @@ export default function Navbar() {
                             <NavLink href={route('admin.invoice.index')} active={route().current('admin.invoice.index')}>
                                 History
                             </NavLink>
-                            <NavLink>
+                            <NavLink href={route('admin.activity.index')} active={route().current('admin.activity.index')}>
                                 Log
                             </NavLink>
                         </div>
@@ -131,13 +131,13 @@ export default function Navbar() {
                     <ResponsiveNavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
                         Dashboard
                     </ResponsiveNavLink>
-                    <ResponsiveNavLink href={route('admin.dashboard')} active={route().current('dashboard')}>
+                    <ResponsiveNavLink href={route('admin.transaction')} active={route().current('admin.transaction')}>
                         Menu
                     </ResponsiveNavLink>
-                    <ResponsiveNavLink href={route('admin.dashboard')} active={route().current('dashboard')}>
+                    <ResponsiveNavLink href={route('admin.invoice.index')} active={route().current('admin.invoice.index')}>
                         History
                     </ResponsiveNavLink>
-                    <ResponsiveNavLink href={route('admin.dashboard')} active={route().current('dashboard')}>
+                    <ResponsiveNavLink href={route('admin.activity.index')} active={route().current('admin.activity.index')}>
                         Log
                     </ResponsiveNavLink>
                 </div>

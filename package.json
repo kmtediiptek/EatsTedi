@@ -21,9 +21,11 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@serialport/bindings": "^9.2.9",
         "@tabler/icons-react": "^2.34.0",
         "apexcharts": "^3.42.0",
         "clsx": "^2.0.0",
+        "date-fns": "^2.30.0",
         "jspdf": "^2.5.1",
         "jspdf-autotable": "^3.6.0",
         "react-apexcharts": "^1.4.1",

@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminCategoryRequest;
 use App\Http\Requests\Admin\AdminTableRequest;
 use App\Http\Resources\Admin\AdminCategoriesResource;
+use App\Models\Activity;
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class AdminCategoryController extends Controller
@@ -33,6 +35,11 @@ class AdminCategoryController extends Controller
             "icon" => $request->icon,
         ]);
 
+
+        Activity::create([
+            "activity" => Auth::user()->name . " Created Category " . $request->name
+        ]);
+
         return back();
     }
 
@@ -45,6 +52,11 @@ class AdminCategoryController extends Controller
             "icon" => $request->icon
         ]);
 
+
+        Activity::create([
+            "activity" => Auth::user()->name . " Updated Category " . $request->name ?: $category->name
+        ]);
+
         return back();
     }
 
@@ -53,8 +65,11 @@ class AdminCategoryController extends Controller
         if ($category->picture) {
             Storage::delete($category->picture);
         }
-
         $category->delete();
+
+        Activity::create([
+            "activity" => Auth::user()->name . " Deleted Category " . $category->name
+        ]);
         return back();
     }
 }
