@@ -15,7 +15,7 @@ import toast from 'react-hot-toast'
 import { numberFormat } from '@/Libs/Helper'
 
 
-export default function Index({ total_categories, ...props }) {
+export default function Index({ total_products, ...props }) {
     const { data: products, meta, links } = props.products
 
     const [searchQuery, setSearchQuery] = useState('')
@@ -143,7 +143,7 @@ export default function Index({ total_categories, ...props }) {
                 <Table>
                     <Table.Thead>
                         <tr>
-                            <Table.Th>No.</Table.Th>
+                            <Table.Th>#</Table.Th>
                             <Table.Th>Name</Table.Th>
                             <Table.Th>Category</Table.Th>
                             <Table.Th>Price</Table.Th>
@@ -184,7 +184,7 @@ export default function Index({ total_categories, ...props }) {
                 {products.length > 0 &&
                     <div className='flex w-full justify-between items-center'>
                         <Pagination meta={meta} links={links} />
-                        <p className='text-sm text-slate-500 mt-10'>Total Menus: <span className='font-bold'>{total_categories}</span> </p>
+                        <p className='text-sm text-slate-500 mt-10'>Total Menus: <span className='font-bold'>{total_products}</span> </p>
                     </div>
                 }
                 {/* End Menus */}

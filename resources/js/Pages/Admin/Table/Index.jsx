@@ -128,7 +128,7 @@ export default function Index({ total_tables, ...props }) {
                 <Table>
                     <Table.Thead>
                         <tr>
-                            <Table.Th>No.</Table.Th>
+                            <Table.Th>#</Table.Th>
                             <Table.Th>Number</Table.Th>
                             <Table.Th>Status</Table.Th>
                             <Table.Th>Action</Table.Th>

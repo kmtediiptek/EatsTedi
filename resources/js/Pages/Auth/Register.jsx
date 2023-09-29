@@ -34,7 +34,7 @@ export default function Register() {
         <>
             <Head title="Register" />
 
-            <form onSubmit={submit}>
+            <form onSubmit={submit}  className='w-1/4 mx-auto h-screen flex flex-col justify-center'>
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
 

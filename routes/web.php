@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminTableController;
 use App\Http\Controllers\Admin\AdminTransactionController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -25,18 +26,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-
-// Route::get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -93,6 +83,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     // Admin Invoice
     Route::get('/invoice', [AdminInvoiceController::class, 'index'])->name('admin.invoice.index');
+    Route::get('/invoice/generate-pdf', [AdminInvoiceController::class, 'generatePDF'])->name('admin.invoice.generatePDF');
     Route::post('/invoice', [AdminInvoiceController::class, 'store'])->name('admin.invoice.store');
     Route::put('/invoice/{invoice:order_id}', [AdminInvoiceController::class, 'update'])->name('admin.invoice.update');
     Route::delete('/invoice/{invoice}', [AdminInvoiceController::class, 'destroy'])->name('admin.invoice.destroy');

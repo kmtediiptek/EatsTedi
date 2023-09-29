@@ -31,8 +31,14 @@ export default function Index({ categories, carts, invoices, tables, payments, .
         table_id: '',
         payment_id: '',
         charge: '',
-        'order_id': ''
+        'order_id': '',
+        'total_price': total
     })
+
+
+    const toggleCartItem = () => {
+        setIsOrderListOpen(!isOrderListOpen)
+    }
 
     const toggleOrderList = (order) => {
         if (order) {
@@ -42,9 +48,9 @@ export default function Index({ categories, carts, invoices, tables, payments, .
                 charge: order.charge,
                 table_id: order.table_id,
                 payment_id: order.payment_id,
-                carts: order.carts,
-                total: order.total,
-                quantity: order.quantity,
+                carts: carts,
+                total_price: total,
+                quantity: quantity,
             })
             router.get(`/admin/transaction`, {
                 order_id: order.order_id,
@@ -54,8 +60,8 @@ export default function Index({ categories, carts, invoices, tables, payments, .
             setSelectedOrder(order)
 
         } else {
-
             setSelectedOrder(null)
+            setIsOrderListOpen(!isOrderListOpen)
         }
 
     }
@@ -86,7 +92,7 @@ export default function Index({ categories, carts, invoices, tables, payments, .
                     {/* Start Button Card Order */}
                     <button
                         className="block fixed z-[100] bg-white rounded right-4 top-18 mt-1  p-4 text-orange-500"
-                        onClick={toggleOrderList}
+                        onClick={toggleCartItem}
                     >
                         {isOrderListOpen ? <IconArrowsMinimize /> : <IconArrowsMaximize />}
                     </button>
@@ -196,21 +202,8 @@ export default function Index({ categories, carts, invoices, tables, payments, .
                                     <p className='text-lg font-bold text-slate-600'>Rp. {numberFormat(total)}</p>
                                 </div>
                                 <form onSubmit={onSubmit} className='w-full space-y-4'>
-                                    <InvoiceForm {...{ data, setData }} />
+                                    <InvoiceForm onSubmit={onSubmit} {...{ data, setData }} />
                                     <hr />
-                                    <div className="pb-4 flex items-end flex-1 justify-end">
-                                        {
-                                            tables.length > 1 ?
-                                                <PrimaryButton className='bg-slate-600 text-white px-3 py-4 w-full rounded'>
-                                                    Empty Table
-                                                </PrimaryButton>
-                                                :
-                                                <PrimaryButton className='bg-purple-600 text-white px-3 py-4 w-full rounded'>
-                                                    Confirm
-                                                </PrimaryButton>
-                                        }
-
-                                    </div>
                                 </form>
                             </div>
 

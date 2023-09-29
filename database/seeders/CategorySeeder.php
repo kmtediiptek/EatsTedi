@@ -16,9 +16,9 @@ class CategorySeeder extends Seeder
     public function run()
     {
         collect([
-            ['name' => $name = "Makanan", 'slug' => str($name)->slug(), 'icon' => 'Icon'],
-            ['name' => $name = "Minuman", 'slug' => str($name)->slug(), 'icon' => 'Icon'],
-            ['name' => $name = "Lainnya", 'slug' => str($name)->slug(), 'icon' => 'Icon'],
+            ['name' => $name = "Food", 'slug' => str($name)->slug(), 'icon' => 'Icon'],
+            ['name' => $name = "Drink", 'slug' => str($name)->slug(), 'icon' => 'Icon'],
+            ['name' => $name = "Other", 'slug' => str($name)->slug(), 'icon' => 'Icon'],
         ])->each(fn ($category) => Category::create($category));
     }
 }

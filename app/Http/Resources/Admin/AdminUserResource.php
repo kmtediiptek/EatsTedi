@@ -15,7 +15,6 @@ class AdminUserResource extends JsonResource
      */
     public function toArray($request)
     {
-        // return $this->status;
         return [
             "id" => $this->id,
             "username" => $this->username,

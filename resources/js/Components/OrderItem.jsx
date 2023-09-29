@@ -13,7 +13,7 @@ export default function OrderItem({ invoice, onClick }) {
 
     const callVoice = (name, table) => {
         const speech = new SpeechSynthesisUtterance(`Pesanan atas Nama ${name} di Meja ${table}`)
-        speech.lang = 'id-ID' // Change voice language to Indonesian
+        speech.lang = 'id-ID'
         window.speechSynthesis.speak(speech)
     }
 
@@ -22,6 +22,12 @@ export default function OrderItem({ invoice, onClick }) {
         setToastTitle(title)
         setOrderId(orderId)
     }
+
+
+    function onCancelToast() {
+        setIsToast(false)
+    }
+
 
     const onUpdate = (orderId) => {
         router.post(`/admin/invoice/${orderId}`, {
@@ -45,17 +51,22 @@ export default function OrderItem({ invoice, onClick }) {
                     <span className='text-slate-500 text-left'>{invoice.total_quantity} Item</span>
                 </div>
                 <div className='flex items-end flex-col flex-1 gap-y-2 h-full justify-between h-16 w-32 text-slate-800'>
-                    <button onClick={() => openToast(invoice.order_id, invoice.name)} className={`font-semibold text-sm flex items-center gap-x-2 py-1 h-full px-2 rounded text-white ${invoice.status == 1 ? 'bg-green-500' : 'bg-yellow-400'}`}>
-                        {
-                            invoice.status === 1 ?
-                                <>
-                                    <IconChecks size={26} />  Done
-                                </>
-                                :
-                                <>
-                                    <IconProgress size={26} />  In Progress
-                                </>
-                        } </button>
+                    <button
+                        onClick={() => {
+                            if (invoice.charge !== 0) {
+                                openToast(invoice.order_id, invoice.name)
+                            }
+                        }}
+                        className={`font-semibold text-sm flex items-center gap-x-2 py-1 h-full px-2 rounded text-white ${invoice.status == 1 ? 'bg-green-500' : 'bg-yellow-400'} ${invoice.charge == 0 ? 'cursor-not-allowed' : ''}`}
+                        disabled={invoice.charge == 0}
+                    >
+                        {invoice.charge == 0 ? 'In Progress' : (
+                            <>
+                                {invoice.status == 1 ? <IconChecks size={26} /> : <IconProgress size={26} />}
+                                {invoice.status == 1 ? 'Done' : 'In Progress'}
+                            </>
+                        )}
+                    </button>
                     <div className='text-slate-500 h-full flex items-center gap-x-2'> <IconCircleFilled size={16} className={`${invoice.charge !== 0 ? 'text-green-500' : 'text-red-500'}`} />{invoice.charge !== 0 ? 'Paid' : 'Unpaid'}</div>
                 </div>
                 {invoice.status == 1 ? <>

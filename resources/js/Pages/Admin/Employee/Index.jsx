@@ -150,7 +150,7 @@ export default function Index({ total_employees, ...props }) {
                 <Table>
                     <Table.Thead>
                         <tr>
-                            <Table.Th>No.</Table.Th>
+                            <Table.Th>#</Table.Th>
                             <Table.Th>Name</Table.Th>
                             <Table.Th>Username</Table.Th>
                             <Table.Th>Email</Table.Th>

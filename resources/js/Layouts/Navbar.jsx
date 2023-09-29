@@ -51,8 +51,7 @@ export default function Navbar() {
                             <NavLink href={route('admin.transaction')} active={route().current('admin.transaction')}>
                                 Menu
                             </NavLink>
-                            <NavLink>
-                                {route().current('transaction')}
+                            <NavLink href={route('admin.invoice.index')} active={route().current('admin.invoice.index')}>
                                 History
                             </NavLink>
                             <NavLink>

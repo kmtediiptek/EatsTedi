@@ -131,7 +131,7 @@ export default function Index({ total_categories, ...props }) {
                 <Table>
                     <Table.Thead>
                         <tr>
-                            <Table.Th>No.</Table.Th>
+                            <Table.Th>#</Table.Th>
                             <Table.Th>Name</Table.Th>
                             <Table.Th>Icon</Table.Th>
                             <Table.Th>Action</Table.Th>

@@ -1,0 +1,189 @@
+import ActionButton from '@/Components/Actionbutton'
+import Container from '@/Components/Container'
+import Pagination from '@/Components/Pagination'
+import Table from '@/Components/Table'
+import App from '@/Layouts/App'
+import { Head, useForm, router, usePage } from '@inertiajs/react'
+import { IconPrinter } from '@tabler/icons-react'
+import React, { useState } from 'react'
+import { numberFormat } from '@/Libs/Helper'
+import TextInput from '@/Components/TextInput'
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
+
+
+export default function Index({ total_invoices, ...props }) {
+    const { data: invoices, meta, links } = props.invoices
+
+    const { data, setData } = useForm({
+        start_date: '',
+        end_date: '',
+    })
+
+    const [searchQuery, setSearchQuery] = useState('')
+
+    const filteredInvoices = invoices.filter(invoice =>
+        invoice.name.toLowerCase().includes(searchQuery.toLowerCase())
+    ).slice(0, 10)
+
+    const { errors } = usePage().props
+
+    const onChange = (e) => {
+        setData(e.target.name, e.target.value)
+
+        router.get(`/admin/invoice`, {
+            start_date: data.start_date,
+            end_date: data.end_date
+        }, {
+            preserveState: true
+        })
+    }
+
+    const generatePDF = async () => {
+        try {
+            const doc = new jsPDF('landscape'); // Set orientation to landscape
+
+            const titleTable = data.start_date && data.end_date ? `Report Order from ${data.start_date} to ${data.end_date}` : 'Report Order';
+            // Define the title and styles for the title
+            const title = titleTable;
+            const titleStyles = {
+                fontSize: 12, // Increase the font size to 16
+                align: 'center'
+            };
+
+            // Define styles for the table
+            const tableStyles = {
+                startY: 16, // Adjust the startY to leave space for the title
+                styles: {
+                    cellPadding: 2,
+                    fontSize:10,
+                    valign: 'middle',
+                    overflow: 'linebreak',
+                    fillColor: '#f3f4f6'
+                },
+                headStyles: {
+                    fillColor: '#f0f2f5',
+                    textColor: '#333',
+                    fontSize: 10
+                }
+            };
+
+            // Define column headers and rows for the table
+            const headers = [['Order ID', 'Name', 'Charge', 'Change', 'Table', 'Total Quantity', 'Total Price', 'Succeeded at', 'Status']];
+            const rows = filteredInvoices.map(invoice => [
+                invoice.order_id,
+                invoice.name,
+                `Rp. ${numberFormat(invoice.money.charge)}`,
+                `Rp. ${numberFormat(invoice.money.change)}`,
+                invoice.table_id,
+                invoice.total_quantity,
+                `Rp. ${numberFormat(invoice.total_price)}`,
+                invoice.succeeded_at,
+                invoice.status === 1 ? 'Done' : 'In Progress'
+            ]);
+
+            // Add the title to the PDF
+            doc.text(title, doc.internal.pageSize.width / 2, 10, titleStyles, null, 'center');
+
+            // Add the table to the PDF
+            doc.autoTable({
+                head: headers,
+                body: rows,
+                ...tableStyles
+            });
+
+            // Save the PDF as a file
+            doc.save('invoice.pdf');
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+        }
+    };
+
+
+
+
+    return (
+        <>
+            <Head title="Setting" />
+            <Container>
+                {/* Start Invoices */}
+                <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Invoices</h3>
+                <div className="flex  flex-wrap justify-between w-full item-center my-2">
+                    <div className="flex items-center gap-2 w-full mb-2 md:mb-0 sm:w-1/2">
+                        <div className="w-full md:w-1/4">
+                            <TextInput type="date" name='start_date' id='start_date' className="w-full" onChange={onChange} value={data.start_date} />
+                            {errors.start_date ? <Error className='' value={errors.start_date} /> : null}
+                        </div>
+                        <div className="w-full md:w-1/4">
+                            <TextInput type="date" name='end_date' id='end_date' className="w-full" onChange={onChange} value={data.end_date} />
+                            {errors.end_date ? <Error className='' value={errors.end_date} /> : null}
+                        </div>
+                        <ActionButton className='w-10 h-10'
+                            onClick={generatePDF}
+                            type="button"
+                        >
+                            <IconPrinter size={26} />
+                        </ActionButton>
+                    </div>
+                    <TextInput id="searchQuery" type="text" className='w-full md:w-1/4 rounded border-gray-300 py-1 focus:ring-puple-300 focus:border-purple-600' placeholder='Search invoice..'
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)} />
+                </div>
+                <div className='w-full'>
+                </div>
+                <Table>
+                    <Table.Thead>
+                        <tr>
+                            <Table.Th>#</Table.Th>
+                            <Table.Th>Order ID</Table.Th>
+                            <Table.Th>Name</Table.Th>
+                            <Table.Th>Charge</Table.Th>
+                            <Table.Th>Change</Table.Th>
+                            <Table.Th>Table</Table.Th>
+                            <Table.Th>Total Quantity</Table.Th>
+                            <Table.Th>Total Price</Table.Th>
+                            <Table.Th>Succeeded at</Table.Th>
+                            <Table.Th>Status</Table.Th>
+                        </tr>
+                    </Table.Thead>
+                    <Table.Tbody>
+                        {filteredInvoices.length > 0 ? <>
+                            {filteredInvoices.map((invoice, index) => (
+                                <tr className="bg-white border-b text-gray-500" key={index}>
+                                    <Table.Td className="w-5">{meta.from + index}</Table.Td>
+                                    <Table.Td>#{invoice.order_id}</Table.Td>
+                                    <Table.Td>{invoice.name}</Table.Td>
+                                    <Table.Td><sup> Rp.</sup> {numberFormat(invoice.money.charge)}</Table.Td>
+                                    <Table.Td><sup> Rp.</sup> {numberFormat(invoice.money.change)}</Table.Td>
+                                    <Table.Td>{invoice.table_id}</Table.Td>
+                                    <Table.Td>{invoice.total_quantity}</Table.Td>
+                                    <Table.Td><sup> Rp.</sup> {numberFormat(invoice.total_price)}</Table.Td>
+                                    <Table.Td>{invoice.succeeded_at}</Table.Td>
+                                    <Table.Td>
+                                        <span className={`text-xs p-2 ${invoice.status == 1 ? 'bg-emerald-500 text-white rounded' : 'bg-yellow-400 text-white rounded'}`}>
+                                            {invoice.status == 1 ? 'Done' : 'In Progress'}
+                                        </span>
+                                    </Table.Td>
+                                </tr>
+                            ))}
+                        </> :
+                            <tr className="bg-white border-b text-gray-500 text-center">
+                                <Table.Td colSpan="10">No data</Table.Td>
+                            </tr>
+                        }
+                    </Table.Tbody>
+                </Table>
+                {invoices.length > 0 &&
+                    <div className='flex w-full justify-between items-center'>
+                        <Pagination meta={meta} links={links} />
+                        <p className='text-sm text-slate-500 mt-10'>Total Invoices: <span className='font-bold'>{total_invoices}</span> </p>
+                    </div>
+                }
+                {/* End Invoices */}
+
+            </Container>
+        </>
+    )
+}
+
+Index.layout = page => <App children={page} />

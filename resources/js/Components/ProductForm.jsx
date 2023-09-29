@@ -3,10 +3,11 @@ import InputLabel from './InputLabel'
 import Error from './Error'
 import Select from './Select'
 import InputFile from './InputFIle'
-import { usePage } from '@inertiajs/react'
+import { useForm, usePage } from '@inertiajs/react'
 import TextInput from './TextInput'
 
 export default function ProductForm({ data, setData }) {
+
     const { errors, categories } = usePage().props;
     const onChange = (e) => {
         setData(e.target.name, e.target.value)

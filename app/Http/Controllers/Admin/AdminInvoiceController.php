@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminTableInvoiceRequest;
+use App\Http\Resources\Admin\AdminInvoiceResource;
 use App\Models\Cart;
 use App\Models\Invoice;
 use App\Models\Table;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 
 class AdminInvoiceController extends Controller
 {
@@ -18,16 +21,77 @@ class AdminInvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $start_date = $request->input('start_date');
+        $end_date = $request->input('end_date');
+
+        // Assuming 'created_at' is the column for date filtering
+        if ($start_date && $end_date) {
+            $invoices = Invoice::query()
+                ->select('id', 'name', 'order_id', 'status', 'table_id', 'payment_id', 'charge', 'succeeded_at', 'total_price', 'total_quantity')
+                ->where('status', 1)
+                ->whereBetween('created_at', [$start_date, $end_date])
+                ->latest()
+                ->fastPaginate(10);
+        } else {
+
+            $invoices = Invoice::query()
+                ->select('id', 'name', 'order_id', 'status', 'table_id', 'payment_id', 'charge', 'succeeded_at', 'total_price', 'total_quantity')
+                ->where('status', 1)
+                ->latest()
+                ->fastPaginate(10);
+        }
+
+        $total_invoices = $invoices->count();
+
+        return inertia('Admin/Invoice/Index', [
+            "invoices" => AdminInvoiceResource::collection($invoices),
+            "total_invoices" => $total_invoices
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function generatePdf(Request $request)
+    {
+
+        $start_date = $request->input('start_date');
+        $end_date = $request->input('end_date');
+
+        // Assuming 'created_at' is the column for date filtering
+        if ($start_date && $end_date) {
+            $invoices = Invoice::query()
+                ->select('id', 'name', 'order_id', 'status', 'table_id', 'payment_id', 'charge', 'succeeded_at', 'total_price', 'total_quantity')
+                ->where('status', 1)
+                ->whereBetween('created_at', [$start_date, $end_date])
+                ->latest()
+                ->get();
+        } else {
+
+            $invoices = Invoice::query()
+                ->select('id', 'name', 'order_id', 'status', 'table_id', 'payment_id', 'charge', 'succeeded_at', 'total_price', 'total_quantity')
+                ->where('status', 1)
+                ->latest()
+                ->get();
+        }
+
+        $pdfContent = view('invoice.php', ['invoices' => $invoices])->render();
+
+        // Initialize Dompdf
+        $options = new Options();
+        $options->set('isPhpEnabled', true); // Enable PHP in the HTML
+        $dompdf = new Dompdf($options);
+
+        // Load HTML content into Dompdf
+        $dompdf->loadHtml($pdfContent);
+
+        // Set paper size and render PDF (optional)
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        // Stream the PDF to the client for download
+        return $dompdf->stream('invoice.php');
+    }
+
     public function create()
     {
         //
@@ -43,7 +107,7 @@ class AdminInvoiceController extends Controller
     {
         if ($request->id) {
             $order = Cart::select('order_id')->where('user_id', Auth::user()->id)->where('order_id', $request->id)->first();
-        }else {
+        } else {
             $order = Cart::select('order_id')->where('user_id', Auth::user()->id)->where('status', 0)->first();
         }
 
@@ -90,10 +154,10 @@ class AdminInvoiceController extends Controller
             $invoiceData['name'] = $request->name;
         }
 
-        if($request->id) {
+        if ($request->id) {
             $invoice = Auth::user()->invoices()->where('order_id', $order_id)
                 ->first();
-            }else {
+        } else {
             $invoice = Auth::user()->invoices()->where('order_id', $order_id)
                 ->where('table_id', '-')
                 ->first();

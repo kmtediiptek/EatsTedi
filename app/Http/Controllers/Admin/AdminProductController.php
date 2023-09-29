@@ -21,7 +21,7 @@ class AdminProductController extends Controller
     public function index()
     {
 
-        $total_category = Product::get()->count();
+        $total_products = Product::get()->count();
         $products = Product::query()
             ->select('id', 'category_id', 'name', 'slug', 'price', 'picture')
             ->with([
@@ -31,7 +31,7 @@ class AdminProductController extends Controller
             ->fastPaginate();
         return inertia('Admin/Product/Index', [
             "products" => AdminProductResource::collection($products),
-            "total_categories" => $total_category,
+            "total_products" => $total_products,
             "categories" => $this->categories,
         ]);
     }

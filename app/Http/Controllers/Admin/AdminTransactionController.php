@@ -26,7 +26,7 @@ class AdminTransactionController extends Controller
         if ($request->order_id) {
             $tables = Table::select('id', 'name', 'slug')->where('status', 0)->get();
         } else {
-            $tables = Table::select('id', 'name', 'slug')->where('status', 0)->get();
+            $tables = Table::select('id', 'name', 'slug')->where('status', 1)->get();
         }
 
         if ($request->order_id) {
