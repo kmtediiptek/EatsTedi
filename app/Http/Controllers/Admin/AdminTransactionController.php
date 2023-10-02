@@ -71,8 +71,17 @@ class AdminTransactionController extends Controller
 
         $invoices = Invoice::whereDate('created_at', today())->whereNot('name', '-')->latest()->get();
 
+        $categories = Category::query()
+            ->select('id', 'name', 'icon', 'slug')
+            ->withCount('products')
+            ->get();
+
+            $total_categories = Product::get()->count();
+
+
         return inertia('Admin/Transaction/Index', [
-            "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get(),
+            "categories" => $categories,
+            "total_categories" => $total_categories,
             "products" => AdminProductResource::collection($products),
             "carts" => $carts,
             "tables" =>  AdminTableResource::collection($tables),

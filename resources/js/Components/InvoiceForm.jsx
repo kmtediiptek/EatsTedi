@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
 import TextInput from './TextInput'
 import Error from './Error'
-import { usePage } from '@inertiajs/react'
+import { usePage, router } from '@inertiajs/react'
 import SelectTable from './SelectTable'
 import SelectPayment from './SelectPayment'
 import PrimaryButton from './PrimaryButton'
 import MyModal from './Modal'
 import SecondaryButton from './SecondaryButton'
-import { IconCash, IconExchange } from '@tabler/icons-react'
-import PrintBill from './PrintBill'
+import { IconCash, IconChecks, IconExchange, IconMail, IconSend, IconX} from '@tabler/icons-react'
+import toast from 'react-hot-toast'
 
 
-export default function InvoiceForm({ data, setData, onSubmit }) {
+export default function InvoiceForm({ data, setData, onSubmit, carts, total_price }) {
+
     let [isOpen, setIsOpen] = useState(false)
     const [modalType, setModalType] = useState("")
     const [modalPayment, setModalPayment] = useState("")
@@ -41,9 +42,26 @@ export default function InvoiceForm({ data, setData, onSubmit }) {
         }
     }
     const charge = parseFloat(data.charge) || 0
-    const total_price = parseFloat(data.total_price) || 0
 
     const difference = charge - total_price
+
+    const sendBill = async () => {
+        try {
+            await router.post(`/admin/send-email`, {
+                ...data,
+                carts: carts,
+                total_price: total_price
+            }, {
+                onSuccess: () => {
+                    setIsOpen(false)
+                    toast.success("Invoice has been send Email")
+                }
+            })
+        } catch (error) {
+            console.error('Error sending email:', error)
+        }
+
+    }
 
     return (
         <>
@@ -108,11 +126,28 @@ export default function InvoiceForm({ data, setData, onSubmit }) {
                     </div>
                     <input type="number" readOnly disabled name='change' id='change' className="w-full pl-16" value={difference} placeholder="Change.." />
                 </div>
+                <div className="mb-6 relative">
+                    <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                        <IconMail color='red' />
+                    </div>
+                    <input type="email" name='email' id='email' className="w-full pl-16" onChange={onChange} value={data.email || ''} placeholder="Email.." />
+                </div>
                 <div className="flex gap-4">
                     <SecondaryButton onClick={() => onCancelModal()}>
-                        Cancel
+                        <IconX />
                     </SecondaryButton>
-                        <PrintBill invoice={data} />
+                    <PrimaryButton
+                        onClick={(e) => {
+                            e.preventDefault()
+                            sendBill()
+                            onSubmit(e)
+                            setIsOpen(false)
+                        }}
+                        className="bg-orange-600 text-white px-3 py-4 w-full rounded"
+                        disabled={charge < total_price || data.email == null || data.email == ''}
+                    >
+                        <IconSend />
+                    </PrimaryButton>
                     <PrimaryButton
                         onClick={(e) => {
                             e.preventDefault()  // Prevent the default form submission
@@ -122,7 +157,7 @@ export default function InvoiceForm({ data, setData, onSubmit }) {
                         className="bg-purple-600 text-white px-3 py-4 w-full rounded"
                         disabled={charge < total_price}
                     >
-                        Confirm
+                        <IconChecks />
                     </PrimaryButton>
 
                 </div>

@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminTableController;
 use App\Http\Controllers\Admin\AdminTransactionController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\SendEmailController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -91,6 +92,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
      // Admin Log
      Route::get('/activity', [AdminActivityController::class, 'index'])->name('admin.activity.index');
+
+    //  Send Email
+    Route::post('/send-email', [SendEmailController::class, 'index'])->name('admin.send.email');
 });
 
 require __DIR__ . '/auth.php';

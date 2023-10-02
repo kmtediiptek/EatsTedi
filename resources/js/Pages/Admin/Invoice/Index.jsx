@@ -4,7 +4,7 @@ import Pagination from '@/Components/Pagination'
 import Table from '@/Components/Table'
 import App from '@/Layouts/App'
 import { Head, useForm, router, usePage } from '@inertiajs/react'
-import { IconPrinter } from '@tabler/icons-react'
+import { IconFilter, IconPrinter } from '@tabler/icons-react'
 import React, { useState } from 'react'
 import { numberFormat } from '@/Libs/Helper'
 import TextInput from '@/Components/TextInput'
@@ -21,6 +21,7 @@ export default function Index({ total_invoices, ...props }) {
     })
 
     const [searchQuery, setSearchQuery] = useState('')
+    const [isFilterApplied, setIsFilterApplied] = useState(false)
 
     const filteredInvoices = invoices.filter(invoice =>
         invoice.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -30,74 +31,51 @@ export default function Index({ total_invoices, ...props }) {
 
     const onChange = (e) => {
         setData(e.target.name, e.target.value)
+    }
 
+    const filterInvoice = () => {
         router.get(`/admin/invoice`, {
             start_date: data.start_date,
             end_date: data.end_date
         }, {
             preserveState: true
         })
+        setIsFilterApplied(true)
     }
 
-    const generatePDF = async () => {
-        try {
-            const doc = new jsPDF('landscape'); // Set orientation to landscape
+    const generatePDF = (data) => {
+        if (isFilterApplied) {
+            try {
+                const doc = new jsPDF('landscape')
 
-            const titleTable = data.start_date && data.end_date ? `Report Order from ${data.start_date} to ${data.end_date}` : 'Report Order';
-            // Define the title and styles for the title
-            const title = titleTable;
-            const titleStyles = {
-                fontSize: 12, // Increase the font size to 16
-                align: 'center'
-            };
+                const headers = [['Order ID', 'Name', 'Charge', 'Change', 'Table', 'Total Quantity', 'Total Price', 'Succeeded at']]
 
-            // Define styles for the table
-            const tableStyles = {
-                startY: 16, // Adjust the startY to leave space for the title
-                styles: {
-                    cellPadding: 2,
-                    fontSize:10,
-                    valign: 'middle',
-                    overflow: 'linebreak',
-                    fillColor: '#f3f4f6'
-                },
-                headStyles: {
-                    fillColor: '#f0f2f5',
-                    textColor: '#333',
-                    fontSize: 10
-                }
-            };
+                const rows = data.map(invoice => [
+                    invoice.order_id,
+                    invoice.name,
+                    `Rp. ${numberFormat(invoice.money.charge)}`,
+                    `Rp. ${numberFormat(invoice.money.change)}`,
+                    invoice.table_id,
+                    invoice.total_quantity,
+                    `Rp. ${numberFormat(invoice.total_price)}`,
+                    invoice.succeeded_at
+                ])
 
-            // Define column headers and rows for the table
-            const headers = [['Order ID', 'Name', 'Charge', 'Change', 'Table', 'Total Quantity', 'Total Price', 'Succeeded at', 'Status']];
-            const rows = filteredInvoices.map(invoice => [
-                invoice.order_id,
-                invoice.name,
-                `Rp. ${numberFormat(invoice.money.charge)}`,
-                `Rp. ${numberFormat(invoice.money.change)}`,
-                invoice.table_id,
-                invoice.total_quantity,
-                `Rp. ${numberFormat(invoice.total_price)}`,
-                invoice.succeeded_at,
-                invoice.status === 1 ? 'Done' : 'In Progress'
-            ]);
+                doc.autoTable({
+                    head: headers,
+                    body: rows,
+                    startY: 20
+                })
 
-            // Add the title to the PDF
-            doc.text(title, doc.internal.pageSize.width / 2, 10, titleStyles, null, 'center');
-
-            // Add the table to the PDF
-            doc.autoTable({
-                head: headers,
-                body: rows,
-                ...tableStyles
-            });
-
-            // Save the PDF as a file
-            doc.save('invoice.pdf');
-        } catch (error) {
-            console.error('Error generating PDF:', error);
+                doc.save('Report Order RANDA.pdf')
+            } catch (error) {
+                console.error('Error generating PDF:', error)
+            }
+        } else {
+            alert('Please apply the filter first.')
         }
-    };
+    }
+
 
     return (
         <>
@@ -107,17 +85,27 @@ export default function Index({ total_invoices, ...props }) {
                 <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Invoices</h3>
                 <div className="flex  flex-wrap justify-between w-full item-center my-2">
                     <div className="flex items-center gap-2 w-full mb-2 md:mb-0 sm:w-1/2">
-                        <div className="w-full md:w-1/4">
+                        <div className="w-full md:w-1/2">
                             <TextInput type="date" name='start_date' id='start_date' className="w-full" onChange={onChange} value={data.start_date} />
-                            {errors.start_date ? <Error className='' value={errors.start_date} /> : null}
+                            {errors.start_date ? <span className='text-red-500'>{errors.start_date}</span> : null}
                         </div>
-                        <div className="w-full md:w-1/4">
+                        <div className="w-full md:w-1/2">
                             <TextInput type="date" name='end_date' id='end_date' className="w-full" onChange={onChange} value={data.end_date} />
-                            {errors.end_date ? <Error className='' value={errors.end_date} /> : null}
+                            {errors.end_date ? <span className='text-red-500'>{errors.end_date}</span> : null}
                         </div>
-                        <ActionButton className='w-10 h-10'
-                            onClick={generatePDF}
+                        <ActionButton
+                            className='w-10 h-10 bg-purple-500'
+                            onClick={filterInvoice}
                             type="button"
+                            disabled={!data.start_date || !data.end_date} // Menonaktifkan jika tanggal belum diisi
+                        >
+                            <IconFilter size={26} />
+                        </ActionButton>
+                        <ActionButton
+                            className='w-10 h-10'
+                            onClick={() => generatePDF(filteredInvoices)}
+                            type="button"
+                            disabled={!isFilterApplied}  // Menonaktifkan jika filter belum diaplikasikan
                         >
                             <IconPrinter size={26} />
                         </ActionButton>
@@ -144,8 +132,8 @@ export default function Index({ total_invoices, ...props }) {
                         </tr>
                     </Table.Thead>
                     <Table.Tbody>
-                        {filteredInvoices.length > 0 ? <>
-                            {filteredInvoices.map((invoice, index) => (
+                        {filteredInvoices.length > 0 ? (
+                            filteredInvoices.map((invoice, index) => (
                                 <tr className="bg-white border-b text-gray-500" key={index}>
                                     <Table.Td className="w-5">{meta.from + index}</Table.Td>
                                     <Table.Td>#{invoice.order_id}</Table.Td>
@@ -162,12 +150,12 @@ export default function Index({ total_invoices, ...props }) {
                                         </span>
                                     </Table.Td>
                                 </tr>
-                            ))}
-                        </> :
+                            ))
+                        ) : (
                             <tr className="bg-white border-b text-gray-500 text-center">
                                 <Table.Td colSpan="10">No data</Table.Td>
                             </tr>
-                        }
+                        )}
                     </Table.Tbody>
                 </Table>
                 {invoices.length > 0 &&

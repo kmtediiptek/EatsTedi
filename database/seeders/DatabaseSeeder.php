@@ -97,8 +97,8 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
         ]);
 
-        \App\Models\Product::factory(500)->create();
-        \App\Models\Invoice::factory(9)->create();
-        \App\Models\Cart::factory(9)->create();
+        \App\Models\Product::factory(100)->create();
+        \App\Models\Invoice::factory(10)->create();
+        \App\Models\Cart::factory(10)->create();
     }
 }

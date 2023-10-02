@@ -58,7 +58,7 @@ export default function Index({ categories, payments, ...props }) {
                             {payments.map((payment, index) => (
                                 <div href={`/?payment=${payment.slug}`} className="flex rounded text-white bg-purple-500 text-white" key={index}>
                                     <div className="w-32 h-32 flex justify-center items-center  rounded border border-gray-300 text-slate-600 p-2" >
-                                        <p className='text-white text-xl'>{payment.name.toUpperCase()}</p>
+                                        <p className='text-white text-xl font-semibold'>{payment.name.toUpperCase()}</p>
                                     </div>
                                 </div>
                             ))}
@@ -71,7 +71,7 @@ export default function Index({ categories, payments, ...props }) {
             <Container>
                 <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Special menu for you</h3>
                 {products.length ?
-                    <div className='grid grid-cols-2 w-full md:grid-cols-3 lg:grid-cols-4 sm:gap-10 gap-4'>
+                    <div className='grid grid-cols-1 sm:grid-cols-2 w-full md:grid-cols-3 lg:grid-cols-4 sm:gap-10 gap-4'>
                         {
                             products.map(product => (
                                 <ProductItemUser product={product} key={product.slug} />

@@ -11,7 +11,7 @@ import { IconArrowsMaximize, IconArrowsMinimize, IconCategory, IconTrashX } from
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 
-export default function Index({ categories, carts, invoices, tables, payments, ...props }) {
+export default function Index({ categories, total_categories, carts, invoices, tables, payments, ...props }) {
 
     const [isOrderListOpen, setIsOrderListOpen] = useState(true)
     const [selectedOrder, setSelectedOrder] = useState(null)
@@ -30,7 +30,7 @@ export default function Index({ categories, carts, invoices, tables, payments, .
         payment_id: '',
         charge: '',
         'order_id': '',
-        'total_price': total
+        'total_price': '',
     })
 
 
@@ -125,7 +125,7 @@ export default function Index({ categories, carts, invoices, tables, payments, .
                                 <div className="w-32 h-32 bg-orange-500 rounded p-2 shadow">
                                     <IconCategory className='my-2' />
                                     <p className='block'>All Menu</p>
-                                    <h6 className='text-lg font-semibold'>10 items</h6>
+                                    <h6 className='text-lg font-semibold'>{total_categories} items</h6>
                                 </div>
                             </Link>
                             {categories.map((category, index) => (
@@ -133,7 +133,7 @@ export default function Index({ categories, carts, invoices, tables, payments, .
                                     <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2" >
                                         <div className='w-8 h-8 mb-2' dangerouslySetInnerHTML={{ __html: category.icon }} />
                                         <p className='text-slate-500'>{category.name}</p>
-                                        <h6 className='text-lg font-semibold'>10 items</h6>
+                                        <h6 className='text-lg font-semibold'>{category.products_count} items</h6>
                                     </div>
                                 </Link>
                             ))}
@@ -200,7 +200,7 @@ export default function Index({ categories, carts, invoices, tables, payments, .
                                     <p className='text-lg font-bold text-slate-600'>Rp. {numberFormat(total)}</p>
                                 </div>
                                 <form onSubmit={onSubmit} className='w-full space-y-4'>
-                                    <InvoiceForm onSubmit={onSubmit} {...{ data, setData }} />
+                                    <InvoiceForm onSubmit={onSubmit} total_price={total} carts={carts} {...{ data, setData }} />
                                     <hr />
                                 </form>
                             </div>

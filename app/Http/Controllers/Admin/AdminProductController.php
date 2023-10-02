@@ -31,6 +31,7 @@ class AdminProductController extends Controller
             ])
             ->latest()
             ->fastPaginate();
+
         return inertia('Admin/Product/Index', [
             "products" => AdminProductResource::collection($products),
             "total_products" => $total_products,
