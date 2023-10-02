@@ -63,6 +63,8 @@ class AdminDashboardController extends Controller
             ->orderBy('month', 'asc')
             ->get();
 
+
+
         return inertia('Dashboard', [
             "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get(),
             "total_categories" => $total_categories,

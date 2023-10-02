@@ -27,8 +27,16 @@ class HomeController extends Controller
             ->fastPaginate(10)->withQueryString();
         }
 
+        $categories = Category::query()
+            ->select('id', 'name', 'icon', 'slug')
+            ->withCount('products')
+            ->get();
+
+            $total_categories = Product::get()->count();
+
         return inertia('Home/Index', [
-            "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get(),
+            "categories" => $categories,
+            "total_categories" => $total_categories,
             "payments" => Payment::query()->select('id', 'name', 'slug')->get(),
             "products" => AdminProductResource::collection($products),
         ]);

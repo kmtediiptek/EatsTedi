@@ -63,10 +63,10 @@ class AdminTransactionController extends Controller
                 ->fastPaginate(10)->withQueryString();
         } else {
             $products = Product::query()
-            ->select('id', 'category_id', 'name', 'slug', 'price', 'picture')
-            ->when($request->category, fn ($q, $v) => $q->whereBelongsTo(Category::where('slug', $v)->first()))
-            ->latest()
-            ->fastPaginate(10)->withQueryString();
+                ->select('id', 'category_id', 'name', 'slug', 'price', 'picture')
+                ->when($request->category, fn ($q, $v) => $q->whereBelongsTo(Category::where('slug', $v)->first()))
+                ->latest()
+                ->fastPaginate(10)->withQueryString();
         }
 
         $invoices = Invoice::whereDate('created_at', today())->whereNot('name', '-')->latest()->get();
@@ -76,7 +76,7 @@ class AdminTransactionController extends Controller
             ->withCount('products')
             ->get();
 
-            $total_categories = Product::get()->count();
+        $total_categories = Product::get()->count();
 
 
         return inertia('Admin/Transaction/Index', [
