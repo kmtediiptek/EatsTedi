@@ -21,8 +21,6 @@ export default function Index({ total_products, ...props }) {
 
     const [searchQuery, setSearchQuery] = useState()
 
-    const {get} = useForm();
-
     const { delete: destroy, data, setData } = useForm({
         name: '',
         category_id: '',
@@ -182,8 +180,8 @@ export default function Index({ total_products, ...props }) {
                                     </Table.Td>
                                     <Table.Td className="w-10" >
                                         <div className='flex flex-nowrap gap-2'>
-                                            <ActionButton className='bg-yellow-400' type="button" onClick={() => openModalCategory(product.slug, "edit")}><IconEdit size={18} /></ActionButton>
-                                            <ActionButton className='bg-red-500' type="button" onClick={() => openToast(product.slug, product.name)}><IconTrash size={18} /></ActionButton>
+                                            <ActionButton className='w-8 h-8 bg-yellow-400' type="button" onClick={() => openModalCategory(product.slug, "edit")}><IconEdit size={18} /></ActionButton>
+                                            <ActionButton className='w-8 h-8 bg-red-500' type="button" onClick={() => openToast(product.slug, product.name)}><IconTrash size={18} /></ActionButton>
                                         </div>
                                     </Table.Td>
                                 </tr>

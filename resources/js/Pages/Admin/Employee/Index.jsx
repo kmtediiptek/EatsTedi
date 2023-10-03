@@ -12,15 +12,12 @@ import { Head, router, useForm } from '@inertiajs/react'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
+import TextInput from '@/Components/TextInput'
 
 
 export default function Index({ total_employees, ...props }) {
     const { data: employees, meta, links } = props.employees
     const [searchQuery, setSearchQuery] = useState('')
-
-    const filteredEmployees = employees.filter(employee =>
-        employee.name.toLowerCase().includes(searchQuery.toLowerCase())
-    ).slice(0, 10)
 
     const { delete: destroy, data, setData } = useForm({
         name: '',
@@ -128,6 +125,16 @@ export default function Index({ total_employees, ...props }) {
             }
         })
     }
+
+    const handleSearch = (e) => {
+        e.preventDefault()
+        setSearchQuery(e.target.value)
+        router.get(`/admin/setting/employee`, {
+            search: e.target.value
+        }, {
+            preserveState: true
+        })
+    }
     return (
         <>
             <Head title="Setting" />
@@ -141,9 +148,13 @@ export default function Index({ total_employees, ...props }) {
                     >
                         <IconPlus size={18} />
                     </ActionButton>
-                    <input id="searchQuery" type="text" className='w-3/4 sm:w-1/4 rounded border-gray-300 py-1 focus:ring-puple-300 focus:border-purple-600' placeholder='Search employee..'
-                        value={searchQuery}
-                        onChange={e => setSearchQuery(e.target.value)} />
+                    <TextInput
+                        type="search"
+                        className="w-1/4"
+                        placeholder="Search employee.."
+                        defaultValue={searchQuery}
+                        onChange={handleSearch}
+                    />
                 </div>
                 <div className='w-full'>
                 </div>
@@ -162,8 +173,8 @@ export default function Index({ total_employees, ...props }) {
                         </tr>
                     </Table.Thead>
                     <Table.Tbody>
-                        {filteredEmployees.length > 0 ? <>
-                            {filteredEmployees.map((employee, index) => (
+                        {employees.length > 0 ? <>
+                            {employees.map((employee, index) => (
                                 <tr className="bg-white border-b text-gray-500" key={index}>
                                     <Table.Td className="w-5">{meta.from + index}</Table.Td>
                                     <Table.Td>{employee.name}</Table.Td>
@@ -181,8 +192,8 @@ export default function Index({ total_employees, ...props }) {
                                     </Table.Td>
                                     <Table.Td className="w-10" >
                                         <div className='flex flex-nowrap gap-2'>
-                                            <ActionButton className='bg-yellow-400' type="button" onClick={() => openModalCategory(employee.username, "edit")}><IconEdit size={18} /></ActionButton>
-                                            <ActionButton className='bg-red-500' type="button" onClick={() => openToast(employee.username, employee.name)}><IconTrash size={18} /></ActionButton>
+                                            <ActionButton className='w-8 h-8 bg-yellow-400' type="button" onClick={() => openModalCategory(employee.username, "edit")}><IconEdit size={18} /></ActionButton>
+                                            <ActionButton className='w-8 h-8 bg-red-500' type="button" onClick={() => openToast(employee.username, employee.name)}><IconTrash size={18} /></ActionButton>
                                         </div>
                                     </Table.Td>
                                 </tr>

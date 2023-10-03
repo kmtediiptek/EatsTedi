@@ -13,14 +13,24 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminTableController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
 
         $total_table = Table::get()->count();
-        $tables = Table::query()
-            ->select('id', 'name', 'slug', 'status')
-            ->latest()
-            ->fastPaginate(10);
+
+        $search_tables = $request->input('search');
+        if ($search_tables) {
+            $tables = Table::query()
+                ->where('name', 'LIKE', "%$search_tables%")
+                ->select('id', 'name', 'slug', 'status')
+                ->latest()
+                ->fastPaginate(10)->withQueryString();
+        } else {
+            $tables = Table::query()
+                ->select('id', 'name', 'slug', 'status')
+                ->latest()
+                ->fastPaginate(10);
+        }
         return inertia('Admin/Table/Index', [
             "tables" => AdminTableResource::collection($tables),
             "total_tables" => $total_table
@@ -31,7 +41,7 @@ class AdminTableController extends Controller
     {
         Table::create([
             "name" => $name = $request->name,
-            "slug" => 'table-' . rand(1,100) . '-' . str($name)->slug(),
+            "slug" => 'table-' . rand(1, 100) . '-' . str($name)->slug(),
             "status" => $request->status
         ]);
 

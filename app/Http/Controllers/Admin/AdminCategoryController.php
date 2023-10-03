@@ -8,19 +8,30 @@ use App\Http\Requests\Admin\AdminTableRequest;
 use App\Http\Resources\Admin\AdminCategoriesResource;
 use App\Models\Activity;
 use App\Models\Category;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class AdminCategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
 
         $total_category = Category::get()->count();
-        $categories = Category::query()
-            ->select('id', 'name', 'icon', 'slug')
-            ->latest()
-            ->fastPaginate();
+
+        $search_categories = $request->input('search');
+        if ($search_categories) {
+            $categories = Category::query()
+            ->where('name', 'LIKE', "%$search_categories%")
+                ->select('id', 'name', 'icon', 'slug')
+                ->latest()
+                ->fastPaginate(10)->withQueryString();
+        }else {
+            $categories = Category::query()
+                ->select('id', 'name', 'icon', 'slug')
+                ->latest()
+                ->fastPaginate();
+        }
         return inertia('Admin/Category/Index', [
             "categories" => AdminCategoriesResource::collection($categories),
             "total_categories" => $total_category

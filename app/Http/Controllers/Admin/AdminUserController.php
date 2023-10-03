@@ -8,22 +8,32 @@ use App\Http\Resources\Admin\AdminUserResource;
 use App\Models\Activity;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AdminUserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
 
         $total_employee = User::where('status', 'employee')->get()->count();
-        $users = User::query()
-            ->select('id', 'name', 'username', 'email', 'number_phone', 'address', 'status', 'picture')
-            ->where('status', 'employee')
-            ->latest()
-            ->fastPaginate();
+
+        $search_users = $request->input('search');
+        if ($search_users) {
+            $users = User::query()
+                ->where('name', 'LIKE', "%$search_users%")
+                ->select('id', 'name', 'username', 'email', 'number_phone', 'address', 'status', 'picture')
+                ->where('status', 'employee')
+                ->latest()
+                ->fastPaginate(10)->withQueryString();
+        } else {
+            $users = User::query()
+                ->select('id', 'name', 'username', 'email', 'number_phone', 'address', 'status', 'picture')
+                ->where('status', 'employee')
+                ->latest()
+                ->fastPaginate();
+        }
         return inertia('Admin/Employee/Index', [
             "employees" => AdminUserResource::collection($users),
             "total_employees" => $total_employee,
@@ -67,7 +77,7 @@ class AdminUserController extends Controller
         ]);
 
         Activity::create([
-            "activity" => Auth::user()->name . " Updated Employee " . $request->name ? : $user->name
+            "activity" => Auth::user()->name . " Updated Employee " . $request->name ?: $user->name
         ]);
 
         return back();

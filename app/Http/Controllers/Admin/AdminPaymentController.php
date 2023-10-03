@@ -13,14 +13,25 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminPaymentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
 
         $total_payment = Payment::get()->count();
-        $payments = Payment::query()
-            ->select('id', 'name', 'slug', 'status')
-            ->latest()
-            ->fastPaginate(10);
+
+        $search_payments = $request->input('search');
+        if ($search_payments) {
+            $payments = Payment::query()
+                ->where('name', 'LIKE', "%$search_payments%")
+                ->select('id', 'name', 'slug', 'status')
+                ->latest()
+                ->fastPaginate(10)->withQueryString();
+        } else {
+            $payments = Payment::query()
+                ->where('name', 'LIKE', "%$search_payments%")
+                ->select('id', 'name', 'slug', 'status')
+                ->latest()
+                ->fastPaginate(10);
+        }
 
         return inertia('Admin/Payment/Index', [
             "payments" => AdminPaymentResource::collection($payments),
@@ -32,7 +43,7 @@ class AdminPaymentController extends Controller
     {
         Payment::create([
             "name" => $name = $request->name,
-            "slug" => 'payment-' . rand(1,100) . '-' . str($name)->slug(),
+            "slug" => 'payment-' . rand(1, 100) . '-' . str($name)->slug(),
             "status" => $request->status,
         ]);
 

@@ -8,20 +8,17 @@ import SecondaryButton from '@/Components/SecondaryButton'
 import Table from '@/Components/Table'
 import Toast from '@/Components/Toast'
 import App from '@/Layouts/App'
-import { Head, useForm } from '@inertiajs/react'
+import { Head, useForm, router } from '@inertiajs/react'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
+import TextInput from '@/Components/TextInput'
 
 
 export default function Index({ total_tables, ...props }) {
     const { data: tables, meta, links } = props.tables
 
     const [searchQuery, setSearchQuery] = useState('')
-
-    const filteredTables = tables.filter(table =>
-        table.name.toLowerCase().includes(searchQuery.toLowerCase())
-    ).slice(0, 10)
 
     const { delete: destroy, post, put, data, setData } = useForm({
         name: '',
@@ -107,6 +104,17 @@ export default function Index({ total_tables, ...props }) {
             }
         })
     }
+
+    const handleSearch = (e) => {
+        e.preventDefault()
+        setSearchQuery(e.target.value)
+        router.get(`/admin/setting/table`, {
+            search: e.target.value
+        }, {
+            preserveState: true
+        })
+    }
+
     return (
         <>
             <Head title="Setting" />
@@ -121,9 +129,13 @@ export default function Index({ total_tables, ...props }) {
                     >
                         <IconPlus size={18} />
                     </button>
-                    <input id="searchQuery" type="text" className='w-3/4 sm:w-1/4 rounded border-gray-300 py-1 focus:ring-puple-300 focus:border-purple-600' placeholder='Search category..'
-                        value={searchQuery}
-                        onChange={e => setSearchQuery(e.target.value)} />
+                    <TextInput
+                        type="search"
+                        className="w-1/4"
+                        placeholder="Search category.."
+                        defaultValue={searchQuery}
+                        onChange={handleSearch}
+                    />
                 </div>
                 <Table>
                     <Table.Thead>
@@ -135,28 +147,27 @@ export default function Index({ total_tables, ...props }) {
                         </tr>
                     </Table.Thead>
                     <Table.Tbody>
-                        {filteredTables.length > 0 ? <>
-
-                            {filteredTables.map((table, index) => (
+                        {tables.length > 0 ? <>
+                            {tables.map((table, index) => (
                                 <tr className="bg-white border-b text-gray-500" key={index}>
                                     <Table.Td className="w-5">{meta.from + index}</Table.Td>
                                     <Table.Td>{table.name.toUpperCase()}</Table.Td>
                                     <Table.Td className="text-left">
-                                    <span className={`text-xs p-2 ${table.status == 1 ? 'bg-sky-500 text-white rounded' : 'bg-emerald-400 text-white rounded'}`}>
+                                    <span className={`text-xs p-2 ${table.status == 1 ? 'bg-emerald-500 text-white rounded' : 'bg-red-500 text-white rounded'}`}>
                                             {table.status == 1 ? "Active" : "Non Active"}
                                         </span>
                                     </Table.Td>
                                     <Table.Td className="w-10" >
                                         <div className='flex flex-nowrap gap-2'>
-                                            <ActionButton className='bg-yellow-400' type="button" onClick={() => openModalTable(table.slug, "edit")}><IconEdit size={18} /></ActionButton>
-                                            <ActionButton className='bg-red-500' type="button" onClick={() => openToast(table.slug, 'Table ' + table.name)}><IconTrash size={18} /></ActionButton>
+                                            <ActionButton className='w-8 h-8 bg-yellow-400' type="button" onClick={() => openModalTable(table.slug, "edit")}><IconEdit size={18} /></ActionButton>
+                                            <ActionButton className='w-8 h-8 bg-red-500' type="button" onClick={() => openToast(table.slug, 'Table ' + table.name)}><IconTrash size={18} /></ActionButton>
                                         </div>
                                     </Table.Td>
                                 </tr>
                             ))}
                         </> :
                             <tr className="bg-white border-b text-gray-500 text-center">
-                                <Table.Td colSpan="3">No data</Table.Td>
+                                <Table.Td colSpan="4">No data</Table.Td>
                             </tr>
                         }
                     </Table.Tbody>

@@ -12,9 +12,6 @@ import toast from 'react-hot-toast'
 
 
 export default function InvoiceForm({ data, setData, onSubmit, carts, total_price }) {
-
-    console.log(data);
-
     let [isOpen, setIsOpen] = useState(false)
     const [modalType, setModalType] = useState("")
     const [modalPayment, setModalPayment] = useState("")

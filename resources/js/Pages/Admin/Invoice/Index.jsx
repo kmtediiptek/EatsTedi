@@ -23,10 +23,6 @@ export default function Index({ total_invoices, ...props }) {
     const [searchQuery, setSearchQuery] = useState('')
     const [isFilterApplied, setIsFilterApplied] = useState(false)
 
-    const filteredInvoices = invoices.filter(invoice =>
-        invoice.name.toLowerCase().includes(searchQuery.toLowerCase())
-    ).slice(0, 10)
-
     const { errors } = usePage().props
 
     const onChange = (e) => {
@@ -76,6 +72,16 @@ export default function Index({ total_invoices, ...props }) {
         }
     }
 
+    const handleSearch = (e) => {
+        e.preventDefault()
+        setSearchQuery(e.target.value)
+        router.get(`/admin/invoice`, {
+            search: e.target.value
+        }, {
+            preserveState: true
+        })
+    }
+
 
     return (
         <>
@@ -103,16 +109,17 @@ export default function Index({ total_invoices, ...props }) {
                         </ActionButton>
                         <ActionButton
                             className='w-10 h-10'
-                            onClick={() => generatePDF(filteredInvoices)}
+                            onClick={() => generatePDF(invoices)}
                             type="button"
                             disabled={!isFilterApplied}  // Menonaktifkan jika filter belum diaplikasikan
                         >
                             <IconPrinter size={26} />
                         </ActionButton>
                     </div>
-                    <TextInput id="searchQuery" type="text" className='w-full md:w-1/4 rounded border-gray-300 py-1 focus:ring-puple-300 focus:border-purple-600' placeholder='Search invoice..'
-                        value={searchQuery}
-                        onChange={e => setSearchQuery(e.target.value)} />
+                    <TextInput type="search" className='w-full md:w-1/4 rounded border-gray-300 py-1 focus:ring-puple-300 focus:border-purple-600' placeholder='Search invoice..'
+                        defaultValue={searchQuery}
+                        onChange={handleSearch} />
+
                 </div>
                 <div className='w-full'>
                 </div>
@@ -132,8 +139,8 @@ export default function Index({ total_invoices, ...props }) {
                         </tr>
                     </Table.Thead>
                     <Table.Tbody>
-                        {filteredInvoices.length > 0 ? (
-                            filteredInvoices.map((invoice, index) => (
+                        {invoices.length > 0 ? (
+                            invoices.map((invoice, index) => (
                                 <tr className="bg-white border-b text-gray-500" key={index}>
                                     <Table.Td className="w-5">{meta.from + index}</Table.Td>
                                     <Table.Td>#{invoice.order_id}</Table.Td>

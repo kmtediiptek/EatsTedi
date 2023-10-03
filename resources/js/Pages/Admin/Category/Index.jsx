@@ -6,9 +6,10 @@ import Pagination from '@/Components/Pagination'
 import PrimaryButton from '@/Components/PrimaryButton'
 import SecondaryButton from '@/Components/SecondaryButton'
 import Table from '@/Components/Table'
+import TextInput from '@/Components/TextInput'
 import Toast from '@/Components/Toast'
 import App from '@/Layouts/App'
-import { Head, useForm } from '@inertiajs/react'
+import { Head, useForm, router } from '@inertiajs/react'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
@@ -18,10 +19,6 @@ export default function Index({ total_categories, ...props }) {
     const { data: categories, meta, links } = props.categories
 
     const [searchQuery, setSearchQuery] = useState('')
-
-    const filteredCategories = categories.filter(category =>
-        category.name.toLowerCase().includes(searchQuery.toLowerCase())
-    ).slice(0, 10)
 
     const { delete: destroy, post, put, data, setData } = useForm({
         name: '',
@@ -40,7 +37,6 @@ export default function Index({ total_categories, ...props }) {
     const [categorySlug, setCategorySlug] = useState("")
 
     function openModalCategory(categorySlug, type) {
-        console.log(type)
         setIsOpen(true)
         setModalCategory("Category")
         setModalType(type)
@@ -109,6 +105,16 @@ export default function Index({ total_categories, ...props }) {
             }
         })
     }
+
+    const handleSearch = (e) => {
+        e.preventDefault()
+        setSearchQuery(e.target.value)
+        router.get(`/admin/setting/category`, {
+            search: e.target.value
+        }, {
+            preserveState: true
+        })
+    }
     return (
         <>
             <Head title="Setting" />
@@ -122,9 +128,13 @@ export default function Index({ total_categories, ...props }) {
                     >
                         <IconPlus size={18} />
                     </ActionButton>
-                    <input id="searchQuery" type="text" className='w-3/4 sm:w-1/4 rounded border-gray-300 py-1 focus:ring-puple-300 focus:border-purple-600' placeholder='Search category..'
-                        value={searchQuery}
-                        onChange={e => setSearchQuery(e.target.value)} />
+                    <TextInput
+                        type="search"
+                        className="w-1/4"
+                        placeholder="Search category.."
+                        defaultValue={searchQuery}
+                        onChange={handleSearch}
+                    />
                 </div>
                 <div className='w-full'>
                 </div>
@@ -138,8 +148,8 @@ export default function Index({ total_categories, ...props }) {
                         </tr>
                     </Table.Thead>
                     <Table.Tbody>
-                        {filteredCategories.length > 0 ? <>
-                            {filteredCategories.map((category, index) => (
+                        {categories.length > 0 ? <>
+                            {categories.map((category, index) => (
                                 <tr className="bg-white border-b text-gray-500" key={index}>
                                     <Table.Td className="w-5">{meta.from + index}</Table.Td>
                                     <Table.Td>{category.name}</Table.Td>
@@ -147,8 +157,8 @@ export default function Index({ total_categories, ...props }) {
                                     <Table.Td> <div className='w-10 h-10 p-2 border border-gray rounded' dangerouslySetInnerHTML={{ __html: category.icon }} /></Table.Td>
                                     <Table.Td className="w-10" >
                                         <div className='flex flex-nowrap gap-2'>
-                                            <ActionButton className='bg-yellow-400' type="button" onClick={() => openModalCategory(category.slug, "edit")}><IconEdit size={18} /></ActionButton>
-                                            <ActionButton className='bg-red-500' type="button" onClick={() => openToast(category.slug, category.name)}><IconTrash size={18} /></ActionButton>
+                                            <ActionButton className='w-8 h-8 bg-yellow-400' type="button" onClick={() => openModalCategory(category.slug, "edit")}><IconEdit size={18} /></ActionButton>
+                                            <ActionButton className='w-8 h-8 bg-red-500' type="button" onClick={() => openToast(category.slug, category.name)}><IconTrash size={18} /></ActionButton>
                                         </div>
                                     </Table.Td>
                                 </tr>
@@ -161,10 +171,10 @@ export default function Index({ total_categories, ...props }) {
                     </Table.Tbody>
                 </Table>
                 {categories.length > 0 &&
-                <div className='flex w-full justify-between items-center'>
+                    <div className='flex w-full justify-between items-center'>
                         <Pagination meta={meta} links={links} />
-                            <p className='text-sm text-slate-500 mt-10'>Total Categories: <span className='font-bold'>{total_categories}</span> </p>
-                </div>
+                        <p className='text-sm text-slate-500 mt-10'>Total Categories: <span className='font-bold'>{total_categories}</span> </p>
+                    </div>
                 }
                 {/* End Categories */}
 

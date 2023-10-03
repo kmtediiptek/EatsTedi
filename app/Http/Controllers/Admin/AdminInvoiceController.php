@@ -25,21 +25,40 @@ class AdminInvoiceController extends Controller
         $start_date = $request->input('start_date');
         $end_date = $request->input('end_date');
 
-        // Assuming 'created_at' is the column for date filtering
-        if ($start_date && $end_date) {
-            $invoices = Invoice::query()
-                ->select('id', 'name', 'order_id', 'status', 'table_id', 'payment_id', 'charge', 'succeeded_at', 'total_price', 'total_quantity')
-                ->where('status', 1)
-                ->whereBetween('created_at', [$start_date, $end_date])
-                ->latest()
-                ->fastPaginate(10);
-        } else {
+        $search_invoices = $request->input('search');
 
-            $invoices = Invoice::query()
-                ->select('id', 'name', 'order_id', 'status', 'table_id', 'payment_id', 'charge', 'succeeded_at', 'total_price', 'total_quantity')
-                ->where('status', 1)
-                ->latest()
-                ->fastPaginate(10);
+        if ($start_date && $end_date) {
+            if ($search_invoices) {
+                $invoices = Invoice::query()
+                    ->where('name', 'LIKE', "%$search_invoices%")
+                    ->select('id', 'name', 'order_id', 'status', 'table_id', 'payment_id', 'charge', 'succeeded_at', 'total_price', 'total_quantity')
+                    ->where('status', 1)
+                    ->whereBetween('created_at', [$start_date, $end_date])
+                    ->latest()
+                    ->fastPaginate(10)->withQueryString();
+            } else {
+                $invoices = Invoice::query()
+                    ->select('id', 'name', 'order_id', 'status', 'table_id', 'payment_id', 'charge', 'succeeded_at', 'total_price', 'total_quantity')
+                    ->where('status', 1)
+                    ->whereBetween('created_at', [$start_date, $end_date])
+                    ->latest()
+                    ->fastPaginate(10);
+            }
+        } else {
+            if ($search_invoices) {
+                $invoices = Invoice::query()
+                    ->select('id', 'name', 'order_id', 'status', 'table_id', 'payment_id', 'charge', 'succeeded_at', 'total_price', 'total_quantity')
+                    ->where('name', 'LIKE', "%$search_invoices%")
+                    ->where('status', 1)
+                    ->latest()
+                    ->fastPaginate(10)->withQueryString();
+            } else {
+                $invoices = Invoice::query()
+                    ->select('id', 'name', 'order_id', 'status', 'table_id', 'payment_id', 'charge', 'succeeded_at', 'total_price', 'total_quantity')
+                    ->where('status', 1)
+                    ->latest()
+                    ->fastPaginate(10);
+            }
         }
 
         $total_invoices = $invoices->count();
