@@ -11,8 +11,6 @@ use App\Models\Invoice;
 use App\Models\Table;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Dompdf\Dompdf;
-use Dompdf\Options;
 
 
 class AdminInvoiceController extends Controller
@@ -54,6 +52,7 @@ class AdminInvoiceController extends Controller
 
     public function store(AdminTableInvoiceRequest $request)
     {
+
         if ($request->id) {
             $order = Cart::select('order_id')->where('user_id', Auth::user()->id)->where('order_id', $request->id)->first();
         } else {
@@ -86,6 +85,7 @@ class AdminInvoiceController extends Controller
         $invoiceData = [
             'order_id' => $order_id,
             'total_price' => $total,
+            'paid' => $request->paid,
             'total_quantity' => $quantity,
             'table_id' => $table_id ? $table_id : $invoice->table_id,
             'payment_id' => $payment_id = $payment_id ?? ($invoice->payment_id ?? 1),
@@ -96,6 +96,7 @@ class AdminInvoiceController extends Controller
             // Only update these fields if paid is 1
             $invoiceData['total_price'] = $total;
             $invoiceData['succeeded_at'] = now();
+            $invoiceData['paid'] = $request->paid;
             $invoiceData['table_id'] = $table_id ?? ($invoice->table_id ?? 1);
             $invoiceData['payment_id'] = $payment_id ?? ($invoice->payment_id ?? 1);
             $invoiceData['charge'] = $request->charge;

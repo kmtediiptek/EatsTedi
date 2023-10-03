@@ -31,6 +31,7 @@ export default function Index({ categories, total_categories, carts, invoices, t
         charge: '',
         'order_id': '',
         'total_price': '',
+        'paid': '',
     })
 
 
@@ -45,6 +46,7 @@ export default function Index({ categories, total_categories, carts, invoices, t
                 name: order.name,
                 charge: order.charge,
                 table_id: order.table_id,
+                paid: order.paid,
                 payment_id: order.payment_id,
                 carts: carts,
                 total_price: total,

@@ -13,6 +13,8 @@ import toast from 'react-hot-toast'
 
 export default function InvoiceForm({ data, setData, onSubmit, carts, total_price }) {
 
+    console.log(data);
+
     let [isOpen, setIsOpen] = useState(false)
     const [modalType, setModalType] = useState("")
     const [modalPayment, setModalPayment] = useState("")
@@ -35,12 +37,11 @@ export default function InvoiceForm({ data, setData, onSubmit, carts, total_pric
     const [showPaymentOptions, setShowPaymentOptions] = useState(false)
 
     const handleRadioChange = (e) => {
-        if (e.target.value === '1') {
-            setShowPaymentOptions(true)
-        } else {
-            setShowPaymentOptions(false)
-        }
+        const isRadioValue1 = e.target.value === 1;
+        setShowPaymentOptions(isRadioValue1);
     }
+
+
     const charge = parseFloat(data.charge) || 0
 
     const difference = charge - total_price
@@ -68,12 +69,12 @@ export default function InvoiceForm({ data, setData, onSubmit, carts, total_pric
             <TextInput name='name' id='name' className="w-full" onChange={onChange} value={data.name} placeholder="Customer name.." />
             {errors.name ? <Error className='' value={errors.name} /> : null}
             <div className='flex items-center gap-4'>
-                <div className="w-1/2 flex items-center pl-4 border border-gray-300 rounded">
-                    <TextInput id="bordered-radio-1" type="radio" onChange={(e) => { onChange(e); handleRadioChange(e) }} value="1" name="paid" className="w-4 h-4 text-orange-500 bg-gray-100 border-gray-300 focus:ring-orange-500" />
+                <div className={`w-1/2 ${data.charge  != "" ? 'w-full' : ''} flex items-center pl-4 border border-gray-300 rounded`}>
+                    <TextInput id="bordered-radio-1" type="radio" checked={data.paid == 1} onChange={(e) => { onChange(e); handleRadioChange(e) }} value="1" name="paid" className="w-4 h-4 text-orange-500 bg-gray-100 border-gray-300 focus:ring-orange-500" />
                     <label htmlFor="bordered-radio-1" className="w-full py-2 ml-2 font-medium text-slate-500">Paid Now</label>
                 </div>
-                <div className="w-1/2 flex items-center pl-4 border border-gray-300 rounded">
-                    <TextInput id="bordered-radio-2" type="radio" onChange={(e) => { onChange(e); handleRadioChange(e) }} value="2" name="paid" className="w-4 h-4 text-orange-500 bg-gray-100 border-gray-300 focus:ring-orange-500" />
+                <div className={`${data.charge  != "" ? 'hidden' : ''} w-1/2 flex items-center pl-4 border border-gray-300 rounded`}>
+                    <TextInput id="bordered-radio-2" type="radio" disabled={data.charge != 0 && data.payment_id !== ""} checked={data.paid == 2} onChange={(e) => { onChange(e); handleRadioChange(e) }} value="2" name="paid" className=" w-4 h-4 text-orange-500 bg-gray-100 border-gray-300 focus:ring-orange-500"/>
                     <label htmlFor="bordered-radio-2" className="w-full py-2 ml-2 font-medium text-slate-500">Paid Later</label>
                 </div>
             </div>
@@ -82,20 +83,19 @@ export default function InvoiceForm({ data, setData, onSubmit, carts, total_pric
                     <SelectTable value={data.table_id} data={tables} className="w-full" placeholder='Tables' onChange={(e) => setData('table_id', e)} />
                     {errors.table_id ? <Error className='' value={errors.table_id} /> : null}
                 </div>
-                {showPaymentOptions && (
+                {showPaymentOptions || data.paid == 1 ?
                     <div className='flex flex-col w-full'>
                         <SelectPayment value={data.payment_id} data={payments} className="w-full" placeholder='Payment' onChange={(e) => setData('payment_id', e)} />
                         {errors.payment_id ? <Error className='' value={errors.payment_id} /> : null}
                     </div>
-                )}
+                : ""}
 
             </div>
-            {showPaymentOptions && (
-                <>
-                    <TextInput type="number" name='charge' id='charge' className="w-full" value={data.charge} onChange={onChange} placeholder="Charge.." />
+            {showPaymentOptions || data.paid == 1 ? <>
+                    <TextInput type="number" min={data.paid == 1 ? 1 : ""} name='charge' id='charge' className="w-full" value={data.charge} onChange={onChange} placeholder="Charge.." />
                     {errors.charge ? <Error className='' value={errors.charge} /> : null}
-                </>
-            )}
+            </> : ""
+            }
 
             <div className="pb-4 flex items-end flex-1 justify-end">
                 {
@@ -104,7 +104,7 @@ export default function InvoiceForm({ data, setData, onSubmit, carts, total_pric
                             Buy
                         </PrimaryButton>
                     </> : <>
-                        <PrimaryButton className='bg-purple-600 text-white px-3 py-4 w-full rounded' disabled={tables.length == 0 || data.name == "" || data.table_id == ""}>
+                        <PrimaryButton className='bg-purple-600 text-white px-3 py-4 w-full rounded' disabled={tables.length == 0 || data.name == "" || data.table_id == "" || data.paid == ""}>
                             Confirm
                         </PrimaryButton>
                     </>
@@ -150,9 +150,9 @@ export default function InvoiceForm({ data, setData, onSubmit, carts, total_pric
                     </PrimaryButton>
                     <PrimaryButton
                         onClick={(e) => {
-                            e.preventDefault()  // Prevent the default form submission
-                            onSubmit(e)  // Call onSubmit function to handle form submission
-                            setIsOpen(false)  // Close the modal after confirming
+                            e.preventDefault()
+                            onSubmit(e)
+                            setIsOpen(false)
                         }}
                         className="bg-purple-600 text-white px-3 py-4 w-full rounded"
                         disabled={charge < total_price}

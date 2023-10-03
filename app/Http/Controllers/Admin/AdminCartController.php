@@ -55,6 +55,7 @@ class AdminCartController extends Controller
             $dataOrder['order_id'] = $order_id;
             $dataOrder['table_id'] = '-';
             $dataOrder['payment_id'] = 1;
+            $dataOrder['paid'] = 2;
             $dataOrder['name'] = '-';
             $dataOrder['total_price'] = 0;
             $dataOrder['total_quantity'] = 1;
@@ -96,17 +97,16 @@ class AdminCartController extends Controller
 
     public function increment(Request $request, Product $product)
     {
+
         if($request->order_id) {
             $cart = Cart::where('user_id', $request->user()->id)
             ->where('product_id', $product->id)
             ->where('order_id', $request->order_id)
-            ->whereNull('paid_at')
             ->first();
         }else {
             $cart = Cart::where('user_id', $request->user()->id)
             ->where('product_id', $product->id)
             ->where('status', 0)
-            ->whereNull('paid_at')
             ->first();
         }
 
@@ -135,13 +135,11 @@ class AdminCartController extends Controller
             $cart = Cart::where('user_id', $request->user()->id)
             ->where('product_id', $product->id)
             ->where('order_id', $request->order_id)
-            ->whereNull('paid_at')
             ->first();
         }else {
             $cart = Cart::where('user_id', $request->user()->id)
             ->where('product_id', $product->id)
             ->where('status', 0)
-            ->whereNull('paid_at')
             ->first();
         }
         if ($cart) {

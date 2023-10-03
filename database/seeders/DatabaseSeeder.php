@@ -64,7 +64,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Table::create([
             'name' => 8,
             'slug' => 8,
-            'status' => 0
+            'status' => 1
         ]);
         \App\Models\Table::create([
             'name' => 9,

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('order_id')->unique();
             $table->string('table_id');
             $table->foreignId('payment_id');
+            $table->string('paid');
             $table->double('total_price');
             $table->double('total_quantity');
             $table->string('status')->default(0);

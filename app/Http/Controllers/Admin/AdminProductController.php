@@ -8,6 +8,7 @@ use App\Http\Resources\Admin\AdminProductResource;
 use App\Models\Activity;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -20,17 +21,31 @@ class AdminProductController extends Controller
         $this->categories = Category::select('id', 'name', 'slug')->get();
     }
 
-    public function index()
+    public function index(Request $request)
     {
-
         $total_products = Product::get()->count();
-        $products = Product::query()
-            ->select('id', 'category_id', 'name', 'slug', 'price', 'picture')
-            ->with([
-                "category" => fn ($query) => $query->select('name', 'slug', 'id'),
-            ])
-            ->latest()
-            ->fastPaginate();
+
+        $search_products = $request->input('search');
+
+        if ($search_products) {
+            $products = Product::query()
+                ->where('name', 'LIKE', "%$search_products%")
+                ->select('id', 'category_id', 'name', 'slug', 'price', 'picture')
+                ->with([
+                    "category" => fn ($query) => $query->select('name', 'slug', 'id'),
+                ])
+                ->latest()
+                ->fastPaginate(10)->withQueryString();
+        }else {
+            $products = Product::query()
+                ->select('id', 'category_id', 'name', 'slug', 'price', 'picture')
+                ->with([
+                    "category" => fn ($query) => $query->select('name', 'slug', 'id'),
+                ])
+                ->latest()
+                ->fastPaginate(10);
+        }
+
 
         return inertia('Admin/Product/Index', [
             "products" => AdminProductResource::collection($products),

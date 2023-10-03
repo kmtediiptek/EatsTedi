@@ -13,16 +13,15 @@ import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 import { numberFormat } from '@/Libs/Helper'
+import TextInput from '@/Components/TextInput'
 
 
 export default function Index({ total_products, ...props }) {
     const { data: products, meta, links } = props.products
 
-    const [searchQuery, setSearchQuery] = useState('')
+    const [searchQuery, setSearchQuery] = useState()
 
-    const filteredProducts = products.filter(product =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase())
-    ).slice(0, 10)
+    const {get} = useForm();
 
     const { delete: destroy, data, setData } = useForm({
         name: '',
@@ -121,6 +120,17 @@ export default function Index({ total_products, ...props }) {
             }
         })
     }
+
+    const handleSearch = (e) => {
+        e.preventDefault()
+        setSearchQuery(e.target.value)
+        router.get(`/admin/setting/product`, {
+            search: e.target.value
+        }, {
+            preserveState: true
+        })
+    }
+
     return (
         <>
             <Head title="Setting" />
@@ -134,9 +144,13 @@ export default function Index({ total_products, ...props }) {
                     >
                         <IconPlus size={18} />
                     </ActionButton>
-                    <input id="searchQuery" type="text" className='w-3/4 sm:w-1/4 rounded border-gray-300 py-1 focus:ring-puple-300 focus:border-purple-600' placeholder='Search menu..'
-                        value={searchQuery}
-                        onChange={e => setSearchQuery(e.target.value)} />
+                    <TextInput
+                        type="search"
+                        className="w-1/4"
+                        placeholder="Search menu.."
+                        defaultValue={searchQuery}
+                        onChange={handleSearch}
+                    />
                 </div>
                 <div className='w-full'>
                 </div>
@@ -152,8 +166,8 @@ export default function Index({ total_products, ...props }) {
                         </tr>
                     </Table.Thead>
                     <Table.Tbody>
-                        {filteredProducts.length > 0 ? <>
-                            {filteredProducts.map((product, index) => (
+                        {products.length > 0 ? <>
+                            {products.map((product, index) => (
                                 <tr className="bg-white border-b text-gray-500" key={index}>
                                     <Table.Td className="w-5">{meta.from + index}</Table.Td>
                                     <Table.Td>{product.name}</Table.Td>

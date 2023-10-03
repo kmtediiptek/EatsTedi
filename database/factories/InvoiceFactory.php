@@ -30,6 +30,7 @@ class InvoiceFactory extends Factory
             'status' => 0,
             'charge' => $total_price * rand(1, 4),
             'name' => $user->name,
+            'paid' => 1,
             'succeeded_at' => $date = $cart->paid_at,
             'created_at' => $date,
             'updated_at' => $date,
