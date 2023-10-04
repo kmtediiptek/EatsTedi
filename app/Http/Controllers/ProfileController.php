@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Resources\Admin\AdminUserResource;
+use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Response;
 
 class ProfileController extends Controller
@@ -18,9 +20,11 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $pic = Auth::user()->picture ? Storage::url(Auth::user()->picture) : "";
         return inertia('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+            'picture' => $pic
         ]);
     }
 
@@ -29,13 +33,22 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
-
+        $picture = $request->file('picture');
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
+        $picture = $request->file('picture');
+        $request->user()->update([
+            "name" => $name = $request->name ?: Auth::user()->name,
+            "username" => $username = $request->username ?: Auth::user()->username,
+            "email" => $request->email ?: Auth::user()->email,
+            "number_phone" => $request->number_phone ?: Auth::user()->number_phone,
+            "address" => $request->address ?: Auth::user()->address,
+            "status" => $request->status ? $request->status : Auth::user()->status,
+            "picture" => $request->hasFile('picture') ? $picture->storeAs('images/employees', $username . '.' . $picture->extension()) : Auth::user()->picture
+        ]);
 
-        $request->user()->save();
+
 
         return Redirect::route('profile.edit');
     }

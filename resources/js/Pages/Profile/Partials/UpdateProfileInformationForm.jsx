@@ -3,25 +3,54 @@ import InputFile from '@/Components/InputFIle'
 import InputLabel from '@/Components/InputLabel'
 import PrimaryButton from '@/Components/PrimaryButton'
 import SecondaryButton from '@/Components/SecondaryButton'
+import Select from '@/Components/Select'
 import TextInput from '@/Components/TextInput'
-import { Link, useForm, usePage } from '@inertiajs/react'
+import Textarea from '@/Components/Textarea'
+import { Link, useForm, usePage, router } from '@inertiajs/react'
+import toast from 'react-hot-toast'
 
-export default function UpdateProfileInformation({ mustVerifyEmail, status, className, onHandleTab }) {
+export default function UpdateProfileInformation({ mustVerifyEmail, status, className, onHandleTab, picture }) {
     const user = usePage().props.auth.user
 
-    const { data, setData, patch, errors, processing } = useForm({
+    const { data, setData, errors, processing } = useForm({
         name: user.name,
         username: user.username,
         email: user.email,
         number_phone: user.number_phone,
-        address: user.address
+        address: user.address,
+        status: user.status,
+        picture: ''
     })
 
     const submit = (e) => {
         e.preventDefault()
-
-        patch(route('profile.update'))
+        router.post(route('profile.update'), {
+            _method: 'patch',
+            ...data,
+            status: data.status.na
+        }, {
+            onSuccess: () => {
+                    toast.success('Profile has been updated!')
+            }
+        })
     }
+
+
+    const statuses = [
+        {
+            id: 1,
+            name: "owner"
+
+        },
+        {
+            id: 2,
+            name: "admin"
+        },
+        {
+            id: 3,
+            name: "employee"
+        }
+    ];
 
     return (
         <div className={className}>
@@ -37,7 +66,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
                 <div className="mb-6">
                     <InputLabel htmlFor="picture" value="Picture" />
-                    <InputFile name='picture' id='picture' className="text-third" onChange={(e) => setData('picture', e.target.files[0])} />
+                    <InputFile picture={picture} name='picture' id='picture' className="text-third" onChange={(e) => setData('picture', e.target.files[0])} />
                     {errors.picture ? <Error className='' value={errors.picture} /> : null}
                 </div>
 
@@ -101,6 +130,21 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     />
 
                     <InputError className="mt-2" message={errors.number_phone} />
+                </div>
+                <div>
+                    <InputLabel htmlFor="status" value="Status" />
+                    <Select value={data.status} data={statuses} onChange={(e) => setData('status', e)} />
+                {errors.status ? <Error className='' value={errors.status} /> : null}
+
+                    <InputError className="mt-2" message={errors.status} />
+                </div>
+                <div>
+                    <InputLabel htmlFor="address" value="Address" />
+
+                    <Textarea rows="6" name='address' id='address' onChange={(e) => setData('address', e.target.value)} value={data.address} />
+                    {errors.address ? <Error className='' value={errors.address} /> : null}
+
+                    <InputError className="mt-2" message={errors.address} />
                 </div>
 
 

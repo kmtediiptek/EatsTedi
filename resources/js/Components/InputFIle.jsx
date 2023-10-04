@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-export default function InputFile({ onChange, accept = '.jpg, .png, .jpeg' }) {
+export default function InputFile({ picture, onChange, accept = '.jpg, .png, .jpeg' }) {
     const [imagePreview, setImagePreview] = useState(null);
 
+    console.log(picture);
     const handleFileChange = (event) => {
         const file = event.target.files[0];
 
@@ -18,12 +19,11 @@ export default function InputFile({ onChange, accept = '.jpg, .png, .jpeg' }) {
 
     const renderImage = () => {
         if (imagePreview) {
-            return <img src={imagePreview} alt="Preview" className="w-32 h-32 object-cover rounded mb-2" />;
+            return <img src={imagePreview} alt="Preview" className="w-32 h-32 object-cover  border border-1 border-gray-300 rounded mb-2" />;
         }
         else {
-            // Placeholder image URL
-            const placeholderImageUrl = 'https://via.placeholder.com/150';  // You can replace this with any placeholder image URL
-            return <img src={placeholderImageUrl} alt="Placeholder" className="w-32 h-32 object-cover rounded mb-2" />;
+            const placeholderImageUrl = picture ? picture : 'https://via.placeholder.com/150';
+            return <img src={placeholderImageUrl} alt="Placeholder" className="w-32 h-32 object-cover rounded border border-1 border-gray-300 mb-2" />;
         }
     };
 

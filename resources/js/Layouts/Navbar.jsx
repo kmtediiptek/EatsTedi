@@ -74,7 +74,7 @@ export default function Navbar() {
                                             className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                         >
                                             <div className="flex items-center gap-2">
-                                                <img src="https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Free-File-Download.png" className='w-10 h-10 rounded-full' />
+                                                <img src={`/storage/${auth.user.picture}`} className='h-10 w-10 rounded'/>
                                                 {auth.user.name}
                                             </div>
 

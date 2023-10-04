@@ -9,10 +9,9 @@ import { useState } from 'react'
 import SecondaryButton from '@/Components/SecondaryButton'
 import { IconCategory, IconLocation, IconMail, IconPhone } from '@tabler/icons-react'
 
-export default function Edit({ auth, mustVerifyEmail, status }) {
+export default function Edit({ auth, mustVerifyEmail, status, picture }) {
     const [activeTab, setActiveTab] = useState('Information') // Default active tab
     const tabs = ['Edit', 'Account', 'Delete', 'Information']
-
     const handleTabClick = (tab) => {
         setActiveTab(tab)
     }
@@ -33,7 +32,7 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
             <Container className="py-12 pb-0 w-full flex">
                 <div className="flex w-full lg:w-3/4 mx-auto gap-4">
                     <div className="w-1/3 p-4flex flex-col gap-4 justify-start">
-                        <img src={auth.user.picture !== "" ? "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Free-File-Download.png" : auth.user.picture} alt={auth.user.picture} className='w-full bg-white aspect-square rounded-xl mx-auto' />
+                        <img src={auth.user.picture ? picture : "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Free-File-Download.png"} alt={auth.user.picture} className='w-full bg-white aspect-square rounded-xl mx-auto' />
                         <div>
                             <h3 className='text-2xl font-semibold mt-8 text-slate-700'>{auth.user.name}</h3>
                             <p className='text-lg mt-0 text-slate-500'>{auth.user.username}</p>
@@ -87,6 +86,7 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
                                     status={status}
                                     className="w-full"
                                     onHandleTab={onHandleTab}
+                                    picture={picture}
                                 />
                             </div>
                         )}

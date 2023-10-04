@@ -5,17 +5,19 @@ import clsx from 'clsx'
 export default function Select({ className = "", data, value, onChange, placeholder = 'Select one' }) {
     const [isOpen, setIsOpen] = useState(false)
 
-    const filteredData = data.filter(item => item.id !== value.id)
+    const handleSelect = (newValue) => {
+        onChange(newValue)
+        setIsOpen(false) // Close the dropdown after selection
+    }
+
+    const filteredData = data.filter((item) => item.id !== value?.id)
 
     return (
         <Listbox
             as="div"
             className="relative rounded w-full"
             value={value}
-            onChange={(e) => {
-                onChange(e)
-                setIsOpen(true)
-            }}
+            onChange={handleSelect}
             open={isOpen}
         >
             <Listbox.Button className={clsx("flex h-11 w-full items-center justify-between rounded border border-gray-300 px-4 focus:outline-none", className)}>
