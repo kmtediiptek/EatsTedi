@@ -46,7 +46,7 @@ class AdminTransactionController extends Controller
                 ->get();
         }
 
-        $search_products = $request->input('query');
+        $search_products = $request->input('search');
         if ($search_products) {
             $products = Product::query()
                 ->where('name', 'LIKE', "%$search_products%")

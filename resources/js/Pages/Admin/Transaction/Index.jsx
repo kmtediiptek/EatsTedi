@@ -6,7 +6,7 @@ import Pagination from '@/Components/Pagination'
 import ProductItem from '@/Components/ProductItem'
 import App from '@/Layouts/App'
 import { numberFormat } from '@/Libs/Helper'
-import { Head, Link, useForm, router } from '@inertiajs/react'
+import { Head, Link, useForm, router, usePage } from '@inertiajs/react'
 import { IconArrowsMaximize, IconArrowsMinimize, IconCategory, IconTrashX } from '@tabler/icons-react'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
@@ -22,6 +22,7 @@ export default function Index({ categories, total_categories, carts, invoices, t
 
     const quantity = carts.reduce((acc, cart) => acc + cart.quantity, 0)
 
+    const {url} = usePage();
 
     const { data, setData } = useForm({
         id: '',
@@ -55,13 +56,14 @@ export default function Index({ categories, total_categories, carts, invoices, t
             router.get(`/admin/transaction`, {
                 order_id: order.order_id,
             }, {
+
                 preserveState: true
             })
             setSelectedOrder(order)
-
+            setIsOrderListOpen(true)
         } else {
+            setIsOrderListOpen(true)
             setSelectedOrder(null)
-            setIsOrderListOpen(!isOrderListOpen)
         }
 
     }
@@ -79,8 +81,17 @@ export default function Index({ categories, total_categories, carts, invoices, t
         }, {
             onSuccess: () => {
                 setData({ id: '', name: '', carts: '', total: '', table_id: '', payment_id: '', charge: '' }),
-                    toast.success('Invoice has been added!')
+                toast.success('Invoice has been added!')
+                setIsOrderListOpen(false)
             }
+        })
+    }
+
+    const onCategory = (category) => {
+        router.get(url, {
+            category: category
+        }, {
+
         })
     }
 
@@ -131,13 +142,13 @@ export default function Index({ categories, total_categories, carts, invoices, t
                                 </div>
                             </Link>
                             {categories.map((category, index) => (
-                                <Link href={`/admin/transaction?category=${category.slug}`} className="flex rounded text-white" key={index}>
+                                <button onClick={() => onCategory(category.slug)} className="flex rounded text-white" key={index}>
                                     <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2" >
                                         <div className='w-8 h-8 mb-2' dangerouslySetInnerHTML={{ __html: category.icon }} />
                                         <p className='text-slate-500'>{category.name}</p>
                                         <h6 className='text-lg font-semibold'>{category.products_count} items</h6>
                                     </div>
-                                </Link>
+                                </button>
                             ))}
 
                         </div>
@@ -147,10 +158,10 @@ export default function Index({ categories, total_categories, carts, invoices, t
                         <div className="w-full">
                             <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Special menu for you</h3>
                             {products.length > 0 ?
-                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-lg-4 gap-4 gap-y-8 w-full flex-wrap">
+                                <div className={`grid grid-cols-1 sm:grid-cols-2 ${isOrderListOpen ? 'md:grid-cols-3' : 'md:grid-cols-4'}  lg:grid-cols-lg-4 gap-4 gap-y-8 w-full flex-wrap`}>
                                     {
                                         products.map((product, index) => (
-                                            <ProductItem product={product} key={index} />
+                                            <ProductItem product={product} setIsOrderListOpen={setIsOrderListOpen} key={index} />
                                         ))
                                     }
                                 </div>

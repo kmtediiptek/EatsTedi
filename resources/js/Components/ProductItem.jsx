@@ -4,14 +4,20 @@ import { toast } from 'react-hot-toast'
 import { IconShoppingBagPlus } from '@tabler/icons-react'
 import { numberFormat } from '@/Libs/Helper'
 
-export default function ProductItem({ product}) {
+export default function ProductItem({ product, setIsOrderListOpen}) {
+
+
+
     const addToCart = () => {
         router.post(`/admin/cart/${product.slug}`,
         {
             order_id: product.order_id
         },
         {
-            onSuccess: () => toast.success('Add to Cart!')
+            onSuccess: () => {
+                setIsOrderListOpen(true)
+                toast.success('Add to Cart!')
+            }
         })
     }
 

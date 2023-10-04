@@ -28,6 +28,7 @@
         "date-fns": "^2.30.0",
         "jspdf": "^2.5.1",
         "jspdf-autotable": "^3.6.0",
+        "nprogress": "^0.2.0",
         "react-apexcharts": "^1.4.1",
         "react-hot-toast": "^2.4.1"
     }

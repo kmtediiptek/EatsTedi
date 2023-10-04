@@ -85,7 +85,6 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     // Admin Invoice
     Route::get('/invoice', [AdminInvoiceController::class, 'index'])->name('admin.invoice.index');
-    Route::get('/invoice/generate-pdf', [AdminInvoiceController::class, 'generatePDF'])->name('admin.invoice.generatePDF');
     Route::post('/invoice', [AdminInvoiceController::class, 'store'])->name('admin.invoice.store');
     Route::put('/invoice/{invoice:order_id}', [AdminInvoiceController::class, 'update'])->name('admin.invoice.update');
     Route::delete('/invoice/{invoice}', [AdminInvoiceController::class, 'destroy'])->name('admin.invoice.destroy');

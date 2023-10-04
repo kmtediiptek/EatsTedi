@@ -23,11 +23,9 @@ export default function OrderItem({ invoice, onClick }) {
         setOrderId(orderId)
     }
 
-
     function onCancelToast() {
         setIsToast(false)
     }
-
 
     const onUpdate = (orderId) => {
         router.post(`/admin/invoice/${orderId}`, {
@@ -39,6 +37,7 @@ export default function OrderItem({ invoice, onClick }) {
             }
         })
     }
+
     return (
         <div className="flex gap-x-4 p-2 border border-gray-300 rounded text-white" >
 
@@ -57,8 +56,8 @@ export default function OrderItem({ invoice, onClick }) {
                                 openToast(invoice.order_id, invoice.name)
                             }
                         }}
-                        className={`font-semibold text-sm flex items-center gap-x-2 py-1 h-full px-2 rounded text-white ${invoice.status == 1 ? 'bg-green-500' : 'bg-yellow-400'} ${invoice.charge == 0 ? 'cursor-not-allowed' : ''}`}
-                        disabled={invoice.charge == 0}
+                        className={`font-semibold text-sm flex items-center gap-x-2 py-1 h-full px-2 rounded text-white ${invoice.status == 1 ? 'bg-green-500' : 'bg-yellow-400'} ${invoice.charge == 0 || invoice.status == 1 ? 'cursor-not-allowed' : ''}`}
+                        disabled={invoice.charge == 0 || invoice.status == 1}
                     >
                         {invoice.charge == 0 ? 'In Progress' : (
                             <>

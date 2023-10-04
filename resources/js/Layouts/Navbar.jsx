@@ -3,12 +3,12 @@ import { useState } from 'react'
 import Dropdown from '@/Components/Dropdown'
 import NavLink from '@/Components/NavLink'
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink'
-import { Link, useForm, usePage } from '@inertiajs/react'
+import { Link, router, usePage } from '@inertiajs/react'
 import TextInput from '@/Components/TextInput'
 
 export default function Navbar() {
     const { auth } = usePage().props
-    const { get } = useForm()
+    const { url } = usePage()
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false)
 
     const [searchQuery, setSearchQuery] = useState('')
@@ -16,7 +16,12 @@ export default function Navbar() {
     const handleSearch = (e) => {
         e.preventDefault()
         setSearchQuery(e.target.value)
-        get(`/admin/transaction?query=${e.target.value}`)
+        console.log(url);
+        router.get(url, {
+            search : searchQuery
+        }, {
+            preserveState: true
+        })
     }
 
     return (
@@ -35,7 +40,7 @@ export default function Navbar() {
                                         type="search"
                                         className="w-full"
                                         placeholder="Search menu.."
-                                        defaultValue={searchQuery}  // Use defaultValue
+                                        defaultValue={searchQuery}
                                         onChange={handleSearch}
                                     />
                                 </div>
