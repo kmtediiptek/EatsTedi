@@ -16,7 +16,6 @@ export default function Navbar() {
     const handleSearch = (e) => {
         e.preventDefault()
         setSearchQuery(e.target.value)
-        console.log(url);
         router.get(url, {
             search : searchQuery
         }, {

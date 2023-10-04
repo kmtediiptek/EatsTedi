@@ -1,26 +1,30 @@
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Link, useForm, usePage } from '@inertiajs/react';
-import { Transition } from '@headlessui/react';
+import InputError from '@/Components/InputError'
+import InputFile from '@/Components/InputFIle'
+import InputLabel from '@/Components/InputLabel'
+import PrimaryButton from '@/Components/PrimaryButton'
+import SecondaryButton from '@/Components/SecondaryButton'
+import TextInput from '@/Components/TextInput'
+import { Link, useForm, usePage } from '@inertiajs/react'
 
-export default function UpdateProfileInformation({ mustVerifyEmail, status, className }) {
-    const user = usePage().props.auth.user;
+export default function UpdateProfileInformation({ mustVerifyEmail, status, className, onHandleTab }) {
+    const user = usePage().props.auth.user
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
+    const { data, setData, patch, errors, processing } = useForm({
         name: user.name,
+        username: user.username,
         email: user.email,
-    });
+        number_phone: user.number_phone,
+        address: user.address
+    })
 
     const submit = (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
-        patch(route('profile.update'));
-    };
+        patch(route('profile.update'))
+    }
 
     return (
-        <section className={className}>
+        <div className={className}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900">Profile Information</h2>
 
@@ -30,6 +34,13 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
+
+                <div className="mb-6">
+                    <InputLabel htmlFor="picture" value="Picture" />
+                    <InputFile name='picture' id='picture' className="text-third" onChange={(e) => setData('picture', e.target.files[0])} />
+                    {errors.picture ? <Error className='' value={errors.picture} /> : null}
+                </div>
+
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
 
@@ -45,7 +56,21 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
                     <InputError className="mt-2" message={errors.name} />
                 </div>
+                <div>
+                    <InputLabel htmlFor="username" value="Username" />
 
+                    <TextInput
+                        id="username"
+                        className="mt-1 block w-full"
+                        value={data.username}
+                        onChange={(e) => setData('username', e.target.value)}
+                        required
+                        isFocused
+                        autoComplete="username"
+                    />
+
+                    <InputError className="mt-2" message={errors.username} />
+                </div>
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
 
@@ -61,6 +86,23 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
                     <InputError className="mt-2" message={errors.email} />
                 </div>
+
+                <div>
+                    <InputLabel htmlFor="number_phone" value="Number Phone" />
+
+                    <TextInput
+                        id="number_phone"
+                        className="mt-1 block w-full"
+                        value={data.number_phone}
+                        onChange={(e) => setData('number_phone', e.target.value)}
+                        required
+                        isFocused
+                        autoComplete="number_phone"
+                    />
+
+                    <InputError className="mt-2" message={errors.number_phone} />
+                </div>
+
 
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
@@ -84,19 +126,11 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     </div>
                 )}
 
-                <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
-
-                    <Transition
-                        show={recentlySuccessful}
-                        enterFrom="opacity-0"
-                        leaveTo="opacity-0"
-                        className="transition ease-in-out"
-                    >
-                        <p className="text-sm text-gray-600">Saved.</p>
-                    </Transition>
+                <div className="flex items-center gap-2">
+                    <SecondaryButton type='button' onClick={onHandleTab} >Cancel</SecondaryButton>
+                    <PrimaryButton disabled={processing}>Update</PrimaryButton>
                 </div>
             </form>
-        </section>
-    );
+        </div>
+    )
 }

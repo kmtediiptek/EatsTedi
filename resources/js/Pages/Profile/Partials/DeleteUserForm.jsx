@@ -1,15 +1,25 @@
-import { useRef, useState } from 'react';
-import DangerButton from '@/Components/DangerButton';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import Modal from '@/Components/Modal';
-import SecondaryButton from '@/Components/SecondaryButton';
-import TextInput from '@/Components/TextInput';
-import { useForm } from '@inertiajs/react';
+import { useRef, useState } from 'react'
+import DangerButton from '@/Components/DangerButton'
+import InputError from '@/Components/InputError'
+import InputLabel from '@/Components/InputLabel'
+import Modal from '@/Components/Modal'
+import SecondaryButton from '@/Components/SecondaryButton'
+import TextInput from '@/Components/TextInput'
+import { useForm } from '@inertiajs/react'
 
 export default function DeleteUserForm({ className }) {
-    const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
-    const passwordInput = useRef();
+
+    let [isOpen, setIsOpen] = useState(false)
+
+    const [modalUser, setModalUser] = useState("")
+
+    const [modalType, setModalType] = useState("")
+
+    function onCancelModal() {
+        setIsOpen(false)
+    }
+
+    const passwordInput = useRef()
 
     const {
         data,
@@ -20,28 +30,30 @@ export default function DeleteUserForm({ className }) {
         errors,
     } = useForm({
         password: '',
-    });
+    })
 
-    const confirmUserDeletion = () => {
-        setConfirmingUserDeletion(true);
-    };
+    function openModalCategory(type) {
+        setIsOpen(true)
+        setModalUser("Account")
+        setModalType(type)
+    }
 
     const deleteUser = (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
         destroy(route('profile.destroy'), {
             preserveScroll: true,
             onSuccess: () => closeModal(),
             onError: () => passwordInput.current.focus(),
             onFinish: () => reset(),
-        });
-    };
+        })
+    }
 
     const closeModal = () => {
-        setConfirmingUserDeletion(false);
+        setConfirmingUserDeletion(false)
 
-        reset();
-    };
+        reset()
+    }
 
     return (
         <section className={`space-y-6 ${className}`}>
@@ -54,10 +66,10 @@ export default function DeleteUserForm({ className }) {
                 </p>
             </header>
 
-            <DangerButton onClick={confirmUserDeletion}>Delete Account</DangerButton>
+            <DangerButton onClick={() => openModalCategory("delete")}>Delete Account</DangerButton>
 
-            <Modal show={confirmingUserDeletion} onClose={closeModal}>
-                <form onSubmit={deleteUser} className="p-6">
+            <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} size={`1/3`} type={modalType} title={modalUser}>
+                <form onSubmit={deleteUser}>
                     <h2 className="text-lg font-medium text-gray-900">
                         Are you sure you want to delete your account?
                     </h2>
@@ -77,7 +89,7 @@ export default function DeleteUserForm({ className }) {
                             ref={passwordInput}
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
-                            className="mt-1 block w-3/4"
+                            className="mt-1 block w-full"
                             isFocused
                             placeholder="Password"
                         />
@@ -86,8 +98,7 @@ export default function DeleteUserForm({ className }) {
                     </div>
 
                     <div className="mt-6 flex justify-end">
-                        <SecondaryButton onClick={closeModal}>Cancel</SecondaryButton>
-
+                    <SecondaryButton onClick={() => onCancelModal()}>Cancel</SecondaryButton>
                         <DangerButton className="ml-3" disabled={processing}>
                             Delete Account
                         </DangerButton>
@@ -95,5 +106,5 @@ export default function DeleteUserForm({ className }) {
                 </form>
             </Modal>
         </section>
-    );
+    )
 }
