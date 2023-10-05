@@ -27,7 +27,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         router.post(route('profile.update'), {
             _method: 'patch',
             ...data,
-            status: data.status.na
+            status: data.status.name
         }, {
             onSuccess: () => {
                     toast.success('Profile has been updated!')

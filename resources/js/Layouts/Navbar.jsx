@@ -24,7 +24,7 @@ export default function Navbar() {
     }
 
     return (
-        <nav className="bg-white fixed z-[100] top-0 border-b border-gray-300 w-full">
+        <nav className="bg-white fixed z-[99999] top-0 border-b border-gray-300 w-full">
             <div className="max-w-8xl mx-auto px-4 sm:px-4 lg:px-8">
                 <div className="flex justify-between h-16">
                     <div className="flex w-full md:w-3/4 justify-between">

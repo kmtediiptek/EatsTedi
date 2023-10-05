@@ -29,37 +29,37 @@ class DatabaseSeeder extends Seeder
         \App\Models\Table::create([
             'name' => 1,
             'slug' => 1,
-            'status' => 0
+            'status' => 1
         ]);
         \App\Models\Table::create([
             'name' => 2,
             'slug' => 2,
-            'status' => 0
+            'status' => 1
         ]);
         \App\Models\Table::create([
             'name' => 3,
             'slug' => 3,
-            'status' => 0
+            'status' => 1
         ]);
         \App\Models\Table::create([
             'name' => 4,
             'slug' => 4,
-            'status' => 0
+            'status' => 1
         ]);
         \App\Models\Table::create([
             'name' => 5,
             'slug' => 5,
-            'status' => 0
+            'status' => 1
         ]);
         \App\Models\Table::create([
             'name' => 6,
             'slug' => 6,
-            'status' => 0
+            'status' => 1
         ]);
         \App\Models\Table::create([
             'name' => 7,
             'slug' => 7,
-            'status' => 0
+            'status' => 1
         ]);
         \App\Models\Table::create([
             'name' => 8,
@@ -97,8 +97,19 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
         ]);
 
+
         \App\Models\Product::factory(100)->create();
-        \App\Models\Invoice::factory(10)->create();
+        $invoice = \App\Models\Invoice::factory(10)->create();
         \App\Models\Cart::factory(10)->create();
+
+        \App\Models\Payment::create([
+            'user_id' => 1,
+            'order_id' => $invoice->order_id,
+            'transaction_date' => now(),
+            'salary' => 100000,
+            'total_salary' => 100000,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

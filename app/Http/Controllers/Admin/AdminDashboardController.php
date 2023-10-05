@@ -53,6 +53,7 @@ class AdminDashboardController extends Controller
             ->orderBy('date', 'asc')
             ->get();
 
+
         $monthlyIncome = Invoice::select(
             \DB::raw('YEAR(created_at) as year'),
             \DB::raw('MONTHNAME(created_at) as month'),

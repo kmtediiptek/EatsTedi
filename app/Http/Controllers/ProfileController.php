@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
-use App\Http\Resources\Admin\AdminUserResource;
-use App\Models\User;
+use App\Models\Invoice;
+use App\Models\Salary;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Response;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class ProfileController extends Controller
 {
@@ -20,11 +22,32 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $dailySalary = Salary::select(
+            DB::raw('YEAR(transaction_date) as year'),
+            DB::raw('MONTHNAME(transaction_date) as month'),
+            \DB::raw('DATE(transaction_date) as date'),
+        )
+            ->groupBy('year', 'date')
+            ->groupBy('month', 'date')
+            ->orderBy('date', 'asc')
+            ->get();
+
+            if (Auth::user()->status == "owner") {
+                $total_salary = Invoice::sum('total_price');
+            }else {
+                $total_salary = Salary::where('user_id', auth()->user()->id)
+                ->whereMonth('created_at', Carbon::now()->month)  // Modify this line to filter by the current month
+                ->sum('total_salary');
+
+            }
+
         $pic = Auth::user()->picture ? Storage::url(Auth::user()->picture) : "";
         return inertia('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
-            'picture' => $pic
+            'picture' => $pic,
+            "dailySalary" => $dailySalary,
+            "total_salary" => $total_salary,
         ]);
     }
 
@@ -39,7 +62,7 @@ class ProfileController extends Controller
         }
         $picture = $request->file('picture');
         $request->user()->update([
-            "name" => $name = $request->name ?: Auth::user()->name,
+            "name" => $request->name ?: Auth::user()->name,
             "username" => $username = $request->username ?: Auth::user()->username,
             "email" => $request->email ?: Auth::user()->email,
             "number_phone" => $request->number_phone ?: Auth::user()->number_phone,
