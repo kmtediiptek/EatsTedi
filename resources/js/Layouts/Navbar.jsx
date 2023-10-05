@@ -17,14 +17,14 @@ export default function Navbar() {
         e.preventDefault()
         setSearchQuery(e.target.value)
         router.get(url, {
-            search : searchQuery
+            search: searchQuery
         }, {
             preserveState: true
         })
     }
 
     return (
-        <nav className="bg-white fixed z-[99999] top-0 border-b border-gray-300 w-full">
+        <nav className="bg-white fixed z-[999] top-0 border-b border-gray-300 w-full">
             <div className="max-w-8xl mx-auto px-4 sm:px-4 lg:px-8">
                 <div className="flex justify-between h-16">
                     <div className="flex w-full md:w-3/4 justify-between">
@@ -61,6 +61,9 @@ export default function Navbar() {
                             <NavLink href={route('admin.activity.index')} active={route().current('admin.activity.index')}>
                                 Log
                             </NavLink>
+                            <NavLink href={route('admin.presence.index')} active={route().current('admin.presence.index')}>
+                                Presence
+                            </NavLink>
                         </div>
                     </div>
 
@@ -74,7 +77,7 @@ export default function Navbar() {
                                             className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                         >
                                             <div className="flex items-center gap-2">
-                                                <img src={`/storage/${auth.user.picture}`} className='h-10 w-10 rounded'/>
+                                                <img src={`/storage/${auth.user.picture}`} className='h-10 w-10 rounded' />
                                                 {auth.user.name}
                                             </div>
 

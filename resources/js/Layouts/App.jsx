@@ -13,6 +13,7 @@ export default function App({ children }) {
                         background: 'white',
                         borderRadius: '4px',
                         display: 'inline-flex',
+                        marginTop: '12px',
                         alignItems: 'center',
                         justifyContent: 'center',
                         flexShrink: 0,

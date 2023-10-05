@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminInvoiceController;
 use App\Http\Controllers\Admin\AdminPaymentController;
+use App\Http\Controllers\Admin\AdminPresenceController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminTableController;
 use App\Http\Controllers\Admin\AdminTransactionController;
@@ -89,8 +90,12 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/invoice/{invoice:order_id}', [AdminInvoiceController::class, 'update'])->name('admin.invoice.update');
     Route::delete('/invoice/{invoice}', [AdminInvoiceController::class, 'destroy'])->name('admin.invoice.destroy');
 
-     // Admin Log
-     Route::get('/activity', [AdminActivityController::class, 'index'])->name('admin.activity.index');
+    // Admin Log
+    Route::get('/activity', [AdminActivityController::class, 'index'])->name('admin.activity.index');
+
+    // Admin Presence
+    Route::get('/presence', [AdminPresenceController::class, 'index'])->name('admin.presence.index');
+    Route::post('/presence', [AdminPresenceController::class, 'store'])->name('admin.presence.store');
 
     //  Send Email
     Route::post('/send-email', [SendEmailController::class, 'index'])->name('admin.send.email');

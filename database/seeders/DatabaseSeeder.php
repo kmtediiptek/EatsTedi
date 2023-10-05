@@ -99,17 +99,7 @@ class DatabaseSeeder extends Seeder
 
 
         \App\Models\Product::factory(100)->create();
-        $invoice = \App\Models\Invoice::factory(10)->create();
+        \App\Models\Invoice::factory(10)->create();
         \App\Models\Cart::factory(10)->create();
-
-        \App\Models\Payment::create([
-            'user_id' => 1,
-            'order_id' => $invoice->order_id,
-            'transaction_date' => now(),
-            'salary' => 100000,
-            'total_salary' => 100000,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
     }
 }
