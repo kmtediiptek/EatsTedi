@@ -23,6 +23,10 @@ class AdminPresenceController extends Controller
      */
     public function index(Request $request)
     {
+
+        // Admin
+        $date = Carbon::parse(now())->format('Y:m:d');
+
         // Data presensi
         $presensi = [
             "date" => Carbon::now(),
@@ -36,7 +40,7 @@ class AdminPresenceController extends Controller
         $qrCodes = $qr->generate($presensiJson)->toHtml();
 
 
-        $total_presences = Presence::get()->count();
+        $total_presences = Presence::whereDate('presence_date', $date)->get()->count();
 
         $search_users = $request->input('search');
 
@@ -47,12 +51,14 @@ class AdminPresenceController extends Controller
                     $query->where('name', 'LIKE', "%$search_users%");
                 })
                 ->select('id', 'user_id', 'presence_date', 'is_presence', 'created_at')
+                ->whereDate('presence_date', $date)
                 ->fastPaginate(10)
                 ->withQueryString();
         } else {
             $presences = Presence::query()
                 ->with('user')
                 ->select('id', 'user_id', 'presence_date', 'is_presence', 'created_at')
+                ->whereDate('presence_date', $date)
                 ->fastPaginate(10);
         }
 
@@ -79,28 +85,7 @@ class AdminPresenceController extends Controller
                 "presence_date" => $adminDate,
                 "is_presence" => $user ? 1 : 0,
             ]);
-        } else {
-            $json = $request->decodedText;
-            $decodedArray = json_decode($json, true);
 
-            $date = $decodedArray['date'];
-
-            // Membuat objek Carbon dari string tanggal
-            $carbonDate = Carbon::parse($date);
-
-            // Employee
-            $formattedDate = $carbonDate->format('Y:m:d');
-            Presence::updateOrCreate([
-                "user_id" => $user = $request->user_id,
-                "presence_date" => $formattedDate,
-            ], [
-                "user_id" => $user = $request->user_id,
-                "presence_date" => $formattedDate,
-                "is_presence" => $user ? 1 : 0,
-            ]);
-        }
-
-        if (Auth::user()->status == "admin") {
             Salary::updateOrCreate([
                 "user_id" => $user = $request->user_id,
                 "date" => $adminDate,
@@ -110,17 +95,35 @@ class AdminPresenceController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-        }else {
-            Salary::updateOrCreate([
-                "user_id" => $user = $request->user_id,
-                "date" => $formattedDate,
-            ], [
-                'salary' => 100000,
-                'total_salary' => 100000,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+        } else {
+            $date = $request->date;
+            $formateDate = Carbon::parse($date)->format('Y:m:d');
+            if ($formateDate !== $adminDate) {
+                return to_route('admin.presence.index');
+            } else {
+
+                // Employee
+                Presence::updateOrCreate([
+                    "user_id" => $user = $request->user_id,
+                    "presence_date" => $formateDate,
+                ], [
+                    "user_id" => $user = $request->user_id,
+                    "presence_date" => $formateDate,
+                    "is_presence" => $user ? 1 : 0,
+                ]);
+
+                Salary::updateOrCreate([
+                    "user_id" => $user = $request->user_id,
+                    "date" => $formateDate,
+                ], [
+                    'salary' => 100000,
+                    'total_salary' => 100000,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
         }
+
 
         return to_route('admin.presence.index');
     }
