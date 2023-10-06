@@ -30,16 +30,18 @@ class ProfileController extends Controller
             ->groupBy('year', 'date')
             ->groupBy('month', 'date')
             ->orderBy('date', 'asc')
+            ->where('user_id', Auth::user()->id)
             ->get();
 
-            if (Auth::user()->status == "owner") {
-                $total_salary = Invoice::sum('total_price');
-            }else {
-                $total_salary = Salary::where('user_id', auth()->user()->id)
+
+        if (Auth::user()->status == "owner") {
+            $total_salary = Invoice::sum('total_price');
+        } else {
+            $total_salary = Salary::where('user_id', auth()->user()->id)
+                ->where('user_id', Auth::user()->id)
                 ->whereMonth('created_at', Carbon::now()->month)  // Modify this line to filter by the current month
                 ->sum('total_salary');
-
-            }
+        }
 
         $pic = Auth::user()->picture ? Storage::url(Auth::user()->picture) : "";
         return inertia('Profile/Edit', [
