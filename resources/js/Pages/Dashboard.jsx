@@ -1,7 +1,7 @@
 import Container from '@/Components/Container'
 import App from '@/Layouts/App'
 import { Head, Link } from '@inertiajs/react'
-import { IconCategory, IconCreditCard, IconMoneybag, IconReportMoney, IconTable, IconUsers } from '@tabler/icons-react'
+import { IconCalendarTime, IconCategory, IconCreditCard, IconMoneybag, IconReportMoney, IconTable, IconUsers } from '@tabler/icons-react'
 import { IconMenuOrder } from '@tabler/icons-react'
 import Chart from 'react-apexcharts'
 import React, { Component, useState } from 'react'
@@ -140,7 +140,7 @@ export default function Dashboard({ total_categories, total_tables, total_paymen
                 <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Dashboard</h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 w-full gap-x-4">
-                    {/* Start Order */}
+                    {/* Start Dashboard */}
                     <Link href={route('admin.category.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
                         <div className="rounded bg-orange-500 w-16 h-16 flex justify-center items-center">
                             <h3 className='text-4xl font-semibold text-center'><IconCategory size={36} /></h3>
@@ -186,7 +186,25 @@ export default function Dashboard({ total_categories, total_tables, total_paymen
                             <span className='text-slate-500'>{total_employees} Item</span>
                         </div>
                     </Link>
-                    {/* End Order */}
+                    <Link href={route('admin.presence.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
+                        <div className="rounded bg-fuchsia-500 w-16 h-16 flex justify-center items-center">
+                            <h3 className='text-4xl font-semibold text-center'><IconUsers size={36} /></h3>
+                        </div>
+                        <div className='text-slate-800 flex flex-col flex-1 justify-around'>
+                            <h5 className='font-semibold text-xl'>Presences</h5>
+                            <span className='text-slate-500'>{total_employees} Item</span>
+                        </div>
+                    </Link>
+                    <Link href={route('admin.schedule.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
+                        <div className="rounded bg-cyan-500 w-16 h-16 flex justify-center items-center">
+                            <h3 className='text-4xl font-semibold text-center'><IconCalendarTime size={36} /></h3>
+                        </div>
+                        <div className='text-slate-800 flex flex-col flex-1 justify-around'>
+                            <h5 className='font-semibold text-xl'>Schedules</h5>
+                            <span className='text-slate-500'>{total_employees} Item</span>
+                        </div>
+                    </Link>
+                    {/* End Dashboard */}
                 </div>
                 {/* End Dashboard */}
 
@@ -196,8 +214,8 @@ export default function Dashboard({ total_categories, total_tables, total_paymen
                 <h3 className='text-2xl mb-4 font-semibold text-slate-700'>Cash</h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 w-full gap-x-4">
-                    {/* Start Order */}
-                    <Link href={route('admin.category.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
+                    {/* Start Dashboard */}
+                    <div className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
                         <div className="rounded bg-green-500 w-24 h-24 flex justify-center items-center">
                             <h3 className='text-4xl font-semibold text-center'><IconReportMoney size={72} /></h3>
                         </div>
@@ -205,8 +223,8 @@ export default function Dashboard({ total_categories, total_tables, total_paymen
                             <h5 className='font-semibold text-xl'>Total Income</h5>
                             <span className='text-slate-800 text-3xl font-bold'> <sup>Rp.</sup> {numberFormat(total_income)}</span>
                         </div>
-                    </Link>
-                    <Link href={route('admin.category.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
+                    </div>
+                    <div className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
                         <div className="rounded bg-yellow-400 w-24 h-24 flex justify-center items-center">
                             <h3 className='text-4xl font-semibold text-center'><IconCreditCard size={72} /></h3>
                         </div>
@@ -214,8 +232,8 @@ export default function Dashboard({ total_categories, total_tables, total_paymen
                             <h5 className='font-semibold text-xl'>Today's Income</h5>
                             <span className='text-slate-800 text-3xl font-bold'> <sup>Rp.</sup> {numberFormat(today_income)}</span>
                         </div>
-                    </Link>
-                    <Link href={route('admin.category.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
+                    </div>
+                    <div className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
                         <div className="rounded bg-blue-500 w-24 h-24 flex justify-center items-center">
                             <h3 className='text-4xl font-semibold text-center'><IconCreditCard size={72} /></h3>
                         </div>
@@ -223,8 +241,8 @@ export default function Dashboard({ total_categories, total_tables, total_paymen
                             <h5 className='font-semibold text-xl'>Paid Now</h5>
                             <span className='text-slate-800 text-3xl font-bold'> <sup>Rp.</sup> {numberFormat(paid_now)}</span>
                         </div>
-                    </Link>
-                    <Link href={route('admin.category.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
+                    </div>
+                    <div className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
                         <div className="rounded bg-red-500 w-24 h-24 flex justify-center items-center">
                             <h3 className='text-4xl font-semibold text-center'><IconCreditCard size={72} /></h3>
                         </div>
@@ -232,8 +250,8 @@ export default function Dashboard({ total_categories, total_tables, total_paymen
                             <h5 className='font-semibold text-xl'>Paid Later</h5>
                             <span className='text-slate-800 text-3xl font-bold'> <sup>Rp.</sup> {numberFormat(paid_later)}</span>
                         </div>
-                    </Link>
-                    {/* End Order */}
+                    </div>
+                    {/* End Dashboard */}
                 </div>
                 {/* End Dashboard */}
             </Container>

@@ -152,33 +152,10 @@ class AdminInvoiceController extends Controller
             "activity" => Auth::user()->name . " Create Invoices " . $request->name ?: $invoice->name . " Table " . $table_id ?: $invoice->table_id
         ]);
 
-        $currentDate = now()->toDateString();
-
-        // Periksa apakah ada invoice hari ini
-        if ($invoice && $invoice->created_at->toDateString() === $currentDate) {
-            // Periksa apakah sudah ada data gaji dengan transaction date hari ini
-            $existingSalary = Salary::where('user_id', 1)
-                ->whereDate('transaction_date', $currentDate)
-                ->exists();
-
-            // Jika belum ada data gaji dengan transaction date hari ini, tambahkan
-            if (!$existingSalary) {
-                Salary::create([
-                    'user_id' => 1,
-                    'order_id' => $invoice->order_id,
-                    'transaction_date' => $currentDate,
-                    'salary' => 100000,  // Gaji sesuai dengan aturan yang Anda tentukan
-                    'total_salary' => 100000,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
-        }
-
         return to_route('admin.transaction');
     }
 
-    public function update(Request $request, Invoice $invoice)
+    public function update(Invoice $invoice)
     {
 
         $invoice->update([

@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $search_products = $request->input('query');
         if ($search_products) {
             $products = Product::query()
@@ -19,12 +20,12 @@ class HomeController extends Controller
                 ->when($request->category, fn ($q, $v) => $q->whereBelongsTo(Category::where('slug', $v)->first()))
                 ->latest()
                 ->fastPaginate(10)->withQueryString();
-        }else {
+        } else {
             $products = Product::query()
-            ->select('id', 'category_id', 'name', 'slug', 'price', 'picture')
-            ->when($request->category, fn ($q, $v) => $q->whereBelongsTo(Category::where('slug', $v)->first()))
-            ->latest()
-            ->fastPaginate(10)->withQueryString();
+                ->select('id', 'category_id', 'name', 'slug', 'price', 'picture')
+                ->when($request->category, fn ($q, $v) => $q->whereBelongsTo(Category::where('slug', $v)->first()))
+                ->latest()
+                ->fastPaginate(10)->withQueryString();
         }
 
         $categories = Category::query()
@@ -32,11 +33,8 @@ class HomeController extends Controller
             ->withCount('products')
             ->get();
 
-            $total_categories = Product::get()->count();
-
         return inertia('Home/Index', [
             "categories" => $categories,
-            "total_categories" => $total_categories,
             "payments" => Payment::query()->select('id', 'name', 'slug')->get(),
             "products" => AdminProductResource::collection($products),
         ]);

@@ -2,7 +2,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { IconX } from '@tabler/icons-react'
 import { Children, Fragment, useState } from 'react'
 
-export default function MyModal({isToast, name = 'Delete', onClose, title, children}) {
+export default function MyModal({isToast, name, onClose, title, children}) {
     return (
         <>
             <Transition appear show={isToast} as={Fragment}>
