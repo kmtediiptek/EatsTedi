@@ -23,9 +23,9 @@ class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         $dailySalary = Salary::select(
-            DB::raw('YEAR(transaction_date) as year'),
-            DB::raw('MONTHNAME(transaction_date) as month'),
-            \DB::raw('DATE(transaction_date) as date'),
+            DB::raw('YEAR(date) as year'),
+            DB::raw('MONTHNAME(date) as month'),
+            \DB::raw('DATE(date) as date'),
         )
             ->groupBy('year', 'date')
             ->groupBy('month', 'date')

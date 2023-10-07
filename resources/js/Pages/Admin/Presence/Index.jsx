@@ -9,7 +9,7 @@ import TextInput from '@/Components/TextInput'
 import { formatDistanceToNow } from 'date-fns'
 import Html5QrcodePlugin from '@/Components/Scan'
 import toast from 'react-hot-toast'
-import { IconMoodSmile, IconMoodSmileDizzy, IconQrcode, IconScan } from '@tabler/icons-react'
+import { IconExclamationMark, IconLockExclamation, IconMoodSmile, IconMoodSmileDizzy, IconQrcode, IconScan } from '@tabler/icons-react'
 
 const Index = ({ total_presences, qrCodes, ...props }) => {
     const { auth } = usePage().props
@@ -18,6 +18,7 @@ const Index = ({ total_presences, qrCodes, ...props }) => {
 
     const [searchQuery, setSearchQuery] = useState('')
     const [isCameraActive, setIsCameraActive] = useState(false)
+    const [showQR, setShowQR] = useState(false)
 
 
     const handleSearch = (e) => {
@@ -50,6 +51,18 @@ const Index = ({ total_presences, qrCodes, ...props }) => {
         setIsCameraActive(true)
     }
 
+    const showQRCode = () => {
+        setShowQR(true)
+    }
+
+    const HandlePresence = (user_id) => {
+        router.post(route('admin.presence.store'), {
+            user_id: user_id,
+        }, {
+            onSuccess: () => toast.success('Presence'),
+        })
+    }
+
 
     return (
         <>
@@ -67,11 +80,23 @@ const Index = ({ total_presences, qrCodes, ...props }) => {
                 </Container>
             )}
             <Container>
-                <div className="flex flex-wrap w-full mt-10">
-                    <div className=" mx-auto flex flex-1 items-center justify-center lg:w-1/3 ">
-                        <div
-                            dangerouslySetInnerHTML={{ __html: qrCodes }}
-                        />
+                <div className="flex flex-wrap w-full mt-10 gap-4">
+                    <div className=" mx-auto flex flex-1 mt-6 items-center justify-center rounded border border-gray-300 p-4 lg:w-1/3 ">
+                        {auth.user.status == "admin" || auth.user.status == "owner" ? <>
+                            {showQR ?
+                                <div
+                                    dangerouslySetInnerHTML={{ __html: qrCodes }}
+                                />
+                            :
+                            <div>
+                                <IconLockExclamation size={100} color='gray' />
+                            </div>}
+                        </>
+                            :
+                            <div>
+                                <IconLockExclamation size={100} color='gray' />
+                            </div>
+                        }
                     </div>
                     <div className="p-4 w-full lg:w-2/3">
 
@@ -79,15 +104,23 @@ const Index = ({ total_presences, qrCodes, ...props }) => {
                         {/* Start Presence */}
                         <h3 className='text-2xl mb-4 font-semibold text-slate-700'>Presence</h3>
                         <div className="flex flex-wrap justify-between w-full items-center my-2">
-                            <ActionButton className={`w-12 h-12 ${isCameraActive ? 'cursor-not-allowed' : ""} `} disabled={isCameraActive} type="button" onClick={handleOpenCamera}>
-                                {isCameraActive ? <IconQrcode /> : <IconScan />}
-                            </ActionButton>
+                            <div className='flex gap-2'>
+                                {auth.user.status == "admin" ?
+                                    <ActionButton className={`w-12 h-12`} type="button" onClick={(e) => {showQRCode(); HandlePresence(auth.user.id)}}>
+                                        <IconQrcode />
+                                    </ActionButton>
+                                    :
+                                    <ActionButton className={`w-12 h-12 ${isCameraActive ? 'cursor-not-allowed' : ""} `} disabled={isCameraActive} type="button" onClick={handleOpenCamera}>
+                                        {isCameraActive ? <IconQrcode /> : <IconScan />}
+                                    </ActionButton>
+                                }
+                            </div>
 
 
                             <TextInput
                                 type="search"
                                 className="w-3/4 sm:w-1/4"
-                                placeholder="Search menu.."
+                                placeholder="Search presence.."
                                 defaultValue={searchQuery}
                                 onChange={handleSearch}
                             />
@@ -98,6 +131,7 @@ const Index = ({ total_presences, qrCodes, ...props }) => {
                                     <tr>
                                         <Table.Th>#</Table.Th>
                                         <Table.Th>Name</Table.Th>
+                                        <Table.Th>Status</Table.Th>
                                         <Table.Th>Presence Date</Table.Th>
                                         <Table.Th>Is Presence</Table.Th>
                                     </tr>
@@ -108,6 +142,7 @@ const Index = ({ total_presences, qrCodes, ...props }) => {
                                             <tr className="bg-white border-b text-gray-500" key={index}>
                                                 <Table.Td className="w-5">{meta.from + index}</Table.Td>
                                                 <Table.Td>{presence.user.name}</Table.Td>
+                                                <Table.Td>{presence.user.status}</Table.Td>
                                                 <Table.Td>{presence.presence_date}</Table.Td>
                                                 <Table.Td className="w-32 text-center">{presence.is_presence == 1 ? <IconMoodSmile color='green' /> : <IconMoodSmileDizzy color='red' />}</Table.Td>
                                             </tr>

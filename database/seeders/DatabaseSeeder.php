@@ -21,8 +21,28 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt("password"),
             'number_phone' => '081535458207',
             'address' => 'Aceh',
-            'picture' => 'picture1.jpg',
+            'picture' => '',
             'status' => 'employee',
+        ]);
+        \App\Models\User::create([
+            'username' => 'dindaindriana',
+            'name' => 'Dinda Indriana',
+            'email' => 'dindaindriana@gmail.com',
+            'password' => bcrypt("password"),
+            'number_phone' => '082297147876',
+            'address' => 'Aceh',
+            'picture' => '',
+            'status' => 'owner',
+        ]);
+        \App\Models\User::create([
+            'username' => 'fajarginting',
+            'name' => 'Fajar Ginting',
+            'email' => 'fajarginting@gmail.com',
+            'password' => bcrypt("password"),
+            'number_phone' => '081262010148',
+            'address' => 'Aceh',
+            'picture' => '',
+            'status' => 'admin',
         ]);
 
         \App\Models\User::factory(500)->create();

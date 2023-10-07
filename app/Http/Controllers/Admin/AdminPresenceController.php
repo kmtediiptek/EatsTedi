@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\AdminPresenceResource;
 use App\Models\Presence;
+use App\Models\Salary;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode; // Import kelas QrCode
 
 
@@ -36,20 +38,21 @@ class AdminPresenceController extends Controller
 
         $total_presences = Presence::get()->count();
 
-        $search_activities = $request->input('search');
+        $search_users = $request->input('search');
 
-        if ($search_activities) {
+        if ($search_users) {
             $presences = Presence::query()
-                ->where('activity', 'LIKE', "%$search_activities%")
                 ->with('user')
+                ->whereHas('user', function ($query) use ($search_users) {
+                    $query->where('name', 'LIKE', "%$search_users%");
+                })
                 ->select('id', 'user_id', 'presence_date', 'is_presence', 'created_at')
-                ->latest()
-                ->fastPaginate(10)->withQueryString();
+                ->fastPaginate(10)
+                ->withQueryString();
         } else {
             $presences = Presence::query()
                 ->with('user')
                 ->select('id', 'user_id', 'presence_date', 'is_presence', 'created_at')
-                ->latest()
                 ->fastPaginate(10);
         }
 
@@ -60,83 +63,65 @@ class AdminPresenceController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $json = $request->decodedText;
-        $decodedArray = json_decode($json, true);
 
-        $date = $decodedArray['date'];
 
-        // Membuat objek Carbon dari string tanggal
-        $carbonDate = Carbon::parse($date);
+        // Admin
+        $adminDate = Carbon::parse(now())->format('Y:m:d');
 
-        // Format tanggal sesuai dengan 'Y:M:D'
-        $formattedDate = $carbonDate->format('Y:m:d');
-        Presence::create([
-            "user_id" => $user = $request->user_id,
-            "presence_date" => $formattedDate,
-            "is_presence" => $user ? 1 : 0,
-        ]);
-    }
+        if (Auth::user()->status == "admin") {
+            Presence::updateOrCreate([
+                "user_id" => $user = $request->user_id,
+                "presence_date" => $adminDate,
+            ], [
+                "user_id" => $user = $request->user_id,
+                "presence_date" => $adminDate,
+                "is_presence" => $user ? 1 : 0,
+            ]);
+        } else {
+            $json = $request->decodedText;
+            $decodedArray = json_decode($json, true);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Presence  $presence
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Presence $presence)
-    {
-        //
-    }
+            $date = $decodedArray['date'];
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Presence  $presence
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Presence $presence)
-    {
-        //
-    }
+            // Membuat objek Carbon dari string tanggal
+            $carbonDate = Carbon::parse($date);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Presence  $presence
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Presence $presence)
-    {
-        //
-    }
+            // Employee
+            $formattedDate = $carbonDate->format('Y:m:d');
+            Presence::updateOrCreate([
+                "user_id" => $user = $request->user_id,
+                "presence_date" => $formattedDate,
+            ], [
+                "user_id" => $user = $request->user_id,
+                "presence_date" => $formattedDate,
+                "is_presence" => $user ? 1 : 0,
+            ]);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Presence  $presence
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Presence $presence)
-    {
-        //
+        if (Auth::user()->status == "admin") {
+            Salary::updateOrCreate([
+                "user_id" => $user = $request->user_id,
+                "date" => $adminDate,
+            ], [
+                'salary' => 120000,
+                'total_salary' => 120000,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }else {
+            Salary::updateOrCreate([
+                "user_id" => $user = $request->user_id,
+                "date" => $formattedDate,
+            ], [
+                'salary' => 100000,
+                'total_salary' => 100000,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        return to_route('admin.presence.index');
     }
 }

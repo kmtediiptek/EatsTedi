@@ -16,8 +16,7 @@ return new class extends Migration
         Schema::create('salaries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->string('order_id');
-            $table->date('transaction_date');
+            $table->date('date');
             $table->double('salary');
             $table->double('total_salary');
             $table->timestamps();
