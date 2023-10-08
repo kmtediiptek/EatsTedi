@@ -3,7 +3,7 @@ import App from '@/Layouts/App'
 import DeleteUserForm from './Partials/DeleteUserForm'
 import UpdatePasswordForm from './Partials/UpdatePasswordForm'
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm'
-import { Head } from '@inertiajs/react'
+import { Head, usePage } from '@inertiajs/react'
 import Container from '@/Components/Container'
 import { useState } from 'react'
 import SecondaryButton from '@/Components/SecondaryButton'
@@ -11,6 +11,7 @@ import { IconCategory, IconLocation, IconMail, IconPhone, IconSquare, IconSquare
 import { numberFormat } from '@/Libs/Helper'
 
 const fillYearData = (dailySalary) => {
+
     const yearData = []
 
     dailySalary.forEach(item => {
@@ -35,6 +36,7 @@ const fillYearData = (dailySalary) => {
 }
 
 export default function Edit({ auth, mustVerifyEmail, status, picture, dailySalary, total_salary }) {
+
     const monthNames = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'
@@ -150,6 +152,8 @@ export default function Edit({ auth, mustVerifyEmail, status, picture, dailySala
                                         </p>
                                     </div>
                                 </div>
+                                {auth.user && auth.user.status !== "owner" ? <>
+
                                 <div className="p-4 rounded mt-4 border border-1 border-gray-300">
                                     <div>
                                         <h2 className="text-lg font-medium text-gray-700">Salary Information</h2>
@@ -199,6 +203,7 @@ export default function Edit({ auth, mustVerifyEmail, status, picture, dailySala
                                         </h1>
                                     </div>
                                 </div>
+                                </> : null}
                             </>
                         )}
                     </div>

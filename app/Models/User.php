@@ -13,6 +13,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
+    protected $with = ['invoices', 'carts'];
+
     protected $fillable = [
         'username',
         'name',
@@ -54,6 +56,10 @@ class User extends Authenticatable
 
     public function carts() {
         return $this->hasMany(Cart::class);
+    }
+
+    public function presences() {
+        return $this->hasMany(Presence::class);
     }
 
 
