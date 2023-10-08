@@ -2,10 +2,10 @@ import Container from '@/Components/Container'
 import Pagination from '@/Components/Pagination'
 import Table from '@/Components/Table'
 import App from '@/Layouts/App'
-import { Head, router} from '@inertiajs/react'
+import { Head, router } from '@inertiajs/react'
 import React, { useState } from 'react'
 import TextInput from '@/Components/TextInput'
-import { IconMoodSmile, IconMoodSmileDizzy} from '@tabler/icons-react'
+import { IconMoodSmile, IconMoodSmileDizzy } from '@tabler/icons-react'
 
 const Index = ({ total_presences, qrCodes, ...props }) => {
     const { data: attendaces, meta, links } = props.attendaces
@@ -31,10 +31,10 @@ const Index = ({ total_presences, qrCodes, ...props }) => {
         <>
             <Head title="Attendace" />
             <Container>
-                <div className="flex flex-wrap w-full mt-10 gap-4">
+                <div className="flex flex-wrap w-full mt-10 mb-4">
                     {/* Start Attendace */}
                     <h3 className='text-2xl mb-4 font-semibold text-slate-700'>Attendace</h3>
-                    <div className="flex flex-wrap justify-between w-full items-center my-2">
+                    <div className="flex flex-wrap justify-end w-full my-2">
                         <TextInput
                             type="search"
                             className="w-3/4 sm:w-1/4"

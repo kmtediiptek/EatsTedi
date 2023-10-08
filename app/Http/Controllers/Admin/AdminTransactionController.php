@@ -11,6 +11,7 @@ use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Table;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AdminTransactionController extends Controller
@@ -69,7 +70,7 @@ class AdminTransactionController extends Controller
                 ->fastPaginate(10)->withQueryString();
         }
 
-        $invoices = Invoice::whereDate('created_at', today())->whereNot('name', '-')->latest()->get();
+        $invoices = Invoice::where('user_id', Auth::user()->id)->whereDate('created_at', today())->whereNot('name', '-')->latest()->get();
 
         $categories = Category::query()
             ->select('id', 'name', 'icon', 'slug')

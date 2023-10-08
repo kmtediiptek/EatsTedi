@@ -172,7 +172,7 @@ const Index = ({ total_presences, qrCodes, ...props }) => {
                                                 <Table.Td className="w-5">{meta.from + index}</Table.Td>
                                                 <Table.Td>{presence.user.name}</Table.Td>
                                                 <Table.Td>
-                                                    <span classNamgite={`text-xs p-2 ${presence.user.status == 'employee' ? 'bg-green-500 text-white rounded' : presence.user.status == 'admin' ? 'bg-yellow-400 text-white rounded' : 'bg-red-500 text-white rounded'}`}>
+                                                    <span className={`text-xs p-2 ${presence.user.status == 'employee' ? 'bg-green-500 text-white rounded' : presence.user.status == 'admin' ? 'bg-yellow-400 text-white rounded' : 'bg-red-500 text-white rounded'}`}>
                                                         {presence.user.status.toUpperCase()}
                                                     </span>
                                                 </Table.Td>
