@@ -157,7 +157,7 @@ export default function Edit({ auth, mustVerifyEmail, status, picture, dailySala
                                             The following is a list of your attendance
                                         </p>
                                     </div>
-                                    <div className="w-full py-2 gap-4 flex flex-row-reverse  block scrolling-wrapper overflow-x-scroll overflow-y-hidden">
+                                    <div className="w-full py-2 gap-4 flex flex-row-reverse block scrolling-wrapper overflow-x-scroll overflow-y-hidden">
                                         {yearData.map((monthData, index) => {
                                             const year = new Date().getFullYear()
                                             const monthIndex = parseInt(monthData.month) - 1

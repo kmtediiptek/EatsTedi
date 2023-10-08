@@ -182,7 +182,7 @@ const Index = ({ total_presences, qrCodes, ...props }) => {
                                         ))
                                     ) : (
                                         <tr className="bg-white border-b text-gray-500 text-center">
-                                            <Table.Td colSpan="4">No data</Table.Td>
+                                            <Table.Td colSpan="5">No data</Table.Td>
                                         </tr>
                                     )}
                                 </Table.Tbody>

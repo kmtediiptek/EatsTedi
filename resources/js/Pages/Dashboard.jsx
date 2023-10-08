@@ -1,14 +1,30 @@
 import Container from '@/Components/Container'
 import App from '@/Layouts/App'
 import { Head, Link } from '@inertiajs/react'
-import { IconCalendarTime, IconCategory, IconCreditCard, IconMoneybag, IconReportMoney, IconTable, IconUsers } from '@tabler/icons-react'
+import { Icon24Hours, IconCalendarTime, IconCategory, IconCreditCard, IconMoneybag, IconReportMoney, IconSignRight, IconTable, IconUsers } from '@tabler/icons-react'
 import { IconMenuOrder } from '@tabler/icons-react'
 import Chart from 'react-apexcharts'
-import React, { Component, useState } from 'react'
+import React from 'react'
 import { numberFormat } from '@/Libs/Helper'
 
 
-export default function Dashboard({ total_categories, total_tables, total_payments, total_employees, total_products, total_income, today_income, paid_later, paid_now, weeklyIncome, dailyIncome, monthlyIncome }) {
+export default function Dashboard({
+    total_categories,
+    total_tables,
+    total_payments,
+    total_employees,
+    total_products,
+    total_schedules,
+    total_attendaces,
+    total_income,
+    today_income,
+    paid_later,
+    paid_now,
+    weeklyIncome,
+    dailyIncome,
+    monthlyIncome })
+
+    {
     const weekLabels = weeklyIncome.map(item => "Week " + item.week + ", " + item.year)
     const weekData = weeklyIncome.map(item => item.total)
 
@@ -186,13 +202,13 @@ export default function Dashboard({ total_categories, total_tables, total_paymen
                             <span className='text-slate-500'>{total_employees} Item</span>
                         </div>
                     </Link>
-                    <Link href={route('admin.presence.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
+                    <Link href={route('admin.attendace.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
                         <div className="rounded bg-fuchsia-500 w-16 h-16 flex justify-center items-center">
-                            <h3 className='text-4xl font-semibold text-center'><IconUsers size={36} /></h3>
+                            <h3 className='text-4xl font-semibold text-center'><Icon24Hours size={36} /></h3>
                         </div>
                         <div className='text-slate-800 flex flex-col flex-1 justify-around'>
-                            <h5 className='font-semibold text-xl'>Presences</h5>
-                            <span className='text-slate-500'>{total_employees} Item</span>
+                            <h5 className='font-semibold text-xl'>Attendace</h5>
+                            <span className='text-slate-500'>{total_attendaces} Item</span>
                         </div>
                     </Link>
                     <Link href={route('admin.schedule.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
@@ -201,7 +217,7 @@ export default function Dashboard({ total_categories, total_tables, total_paymen
                         </div>
                         <div className='text-slate-800 flex flex-col flex-1 justify-around'>
                             <h5 className='font-semibold text-xl'>Schedules</h5>
-                            <span className='text-slate-500'>{total_employees} Item</span>
+                            <span className='text-slate-500'>{total_schedules} Item</span>
                         </div>
                     </Link>
                     {/* End Dashboard */}

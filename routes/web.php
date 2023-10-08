@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminActivityController;
+use App\Http\Controllers\Admin\AdminAttendaceController;
 use App\Http\Controllers\Admin\AdminCartController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -101,6 +102,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     // Admin Presence
     Route::get('/presence', [AdminPresenceController::class, 'index'])->name('admin.presence.index');
     Route::post('/presence', [AdminPresenceController::class, 'store'])->name('admin.presence.store');
+
+    // Admin Attendace
+    Route::get('/attendace', [AdminAttendaceController::class, 'index'])->name('admin.attendace.index');
 
     //  Send Email
     Route::post('/send-email', [SendEmailController::class, 'index'])->name('admin.send.email');
