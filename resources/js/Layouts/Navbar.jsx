@@ -51,9 +51,8 @@ export default function Navbar() {
                             <NavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
                                 Dashboard
                             </NavLink>
-                            {auth.user && auth.user.status == "employee" ?
+                            {auth.user && auth.user.status == "employee" || auth.user.status == "owner"  ?
                                 <>
-
                                     <NavLink href={route('admin.transaction')} active={route().current('admin.transaction')}>
                                         Menu
                                     </NavLink>
@@ -69,12 +68,9 @@ export default function Navbar() {
                                 </NavLink>
                                 :
                                 null}
-                            {auth.user && auth.user.status == "employee" || auth.user.status == "admin" ?
                                 <NavLink href={route('admin.presence.index')} active={route().current('admin.presence.index')}>
                                     Presence
                                 </NavLink>
-                                :
-                                null}
                         </div>
                     </div>
 

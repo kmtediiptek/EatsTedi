@@ -49,7 +49,7 @@ Route::prefix('admin')->middleware('role:owner|admin|employee', 'auth')->group(f
 
     // Admin Category
     Route::controller(AdminCategoryController::class)->group(function () {
-        Route::get('/setting/category', 'index')->name('admin.category.index')->can('category_edit');
+        Route::get('/setting/category', 'index')->name('admin.category.index')->can('category_index');
         Route::post('/setting/category', 'store')->name('admin.category.store')->can('category_store');
         Route::put('/setting/{category:slug}/category', 'update')->name('admin.category.update')->can('category_update');
         Route::delete('/setting/category/{category:slug}', 'destroy')->name('admin.category.destroy')->can('category_destroy');
@@ -57,7 +57,7 @@ Route::prefix('admin')->middleware('role:owner|admin|employee', 'auth')->group(f
 
     // Admin Table
     Route::controller(AdminTableController::class)->group(function () {
-        Route::get('/setting/table', 'index')->name('admin.table.index')->can('table_edit');
+        Route::get('/setting/table', 'index')->name('admin.table.index')->can('table_index');
         Route::post('/setting/table', 'store')->name('admin.table.store')->can('table_store');
         Route::put('/setting/{table:slug}/table', 'update')->name('admin.table.update')->can('table_update');
         Route::delete('/setting/table/{table:slug}', 'destroy')->name('admin.table.destroy')->can('table_destroy');
@@ -100,7 +100,7 @@ Route::prefix('admin')->middleware('role:owner|admin|employee', 'auth')->group(f
         Route::delete('/cart/{cart}', 'destroy')->name('admin.cart.delete')->can('cart_destroy');
         Route::post('/cart/{product:slug}', 'store')->name('admin.cart.store')->can('cart_store');
         Route::post('/cart/increment/{product:slug}', 'increment')->name('admin.cart.increment')->can('cart_increment');
-        Route::post('/cart/decrement/{product:slug}', 'decrement')->name('admin.cart.decrement')->can('product_decrement');
+        Route::post('/cart/decrement/{product:slug}', 'decrement')->name('admin.cart.decrement')->can('cart_decrement');
     });
 
     // Admin Invoice

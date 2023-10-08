@@ -57,7 +57,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'employee_destroy']);
 
         // Product
-        Permission::create(['name' => 'producte_index']);
+        Permission::create(['name' => 'product_index']);
         Permission::create(['name' => 'product_store']);
         Permission::create(['name' => 'producte_update']);
         Permission::create(['name' => 'product_destroy']);
@@ -111,7 +111,7 @@ class PermissionSeeder extends Seeder
             'employee_store',
             'employee_update',
             'employee_destroy',
-            'producte_index',
+            'product_index',
             'product_store',
             'producte_update',
             'product_destroy',
@@ -129,6 +129,45 @@ class PermissionSeeder extends Seeder
             'dashboard',
             'attendace_index',
             'activity_index',
+            'category_index',
+            'category_store',
+            'category_update',
+            'category_destroy',
+            'table_index',
+            'table_store',
+            'table_update',
+            'table_destroy',
+            'payment_index',
+            'payment_store',
+            'payment_update',
+            'payment_destroy',
+            'schedule_index',
+            'schedule_store',
+            'schedule_update',
+            'schedule_destroy',
+            'employee_index',
+            'employee_store',
+            'employee_update',
+            'employee_destroy',
+            'product_index',
+            'product_store',
+            'producte_update',
+            'product_destroy',
+            'activity_index',
+            'presence_index',
+            'presence_store',
+            'attendace_index',
+            'transaction',
+            'presence_index',
+            'presence_store',
+            'invoice_index',
+            'invoice_store',
+            'invoice_update',
+            'cart_store',
+            'cart_destroy',
+            'cart_increment',
+            'cart_decrement',
+            'send_email',
         ];
 
         $employeePermission = [
