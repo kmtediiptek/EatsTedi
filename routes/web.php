@@ -28,86 +28,102 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+// Home
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
-Route::middleware('auth')->prefix('admin')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-
 // Admin
-Route::prefix('admin')->middleware('auth')->group(function () {
-    // Dashboard
-    Route::get('/dashboard', AdminDashboardController::class)->name('admin.dashboard');
+Route::prefix('admin')->middleware('role:owner|admin|employee', 'auth')->group(function () {
 
-    // Transaction
-    Route::get('/transaction', [AdminTransactionController::class, 'index'])->name('admin.transaction');
+    // Admin Profile
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('/profile',  'edit')->name('profile.edit')->can('profile_edit');
+        Route::patch('/profile',  'update')->name('profile.update')->can('profile_update');
+        Route::delete('/profile',  'destroy')->name('profile.destroy')->can('profile_destroy');
+    });
+
+    // Admin Dashboard
+    Route::get('/dashboard', AdminDashboardController::class)->name('admin.dashboard')->can('dashboard');
+
+    // Admin Transaction
+    Route::get('/transaction', [AdminTransactionController::class, 'index'])->name('admin.transaction')->can('transaction');
 
     // Admin Category
-    Route::get('/setting/category', [AdminCategoryController::class, 'index'])->name('admin.category.index');
-    Route::post('/setting/category', [AdminCategoryController::class, 'store'])->name('admin.category.store');
-    Route::put('/setting/{category:slug}/category', [AdminCategoryController::class, 'update'])->name('admin.category.update');
-    Route::delete('/setting/category/{category:slug}', [AdminCategoryController::class, 'destroy'])->name('admin.category.destroy');
+    Route::controller(AdminCategoryController::class)->group(function () {
+        Route::get('/setting/category', 'index')->name('admin.category.index')->can('category_edit');
+        Route::post('/setting/category', 'store')->name('admin.category.store')->can('category_store');
+        Route::put('/setting/{category:slug}/category', 'update')->name('admin.category.update')->can('category_update');
+        Route::delete('/setting/category/{category:slug}', 'destroy')->name('admin.category.destroy')->can('category_destroy');
+    });
 
     // Admin Table
-    Route::get('/setting/table', [AdminTableController::class, 'index'])->name('admin.table.index');
-    Route::post('/setting/table', [AdminTableController::class, 'store'])->name('admin.table.store');
-    Route::put('/setting/{table:slug}/table', [AdminTableController::class, 'update'])->name('admin.table.update');
-    Route::delete('/setting/table/{table:slug}', [AdminTableController::class, 'destroy'])->name('admin.table.destroy');
+    Route::controller(AdminTableController::class)->group(function () {
+        Route::get('/setting/table', 'index')->name('admin.table.index')->can('table_edit');
+        Route::post('/setting/table', 'store')->name('admin.table.store')->can('table_store');
+        Route::put('/setting/{table:slug}/table', 'update')->name('admin.table.update')->can('table_update');
+        Route::delete('/setting/table/{table:slug}', 'destroy')->name('admin.table.destroy')->can('table_destroy');
+    });
 
     // Admin Payment
-    Route::get('/setting/payment', [AdminPaymentController::class, 'index'])->name('admin.payment.index');
-    Route::post('/setting/payment', [AdminPaymentController::class, 'store'])->name('admin.payment.store');
-    Route::put('/setting/{payment:slug}/payment', [AdminPaymentController::class, 'update'])->name('admin.payment.update');
-    Route::delete('/setting/payment/{payment:slug}', [AdminPaymentController::class, 'destroy'])->name('admin.payment.destroy');
+    Route::controller(AdminPaymentController::class)->group(function () {
+        Route::get('/setting/payment', 'index')->name('admin.payment.index')->can('payment_index');
+        Route::post('/setting/payment', 'store')->name('admin.payment.store')->can('payment_store');
+        Route::put('/setting/{payment:slug}/payment', 'update')->name('admin.payment.update')->can('payment_update');
+        Route::delete('/setting/payment/{payment:slug}', 'destroy')->name('admin.payment.destroy')->can('payment_destroy');
+    });
 
     // Admin Schedule
-    Route::get('/setting/schedule', [AdminScheduleController::class, 'index'])->name('admin.schedule.index');
-    Route::post('/setting/schedule', [AdminScheduleController::class, 'store'])->name('admin.schedule.store');
-    Route::put('/setting/{schedule}/schedule', [AdminScheduleController::class, 'update'])->name('admin.schedule.update');
-    Route::delete('/setting/schedule/{schedule}', [AdminScheduleController::class, 'destroy'])->name('admin.schedule.destroy');
+    Route::controller(AdminScheduleController::class)->group(function () {
+        Route::get('/setting/schedule', 'index')->name('admin.schedule.index')->can('schedule_index');
+        Route::post('/setting/schedule', 'store')->name('admin.schedule.store')->can('schedule_store');
+        Route::put('/setting/{schedule}/schedule', 'update')->name('admin.schedule.update')->can('schedule_update');
+        Route::delete('/setting/schedule/{schedule}', 'destroy')->name('admin.schedule.destroy')->can('schedule_destroy');
+    });
 
     // Admin Employee
-    Route::get('/setting/employee', [AdminUserController::class, 'index'])->name('admin.employee.index');
-    Route::post('/setting/employee', [AdminUserController::class, 'store'])->name('admin.employee.store');
-    Route::put('/setting/employee/{user:username}', [AdminUserController::class, 'update'])->name('admin.employee.update');
-    Route::delete('/setting/employee/{user:username}', [AdminUserController::class, 'destroy'])->name('admin.employee.destroy');
+    Route::controller(AdminUserController::class)->group(function () {
+        Route::get('/setting/employee', 'index')->name('admin.employee.index')->can('employee_index');
+        Route::post('/setting/employee', 'store')->name('admin.employee.store')->can('employee_store');
+        Route::put('/setting/employee/{user:username}', 'update')->name('admin.employee.update')->can('employee_update');
+        Route::delete('/setting/employee/{user:username}', 'destroy')->name('admin.employee.destroy')->can('employee_destroy');
+    });
 
     // Admin Product
-    Route::get('/setting/product', [AdminProductController::class, 'index'])->name('admin.product.index');
-    Route::post('/setting/product', [AdminProductController::class, 'store'])->name('admin.product.store');
-    Route::put('/setting/product/{product:slug}', [AdminProductController::class, 'update'])->name('admin.product.update');
-    Route::delete('/setting/product/{product:slug}', [AdminProductController::class, 'destroy'])->name('admin.product.destroy');
+    Route::controller(AdminProductController::class)->group(function () {
+        Route::get('/setting/product', 'index')->name('admin.product.index')->can('product_index');
+        Route::post('/setting/product', 'store')->name('admin.product.store')->can('product_store');
+        Route::put('/setting/product/{product:slug}', 'update')->name('admin.product.update')->can('product_update');
+        Route::delete('/setting/product/{product:slug}', 'destroy')->name('admin.product.destroy')->can('product_destroy');
+    });
 
     // Admin Cart
     Route::controller(AdminCartController::class)->group(function () {
-        Route::delete('/cart/{cart}', 'destroy')->name('admin.cart.delete');
-        Route::post('/cart/{product:slug}', 'store')->name('admin.cart.store');
-        Route::post('/cart/increment/{product:slug}', 'increment')->name('admin.cart.store');
-        Route::post('/cart/decrement/{product:slug}', 'decrement')->name('admin.cart.store');
+        Route::delete('/cart/{cart}', 'destroy')->name('admin.cart.delete')->can('cart_destroy');
+        Route::post('/cart/{product:slug}', 'store')->name('admin.cart.store')->can('cart_store');
+        Route::post('/cart/increment/{product:slug}', 'increment')->name('admin.cart.increment')->can('cart_increment');
+        Route::post('/cart/decrement/{product:slug}', 'decrement')->name('admin.cart.decrement')->can('product_decrement');
     });
 
     // Admin Invoice
-    Route::get('/invoice', [AdminInvoiceController::class, 'index'])->name('admin.invoice.index');
-    Route::post('/invoice', [AdminInvoiceController::class, 'store'])->name('admin.invoice.store');
-    Route::put('/invoice/{invoice:order_id}', [AdminInvoiceController::class, 'update'])->name('admin.invoice.update');
-    Route::delete('/invoice/{invoice}', [AdminInvoiceController::class, 'destroy'])->name('admin.invoice.destroy');
+    Route::controller(AdminUserController::class)->group(function () {
+        Route::get('/invoice', 'index')->name('admin.invoice.index')->can('invoice_index');
+        Route::post('/invoice', 'store')->name('admin.invoice.store')->can('invoice_store');
+        Route::put('/invoice/{invoice:order_id}', 'update')->name('admin.invoice.update')->can('invoice_update');
+    });
 
     // Admin Log
-    Route::get('/activity', [AdminActivityController::class, 'index'])->name('admin.activity.index');
+    Route::get('/activity', [AdminActivityController::class, 'index'])->name('admin.activity.index')->can('activity_index');
 
     // Admin Presence
-    Route::get('/presence', [AdminPresenceController::class, 'index'])->name('admin.presence.index');
-    Route::post('/presence', [AdminPresenceController::class, 'store'])->name('admin.presence.store');
+    Route::controller(AdminPresenceController::class)->group(function () {
+        Route::get('/presence', 'index')->name('admin.presence.index')->can('presence_index');
+        Route::post('/presence', 'store')->name('admin.presence.store')->can('presence_store');
+    });
 
     // Admin Attendace
-    Route::get('/attendace', [AdminAttendaceController::class, 'index'])->name('admin.attendace.index');
+    Route::get('/attendace', [AdminAttendaceController::class, 'index'])->name('admin.attendace.index')->can('attendace_index');
 
     //  Send Email
-    Route::post('/send-email', [SendEmailController::class, 'index'])->name('admin.send.email');
+    Route::post('/send-email', [SendEmailController::class, 'index'])->name('admin.send.email')->can('send_email');
 });
 
 require __DIR__ . '/auth.php';

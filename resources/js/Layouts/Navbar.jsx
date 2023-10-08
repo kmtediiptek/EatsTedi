@@ -30,7 +30,7 @@ export default function Navbar() {
                     <div className="flex w-full md:w-3/4 justify-between">
                         <div className='flex items-center w-full'>
                             <Link href="/" className="text-3xl font-bold text-orange-500">
-                            <img src={`/app/Logo Title X.png`} alt="" width="150px" className='mx-auto' />
+                                <img src={`/app/Logo Title X.png`} alt="" width="150px" className='mx-auto' />
                             </Link>
                             {route().current('admin.transaction') ?
                                 <div className="px-4 w-full">
@@ -51,18 +51,30 @@ export default function Navbar() {
                             <NavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
                                 Dashboard
                             </NavLink>
-                            <NavLink href={route('admin.transaction')} active={route().current('admin.transaction')}>
-                                Menu
-                            </NavLink>
-                            <NavLink href={route('admin.invoice.index')} active={route().current('admin.invoice.index')}>
-                                History
-                            </NavLink>
-                            <NavLink href={route('admin.activity.index')} active={route().current('admin.activity.index')}>
-                                Log
-                            </NavLink>
-                            <NavLink href={route('admin.presence.index')} active={route().current('admin.presence.index')}>
-                                Presence
-                            </NavLink>
+                            {auth.user && auth.user.status == "employee" ?
+                                <>
+
+                                    <NavLink href={route('admin.transaction')} active={route().current('admin.transaction')}>
+                                        Menu
+                                    </NavLink>
+                                    <NavLink href={route('admin.invoice.index')} active={route().current('admin.invoice.index')}>
+                                        History
+                                    </NavLink>
+                                </>
+                                :
+                                null}
+                            {auth.user && auth.user.status == "admin" || auth.user.status == "owner" ?
+                                <NavLink href={route('admin.activity.index')} active={route().current('admin.activity.index')}>
+                                    Log
+                                </NavLink>
+                                :
+                                null}
+                            {auth.user && auth.user.status == "employee" || auth.user.status == "admin" ?
+                                <NavLink href={route('admin.presence.index')} active={route().current('admin.presence.index')}>
+                                    Presence
+                                </NavLink>
+                                :
+                                null}
                         </div>
                     </div>
 

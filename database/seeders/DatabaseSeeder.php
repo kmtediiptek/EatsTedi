@@ -14,38 +14,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::create([
-            'username' => 'rachelginting',
-            'name' => 'Rachel Ginting',
-            'email' => 'rachelardanaputraginting@gmail.com',
-            'password' => bcrypt("password"),
-            'number_phone' => '081535458207',
-            'address' => 'Aceh',
-            'picture' => '',
-            'status' => 'employee',
-        ]);
-        \App\Models\User::create([
-            'username' => 'dindaindriana',
-            'name' => 'Dinda Indriana',
-            'email' => 'dindaindriana@gmail.com',
-            'password' => bcrypt("password"),
-            'number_phone' => '082297147876',
-            'address' => 'Aceh',
-            'picture' => '',
-            'status' => 'owner',
-        ]);
-        \App\Models\User::create([
-            'username' => 'fajarginting',
-            'name' => 'Fajar Ginting',
-            'email' => 'fajarginting@gmail.com',
-            'password' => bcrypt("password"),
-            'number_phone' => '081262010148',
-            'address' => 'Aceh',
-            'picture' => '',
-            'status' => 'admin',
-        ]);
 
-        \App\Models\User::factory(500)->create();
+        $this->call([
+            CategorySeeder::class,
+            ScheduleSeeder::class,
+            RoleSeeder::class,
+            PermissionSeeder::class,
+            UserSeeder::class,
+        ]);
+        // \App\Models\User::factory(500)->create();
+
         \App\Models\Table::create([
             'name' => 1,
             'slug' => 1,
@@ -111,11 +89,6 @@ class DatabaseSeeder extends Seeder
             'name' => 'lainnya',
             'slug' => 'lainnya',
             'status' => 1
-        ]);
-
-        $this->call([
-            CategorySeeder::class,
-            ScheduleSeeder::class,
         ]);
 
 
