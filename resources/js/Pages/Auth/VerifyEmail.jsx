@@ -22,7 +22,7 @@ export default function VerifyEmail({ status }) {
             )}
 
             <div className="flex">
-                <div className="w-1/4 hidden sm:flex border-r border-gray-300 p-8 py-16  sm:flex-col sm:justify-between">
+                <div className="w-full sm:w-1/2 md:w-1/4 hidden sm:flex border-r border-gray-300 p-8 py-16  sm:flex-col sm:justify-between">
                     <div>
                         <img src={`/app/Logo Title X.png`} alt="" width="180px" />
                     </div>
@@ -35,7 +35,7 @@ export default function VerifyEmail({ status }) {
                     </div>
                 </div>
                 <div className="w-full sm:w-3/4">
-                    <form onSubmit={submit} className='w-full sm:w-1/3 mx-auto h-screen flex flex-col justify-center'>
+                    <form onSubmit={submit} className='w-full px-4 sm:w-3/4 md:w-1/3 mx-auto h-screen flex flex-col justify-center'>
                         <div className='mb-8'>
                             <h6 className='text-3xl text-slate-700'>Verify Email</h6>
                             <p className='text-slate-500'>Thanks for signing up! Before getting started, could you verify your email address by clicking on the

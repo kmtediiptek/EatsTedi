@@ -29,8 +29,9 @@ export default function ConfirmPassword() {
     return (
         <>
             <Head title="Confirm Password" />
+
             <div className="flex">
-                <div className="w-1/4 hidden sm:flex border-r border-gray-300 p-8 py-16  sm:flex-col sm:justify-between">
+                <div className="w-full sm:w-1/2 md:w-1/4 hidden sm:flex border-r border-gray-300 p-8 py-16  sm:flex-col sm:justify-between">
                     <div>
                         <img src={`/app/Logo Title X.png`} alt="" width="180px" />
                     </div>
