@@ -35,7 +35,7 @@ export default function ResetPassword({ token, email }) {
             <Head title="Reset Password" />
 
             <div className="flex">
-                <div className="w-1/4 border-r p-8 py-16 flex flex-col justify-between">
+            <div className="w-1/4 hidden sm:flex border-r border-gray-300 p-8 py-16  sm:flex-col sm:justify-between">
                     <div>
                         <img src={`/app/Logo Title X.png`} alt="" width="180px" />
                     </div>
@@ -47,8 +47,8 @@ export default function ResetPassword({ token, email }) {
                         <p className='text-slate-500'>Optimizing Business Processes with Point of Sales (POS) Application</p>
                     </div>
                 </div>
-                <div className="w-3/4">
-                    <form onSubmit={submit} className='w-1/3 mx-auto h-screen flex flex-col justify-center'>
+                <div className="w-full sm:w-3/4">
+                    <form onSubmit={submit} className='w-full sm:w-1/3 mx-auto h-screen flex flex-col justify-center'>
                         <div className='mb-8'>
                             <h6 className='text-3xl text-slate-700'>Reset Password </h6>
                             <p className='text-slate-500'>Please enter your new password</p>

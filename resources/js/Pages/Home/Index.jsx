@@ -116,7 +116,7 @@ export default function Index({ categories, total_categories, payments, schedule
                     <div className="w-full md:w-1/4">
                         <div className='flex flex-col py-4 rounded border border-gray-300'>
                             <h6 className='text-center w-full text-xl text-slate-600'>
-                                {dateTimeInfo.dayName}, {dateTimeInfo.day} {dateTimeInfo.month} {dateTimeInfo.year}
+                                {dateTimeInfo.dayName}, {dateTimeInfo.month} {dateTimeInfo.day} {dateTimeInfo.year}
                             </h6>
                             <h1 className='text-center w-full text-4xl font-bold text-slate-700'>{dateTimeInfo.hours}:{dateTimeInfo.minutes}:{dateTimeInfo.seconds}</h1>
                         </div>
