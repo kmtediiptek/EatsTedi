@@ -10,6 +10,7 @@ class Category extends Model
     use HasFactory;
 
     protected $with = 'products';
+    protected $guarded = [];
 
     public function getRouteKeyName()
     {

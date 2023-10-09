@@ -196,7 +196,7 @@ export default function Edit({ auth, mustVerifyEmail, status, picture, dailySala
                                     <div>
                                         <h2 className="text-lg font-medium text-gray-700">Total Salary </h2>
                                         <p className="mt-1 text-sm text-gray-500">
-                                            Total salary this month
+                                            Total  {auth.user.status == "owner" ? "income" : "salry"} this month
                                         </p>
                                         <h1 className="mt-5 text-3xl text-red-500 font-bold text-slate-700">
                                             <sup>Rp.</sup>  {numberFormat(total_salary)}
