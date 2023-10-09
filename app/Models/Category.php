@@ -9,6 +9,8 @@ class Category extends Model
 {
     use HasFactory;
 
+    protected $with = 'products';
+
     public function getRouteKeyName()
     {
         return 'slug';

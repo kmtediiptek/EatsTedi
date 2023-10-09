@@ -24,7 +24,7 @@ return new class extends Migration
             $table->double('total_quantity');
             $table->string('status')->default(0);
             $table->double('charge')->default(0);
-            $table->string('name');
+            $table->string('name', 25);
             $table->dateTime('succeeded_at')->nullable();
             $table->timestamps();
         });

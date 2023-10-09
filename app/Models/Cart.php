@@ -9,6 +9,8 @@ class Cart extends Model
 {
     use HasFactory;
 
+    protected $with = 'products';
+
     protected $guarded = [];
 
     public function user()
@@ -19,5 +21,10 @@ class Cart extends Model
     public function products()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class, 'order_id');
     }
 }
