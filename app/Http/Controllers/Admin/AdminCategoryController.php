@@ -55,7 +55,7 @@ class AdminCategoryController extends Controller
     }
 
 
-    public function update(AdminTableRequest $request, Category $category)
+    public function update(AdminCategoryRequest $request, Category $category)
     {
         $category->update([
             "name" => $name = $request->name ? $request->name : $category->name,

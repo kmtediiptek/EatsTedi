@@ -59,7 +59,7 @@ class PermissionSeeder extends Seeder
         // Product
         Permission::create(['name' => 'product_index']);
         Permission::create(['name' => 'product_store']);
-        Permission::create(['name' => 'producte_update']);
+        Permission::create(['name' => 'product_update']);
         Permission::create(['name' => 'product_destroy']);
 
         // Invoice
@@ -113,7 +113,7 @@ class PermissionSeeder extends Seeder
             'employee_destroy',
             'product_index',
             'product_store',
-            'producte_update',
+            'product_update',
             'product_destroy',
             'activity_index',
             'presence_index',
@@ -151,7 +151,7 @@ class PermissionSeeder extends Seeder
             'employee_destroy',
             'product_index',
             'product_store',
-            'producte_update',
+            'product_update',
             'product_destroy',
             'activity_index',
             'presence_index',

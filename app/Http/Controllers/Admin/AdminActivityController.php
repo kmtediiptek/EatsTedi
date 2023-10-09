@@ -12,6 +12,9 @@ class AdminActivityController extends Controller
     public function index(Request $request)
     {
 
+        $oneMonthAgo = now()->subMonth();
+        Activity::where('created_at', '<', $oneMonthAgo)->delete();
+
         $total_activities = Activity::get()->count();
 
 
