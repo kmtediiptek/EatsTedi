@@ -28,7 +28,6 @@ class AdminUserRequest extends FormRequest
         if ($this->isMethod('put') || $this->isMethod('patch')) {
             $userId = $this->route('user');
             return [
-                "picture" => ['nullable', 'mimes:png,jpg,jpeg', 'image'],
                 'name' => ['required', 'string', 'min:3'],
                 'username' => ['required', 'string', 'min:3', Rule::unique('users')->ignore($userId)],
                 'address' => ['required', 'string', 'min:3'],
@@ -40,11 +39,13 @@ class AdminUserRequest extends FormRequest
                 ],
                 'number_phone' => ['numeric', 'required', 'min:3', Rule::unique('users')->ignore($userId)],
                 'status' => ['nullable'],
+                'is_active' => ['required'],
+
             ];
         }
 
         return [
-            "picture" => ['nullable', 'mimes:png,jpg,jpeg', 'image'],
+            'picture' => ['nullable', 'mimes:png,jpg,jpeg', 'image', 'max:2048'],
             'name' => ['required', 'string', 'min:3'],
             'username' => ['required', 'string', 'min:3', 'unique:users,username'],
             'address' => ['required', 'string', 'min:3'],
@@ -55,6 +56,7 @@ class AdminUserRequest extends FormRequest
             ],
             'number_phone' => ['numeric', 'required', 'min:3', 'unique:users,number_phone'],
             'status' => ['required'],
+            'is_active' => ['required'],
         ];
     }
 }

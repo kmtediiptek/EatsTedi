@@ -73,7 +73,6 @@ Route::prefix('admin')->middleware('role:owner|admin|employee', 'auth')->group(f
     Route::controller(AdminUserController::class)->group(function () {
         Route::get('/setting/employee', 'index')->name('admin.employee.index')->can('employee_index');
         Route::post('/setting/employee', 'store')->name('admin.employee.store')->can('employee_store');
-        Route::put('/setting/employee/{user:username}', 'update')->name('admin.employee.update')->can('employee_update');
         Route::delete('/setting/employee/{user:username}', 'destroy')->name('admin.employee.destroy')->can('employee_destroy');
     });
 

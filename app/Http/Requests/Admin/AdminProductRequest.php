@@ -25,9 +25,7 @@ class AdminProductRequest extends FormRequest
     public function rules()
     {
         if ($this->isMethod('put') || $this->isMethod('patch')) {
-            $userId = $this->route('user');
             return [
-                "picture" => ['nullable', 'mimes:png,jpg,jpeg', 'image'],
                 'name' => ['required', 'string', 'min:3'],
                 'price' => ['required', 'numeric', 'min:3'],
                 'category_id' => ['nullable'],
@@ -35,7 +33,7 @@ class AdminProductRequest extends FormRequest
         }
 
         return [
-            "picture" => ['nullable', 'mimes:png,jpg,jpeg', 'image'],
+            'picture' => ['nullable', 'mimes:png,jpg,jpeg', 'image', 'max:2048'],
             'name' => ['required', 'string', 'min:3'],
             'price' => ['required', 'numeric', 'min:3'],
             'category_id' => ['required'],

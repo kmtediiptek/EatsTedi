@@ -33,6 +33,8 @@ class ProfileController extends Controller
             ->where('user_id', Auth::user()->id)
             ->get();
 
+            // dd($dailySalary);
+
 
         if (Auth::user()->status == "owner") {
             $total_salary = Invoice::sum('total_price');
@@ -72,8 +74,6 @@ class ProfileController extends Controller
             "status" => $request->status ? $request->status : Auth::user()->status,
             "picture" => $request->hasFile('picture') ? $picture->storeAs('images/employees', $username . '.' . $picture->extension()) : Auth::user()->picture
         ]);
-
-
 
         return Redirect::route('profile.edit');
     }

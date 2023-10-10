@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 
 export default function InputFile({ picture, onChange, accept = '.jpg, .png, .jpeg' }) {
     const [imagePreview, setImagePreview] = useState(null);
-
-    console.log(picture);
     const handleFileChange = (event) => {
         const file = event.target.files[0];
 
@@ -39,6 +37,7 @@ export default function InputFile({ picture, onChange, accept = '.jpg, .png, .jp
                     className="hidden"
                 />
             </label>
+            <span className='text-xs text-slate-500 mt-1'>The maximum image size is 2MB</span>
         </div>
     );
 }

@@ -9,11 +9,11 @@ class Salary extends Model
 {
     use HasFactory;
 
-    protected $with = 'users';
+    protected $with = 'user';
 
     protected $guarded = [];
 
-    public function users() {
-        return $this->hasMany(User::class);
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 }

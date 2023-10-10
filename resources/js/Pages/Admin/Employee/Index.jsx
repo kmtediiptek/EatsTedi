@@ -29,6 +29,7 @@ export default function Index({ total_employees, ...props }) {
         address: '',
         picture: '',
         status: '',
+        is_active: '',
     })
 
 
@@ -57,8 +58,9 @@ export default function Index({ total_employees, ...props }) {
                 email: selectedEmployee.email,
                 number_phone: selectedEmployee.number_phone,
                 address: selectedEmployee.address,
-                picture: '',
+                picture: selectedEmployee.picture,
                 status: selectedEmployee.status,
+                is_active: selectedEmployee.is_active,
             })
         } else {
             setUserName("")
@@ -96,8 +98,8 @@ export default function Index({ total_employees, ...props }) {
             status: data.status.name,
         }, {
             onSuccess: () => {
+                setIsOpen(false),
                 setData({ name: '', username: '', email: '', address: '', status: '', picture: '', number_phone: '' }),
-                    setIsOpen(false),
                     toast.success('Employee has been created!')
             }
         })
@@ -105,7 +107,7 @@ export default function Index({ total_employees, ...props }) {
 
     const onUpdate = (e) => {
         e.preventDefault()
-        router.post(`/admin/setting/employee/${data.username}`, {
+        router.post(`/admin/setting/employee/${userName}`, {
             _method: 'put',
             ...data,
             status: data.status.name
@@ -181,7 +183,7 @@ export default function Index({ total_employees, ...props }) {
                     <Table.Tbody>
                         {employees.length > 0 ? <>
                             {employees.map((employee, index) => (
-                                <tr className="bg-white border-b text-gray-500" key={index}>
+                                <tr className={`${employee.is_active === 1 ? 'bg-white' : 'bg-gray-300'} border-b text-gray-500`} key={index}>
                                     <Table.Td className="w-5">{meta.from + index}</Table.Td>
                                     <Table.Td>{employee.name}</Table.Td>
                                     <Table.Td>{employee.username}</Table.Td>

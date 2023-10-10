@@ -25,6 +25,7 @@ class AdminUserResource extends JsonResource
             "status" => $this->status,
             "picture" => $this->picture ? Storage::url($this->picture) : null,
             "password" => $this->password,
+            "is_active" => $this->is_active,
         ];
     }
 }

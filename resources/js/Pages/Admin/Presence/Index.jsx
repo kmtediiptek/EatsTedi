@@ -9,6 +9,7 @@ import TextInput from '@/Components/TextInput'
 import Html5QrcodePlugin from '@/Components/Scan'
 import toast from 'react-hot-toast'
 import { IconCameraX, IconLockExclamation, IconMoodSmile, IconMoodSmileDizzy, IconQrcode, IconScan, IconScanEye } from '@tabler/icons-react'
+import ActionLink from '@/Components/ActionLink'
 
 const Index = ({ total_presences, qrCodes, ...props }) => {
     const { auth } = usePage().props
@@ -126,18 +127,19 @@ const Index = ({ total_presences, qrCodes, ...props }) => {
                         <h3 className='text-2xl mb-4 font-semibold text-slate-700'>Presence</h3>
                         <div className="flex flex-wrap justify-between w-full items-center my-2">
                             <div className='flex gap-2'>
+                                <ActionLink href={route('admin.dashboard')} />
                                 {auth.user.status == "admin" ?
-                                    <ActionButton className={`w-12 h-12`} type="button" onClick={(e) => { showQRCode(); HandlePresence(auth.user.id) }}>
+                                    <ActionButton className={`w-10 h-10`} type="button" onClick={(e) => { showQRCode(); HandlePresence(auth.user.id) }}>
                                         <IconQrcode />
                                     </ActionButton>
                                     :
                                     <>
                                         {isCameraActive ?
-                                            <ActionButton className={`w-12 h-12`} type="button" onClick={handleCloseCamera}>
+                                            <ActionButton className={`w-10 h-10`} type="button" onClick={handleCloseCamera}>
                                                 <IconCameraX />
                                             </ActionButton>
                                             :
-                                            <ActionButton className={`w-12 h-12 ${isCameraActive ? 'cursor-not-allowed' : ""} `} disabled={isCameraActive} type="button" onClick={handleOpenCamera}>
+                                            <ActionButton className={`w-10 h-10 ${isCameraActive ? 'cursor-not-allowed' : ""} `} disabled={isCameraActive} type="button" onClick={handleOpenCamera}>
                                                 <IconScan />
                                             </ActionButton>
                                         }

@@ -15,7 +15,7 @@ export default function ProductForm({ data, setData }) {
     return (
         <>
             <div className="mb-6">
-                <InputFile name='picture' id='picture' className="w-full" onChange={(e) => setData('picture', e.target.files[0])} />
+                <InputFile picture={data.picture} name='picture' id='picture' className="w-full" onChange={(e) => setData('picture', e.target.files[0])} />
                 {errors.picture ? <Error className='' value={errors.picture} /> : null}
             </div>
             <div className="mb-6">

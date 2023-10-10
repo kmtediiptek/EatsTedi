@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('address');
             $table->string('picture')->nullable();
             $table->enum('status', ['owner', 'admin', 'employee']);
+            $table->boolean('is_active')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });

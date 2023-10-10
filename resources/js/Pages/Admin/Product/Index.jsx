@@ -54,7 +54,7 @@ export default function Index({ total_products, ...props }) {
                 slug: selectedProduct.slug,
                 category_id: selectedProduct.category,
                 price: selectedProduct.price,
-                picture: '',
+                picture: selectedProduct.picture,
             })
         } else {
             setProductSlug("")
@@ -90,8 +90,8 @@ export default function Index({ total_products, ...props }) {
             category_id: data.category_id.id,
         }, {
             onSuccess: () => {
+                setIsOpen(false),
                 setData({ name: '', slug: '', price: '', category_id: '', picture: '' }),
-                    setIsOpen(false),
                     toast.success('Menu has been created!')
             }
         })

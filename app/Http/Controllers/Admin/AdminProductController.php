@@ -36,7 +36,7 @@ class AdminProductController extends Controller
                 ])
                 ->latest()
                 ->fastPaginate(10)->withQueryString();
-        }else {
+        } else {
             $products = Product::query()
                 ->select('id', 'category_id', 'name', 'slug', 'price', 'picture')
                 ->with([
@@ -77,6 +77,11 @@ class AdminProductController extends Controller
     public function update(AdminProductRequest $request, Product $product)
     {
         $picture = $request->file('picture');
+        if ($picture) {
+            $request->validate([
+                'picture' => ['nullable', 'mimes:png,jpg,jpeg', 'image', 'max:2048'],
+            ]);
+        }
         $product->update([
             "name" => $request->name ? $request->name : $product->name,
             "slug" => str($request->name . '-' .  rand(10, 100))->slug(),

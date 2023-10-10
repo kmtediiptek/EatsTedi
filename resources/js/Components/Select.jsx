@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import clsx from 'clsx'
 
-export default function Select({ className = "", data, value, onChange, placeholder = 'Select one' }) {
+export default function Select({ className = 'w-full', data, value, onChange, placeholder = 'Select one' }) {
     const [isOpen, setIsOpen] = useState(false)
 
     const handleSelect = (newValue) => {
@@ -15,7 +15,7 @@ export default function Select({ className = "", data, value, onChange, placehol
     return (
         <Listbox
             as="div"
-            className="relative rounded w-full"
+            className={clsx(' relative rounded', className)}
             value={value}
             onChange={handleSelect}
             open={isOpen}

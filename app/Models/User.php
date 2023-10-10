@@ -15,6 +15,7 @@ class User extends Authenticatable
 
     protected $with = ['invoices', 'carts'];
 
+
     protected $fillable = [
         'username',
         'name',
@@ -24,6 +25,7 @@ class User extends Authenticatable
         'address',
         'status',
         'picture',
+        'is_active',
     ];
 
     /**
