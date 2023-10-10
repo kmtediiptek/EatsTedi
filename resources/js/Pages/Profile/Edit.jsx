@@ -9,6 +9,7 @@ import { useState } from 'react'
 import SecondaryButton from '@/Components/SecondaryButton'
 import { IconCategory, IconLocation, IconMail, IconPhone, IconSquare, IconSquareFilled } from '@tabler/icons-react'
 import { numberFormat } from '@/Libs/Helper'
+import ActionLink from '@/Components/ActionLink'
 
 const fillYearData = (dailySalary) => {
 
@@ -66,6 +67,7 @@ export default function Edit({ auth, mustVerifyEmail, status, picture, dailySala
             <Container className="py-12 pb-0 w-full flex">
                 <div className="md:flex w-full lg:w-3/4 mx-auto gap-4">
                     <div className="w-full sm:w-1/3 flex flex-wrap flex-col gap-4 justify-start mb-6">
+                        <ActionLink href={route('admin.dashboard')} />
                         <img src={auth.user.picture ? picture : "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Free-File-Download.png"} alt={auth.user.picture} className='w-[100%] bg-white aspect-square rounded-xl mx-auto' />
                         <div className='px-4'>
                             <h3 className='text-2xl font-semibold mt-8 text-slate-700'>{auth.user.name}</h3>
@@ -112,7 +114,7 @@ export default function Edit({ auth, mustVerifyEmail, status, picture, dailySala
                             </div>
                         </div>
                     </div>
-                    <div className="w-full sm:w-2/3 mx-auto items-center">
+                    <div className="w-full mt-14 sm:w-2/3 mx-auto items-center">
                         {activeTab === 'Edit' && (
                             <div className="p-4 w-full rounded border border-1 border-gray-300">
                                 <UpdateProfileInformationForm
@@ -152,58 +154,57 @@ export default function Edit({ auth, mustVerifyEmail, status, picture, dailySala
                                         </p>
                                     </div>
                                 </div>
-                                {auth.user && auth.user.status !== "owner" ? <>
+                                {auth.user && auth.user.status !== "owner" ?
+                                    <div className="p-4 rounded mt-4 border border-1 border-gray-300">
+                                        <div>
+                                            <h2 className="text-lg font-medium text-gray-700">Salary Information</h2>
+                                            <p className="mt-1 text-sm text-gray-500">
+                                                The following is a list of your attendance
+                                            </p>
+                                        </div>
+                                        <div className="w-full py-2 gap-4 flex flex-row-reverse block scrolling-wrapper overflow-x-scroll overflow-y-hidden">
+                                            {yearData.map((monthData, index) => {
+                                                const year = new Date().getFullYear()
+                                                const monthIndex = parseInt(monthData.month) - 1
+                                                const daysInMonth = new Date(year, monthIndex + 1, 0).getDate()  // Calculate the number of days in the month
+                                                const checkboxes = Array(daysInMonth).fill(false)  // Initialize all checkboxes to false (unchecked)
+                                                monthData.days.forEach(day => {
+                                                    checkboxes[day.day - 1] = true  // Mark checkboxes for days with salary
+                                                })
 
-                                <div className="p-4 rounded mt-4 border border-1 border-gray-300">
-                                    <div>
-                                        <h2 className="text-lg font-medium text-gray-700">Salary Information</h2>
-                                        <p className="mt-1 text-sm text-gray-500">
-                                            The following is a list of your attendance
-                                        </p>
-                                    </div>
-                                    <div className="w-full py-2 gap-4 flex flex-row-reverse block scrolling-wrapper overflow-x-scroll overflow-y-hidden">
-                                        {yearData.map((monthData, index) => {
-                                            const year = new Date().getFullYear()
-                                            const monthIndex = parseInt(monthData.month) - 1
-                                            const daysInMonth = new Date(year, monthIndex + 1, 0).getDate()  // Calculate the number of days in the month
-                                            const checkboxes = Array(daysInMonth).fill(false)  // Initialize all checkboxes to false (unchecked)
-                                            monthData.days.forEach(day => {
-                                                checkboxes[day.day - 1] = true  // Mark checkboxes for days with salary
-                                            })
-
-                                            return (
-                                                <div key={index} className="flex h-48 w-min">
-                                                    <div className="flex flex-col w-32 h-48">
-                                                        <p className="text-center text-sm text-slate-700 mb-1">{monthNames[monthIndex]}</p>
-                                                        <div className="grid grid-cols-5 w-32 h-48">
-                                                            {checkboxes.map((checked, dayIndex) => (
-                                                                <span key={dayIndex}>
-                                                                    <input className='rounded w-6 border border-gray-400 h-6 text-green-600'
-                                                                        type="checkbox"
-                                                                        checked={checked}
-                                                                        readOnly
-                                                                    />
-                                                                </span>
-                                                            ))}
+                                                return (
+                                                    <div key={index} className="flex h-48 w-min">
+                                                        <div className="flex flex-col w-32 h-48">
+                                                            <p className="text-center text-sm text-slate-700 mb-1">{monthNames[monthIndex]}</p>
+                                                            <div className="grid grid-cols-5 w-32 h-48">
+                                                                {checkboxes.map((checked, dayIndex) => (
+                                                                    <span key={dayIndex}>
+                                                                        <input className='rounded w-6 border border-gray-400 h-6 text-green-600'
+                                                                            type="checkbox"
+                                                                            checked={checked}
+                                                                            readOnly
+                                                                        />
+                                                                    </span>
+                                                                ))}
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            )
-                                        })}
+                                                )
+                                            })}
+                                        </div>
                                     </div>
-                                </div>
+                                    : null}
                                 <div className="p-4 w-full mt-4 mb-12 space-y-8 rounded border border-1 border-gray-300">
                                     <div>
                                         <h2 className="text-lg font-medium text-gray-700">Total Salary </h2>
                                         <p className="mt-1 text-sm text-gray-500">
-                                            Total  {auth.user.status == "owner" ? "income" : "salry"} this month
+                                            Total  {auth.user.status == "owner" ? "income" : "salary"} this month
                                         </p>
                                         <h1 className="mt-5 text-3xl text-red-500 font-bold text-slate-700">
                                             <sup>Rp.</sup>  {numberFormat(total_salary)}
                                         </h1>
                                     </div>
                                 </div>
-                                </> : null}
                             </>
                         )}
                     </div>

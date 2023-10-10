@@ -9,10 +9,11 @@ import Table from '@/Components/Table'
 import Toast from '@/Components/Toast'
 import App from '@/Layouts/App'
 import { Head, router, useForm } from '@inertiajs/react'
-import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
+import { IconArrowLeft, IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 import TextInput from '@/Components/TextInput'
+import ActionLink from '@/Components/ActionLink'
 
 
 export default function Index({ total_employees, ...props }) {
@@ -141,16 +142,21 @@ export default function Index({ total_employees, ...props }) {
             <Container>
                 {/* Start employees */}
                 <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Employees</h3>
-                <div className="flex justify-between w-full item-center my-2">
-                    <ActionButton
-                        onClick={() => openModalCategory("", "create")}
-                        type="button"
-                    >
-                        <IconPlus size={18} />
-                    </ActionButton>
+                <div className="flex justify-between gap-2 w-full item-center my-2">
+
+                    <div className="flex gap-2">
+
+                        <ActionLink href={route('admin.dashboard')} />
+                        <ActionButton
+                            onClick={() => openModalCategory("", "create")}
+                            type="button"
+                        >
+                            <IconPlus size={18} />
+                        </ActionButton>
+                    </div>
                     <TextInput
                         type="search"
-                        className="w-1/4"
+                        className="w-3/4 md:w-1/4"
                         placeholder="Search employee.."
                         defaultValue={searchQuery}
                         onChange={handleSearch}

@@ -27,11 +27,15 @@ export default function CartItem({ cart}) {
         })
     }
 
+    console.log(cart.product_picture);
+
+    const picture = `/storage/${cart.product_picture}`;
+
     return (
         <>
             <div className="flex order py-4 flex-flex-column gap-4">
                 <div className="flex gap-2 w-1/2 sm:w-2/3 overflow-hidden">
-                    <img src={cart.product_picture ? cart.product_picture : `https://via.placeholder.com/80`} alt="" className='rounded h-16 w-16 hidden md:block' />
+                    <img src={cart.product_picture ?  picture : `https://via.placeholder.com/80`} alt="" className='rounded h-16 w-16 hidden md:block' />
                     <div className="flex flex flex-col justify-between">
                         <h6 className='text-base text-slate-700'>{cart.product_name}</h6>
                         <h5 className='text-lg font-semibold text-slate-700'>Rp. {numberFormat(cart.product_price)}</h5>

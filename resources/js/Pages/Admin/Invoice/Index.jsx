@@ -10,6 +10,7 @@ import { numberFormat } from '@/Libs/Helper'
 import TextInput from '@/Components/TextInput'
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
+import ActionLink from '@/Components/ActionLink'
 
 
 export default function Index({ total_invoices, ...props }) {
@@ -89,34 +90,41 @@ export default function Index({ total_invoices, ...props }) {
             <Container>
                 {/* Start Invoices */}
                 <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Invoices</h3>
+                <div className="flex  flex-wrap justify-between w-full item-center mt-2">
+                    <ActionLink href={route('admin.dashboard')} />
+                </div>
                 <div className="flex  flex-wrap justify-between w-full item-center my-2">
-                    <div className="flex items-center gap-2 w-full mb-2 md:mb-0 sm:w-1/2">
-                        <div className="w-full md:w-1/2">
-                            <TextInput type="date" name='start_date' id='start_date' className="w-full" onChange={onChange} value={data.start_date} />
-                            {errors.start_date ? <span className='text-red-500'>{errors.start_date}</span> : null}
+                    <div className="flex items-center flex-wrap sm:flex-nowrap gap-2 w-full mb-2 md:mb-0 sm:w-full md:w-1/2">
+                        <div className='w-full flex gap-2'>
+                            <div className="w-full">
+                                <TextInput type="date" name='start_date' id='start_date' className="w-full" onChange={onChange} value={data.start_date} />
+                                {errors.start_date ? <span className='text-red-500'>{errors.start_date}</span> : null}
+                            </div>
+                            <div className="w-full">
+                                <TextInput type="date" name='end_date' id='end_date' className="w-full" onChange={onChange} value={data.end_date} />
+                                {errors.end_date ? <span className='text-red-500'>{errors.end_date}</span> : null}
+                            </div>
                         </div>
-                        <div className="w-full md:w-1/2">
-                            <TextInput type="date" name='end_date' id='end_date' className="w-full" onChange={onChange} value={data.end_date} />
-                            {errors.end_date ? <span className='text-red-500'>{errors.end_date}</span> : null}
+                        <div className="w-full sm:w-auto flex gap-2 justify-end sm:justify-start">
+                            <ActionButton
+                                className='w-10 h-10 bg-purple-500'
+                                onClick={filterInvoice}
+                                type="button"
+                                disabled={!data.start_date || !data.end_date} // Menonaktifkan jika tanggal belum diisi
+                            >
+                                <IconFilter size={26} />
+                            </ActionButton>
+                            <ActionButton
+                                className='w-10 h-10'
+                                onClick={() => generatePDF(invoices)}
+                                type="button"
+                                disabled={!isFilterApplied}  // Menonaktifkan jika filter belum diaplikasikan
+                            >
+                                <IconPrinter size={26} />
+                            </ActionButton>
                         </div>
-                        <ActionButton
-                            className='w-10 h-10 bg-purple-500'
-                            onClick={filterInvoice}
-                            type="button"
-                            disabled={!data.start_date || !data.end_date} // Menonaktifkan jika tanggal belum diisi
-                        >
-                            <IconFilter size={26} />
-                        </ActionButton>
-                        <ActionButton
-                            className='w-10 h-10'
-                            onClick={() => generatePDF(invoices)}
-                            type="button"
-                            disabled={!isFilterApplied}  // Menonaktifkan jika filter belum diaplikasikan
-                        >
-                            <IconPrinter size={26} />
-                        </ActionButton>
                     </div>
-                    <TextInput type="search" className='w-full md:w-1/4 rounded border-gray-300 py-1 focus:ring-puple-300 focus:border-purple-600' placeholder='Search invoice..'
+                    <TextInput type="search" className='w-full md:w-1/4 ' placeholder='Search invoice..'
                         defaultValue={searchQuery}
                         onChange={handleSearch} />
 

@@ -1,4 +1,4 @@
-export default function ActionButton({ className = 'w-8 h-8 ', disabled, children, type = button, ...props }) {
+export default function ActionButton({ className = 'w-10 h-10 ', disabled, children, type = button, ...props }) {
     return (
         <button
             {...props}

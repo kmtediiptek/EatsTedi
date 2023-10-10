@@ -142,6 +142,9 @@ class AdminCartController extends Controller
 
     public function destroy(Cart $cart)
     {
+
+        $count = $cart->where('order_id', $cart->order_id)->count();
+        $count == 1 ?  Invoice::where('order_id', $cart->order_id)->delete() : null;
         $cart->delete();
 
         return back();

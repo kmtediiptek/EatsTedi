@@ -6,6 +6,7 @@ import { Head, router } from '@inertiajs/react'
 import React, { useState } from 'react'
 import TextInput from '@/Components/TextInput'
 import { IconMoodSmile, IconMoodSmileDizzy } from '@tabler/icons-react'
+import ActionLink from '@/Components/ActionLink'
 
 const Index = ({ total_presences, qrCodes, ...props }) => {
     const { data: attendaces, meta, links } = props.attendaces
@@ -34,7 +35,8 @@ const Index = ({ total_presences, qrCodes, ...props }) => {
                 <div className="flex flex-wrap w-full mt-10 mb-4">
                     {/* Start Attendace */}
                     <h3 className='text-2xl mb-4 font-semibold text-slate-700'>Attendace</h3>
-                    <div className="flex flex-wrap justify-end w-full my-2">
+                    <div className="flex flex-wrap justify-between gap-2 w-full my-2">
+                        <ActionLink href={route('admin.dashboard')} />
                         <TextInput
                             type="search"
                             className="w-3/4 sm:w-1/4"

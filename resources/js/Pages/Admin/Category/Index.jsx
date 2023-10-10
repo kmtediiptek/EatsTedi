@@ -1,3 +1,4 @@
+import ActionLink from '@/Components/ActionLink'
 import ActionButton from '@/Components/Actionbutton'
 import CategoryForm from '@/Components/CategoryForm'
 import Container from '@/Components/Container'
@@ -9,8 +10,9 @@ import Table from '@/Components/Table'
 import TextInput from '@/Components/TextInput'
 import Toast from '@/Components/Toast'
 import App from '@/Layouts/App'
-import { Head, useForm, router } from '@inertiajs/react'
-import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
+import { Head, useForm, router, Link } from '@inertiajs/react'
+import { IconArrowLeft } from '@tabler/icons-react'
+import { IconArrowLeftSquare, IconArrowRight, IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 
@@ -121,16 +123,21 @@ export default function Index({ total_categories, ...props }) {
             <Container>
                 {/* Start Categories */}
                 <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Categories</h3>
-                <div className="flex justify-between w-full item-center my-2">
-                    <ActionButton
-                        onClick={() => openModalCategory("", "create")}
-                        type="button"
-                    >
-                        <IconPlus size={18} />
-                    </ActionButton>
+                <div className="flex justify-between gap-2 w-full item-center my-2">
+                    <div className="flex gap-2">
+                        <ActionLink href={route('admin.dashboard')}>
+                            <IconArrowLeft size={18} />
+                        </ActionLink>
+                        <ActionButton
+                            onClick={() => openModalCategory("", "create")}
+                            type="button"
+                        >
+                            <IconPlus size={18} />
+                        </ActionButton>
+                    </div>
                     <TextInput
                         type="search"
-                        className="w-1/4"
+                        className="w-3/4 md:w-1/4"
                         placeholder="Search category.."
                         defaultValue={searchQuery}
                         onChange={handleSearch}

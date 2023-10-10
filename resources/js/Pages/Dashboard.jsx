@@ -25,14 +25,14 @@ export default function Dashboard({
     monthlyIncome }) {
     const { auth } = usePage().props
 
-    const weekLabels = weeklyIncome.map(item => "Week " + item.week + ", " + item.year)
+    const weekLabels = weeklyIncome.map(item => item.week)
     const weekData = weeklyIncome.map(item => item.total)
 
-    const dayLabels = dailyIncome.map(item => "Date " + item.date + ", " + item.year)
+    const dayLabels = dailyIncome.map(item => item.date)
     const dayData = dailyIncome.map(item => item.total)
 
 
-    const monthLabels = monthlyIncome.map(item => "Month " + item.month + ' ' + item.year)
+    const monthLabels = monthlyIncome.map(item => item.month)
     const monthData = monthlyIncome.map(item => item.total)
 
     const optionsWeekly = {
@@ -281,7 +281,7 @@ export default function Dashboard({
                 <h3 className='text-2xl mb-4 font-semibold text-slate-700'>Statistics</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 w-full gap-4">
                     <Chart options={optionsMonthly} series={seriesMonthly} type="bar" className="w-full min-h-screen border border-gray-300 p-4 rounded" />
-                    <Chart options={optionsWeekly} series={seriesWeekly} type="line" className="w-full min-h-screen border border-gray-300 p-4 rounded" />
+                    <Chart options={optionsWeekly} series={seriesWeekly} type="bar" className="w-full min-h-screen border border-gray-300 p-4 rounded" />
                     <Chart options={optionsDaily} series={seriesDaily} type="bar" className="w-full min-h-screen border border-gray-300 p-4 rounded" />
                 </div>
             </Container>

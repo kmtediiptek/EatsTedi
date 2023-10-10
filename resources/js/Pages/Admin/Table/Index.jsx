@@ -13,6 +13,7 @@ import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 import TextInput from '@/Components/TextInput'
+import ActionLink from '@/Components/ActionLink'
 
 
 export default function Index({ total_tables, ...props }) {
@@ -121,17 +122,19 @@ export default function Index({ total_tables, ...props }) {
             <Container>
                 {/* Start Tables */}
                 <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Tables</h3>
-                <div className="flex justify-between w-full item-center my-2">
-                    <button
+                <div className="flex justify-between gap-2 w-full item-center my-2">
+                <div className="flex gap-2">
+                        <ActionLink href={route('admin.dashboard')} />
+                    <ActionButton
                         onClick={() => openModalTable("", "create")}
                         type="button"
-                        className='w-8 h-8 flex justify-center items-center bg-orange-500 text-white rounded'
                     >
                         <IconPlus size={18} />
-                    </button>
+                    </ActionButton>
+                    </div>
                     <TextInput
                         type="search"
-                        className="w-1/4"
+                        className="w-3/4 md:w-1/4"
                         placeholder="Search category.."
                         defaultValue={searchQuery}
                         onChange={handleSearch}

@@ -7,6 +7,7 @@ import { Head, router } from '@inertiajs/react'
 import React, { useState } from 'react'
 import TextInput from '@/Components/TextInput'
 import { formatDistanceToNow } from 'date-fns'
+import ActionLink from '@/Components/ActionLink'
 
 const formatDate = (timestamp) => {
     return formatDistanceToNow(new Date(timestamp), { addSuffix: true })
@@ -31,10 +32,11 @@ const Index = ({ total_activities, ...props }) => {
             <Container>
                 {/* Start Activity */}
                 <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Activity</h3>
-                <div className="flex flex-wrap justify-end w-full items-center my-2">
+                <div className="flex flex-wrap justify-between gap-2 w-full my-2">
+                        <ActionLink href={route('admin.dashboard')} />
                     <TextInput
                         type="search"
-                        className="w-1/4"
+                        className="w-3/4 md:w-1/4"
                         placeholder="Search menu.."
                         defaultValue={searchQuery}
                         onChange={handleSearch}

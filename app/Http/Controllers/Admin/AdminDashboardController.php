@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\Schedule;
 use App\Models\Table;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -38,25 +39,25 @@ class AdminDashboardController extends Controller
         $paid_later = Invoice::where('succeeded_at', null)->whereDate('created_at', today())->sum('total_price');
 
         $weeklyIncome = Invoice::select(
-            \DB::raw('YEAR(created_at) as year'),
             \DB::raw('WEEK(created_at) as week'),
             \DB::raw('SUM(total_price) as total')
         )
-            ->groupBy('year', 'week')
-            ->orderBy('year', 'asc')
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->groupBy('week')
             ->orderBy('week', 'asc')
             ->get();
 
         $dailyIncome = Invoice::select(
-            DB::raw('YEAR(created_at) as year'),
             \DB::raw('DATE(created_at) as date'),
+            \DB::raw('MONTHNAME(created_at) as month'),
             \DB::raw('SUM(total_price) as total')
         )
-            ->groupBy('year', 'date')
-            ->groupBy('date')
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->groupBy('date', 'month')
             ->orderBy('date', 'asc')
             ->get();
-
 
         $monthlyIncome = Invoice::select(
             \DB::raw('YEAR(created_at) as year'),
@@ -66,9 +67,8 @@ class AdminDashboardController extends Controller
             ->groupBy('year', 'month')
             ->orderBy('year', 'asc')
             ->orderBy('month', 'asc')
+            ->whereYear('created_at', Carbon::now()->year)
             ->get();
-
-
 
         return inertia('Dashboard', [
             "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get(),
