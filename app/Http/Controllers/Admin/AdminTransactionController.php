@@ -55,20 +55,13 @@ class AdminTransactionController extends Controller
                 ->select('id', 'category_id', 'name', 'slug', 'price', 'picture')
                 ->when($request->category, fn ($q, $v) => $q->whereBelongsTo(Category::where('slug', $v)->first()))
                 ->latest()
-                ->fastPaginate(10)->withQueryString();
-        } elseif ($request->order_id) {
-            $products = Product::query()
-                ->leftJoin('carts', 'products.id', '=', 'carts.product_id')
-                ->select('products.id', 'products.category_id', 'products.name', 'products.slug', 'products.price', 'products.picture', 'carts.order_id')
-                ->when($request->category, fn ($q, $v) => $q->whereBelongsTo(Category::where('slug', $v)->first()))
-                ->latest('products.created_at')
-                ->fastPaginate(10)->withQueryString();
+                ->fastPaginate(12)->withQueryString();
         } else {
             $products = Product::query()
                 ->select('id', 'category_id', 'name', 'slug', 'price', 'picture')
                 ->when($request->category, fn ($q, $v) => $q->whereBelongsTo(Category::where('slug', $v)->first()))
                 ->latest()
-                ->fastPaginate(10)->withQueryString();
+                ->fastPaginate(12)->withQueryString();
         }
 
         $invoices = Invoice::where('user_id', Auth::user()->id)->whereDate('created_at', today())->whereNot('name', '-')->latest()->get();

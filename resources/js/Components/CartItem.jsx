@@ -27,7 +27,6 @@ export default function CartItem({ cart}) {
         })
     }
 
-    console.log(cart.product_picture);
 
     const picture = `/storage/${cart.product_picture}`;
 
