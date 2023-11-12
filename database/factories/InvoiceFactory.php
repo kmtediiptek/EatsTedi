@@ -28,6 +28,7 @@ class InvoiceFactory extends Factory
             'total_quantity' => $quantity = $cart->quantity,
             'total_price' => $total_price = $cart->price * $quantity,
             'status' => 0,
+            
             'charge' => $total_price * rand(1, 4),
             'name' => $user->name,
             'paid' => 1,

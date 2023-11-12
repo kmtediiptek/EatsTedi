@@ -93,7 +93,7 @@ class DatabaseSeeder extends Seeder
 
 
         \App\Models\Product::factory(100)->create();
-        \App\Models\Invoice::factory(10)->create();
-        \App\Models\Cart::factory(10)->create();
+        \App\Models\Invoice::factory(500)->create();
+        \App\Models\Cart::factory(300)->create();
     }
 }
