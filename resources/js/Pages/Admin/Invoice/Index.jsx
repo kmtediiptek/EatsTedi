@@ -86,7 +86,7 @@ export default function Index({ total_invoices, ...props }) {
 
     return (
         <>
-            <Head title="Setting" />
+            <Head title="History" />
             <Container>
                 {/* Start Invoices */}
                 <h3 className='text-2xl mt-10 mb-4 font-semibold text-slate-700'>Invoices</h3>

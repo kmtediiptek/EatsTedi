@@ -3,12 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\AdminTableRequest;
 use App\Http\Requests\Admin\AdminUserRequest;
-use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Resources\Admin\AdminUserResource;
 use App\Models\Activity;
-use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
@@ -47,7 +44,7 @@ class AdminUserController extends Controller
     public function store(AdminUserRequest $request)
     {
         $picture = $request->file('picture');
-        User::create([
+        $user = User::create([
             "name" => $name = $request->name,
             "username" => $request->username,
             "email" => $request->email,
@@ -58,6 +55,8 @@ class AdminUserController extends Controller
             'is_active' => $request->is_active == 1 ? true : ($request->is_active == 0 ? false : null),
             "picture" => $request->hasFile('picture') ? $picture->storeAs('images/employees', $name . '.' . $picture->extension()) : null
         ]);
+
+        $user->status === "admin" ? $user->assignRole("admin") : $user->assignRole("employee");
 
         Activity::create([
             "activity" => Auth::user()->name . " Added Employee " . $request->name
