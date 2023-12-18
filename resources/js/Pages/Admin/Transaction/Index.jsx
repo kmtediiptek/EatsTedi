@@ -217,8 +217,6 @@ export default function Index({ categories, total_categories, carts, invoices, t
                                     <hr />
                                 </form>
                             </div>
-
-
                         </div>
                     </div>
                     {/* End Order Details */}
