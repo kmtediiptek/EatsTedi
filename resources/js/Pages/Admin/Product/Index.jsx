@@ -184,7 +184,6 @@ export default function Index({ total_products, ...props }) {
                         onChange={handleSearch}
                     />
                 </div>
-                <div className="w-full"></div>
                 <Table>
                     <Table.Thead>
                         <tr>
