@@ -44,7 +44,7 @@ export default function Index({ total_payments, ...props }) {
         setModalType(type)
         setScheduleSlug(scheduleSlug)
         if (scheduleSlug) {
-            const selectedSchedule = schedules.find(schedule => schedule.id === scheduleSlug)
+            const selectedSchedule = schedules.find(schedule => schedule.slug === scheduleSlug)
 
             setScheduleSlug(scheduleSlug)
             setData({
@@ -162,8 +162,8 @@ export default function Index({ total_payments, ...props }) {
                                     <Table.Td>{schedule.open} - {schedule.close}</Table.Td>
                                     <Table.Td className="w-10" >
                                         <div className='flex flex-nowrap gap-2'>
-                                            <ActionButton className='w-8 h-8 bg-yellow-400' type="button" onClick={() => openModalTable(schedule.id, "edit")}><IconEdit size={18} /></ActionButton>
-                                            <ActionButton className='w-8 h-8 bg-red-500' type="button" onClick={() => openToast(schedule.id, 'Schedule ' + schedule.day)}><IconTrash size={18} /></ActionButton>
+                                            <ActionButton className='w-8 h-8 bg-yellow-400' type="button" onClick={() => openModalTable(schedule.slug, "edit")}><IconEdit size={18} /></ActionButton>
+                                            <ActionButton className='w-8 h-8 bg-red-500' type="button" onClick={() => openToast(schedule.slug, 'Schedule ' + schedule.day)}><IconTrash size={18} /></ActionButton>
                                         </div>
                                     </Table.Td>
                                 </tr>

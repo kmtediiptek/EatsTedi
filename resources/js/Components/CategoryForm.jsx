@@ -1,8 +1,7 @@
 import React from 'react'
-import InputLabel from './InputLabel'
 import { usePage } from '@inertiajs/react'
-import TextInput from './TextInput'
-import Error from './Error';
+import InputLabel from './InputLabel';
+import TextInput from './TextInput';
 
 export default function CategoryForm({ data, setData }) {
     const { errors } = usePage().props;

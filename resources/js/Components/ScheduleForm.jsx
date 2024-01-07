@@ -1,9 +1,7 @@
 import React from 'react'
 import InputLabel from './InputLabel'
 import Error from './Error'
-import Select from './Select'
-import InputFile from './InputFIle'
-import { useForm, usePage } from '@inertiajs/react'
+import { usePage } from '@inertiajs/react'
 import TextInput from './TextInput'
 
 export default function ScheduleForm({ data, setData }) {

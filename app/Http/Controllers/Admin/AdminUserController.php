@@ -96,11 +96,12 @@ class AdminUserController extends Controller
 
     public function destroy(User $user)
     {
-        if ($user->carts()->count() > 0 || $user->invoices()->count() > 0) {
+        if ($user->products()->count() > 0 || $user->invoices()->count() > 0) {
             $user->update([
                 "is_active" => false,
             ]);
             return false;
+            
         } else {
             if ($user->picture) {
                 Storage::delete($user->picture);

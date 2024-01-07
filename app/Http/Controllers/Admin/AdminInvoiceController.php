@@ -8,7 +8,6 @@ use App\Http\Resources\Admin\AdminInvoiceResource;
 use App\Models\Activity;
 use App\Models\Cart;
 use App\Models\Invoice;
-use App\Models\Salary;
 use App\Models\Table;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
