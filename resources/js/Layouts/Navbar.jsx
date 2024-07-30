@@ -30,7 +30,7 @@ export default function Navbar() {
                     <div className="flex w-full md:w-3/4 justify-between">
                         <div className='flex items-center w-full'>
                             <Link href="/" className="text-3xl font-bold text-orange-500">
-                                <img src={`/app/Logo Title X.png`} alt="" width="150px" className='mx-auto' />
+                              <h3>Eat's <span className='font-light'>TEDI</span></h3>
                             </Link>
                             {route().current('admin.transaction') ?
                                 <div className="px-4 w-full">
