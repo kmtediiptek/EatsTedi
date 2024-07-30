@@ -8,30 +8,27 @@ use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Schedule;
+use App\Models\Supplier;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AdminDashboardController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function __invoke(Request $request)
     {
-        $total_categories = Category::get()->count();
-        $total_payments = Payment::get()->count();
-        $total_products = Product::get()->count();
-        $total_employees = User::where('status', 'employee')->get()->count();
-        $total_schedules = Schedule::get()->count();
-
-        $total_income = Invoice::sum('total_price');
-        $today_income = Invoice::whereDate('created_at', today())->sum('total_price');
-        $paid_now = Invoice::whereNot('succeeded_at', null)->whereDate('created_at', today())->sum('total_price');
-        $paid_later = Invoice::where('succeeded_at', null)->whereDate('created_at', today())->sum('total_price');
+        $total = (object) [
+            'suppliers' => Supplier::count(),
+            'categories' => Category::count(),
+            'payments' => Payment::count(),
+            'products' => Product::count(),
+            'employees' => User::where('status', 'employee')->count(),
+            'schedules' => Schedule::count(),
+            'income' => Invoice::sum('total_price'),
+            'today_income' => Invoice::whereDate('created_at', today())->sum('total_price'),
+            'paid_now' => Invoice::whereNotNull('succeeded_at')->whereDate('created_at', today())->sum('total_price'),
+            'paid_later' => Invoice::whereNull('succeeded_at')->whereDate('created_at', today())->sum('total_price'),
+        ];
 
         $weeklyIncome = Invoice::select(
             \DB::raw('WEEK(created_at) as week'),
@@ -66,19 +63,11 @@ class AdminDashboardController extends Controller
             ->get();
 
         return inertia('Dashboard', [
-            "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get(),
-            "total_categories" => $total_categories,
-            "total_payments" => $total_payments,
-            "total_products" => $total_products,
-            "total_employees" => $total_employees,
-            "total_schedules" => $total_schedules,
-            "total_income" => $total_income,
-            "today_income" => $today_income,
-            "paid_now" => $paid_now,
-            "paid_later" => $paid_later,
-            "monthlyIncome" => $monthlyIncome,
-            "weeklyIncome" => $weeklyIncome,
-            "dailyIncome" => $dailyIncome,
+            'total' => $total,
+            'monthlyIncome' => $monthlyIncome,
+            'weeklyIncome' => $weeklyIncome,
+            'dailyIncome' => $dailyIncome,
+            'categories' => Category::select('id', 'name', 'icon', 'slug')->get(),
         ]);
     }
 }
