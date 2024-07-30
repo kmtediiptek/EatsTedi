@@ -56,13 +56,23 @@ export default function Index({ total_suppliers, ...props }) {
             setSupplierUsername(supplierUsername);
             setData({
                 name: selectedSupplier.name,
-                icon: selectedSupplier.icon,
+                username: selectedSupplier.username,
+                email: selectedSupplier.email,
+                number_phone: selectedSupplier.number_phone,
+                address: selectedSupplier.address,
+                picture: selectedSupplier.picture,
+                is_active: selectedSupplier.is_active,
             });
         } else {
             setSupplierUsername("");
             setData({
-                name: "",
-                icon: "",
+                name: '',
+                username: '',
+                email: '',
+                number_phone: '',
+                address: '',
+                picture: '',
+                status: '',
             });
         }
     }
@@ -200,7 +210,7 @@ export default function Index({ total_suppliers, ...props }) {
                                                     className="w-8 h-8 bg-yellow-400"
                                                     type="button"
                                                     onClick={() =>
-                                                        openModalCategory(
+                                                        openModalSupplier(
                                                             supplier.username,
                                                             "edit"
                                                         )

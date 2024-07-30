@@ -70,6 +70,7 @@ Route::prefix('admin')->middleware('role:owner|admin|employee', 'auth')->group(f
     Route::controller(AdminSupplierController::class)->group(function () {
         Route::get('/setting/supplier', 'index')->name('admin.supplier.index');
         Route::post('/setting/supplier', 'store')->name('admin.supplier.store');
+        Route::put('/setting/supplier/{supplier:username}', 'update')->name('admin.supplier.update');
         Route::delete('/setting/supplier/{user:username}', 'destroy')->name('admin.supplier.destroy');
     });
 
