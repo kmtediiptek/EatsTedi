@@ -40,6 +40,7 @@ class DatabaseSeeder extends Seeder
             'status' => 1
         ]);
 
+        \App\Models\Supplier::factory(5)->create();
         \App\Models\Product::factory(30)->create();
         \App\Models\Invoice::factory(10)->create();
         \App\Models\Cart::factory(15)->create();
