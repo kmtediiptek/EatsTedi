@@ -8,6 +8,7 @@ use App\Models\Activity;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AdminSupplierController extends Controller
 {
@@ -26,7 +27,7 @@ class AdminSupplierController extends Controller
 
         return inertia('Admin/Supplier/Index', [
             "suppliers" => $suppliers,
-            "total_employees" => $total_suppliers,
+            "total_suppliers" => $total_suppliers,
         ]);
     }
 
@@ -48,11 +49,6 @@ class AdminSupplierController extends Controller
         ]);
 
         return back();
-    }
-
-    public function show(Supplier $supplier)
-    {
-        //
     }
 
     public function update(Request $request, Supplier $supplier)
@@ -83,6 +79,22 @@ class AdminSupplierController extends Controller
 
     public function destroy(Supplier $supplier)
     {
-        //
+        if ($supplier->products()->count() > 0 || $supplier->invoices()->count() > 0) {
+            $supplier->update([
+                "is_active" => false,
+            ]);
+            return false;
+        } else {
+            if ($supplier->picture) {
+                Storage::delete($supplier->picture);
+            }
+
+            Activity::create([
+                "activity" => Auth::user()->name . " Deleted Supplier " . $supplier->name
+            ]);
+
+            $supplier->delete();
+            return back();
+        }
     }
 }

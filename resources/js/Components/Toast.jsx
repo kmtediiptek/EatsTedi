@@ -1,11 +1,14 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 
-export default function Toast({ isToast, name, onClose, title, children }) {
+export default function Toast({ isToast, name, title, children }) {
+    function closeModal() {
+        setIsOpen(false);
+    }
     return (
         <>
             <Transition appear show={isToast} as={Fragment}>
-                <Dialog as="div" className="relative z-10" onClose={onClose}>
+                <Dialog as="div" className="relative z-10" onClose={closeModal}>
                     <Transition.Child
                         as={Fragment}
                         enter="ease-out duration-300"
@@ -29,18 +32,13 @@ export default function Toast({ isToast, name, onClose, title, children }) {
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="w-full max-w-sm transform overflow-hidden rounded bg-white p-6 text-left align-middle shadow-xl transition-all">
+                                <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded bg-white px-6 py-4 text-left align-middle shadow-xl transition-all">
                                     <Dialog.Title
                                         as="h3"
-                                        className="text-center text-slate-700 leading-6 mb-5 mt-4"
+                                        className="text-start text-primary leading-6 mb-5 mt-2 text-primary"
                                     >
-                                        <p className="font-medium text-lg">
-                                            {name}
-                                        </p>
-                                        <p className="font-normal text-slate-500">
-                                            {name
-                                                ? `Are you sure ${title} is finished?`
-                                                : `Are you sure want to delete ${title}`}
+                                        <p className="font-normal text-primary">
+                                            {title}
                                         </p>
                                     </Dialog.Title>
                                     <div className="mt-2">{children}</div>

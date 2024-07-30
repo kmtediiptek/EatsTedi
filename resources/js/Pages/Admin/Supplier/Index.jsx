@@ -66,13 +66,13 @@ export default function Index({ total_suppliers, ...props }) {
         } else {
             setSupplierUsername("");
             setData({
-                name: '',
-                username: '',
-                email: '',
-                number_phone: '',
-                address: '',
-                picture: '',
-                status: '',
+                name: "",
+                username: "",
+                email: "",
+                number_phone: "",
+                address: "",
+                picture: "",
+                status: "",
             });
         }
     }
@@ -85,6 +85,10 @@ export default function Index({ total_suppliers, ...props }) {
 
     function onCancelModal() {
         setIsOpen(false);
+    }
+
+    function onCancelToast() {
+        setIsToast(false);
     }
 
     const onSubmit = (e) => {
@@ -283,12 +287,19 @@ export default function Index({ total_suppliers, ...props }) {
                 </MyModal>
 
                 {/* Toast */}
-                <Toast isToast={isToast} title={toastTitle}>
-                    <div className="flex justify-end gap-2 justify-center">
-                        <SecondaryButton onClick={() => onCancelToast()}>
+                <Toast
+                    isToast={isToast}
+                    title={`Tindakan ini akan memulai proses menghapus Supplier. Apakah Anda ingin menghapus ${toastTitle}? `}
+                >
+                    <div className="flex justify-end gap-2">
+                        <SecondaryButton
+                            className="w-32"
+                            onClick={() => onCancelToast()}
+                        >
                             No
                         </SecondaryButton>
                         <PrimaryButton
+                            className="w-32"
                             onClick={() => onDelete(supplierUsername)}
                         >
                             Yes
