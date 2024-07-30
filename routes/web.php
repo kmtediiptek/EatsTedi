@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\AdminInvoiceController;
 use App\Http\Controllers\Admin\AdminPaymentController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminScheduleController;
+use App\Http\Controllers\Admin\AdminSupplierController;
 use App\Http\Controllers\Admin\AdminTransactionController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\SendEmailController;
@@ -63,6 +64,13 @@ Route::prefix('admin')->middleware('role:owner|admin|employee', 'auth')->group(f
         Route::get('/setting/employee', 'index')->name('admin.employee.index')->can('employee_index');
         Route::post('/setting/employee', 'store')->name('admin.employee.store')->can('employee_store');
         Route::delete('/setting/employee/{user:username}', 'destroy')->name('admin.employee.destroy')->can('employee_destroy');
+    });
+
+    // Admin Employee
+    Route::controller(AdminSupplierController::class)->group(function () {
+        Route::get('/setting/supplier', 'index')->name('admin.supplier.index');
+        Route::post('/setting/supplier', 'store')->name('admin.supplier.store');
+        Route::delete('/setting/supplier/{user:username}', 'destroy')->name('admin.supplier.destroy');
     });
 
     // Admin Product
