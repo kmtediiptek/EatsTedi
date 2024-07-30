@@ -1,7 +1,7 @@
 import Container from '@/Components/Container'
 import App from '@/Layouts/App'
 import { Head, Link, usePage } from '@inertiajs/react'
-import { Icon24Hours, IconCalendarTime, IconCategory, IconCreditCard, IconMoneybag, IconReportMoney, IconSignRight, IconTable, IconUsers } from '@tabler/icons-react'
+import { IconCalendarTime, IconCategory, IconCreditCard, IconMoneybag, IconReportMoney, IconTable, IconUsers } from '@tabler/icons-react'
 import { IconMenuOrder } from '@tabler/icons-react'
 import Chart from 'react-apexcharts'
 import React from 'react'
@@ -10,12 +10,10 @@ import { numberFormat } from '@/Libs/Helper'
 
 export default function Dashboard({
     total_categories,
-    total_tables,
     total_payments,
     total_employees,
     total_products,
     total_schedules,
-    total_attendaces,
     total_income,
     today_income,
     paid_later,
@@ -178,16 +176,6 @@ export default function Dashboard({
                             </div>
                         </Link>
 
-                        <Link href={route('admin.table.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
-                            <div className="rounded bg-purple-500 w-16 h-16 flex justify-center items-center">
-                                <h3 className='text-4xl font-semibold text-center'><IconTable size={36} /></h3>
-                            </div>
-                            <div className='text-slate-800 flex flex-col flex-1 justify-around'>
-                                <h5 className='font-semibold text-xl'>Tables</h5>
-                                <span className='text-slate-500'>{total_tables} Item</span>
-                            </div>
-                        </Link>
-
                         <Link href={route('admin.payment.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
                             <div className="rounded bg-red-500 w-16 h-16 flex justify-center items-center">
                                 <h3 className='text-4xl font-semibold text-center'><IconMoneybag size={36} /></h3>
@@ -207,15 +195,7 @@ export default function Dashboard({
                                 <span className='text-slate-500'>{total_employees} Item</span>
                             </div>
                         </Link>
-                        <Link href={route('admin.attendace.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
-                            <div className="rounded bg-fuchsia-500 w-16 h-16 flex justify-center items-center">
-                                <h3 className='text-4xl font-semibold text-center'><Icon24Hours size={36} /></h3>
-                            </div>
-                            <div className='text-slate-800 flex flex-col flex-1 justify-around'>
-                                <h5 className='font-semibold text-xl'>Attendace</h5>
-                                <span className='text-slate-500'>{total_attendaces} Item</span>
-                            </div>
-                        </Link>
+
                         <Link href={route('admin.schedule.index')} className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
                             <div className="rounded bg-cyan-500 w-16 h-16 flex justify-center items-center">
                                 <h3 className='text-4xl font-semibold text-center'><IconCalendarTime size={36} /></h3>

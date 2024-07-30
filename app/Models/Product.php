@@ -23,4 +23,9 @@ class Product extends Model
     {
         return 'slug';
     }
+
+    public function stocks()
+    {
+        return $this->hasMany(Stock::class);
+    }
 }

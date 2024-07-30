@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import TextInput from './TextInput'
 import Error from './Error'
 import { usePage, router } from '@inertiajs/react'
-import SelectTable from './SelectTable'
 import SelectPayment from './SelectPayment'
 import PrimaryButton from './PrimaryButton'
 import MyModal from './Modal'
@@ -26,7 +25,7 @@ export default function InvoiceForm({ data, setData, onSubmit, carts, total_pric
         setIsOpen(false)
     }
 
-    const { errors, tables, payments } = usePage().props
+    const { errors, payments } = usePage().props
     const onChange = (e) => {
         setData(e.target.name, e.target.value)
     }
@@ -76,10 +75,6 @@ export default function InvoiceForm({ data, setData, onSubmit, carts, total_pric
                 </div>
             </div>
             <div className='flex justify-between w-full gap-x-4'>
-                <div className='flex flex-col w-full'>
-                    <SelectTable value={data.table_id} data={tables} className="w-full" placeholder='Tables' onChange={(e) => setData('table_id', e)} />
-                    {errors.table_id ? <Error className='' value={errors.table_id} /> : null}
-                </div>
                 {showPaymentOptions || data.paid == 1 ?
                     <div className='flex flex-col w-full'>
                         <SelectPayment value={data.payment_id} data={payments} className="w-full" placeholder='Payment' onChange={(e) => setData('payment_id', e)} />
@@ -97,11 +92,11 @@ export default function InvoiceForm({ data, setData, onSubmit, carts, total_pric
             <div className="pb-4 flex items-end flex-1 justify-end">
                 {
                     data.charge != 0 || data.paid == 1 ? <>
-                        <PrimaryButton type="button" onClick={() => openModalOrder("create")} disabled={charge < total_price || data.payment_id == "" || data.name == "" || data.table_id == ""} className='bg-purple-600 text-white px-3 py-4 w-full rounded'>
+                        <PrimaryButton type="button" onClick={() => openModalOrder("create")} disabled={charge < total_price || data.payment_id == "" || data.name == ""} className='bg-purple-600 text-white px-3 py-4 w-full rounded'>
                             Buy
                         </PrimaryButton>
                     </> : <>
-                        <PrimaryButton className='bg-purple-600 text-white px-3 py-4 w-full rounded' disabled={tables.length == 0 || data.name == "" || data.table_id == "" || data.paid == ""}>
+                        <PrimaryButton className='bg-purple-600 text-white px-3 py-4 w-full rounded' disabled={data.name == "" || data.paid == ""}>
                             Confirm
                         </PrimaryButton>
                     </>

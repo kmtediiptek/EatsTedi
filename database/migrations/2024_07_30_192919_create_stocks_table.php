@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tables', function (Blueprint $table) {
+        Schema::create('stocks', function (Blueprint $table) {
             $table->id();
-            $table->integer('name')->unsigned()->nullable();
-            $table->string('slug', 30)->unique();
-            $table->string('status')->default(1);
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade'); // Relasi ke tabel products
+            $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade'); // Relasi ke tabel suppliers
+            $table->bigInteger('quantity');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tables');
+        Schema::dropIfExists('stocks');
     }
 };

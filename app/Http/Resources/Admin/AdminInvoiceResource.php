@@ -18,7 +18,6 @@ class AdminInvoiceResource extends JsonResource
             'id' => $this->id,
             'user_id' => $this->user_id,
             'order_id' => $this->order_id,
-            'table_id' => $this->table_id,
             'payment_id' => $this->payment_id,
             'total_price' => $total_price = $this->total_price,
             'total_quantity' => $this->total_quantity,

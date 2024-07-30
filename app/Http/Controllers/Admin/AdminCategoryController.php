@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminCategoryRequest;
-use App\Http\Requests\Admin\AdminTableRequest;
 use App\Http\Resources\Admin\AdminCategoriesResource;
 use App\Models\Activity;
 use App\Models\Category;

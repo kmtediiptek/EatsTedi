@@ -68,9 +68,6 @@ export default function Navbar() {
                                 </NavLink>
                                 :
                                 null}
-                                <NavLink href={route('admin.presence.index')} active={route().current('admin.presence.index')}>
-                                    Presence
-                                </NavLink>
                         </div>
                     </div>
 

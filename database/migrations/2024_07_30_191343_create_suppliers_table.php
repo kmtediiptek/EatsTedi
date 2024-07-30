@@ -13,11 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('presences', function (Blueprint $table) {
+        Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('restrict');
-            $table->date('presence_date');
-            $table->string('is_presence');
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('number_phone')->unique();
+            $table->string('picture')->nullable();
+            $table->text('address');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('presences');
+        Schema::dropIfExists('suppliers');
     }
 };

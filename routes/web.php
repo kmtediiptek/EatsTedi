@@ -1,16 +1,13 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminActivityController;
-use App\Http\Controllers\Admin\AdminAttendaceController;
 use App\Http\Controllers\Admin\AdminCartController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminInvoiceController;
 use App\Http\Controllers\Admin\AdminPaymentController;
-use App\Http\Controllers\Admin\AdminPresenceController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminScheduleController;
-use App\Http\Controllers\Admin\AdminTableController;
 use App\Http\Controllers\Admin\AdminTransactionController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\SendEmailController;
@@ -43,14 +40,6 @@ Route::prefix('admin')->middleware('role:owner|admin|employee', 'auth')->group(f
         Route::post('/setting/category', 'store')->name('admin.category.store')->can('category_store');
         Route::put('/setting/{category:slug}/category', 'update')->name('admin.category.update')->can('category_update');
         Route::delete('/setting/category/{category:slug}', 'destroy')->name('admin.category.destroy')->can('category_destroy');
-    });
-
-    // Admin Table
-    Route::controller(AdminTableController::class)->group(function () {
-        Route::get('/setting/table', 'index')->name('admin.table.index')->can('table_index');
-        Route::post('/setting/table', 'store')->name('admin.table.store')->can('table_store');
-        Route::put('/setting/{table:slug}/table', 'update')->name('admin.table.update')->can('table_update');
-        Route::delete('/setting/table/{table:slug}', 'destroy')->name('admin.table.destroy')->can('table_destroy');
     });
 
     // Admin Payment
@@ -101,15 +90,6 @@ Route::prefix('admin')->middleware('role:owner|admin|employee', 'auth')->group(f
 
     // Admin Log
     Route::get('/activity', [AdminActivityController::class, 'index'])->name('admin.activity.index')->can('activity_index');
-
-    // Admin Presence
-    Route::controller(AdminPresenceController::class)->group(function () {
-        Route::get('/presence', 'index')->name('admin.presence.index')->can('presence_index');
-        Route::post('/presence', 'store')->name('admin.presence.store')->can('presence_store');
-    });
-
-    // Admin Attendace
-    Route::get('/attendace', [AdminAttendaceController::class, 'index'])->name('admin.attendace.index')->can('attendace_index');
 
     //  Send Email
     Route::post('/send-email', [SendEmailController::class, 'index'])->name('admin.send.email')->can('send_email');

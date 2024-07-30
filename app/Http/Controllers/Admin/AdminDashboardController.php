@@ -6,14 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Invoice;
 use App\Models\Payment;
-use App\Models\Presence;
 use App\Models\Product;
 use App\Models\Schedule;
-use App\Models\Table;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class AdminDashboardController extends Controller
 {
@@ -26,12 +23,10 @@ class AdminDashboardController extends Controller
     public function __invoke(Request $request)
     {
         $total_categories = Category::get()->count();
-        $total_tables = Table::get()->count();
         $total_payments = Payment::get()->count();
         $total_products = Product::get()->count();
         $total_employees = User::where('status', 'employee')->get()->count();
         $total_schedules = Schedule::get()->count();
-        $total_attendaces = Presence::get()->count();
 
         $total_income = Invoice::sum('total_price');
         $today_income = Invoice::whereDate('created_at', today())->sum('total_price');
@@ -73,11 +68,9 @@ class AdminDashboardController extends Controller
         return inertia('Dashboard', [
             "categories" => Category::query()->select('id', 'name', 'icon', 'slug')->get(),
             "total_categories" => $total_categories,
-            "total_tables" => $total_tables,
             "total_payments" => $total_payments,
             "total_products" => $total_products,
             "total_employees" => $total_employees,
-            "total_attendaces" => $total_attendaces,
             "total_schedules" => $total_schedules,
             "total_income" => $total_income,
             "today_income" => $today_income,

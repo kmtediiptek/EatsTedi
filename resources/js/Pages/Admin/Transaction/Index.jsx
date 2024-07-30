@@ -11,7 +11,7 @@ import { IconArrowsMaximize, IconArrowsMinimize, IconCategory, IconTrashX } from
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 
-export default function Index({ categories, total_categories, carts, invoices, tables, payments, ...props }) {
+export default function Index({ categories, total_categories, carts, invoices, payments, ...props }) {
 
     const [isOrderListOpen, setIsOrderListOpen] = useState(true)
     const [selectedOrder, setSelectedOrder] = useState(null)
@@ -27,7 +27,6 @@ export default function Index({ categories, total_categories, carts, invoices, t
     const { data, setData } = useForm({
         id: '',
         name: '',
-        table_id: '',
         payment_id: '',
         charge: '',
         'order_id': '',
@@ -46,7 +45,6 @@ export default function Index({ categories, total_categories, carts, invoices, t
                 id: order.order_id,
                 name: order.name,
                 charge: order.charge,
-                table_id: order.table_id,
                 paid: order.paid,
                 payment_id: order.payment_id,
                 carts: carts,
@@ -76,11 +74,10 @@ export default function Index({ categories, total_categories, carts, invoices, t
             total: total,
             quantity: quantity,
             order_id: data.order_id,
-            table_id: data.table_id.id,
             payment_id: data.payment_id.id,
         }, {
             onSuccess: () => {
-                setData({ id: '', name: '', carts: '', total: '', table_id: '', payment_id: '', charge: '' }),
+                setData({ id: '', name: '', carts: '', total: '', payment_id: '', charge: '' }),
                 toast.success('Invoice has been added!')
                 setIsOrderListOpen(false)
             }

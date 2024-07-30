@@ -46,7 +46,6 @@ class AdminProductController extends Controller
                 ->fastPaginate(10);
         }
 
-
         return inertia('Admin/Product/Index', [
             "products" => AdminProductResource::collection($products),
             "total_products" => $total_products,
@@ -72,7 +71,6 @@ class AdminProductController extends Controller
 
         return back();
     }
-
 
     public function update(AdminProductRequest $request, Product $product)
     {
