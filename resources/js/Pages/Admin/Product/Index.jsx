@@ -27,6 +27,7 @@ export default function Index({ total_products, ...props }) {
         setData,
     } = useForm({
         name: "",
+        supplier_id: "",
         category_id: "",
         slug: "",
         price: "",
@@ -57,6 +58,7 @@ export default function Index({ total_products, ...props }) {
             setData({
                 name: selectedProduct.name,
                 slug: selectedProduct.slug,
+                supplier_id: selectedProduct.supplier,
                 category_id: selectedProduct.category,
                 price: selectedProduct.price,
                 picture: selectedProduct.picture,
@@ -65,6 +67,7 @@ export default function Index({ total_products, ...props }) {
             setProductSlug("");
             setData({
                 name: "",
+                supplier_id: "",
                 category_id: "",
                 slug: "",
                 price: "",
@@ -93,6 +96,7 @@ export default function Index({ total_products, ...props }) {
             `/admin/setting/product`,
             {
                 ...data,
+                supplier_id: data.supplier_id.id,
                 category_id: data.category_id.id,
             },
             {
@@ -102,6 +106,7 @@ export default function Index({ total_products, ...props }) {
                             name: "",
                             slug: "",
                             price: "",
+                            supplier_id_id: "",
                             category_id: "",
                             picture: "",
                         }),
@@ -118,6 +123,7 @@ export default function Index({ total_products, ...props }) {
             {
                 _method: "put",
                 ...data,
+                supplier_id: data.supplier_id.id,
                 category_id: data.category_id.id,
             },
             {
@@ -128,6 +134,7 @@ export default function Index({ total_products, ...props }) {
                             slug: "",
                             price: "",
                             picture: "",
+                            supplier_id: "",
                             category_id: "",
                         }),
                         toast.success("Menu has been updated!");
@@ -162,7 +169,7 @@ export default function Index({ total_products, ...props }) {
             <Head title="Setting" />
             <Container>
                 {/* Start Menus */}
-                <h3 className="text-2xl mt-10 mb-4 font-semibold text-slate-700">
+                <h3 className="text-2xl mt-10 mb-4 font-semibold text-fourth">
                     Menus
                 </h3>
                 <div className="flex justify-between gap-2 w-full item-center my-2">
@@ -188,8 +195,9 @@ export default function Index({ total_products, ...props }) {
                     <Table.Thead>
                         <tr>
                             <Table.Th>#</Table.Th>
+                            <Table.Th>Supplier</Table.Th>
                             <Table.Th>Name</Table.Th>
-                            <Table.Th>Category</Table.Th>
+                            <Table.Th>Category </Table.Th>
                             <Table.Th>Price</Table.Th>
                             <Table.Th>Picture</Table.Th>
                             <Table.Th>Action</Table.Th>
@@ -200,22 +208,25 @@ export default function Index({ total_products, ...props }) {
                             <>
                                 {products.map((product, index) => (
                                     <tr
-                                        className="bg-white border-b text-gray-500"
+                                        className="bg-white border-b"
                                         key={index}
                                     >
                                         <Table.Td className="w-5">
                                             {meta.from + index}
+                                        </Table.Td>
+                                        <Table.Td className="font-bold">
+                                            {product.supplier.name.toUpperCase()}
                                         </Table.Td>
                                         <Table.Td>{product.name}</Table.Td>
                                         <Table.Td>
                                             <span
                                                 className={`text-xs p-2 ${
                                                     product.category.id == 1
-                                                        ? "bg-sky-500 text-white rounded"
+                                                        ? "bg-sky text-white rounded"
                                                         : product.category.id ==
                                                           2
-                                                        ? "bg-emerald-400 text-white rounded"
-                                                        : "bg-purple-500 text-white rounded"
+                                                        ? "bg-emerald text-white rounded"
+                                                        : "bg-violet text-white rounded"
                                                 }`}
                                             >
                                                 {product.category.name.toUpperCase()}
@@ -267,7 +278,7 @@ export default function Index({ total_products, ...props }) {
                                 ))}
                             </>
                         ) : (
-                            <tr className="bg-white border-b text-gray-500 text-center">
+                            <tr className="bg-white border-b text-secondary text-center">
                                 <Table.Td colSpan="6">No data</Table.Td>
                             </tr>
                         )}
@@ -276,7 +287,7 @@ export default function Index({ total_products, ...props }) {
                 {products.length > 0 && (
                     <div className="flex w-full justify-between items-center">
                         <Pagination meta={meta} links={links} />
-                        <p className="text-sm text-slate-500 mt-10">
+                        <p className="text-sm text-third mt-10">
                             Total Menus:{" "}
                             <span className="font-bold">{total_products}</span>{" "}
                         </p>
@@ -288,7 +299,7 @@ export default function Index({ total_products, ...props }) {
                 <MyModal
                     isOpen={isOpen}
                     onClose={() => setIsOpen(false)}
-                    size={`1/3`}
+                    size={`1/2`}
                     type={modalType}
                     title={modalProduct}
                 >

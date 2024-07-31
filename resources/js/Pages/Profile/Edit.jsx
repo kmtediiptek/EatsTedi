@@ -98,19 +98,19 @@ export default function Edit({
                             className="w-[100%] bg-white aspect-square rounded-xl mx-auto"
                         />
                         <div className="px-4">
-                            <h3 className="text-2xl font-semibold mt-8 text-slate-700">
+                            <h3 className="text-2xl font-semibold mt-8 text-fourth">
                                 {auth.user.name}
                             </h3>
-                            <p className="text-lg mt-0 text-slate-500">
+                            <p className="text-lg mt-0 text-third">
                                 {auth.user.username}
                             </p>
                         </div>
                         <div className="flex px-4 gap-2">
                             <div className="flex w-full gap-2">
                                 <SecondaryButton
-                                    className={`w-full my-2 text-gray-500 border rounded border-gray-300 hover:bg-orange-500 hover:text-white ${
+                                    className={`w-full my-2 text-secondary border rounded border-gray-300 hover:bg-primary hover:text-white ${
                                         activeTab === "Edit"
-                                            ? "bg-orange-500 border-none text-white"
+                                            ? "bg-primary border-none text-white"
                                             : ""
                                     }`}
                                     onClick={() => handleTabClick("Edit")}
@@ -118,9 +118,9 @@ export default function Edit({
                                     Edit
                                 </SecondaryButton>
                                 <SecondaryButton
-                                    className={`w-full my-2 text-gray-500 border rounded border-gray-300 hover:bg-orange-500 hover:text-white ${
+                                    className={`w-full my-2 text-secondary border rounded border-gray-300 hover:bg-primary hover:text-white ${
                                         activeTab === "Account"
-                                            ? "bg-orange-500 border-none text-white"
+                                            ? "bg-primary border-none text-white"
                                             : ""
                                     }`}
                                     onClick={() => handleTabClick("Account")}
@@ -131,9 +131,9 @@ export default function Edit({
                                     ""
                                 ) : (
                                     <SecondaryButton
-                                        className={`w-full my-2 text-gray-500 border rounded border-gray-300 hover:bg-orange-500 hover:text-white ${
+                                        className={`w-full my-2 text-secondary border rounded border-gray-300 hover:bg-primary hover:text-white ${
                                             activeTab === "Delete"
-                                                ? "bg-orange-500 border-none text-white"
+                                                ? "bg-primary border-none text-white"
                                                 : ""
                                         }`}
                                         onClick={() => handleTabClick("Delete")}
@@ -146,25 +146,25 @@ export default function Edit({
                         <div className="gap-2 px-4 space-y-2 mt-4">
                             <div className="flex gap-2 items-center">
                                 <IconLocation color="gray" size={20} />
-                                <p className="text-base mt-0 text-slate-500">
+                                <p className="text-base mt-0 text-third">
                                     {auth.user.address}
                                 </p>
                             </div>
                             <div className="flex gap-2 items-center">
                                 <IconMail color="gray" size={20} />
-                                <p className="text-base mt-0 text-slate-500">
+                                <p className="text-base mt-0 text-third">
                                     {auth.user.email}
                                 </p>
                             </div>
                             <div className="flex gap-2 items-center">
                                 <IconPhone color="gray" size={20} />
-                                <p className="text-base mt-0 text-slate-500">
+                                <p className="text-base mt-0 text-third">
                                     {auth.user.number_phone}
                                 </p>
                             </div>
                             <div className="flex gap-2 items-center">
                                 <IconCategory color="gray" size={20} />
-                                <p className="text-base mt-0 text-slate-500">
+                                <p className="text-base mt-0 text-third">
                                     {auth.user.status}
                                 </p>
                             </div>
@@ -205,7 +205,7 @@ export default function Edit({
                                         <h2 className="text-lg font-medium text-gray-700">
                                             Information System
                                         </h2>
-                                        <p className="mt-1 text-sm text-gray-500">
+                                        <p className="mt-1 text-sm text-secondary">
                                             Randa is a point of sales
                                             application that is flexible in
                                             ordering. Randa itself has sales
@@ -220,7 +220,7 @@ export default function Edit({
                                         <h2 className="text-lg font-medium text-gray-700">
                                             Profile Information
                                         </h2>
-                                        <p className="mt-1 text-sm text-gray-500">
+                                        <p className="mt-1 text-sm text-secondary">
                                             So far I have worked from{" "}
                                             {formatDate(auth.user.created_at)}{" "}
                                             till now
@@ -233,7 +233,7 @@ export default function Edit({
                                             <h2 className="text-lg font-medium text-gray-700">
                                                 Salary Information
                                             </h2>
-                                            <p className="mt-1 text-sm text-gray-500">
+                                            <p className="mt-1 text-sm text-secondary">
                                                 The following is a list of your
                                                 attendance
                                             </p>
@@ -271,7 +271,7 @@ export default function Edit({
                                                             className="flex h-48 w-min"
                                                         >
                                                             <div className="flex flex-col w-32 h-48">
-                                                                <p className="text-center text-sm text-slate-700 mb-1">
+                                                                <p className="text-center text-sm text-fourth mb-1">
                                                                     {
                                                                         monthNames[
                                                                             monthIndex
@@ -314,14 +314,14 @@ export default function Edit({
                                         <h2 className="text-lg font-medium text-gray-700">
                                             Total Salary{" "}
                                         </h2>
-                                        <p className="mt-1 text-sm text-gray-500">
+                                        <p className="mt-1 text-sm text-secondary">
                                             Total{" "}
                                             {auth.user.status == "owner"
                                                 ? "income"
                                                 : "salary"}{" "}
                                             this month
                                         </p>
-                                        <h1 className="mt-5 text-3xl text-red-500 font-bold text-slate-700">
+                                        <h1 className="mt-5 text-3xl text-red-500 font-bold text-fourth">
                                             <sup>Rp.</sup>{" "}
                                             {numberFormat(total_salary)}
                                         </h1>

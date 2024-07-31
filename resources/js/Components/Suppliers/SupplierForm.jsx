@@ -84,7 +84,7 @@ export default function SupplierForm({ data, setData }) {
                     ) : null}
                 </div>
             </div>
-           
+
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div className="mb-6">
                     <InputLabel htmlFor="is_active" value="Actives" />
@@ -92,7 +92,7 @@ export default function SupplierForm({ data, setData }) {
                         <div
                             className={`w-1/2 flex items-center pl-4 border ${
                                 data.is_active == 1
-                                    ? "border-orange-500"
+                                    ? "border-primary"
                                     : "border-gray-300"
                             } rounded`}
                         >
@@ -103,11 +103,11 @@ export default function SupplierForm({ data, setData }) {
                                 checked={data.is_active == 1}
                                 value="1"
                                 name="is_active"
-                                className="w-4 h-4 text-orange-500 bg-gray-100 border-gray-300 focus:ring-orange-500"
+                                className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary"
                             />
                             <label
                                 htmlFor="bordered-radio-1"
-                                className="w-full py-2 ml-2 font-medium text-slate-500"
+                                className="w-full py-2 ml-2 font-medium text-third"
                             >
                                 Active
                             </label>
@@ -115,7 +115,7 @@ export default function SupplierForm({ data, setData }) {
                         <div
                             className={`w-1/2 flex items-center pl-4 border ${
                                 data.is_active == 0
-                                    ? "border-orange-500"
+                                    ? "border-primary"
                                     : "border-gray-300"
                             } rounded`}
                         >
@@ -126,11 +126,11 @@ export default function SupplierForm({ data, setData }) {
                                 checked={data.is_active == 0}
                                 value="0"
                                 name="is_active"
-                                className="w-4 h-4 text-orange-500 bg-gray-100 border-gray-300 focus:ring-orange-500"
+                                className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary"
                             />
                             <label
                                 htmlFor="bordered-radio-2"
-                                className="w-full py-2 ml-2 font-medium text-slate-500"
+                                className="w-full py-2 ml-2 font-medium text-third"
                             >
                                 Non Active
                             </label>

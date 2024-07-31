@@ -1,38 +1,49 @@
-import React from 'react'
-import { useState } from 'react'
-import Dropdown from '@/Components/Dropdown'
-import NavLink from '@/Components/NavLink'
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink'
-import { Link, router, usePage } from '@inertiajs/react'
-import TextInput from '@/Components/TextInput'
+import React from "react";
+import { useState } from "react";
+import Dropdown from "@/Components/Dropdown";
+import NavLink from "@/Components/NavLink";
+import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
+import { Link, router, usePage } from "@inertiajs/react";
+import TextInput from "@/Components/TextInput";
 
 export default function Navbar() {
-    const { auth } = usePage().props
-    const { url } = usePage()
-    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false)
+    const { auth } = usePage().props;
+    const { url } = usePage();
+    const [showingNavigationDropdown, setShowingNavigationDropdown] =
+        useState(false);
 
-    const [searchQuery, setSearchQuery] = useState('')
+    const [searchQuery, setSearchQuery] = useState("");
 
     const handleSearch = (e) => {
-        e.preventDefault()
-        setSearchQuery(e.target.value)
-        router.get(url, {
-            search: searchQuery
-        }, {
-            preserveState: true
-        })
-    }
+        e.preventDefault();
+        setSearchQuery(e.target.value);
+        router.get(
+            url,
+            {
+                search: searchQuery,
+            },
+            {
+                preserveState: true,
+            }
+        );
+    };
 
     return (
-        <nav className="bg-white fixed z-[999] top-0 border-b border-gray-300 w-full">
+        <nav className="bg-white fixed z-[999] top-0 border-b border-secondary w-full">
             <div className="max-w-8xl mx-auto px-4 sm:px-4 lg:px-8">
                 <div className="flex justify-between h-16">
                     <div className="flex w-full md:w-3/4 justify-between">
-                        <div className='flex items-center w-full'>
-                            <Link href="/" className="text-3xl font-bold text-orange-500">
-                              <h3>Eat's <span className='font-light'>TEDI</span></h3>
+                        <div className="flex items-center w-full">
+                            <Link
+                                href="/"
+                                className="text-3xl font-bold text-primary"
+                            >
+                                <h3>
+                                    Eat's{" "}
+                                    <span className="font-light">TEDI</span>
+                                </h3>
                             </Link>
-                            {route().current('admin.transaction') ?
+                            {route().current("admin.transaction") ? (
                                 <div className="px-4 w-full">
                                     <TextInput
                                         type="search"
@@ -42,32 +53,48 @@ export default function Navbar() {
                                         onChange={handleSearch}
                                     />
                                 </div>
-                                :
-                                null}
-
+                            ) : null}
                         </div>
 
                         <div className="hidden sm:-my-px sm:flex flex justify-between gap-8">
-                            <NavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
+                            <NavLink
+                                href={route("admin.dashboard")}
+                                active={route().current("admin.dashboard")}
+                            >
                                 Dashboard
                             </NavLink>
-                            {auth.user && auth.user.status == "employee" || auth.user.status == "owner"  ?
+                            {(auth.user && auth.user.status == "employee") ||
+                            auth.user.status == "owner" ? (
                                 <>
-                                    <NavLink href={route('admin.transaction')} active={route().current('admin.transaction')}>
+                                    <NavLink
+                                        href={route("admin.transaction")}
+                                        active={route().current(
+                                            "admin.transaction"
+                                        )}
+                                    >
                                         Menu
                                     </NavLink>
-                                    <NavLink href={route('admin.invoice.index')} active={route().current('admin.invoice.index')}>
+                                    <NavLink
+                                        href={route("admin.invoice.index")}
+                                        active={route().current(
+                                            "admin.invoice.index"
+                                        )}
+                                    >
                                         History
                                     </NavLink>
                                 </>
-                                :
-                                null}
-                            {auth.user && auth.user.status == "admin" || auth.user.status == "owner" ?
-                                <NavLink href={route('admin.activity.index')} active={route().current('admin.activity.index')}>
+                            ) : null}
+                            {(auth.user && auth.user.status == "admin") ||
+                            auth.user.status == "owner" ? (
+                                <NavLink
+                                    href={route("admin.activity.index")}
+                                    active={route().current(
+                                        "admin.activity.index"
+                                    )}
+                                >
                                     Log
                                 </NavLink>
-                                :
-                                null}
+                            ) : null}
                         </div>
                     </div>
 
@@ -78,11 +105,18 @@ export default function Navbar() {
                                     <span className="inline-flex rounded-md">
                                         <button
                                             type="button"
-                                            className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                            className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-secondary bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                         >
                                             <div className="flex items-center gap-2">
-
-                                                <img src={`${auth.user.picture}` ? `/storage/${auth.user.picture}` : "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Free-File-Download.png"} alt={auth.user.picture} className='h-10 w-10 rounded' />
+                                                <img
+                                                    src={
+                                                        `${auth.user.picture}`
+                                                            ? `/storage/${auth.user.picture}`
+                                                            : "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Free-File-Download.png"
+                                                    }
+                                                    alt={auth.user.picture}
+                                                    className="h-10 w-10 rounded"
+                                                />
                                                 {auth.user.name}
                                             </div>
 
@@ -103,8 +137,14 @@ export default function Navbar() {
                                 </Dropdown.Trigger>
 
                                 <Dropdown.Content>
-                                    <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
-                                    <Dropdown.Link href={route('logout')} method="post" as="button">
+                                    <Dropdown.Link href={route("profile.edit")}>
+                                        Profile
+                                    </Dropdown.Link>
+                                    <Dropdown.Link
+                                        href={route("logout")}
+                                        method="post"
+                                        as="button"
+                                    >
                                         Log Out
                                     </Dropdown.Link>
                                 </Dropdown.Content>
@@ -114,19 +154,36 @@ export default function Navbar() {
 
                     <div className="-mr-2 flex items-center sm:hidden">
                         <button
-                            onClick={() => setShowingNavigationDropdown((previousState) => !previousState)}
-                            className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+                            onClick={() =>
+                                setShowingNavigationDropdown(
+                                    (previousState) => !previousState
+                                )
+                            }
+                            className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-secondary hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-secondary transition duration-150 ease-in-out"
                         >
-                            <svg className="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <svg
+                                className="h-6 w-6"
+                                stroke="currentColor"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
                                 <path
-                                    className={!showingNavigationDropdown ? 'inline-flex' : 'hidden'}
+                                    className={
+                                        !showingNavigationDropdown
+                                            ? "inline-flex"
+                                            : "hidden"
+                                    }
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth="2"
                                     d="M4 6h16M4 12h16M4 18h16"
                                 />
                                 <path
-                                    className={showingNavigationDropdown ? 'inline-flex' : 'hidden'}
+                                    className={
+                                        showingNavigationDropdown
+                                            ? "inline-flex"
+                                            : "hidden"
+                                    }
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth="2"
@@ -138,38 +195,63 @@ export default function Navbar() {
                 </div>
             </div>
 
-            <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
+            <div
+                className={
+                    (showingNavigationDropdown ? "block" : "hidden") +
+                    " sm:hidden"
+                }
+            >
                 <div className="pt-2 pb-3 space-y-1">
-                    <ResponsiveNavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
+                    <ResponsiveNavLink
+                        href={route("admin.dashboard")}
+                        active={route().current("admin.dashboard")}
+                    >
                         Dashboard
                     </ResponsiveNavLink>
-                    <ResponsiveNavLink href={route('admin.transaction')} active={route().current('admin.transaction')}>
+                    <ResponsiveNavLink
+                        href={route("admin.transaction")}
+                        active={route().current("admin.transaction")}
+                    >
                         Menu
                     </ResponsiveNavLink>
-                    <ResponsiveNavLink href={route('admin.invoice.index')} active={route().current('admin.invoice.index')}>
+                    <ResponsiveNavLink
+                        href={route("admin.invoice.index")}
+                        active={route().current("admin.invoice.index")}
+                    >
                         History
                     </ResponsiveNavLink>
-                    <ResponsiveNavLink href={route('admin.activity.index')} active={route().current('admin.activity.index')}>
+                    <ResponsiveNavLink
+                        href={route("admin.activity.index")}
+                        active={route().current("admin.activity.index")}
+                    >
                         Log
                     </ResponsiveNavLink>
                 </div>
 
-                <div className="pt-4 pb-1 border-t border-gray-200">
+                <div className="pt-4 pb-1 border-t border-secondary">
                     <div className="px-4">
                         <div className="font-medium text-base text-gray-800">
                             {auth.user.name}
                         </div>
-                        <div className="font-medium text-sm text-gray-500">{auth.user.email}</div>
+                        <div className="font-medium text-sm text-secondary">
+                            {auth.user.email}
+                        </div>
                     </div>
 
                     <div className="mt-3 space-y-1">
-                        <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
-                        <ResponsiveNavLink method="post" href={route('logout')} as="button">
+                        <ResponsiveNavLink href={route("profile.edit")}>
+                            Profile
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            method="post"
+                            href={route("logout")}
+                            as="button"
+                        >
                             Log Out
                         </ResponsiveNavLink>
                     </div>
                 </div>
             </div>
         </nav>
-    )
+    );
 }

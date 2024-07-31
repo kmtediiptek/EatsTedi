@@ -52,10 +52,10 @@ export default function ResetPassword({ token, email }) {
                         />
                     </div>
                     <div>
-                        <h6 className="text-xl font-semibold text-slate-700">
+                        <h6 className="text-xl font-semibold text-fourth">
                             RANDA
                         </h6>
-                        <p className="text-slate-500">
+                        <p className="text-third">
                             Optimizing Business Processes with Point of Sales
                             (POS) Application
                         </p>
@@ -67,10 +67,10 @@ export default function ResetPassword({ token, email }) {
                         className="w-full px-4 sm:w-3/4 md:w-1/3 mx-auto h-screen flex flex-col justify-center"
                     >
                         <div className="mb-8">
-                            <h6 className="text-3xl text-slate-700">
+                            <h6 className="text-3xl text-fourth">
                                 Reset Password{" "}
                             </h6>
-                            <p className="text-slate-500">
+                            <p className="text-third">
                                 Please enter your new password
                             </p>
                         </div>

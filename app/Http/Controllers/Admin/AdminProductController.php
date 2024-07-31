@@ -8,6 +8,7 @@ use App\Http\Resources\Admin\AdminProductResource;
 use App\Models\Activity;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -15,10 +16,12 @@ use Illuminate\Support\Facades\Storage;
 class AdminProductController extends Controller
 {
     public $categories;
+    public $suppliers;
 
     public function __construct()
     {
         $this->categories = Category::select('id', 'name', 'slug')->get();
+        $this->suppliers = Supplier::select('id', 'name', 'username')->get();
     }
 
     public function index(Request $request)
@@ -33,14 +36,16 @@ class AdminProductController extends Controller
                 ->select('id', 'category_id', 'name', 'slug', 'price', 'picture')
                 ->with([
                     "category" => fn ($query) => $query->select('name', 'slug', 'id'),
+                    "supplier" => fn ($query) => $query->select('name', 'username', 'id'),
                 ])
                 ->latest()
                 ->fastPaginate(10)->withQueryString();
         } else {
             $products = Product::query()
-                ->select('id', 'category_id', 'name', 'slug', 'price', 'picture')
+                ->select('id', 'supplier_id', 'supplier_id', 'category_id', 'name', 'slug', 'price', 'picture')
                 ->with([
                     "category" => fn ($query) => $query->select('name', 'slug', 'id'),
+                    "supplier" => fn ($query) => $query->select('name', 'username', 'id'),
                 ])
                 ->latest()
                 ->fastPaginate(10);
@@ -50,6 +55,7 @@ class AdminProductController extends Controller
             "products" => AdminProductResource::collection($products),
             "total_products" => $total_products,
             "categories" => $this->categories,
+            "suppliers" => $this->suppliers,
         ]);
     }
 
@@ -60,6 +66,7 @@ class AdminProductController extends Controller
         Product::create([
             "name" => $request->name,
             "slug" => $slug = str($request->name . '-' .  rand(10, 100))->slug(),
+            "supplier_id" => $request->supplier_id,
             "category_id" => $request->category_id,
             "price" => $request->price,
             "picture" => $request->hasFile('picture') ? $picture->storeAs('images/products', $slug . '.' . $picture->extension()) : null
@@ -86,6 +93,7 @@ class AdminProductController extends Controller
         $product->update([
             "name" => $request->name ? $request->name : $product->name,
             "slug" => str($request->name . '-' .  rand(10, 100))->slug(),
+            "supplier_id" => $request->supplier_id ? $request->supplier_id : $product->supplier_id,
             "category_id" => $request->category_id ? $request->category_id : $product->category_id,
             "price" => $request->price ? $request->price : $product->price,
             "picture" => $request->hasFile('picture') ? $picture->storeAs('images/products', $product->slug . '.' . $picture->extension())  : $product->picture

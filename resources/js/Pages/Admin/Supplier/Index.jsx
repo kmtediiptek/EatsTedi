@@ -139,7 +139,7 @@ export default function Index({ total_suppliers, ...props }) {
             <Head title="Setting" />
             <Container>
                 {/* Start Suppliers */}
-                <h3 className="text-2xl mt-10 mb-4 font-semibold text-slate-700">
+                <h3 className="text-2xl mt-10 mb-4 font-semibold text-fourth">
                     Suppliers
                 </h3>
                 <div className="flex justify-between gap-2 w-full item-center my-2">
@@ -184,8 +184,8 @@ export default function Index({ total_suppliers, ...props }) {
                                         className={`${
                                             supplier.is_active === 1
                                                 ? "bg-white"
-                                                : "bg-gray-300"
-                                        } border-b text-gray-500`}
+                                                : "bg-secondary"
+                                        } border-b text-secondary`}
                                         key={index}
                                     >
                                         <Table.Td className="w-5">
@@ -240,7 +240,7 @@ export default function Index({ total_suppliers, ...props }) {
                                 ))}
                             </>
                         ) : (
-                            <tr className="bg-white border-b text-gray-500 text-center">
+                            <tr className="bg-white border-b text-secondary text-center">
                                 <Table.Td colSpan="9">No data</Table.Td>
                             </tr>
                         )}
@@ -249,7 +249,7 @@ export default function Index({ total_suppliers, ...props }) {
                 {suppliers.length > 0 && (
                     <div className="flex w-full justify-between items-center">
                         <Pagination meta={meta} links={links} />
-                        <p className="text-sm text-slate-500 mt-10">
+                        <p className="text-sm text-third mt-10">
                             Total Suppliers:{" "}
                             <span className="font-bold">{total_suppliers}</span>{" "}
                         </p>

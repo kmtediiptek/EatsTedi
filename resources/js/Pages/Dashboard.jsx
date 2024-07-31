@@ -160,7 +160,7 @@ export default function Dashboard({
                 {auth.user && auth.user.status !== "employee" ? (
                     <>
                         {/* Start Dashboard */}
-                        <h3 className="text-2xl mt-10 mb-4 font-semibold text-slate-700">
+                        <h3 className="text-2xl mt-10 mb-4 font-semibold text-fourth">
                             Dashboard
                         </h3>
 
@@ -168,18 +168,18 @@ export default function Dashboard({
                             {/* Start Dashboard */}
                             <Link
                                 href={route("admin.supplier.index")}
-                                className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4"
+                                className="w-full flex gap-x-4 p-4 border border-secondary rounded text-white mb-4"
                             >
-                                <div className="rounded bg-orange-500 w-16 h-16 flex justify-center items-center">
+                                <div className="rounded bg-primary w-16 h-16 flex justify-center items-center">
                                     <h3 className="text-4xl font-semibold text-center">
                                         <IconUsers size={36} />
                                     </h3>
                                 </div>
-                                <div className="text-slate-800 flex flex-col flex-1 justify-around">
+                                <div className="text-fourth flex flex-col flex-1 justify-around">
                                     <h5 className="font-semibold text-xl">
                                         Suppliers
                                     </h5>
-                                    <span className="text-slate-500">
+                                    <span className="text-third">
                                         {total.suppliers} Item
                                     </span>
                                 </div>
@@ -187,18 +187,18 @@ export default function Dashboard({
 
                             <Link
                                 href={route("admin.category.index")}
-                                className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4"
+                                className="w-full flex gap-x-4 p-4 border border-secondary rounded text-white mb-4"
                             >
-                                <div className="rounded bg-orange-500 w-16 h-16 flex justify-center items-center">
+                                <div className="rounded bg-primary w-16 h-16 flex justify-center items-center">
                                     <h3 className="text-4xl font-semibold text-center">
                                         <IconCategory size={36} />
                                     </h3>
                                 </div>
-                                <div className="text-slate-800 flex flex-col flex-1 justify-around">
+                                <div className="text-fourth flex flex-col flex-1 justify-around">
                                     <h5 className="font-semibold text-xl">
                                         Categories
                                     </h5>
-                                    <span className="text-slate-500">
+                                    <span className="text-third">
                                         {total.categories} Item
                                     </span>
                                 </div>
@@ -206,18 +206,18 @@ export default function Dashboard({
 
                             <Link
                                 href={route("admin.product.index")}
-                                className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4"
+                                className="w-full flex gap-x-4 p-4 border border-secondary rounded text-white mb-4"
                             >
-                                <div className="rounded bg-orange-500 w-16 h-16 flex justify-center items-center">
+                                <div className="rounded bg-primary w-16 h-16 flex justify-center items-center">
                                     <h3 className="text-4xl font-semibold text-center">
                                         <IconMenuOrder size={36} />
                                     </h3>
                                 </div>
-                                <div className="text-slate-800 flex flex-col flex-1 justify-around">
+                                <div className="text-fourth flex flex-col flex-1 justify-around">
                                     <h5 className="font-semibold text-xl">
                                         Menus
                                     </h5>
-                                    <span className="text-slate-500">
+                                    <span className="text-third">
                                         {total.products} Item
                                     </span>
                                 </div>
@@ -225,18 +225,18 @@ export default function Dashboard({
 
                             <Link
                                 href={route("admin.payment.index")}
-                                className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4"
+                                className="w-full flex gap-x-4 p-4 border border-secondary rounded text-white mb-4"
                             >
-                                <div className="rounded bg-orange-500 w-16 h-16 flex justify-center items-center">
+                                <div className="rounded bg-primary w-16 h-16 flex justify-center items-center">
                                     <h3 className="text-4xl font-semibold text-center">
                                         <IconMoneybag size={36} />
                                     </h3>
                                 </div>
-                                <div className="text-slate-800 flex flex-col flex-1 justify-around">
+                                <div className="text-fourth flex flex-col flex-1 justify-around">
                                     <h5 className="font-semibold text-xl">
                                         Payments
                                     </h5>
-                                    <span className="text-slate-500">
+                                    <span className="text-third">
                                         {total.payments} Item
                                     </span>
                                 </div>
@@ -244,18 +244,18 @@ export default function Dashboard({
 
                             <Link
                                 href={route("admin.employee.index")}
-                                className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4"
+                                className="w-full flex gap-x-4 p-4 border border-secondary rounded text-white mb-4"
                             >
-                                <div className="rounded bg-orange-500 w-16 h-16 flex justify-center items-center">
+                                <div className="rounded bg-primary w-16 h-16 flex justify-center items-center">
                                     <h3 className="text-4xl font-semibold text-center">
                                         <IconUsers size={36} />
                                     </h3>
                                 </div>
-                                <div className="text-slate-800 flex flex-col flex-1 justify-around">
+                                <div className="text-fourth flex flex-col flex-1 justify-around">
                                     <h5 className="font-semibold text-xl">
                                         Employees
                                     </h5>
-                                    <span className="text-slate-500">
+                                    <span className="text-third">
                                         {total.employees} Item
                                     </span>
                                 </div>
@@ -263,18 +263,18 @@ export default function Dashboard({
 
                             <Link
                                 href={route("admin.schedule.index")}
-                                className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4"
+                                className="w-full flex gap-x-4 p-4 border border-secondary rounded text-white mb-4"
                             >
-                                <div className="rounded bg-orange-500 w-16 h-16 flex justify-center items-center">
+                                <div className="rounded bg-primary w-16 h-16 flex justify-center items-center">
                                     <h3 className="text-4xl font-semibold text-center">
                                         <IconCalendarTime size={36} />
                                     </h3>
                                 </div>
-                                <div className="text-slate-800 flex flex-col flex-1 justify-around">
+                                <div className="text-fourth flex flex-col flex-1 justify-around">
                                     <h5 className="font-semibold text-xl">
                                         Schedules
                                     </h5>
-                                    <span className="text-slate-500">
+                                    <span className="text-third">
                                         {total.schedules} Item
                                     </span>
                                 </div>
@@ -288,70 +288,70 @@ export default function Dashboard({
                 {/* Start Dashboard */}
             </Container>
             <Container>
-                <h3 className="text-2xl mb-4 font-semibold text-slate-700">
+                <h3 className="text-2xl mb-4 font-semibold text-fourth">
                     Cash
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 w-full gap-x-4">
                     {/* Start Dashboard */}
-                    <div className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
-                        <div className="rounded bg-orange-500 w-24 h-24 flex justify-center items-center">
+                    <div className="w-full flex gap-x-4 p-4 border border-secondary rounded text-white mb-4">
+                        <div className="rounded bg-primary w-24 h-24 flex justify-center items-center">
                             <h3 className="text-4xl font-semibold text-center">
                                 <IconReportMoney size={72} />
                             </h3>
                         </div>
-                        <div className="text-slate-500 flex flex-col flex-1 justify-around">
+                        <div className="text-third flex flex-col flex-1 justify-around">
                             <h5 className="font-semibold text-xl">
                                 Total Income
                             </h5>
-                            <span className="text-slate-800 text-3xl font-bold">
+                            <span className="text-fourth text-3xl font-bold">
                                 {" "}
                                 <sup>Rp.</sup> {numberFormat(total.income)}
                             </span>
                         </div>
                     </div>
-                    <div className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
-                        <div className="rounded bg-orange-500 w-24 h-24 flex justify-center items-center">
+                    <div className="w-full flex gap-x-4 p-4 border border-secondary rounded text-white mb-4">
+                        <div className="rounded bg-primary w-24 h-24 flex justify-center items-center">
                             <h3 className="text-4xl font-semibold text-center">
                                 <IconCreditCard size={72} />
                             </h3>
                         </div>
-                        <div className="text-slate-500 flex flex-col flex-1 justify-around">
+                        <div className="text-third flex flex-col flex-1 justify-around">
                             <h5 className="font-semibold text-xl">
                                 Today's Income
                             </h5>
-                            <span className="text-slate-800 text-3xl font-bold">
+                            <span className="text-fourth text-3xl font-bold">
                                 {" "}
                                 <sup>Rp.</sup>{" "}
                                 {numberFormat(total.today_income)}
                             </span>
                         </div>
                     </div>
-                    <div className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
-                        <div className="rounded bg-orange-500 w-24 h-24 flex justify-center items-center">
+                    <div className="w-full flex gap-x-4 p-4 border border-secondary rounded text-white mb-4">
+                        <div className="rounded bg-primary w-24 h-24 flex justify-center items-center">
                             <h3 className="text-4xl font-semibold text-center">
                                 <IconCreditCard size={72} />
                             </h3>
                         </div>
-                        <div className="text-slate-500 flex flex-col flex-1 justify-around">
+                        <div className="text-third flex flex-col flex-1 justify-around">
                             <h5 className="font-semibold text-xl">Paid Now</h5>
-                            <span className="text-slate-800 text-3xl font-bold">
+                            <span className="text-fourth text-3xl font-bold">
                                 {" "}
                                 <sup>Rp.</sup> {numberFormat(paid_now)}
                             </span>
                         </div>
                     </div>
-                    <div className="w-full flex gap-x-4 p-4 border border-gray-300 rounded text-white mb-4">
-                        <div className="rounded bg-orange-500 w-24 h-24 flex justify-center items-center">
+                    <div className="w-full flex gap-x-4 p-4 border border-secondary rounded text-white mb-4">
+                        <div className="rounded bg-primary w-24 h-24 flex justify-center items-center">
                             <h3 className="text-4xl font-semibold text-center">
                                 <IconCreditCard size={72} />
                             </h3>
                         </div>
-                        <div className="text-slate-500 flex flex-col flex-1 justify-around">
+                        <div className="text-third flex flex-col flex-1 justify-around">
                             <h5 className="font-semibold text-xl">
                                 Paid Later
                             </h5>
-                            <span className="text-slate-800 text-3xl font-bold">
+                            <span className="text-fourth text-3xl font-bold">
                                 {" "}
                                 <sup>Rp.</sup> {numberFormat(paid_later)}
                             </span>
@@ -362,7 +362,7 @@ export default function Dashboard({
                 {/* End Dashboard */}
             </Container>
             <Container className="mb-12">
-                <h3 className="text-2xl mb-4 font-semibold text-slate-700">
+                <h3 className="text-2xl mb-4 font-semibold text-fourth">
                     Statistics
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 w-full gap-4">
@@ -370,19 +370,19 @@ export default function Dashboard({
                         options={optionsMonthly}
                         series={seriesMonthly}
                         type="bar"
-                        className="w-full min-h-screen border border-gray-300 p-4 rounded"
+                        className="w-full min-h-screen border border-secondary p-4 rounded"
                     />
                     <Chart
                         options={optionsWeekly}
                         series={seriesWeekly}
                         type="bar"
-                        className="w-full min-h-screen border border-gray-300 p-4 rounded"
+                        className="w-full min-h-screen border border-secondary p-4 rounded"
                     />
                     <Chart
                         options={optionsDaily}
                         series={seriesDaily}
                         type="bar"
-                        className="w-full min-h-screen border border-gray-300 p-4 rounded"
+                        className="w-full min-h-screen border border-secondary p-4 rounded"
                     />
                 </div>
             </Container>

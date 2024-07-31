@@ -1,6 +1,6 @@
-import { Link } from '@inertiajs/react';
-import clsx from 'clsx'
-import React from 'react';
+import { Link } from "@inertiajs/react";
+import clsx from "clsx";
+import React from "react";
 
 export default function Pagination({ meta, links }) {
     return (
@@ -39,26 +39,37 @@ export default function Pagination({ meta, links }) {
                             </li>
                         )}
                     </ul>
-
                     <ul className="hidden mt-10 justify-center md:flex items-center gap-x-1">
                         {meta.links.map((item, i) => {
                             return item.url != null ? (
-                                item.label.includes('Previous') ? (
-                                    <PaginateLink active={item.active} key={i} href={item.url}>
+                                item.label.includes("Previous") ? (
+                                    <PaginateLink
+                                        active={item.active}
+                                        key={i}
+                                        href={item.url}
+                                    >
                                         <LeftIcon />
                                     </PaginateLink>
-                                ) : item.label.includes('Next') ? (
-                                    <PaginateLink active={item.active} key={i} href={item.url}>
+                                ) : item.label.includes("Next") ? (
+                                    <PaginateLink
+                                        active={item.active}
+                                        key={i}
+                                        href={item.url}
+                                    >
                                         <RightIcon />
                                     </PaginateLink>
                                 ) : (
-                                    <PaginateLink active={item.active} key={i} href={item.url}>
+                                    <PaginateLink
+                                        active={item.active}
+                                        key={i}
+                                        href={item.url}
+                                    >
                                         {item.label}
                                     </PaginateLink>
                                 )
                             ) : null;
                         })}
-                    </ul>{' '}
+                    </ul>{" "}
                 </>
             )}
         </div>
@@ -69,7 +80,7 @@ function LeftIcon() {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 text-slate-700"
+            className="h-5 w-5 text-fourth"
             viewBox="0 0 20 20"
             fill="currentColor"
         >
@@ -86,7 +97,7 @@ function RightIcon() {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 text-slate-700"
+            className="h-5 w-5 text-fourth"
             viewBox="0 0 20 20"
             fill="currentColor"
         >
@@ -104,8 +115,9 @@ function PaginateLink({ active, href, children }) {
         <li>
             <Link
                 className={clsx(
-                    active && 'text-red-500 font-semibold border-orange-500 bg-white',
-                    'w-11 h-9 text-sm rounded shadow-sm border border-gray-300 text-third flex items-center justify-center'
+                    active &&
+                        "text-red-500 font-semibold border-primary bg-white",
+                    "w-11 h-9 text-sm rounded shadow-sm border border-gray-300 text-third flex items-center justify-center"
                 )}
                 href={href}
                 preserveScroll

@@ -1,1 +1,20 @@
-import{a as e,e as a}from"./app-50127253.js";import{c as n}from"./TextInput-01542f12.js";import{c as s}from"./createReactComponent-f77338bd.js";var c=s("arrow-left","IconArrowLeft",[["path",{d:"M5 12l14 0",key:"svg-0"}],["path",{d:"M5 12l6 6",key:"svg-1"}],["path",{d:"M5 12l6 -6",key:"svg-2"}]]);function m({className:r,href:t,children:i,...o}){return e(a,{...o,href:t,className:n("flex w-10 h-10 border border-orange-500 rounded justify-center items-center text-orange-500",r),children:e(c,{size:18})})}export{m as A,c as I};
+import { a as e, e as a } from "./app-50127253.js";
+import { c as n } from "./TextInput-01542f12.js";
+import { c as s } from "./createReactComponent-f77338bd.js";
+var c = s("arrow-left", "IconArrowLeft", [
+    ["path", { d: "M5 12l14 0", key: "svg-0" }],
+    ["path", { d: "M5 12l6 6", key: "svg-1" }],
+    ["path", { d: "M5 12l6 -6", key: "svg-2" }],
+]);
+function m({ className: r, href: t, children: i, ...o }) {
+    return e(a, {
+        ...o,
+        href: t,
+        className: n(
+            "flex w-10 h-10 border border-primary rounded justify-center items-center text-primary",
+            r
+        ),
+        children: e(c, { size: 18 }),
+    });
+}
+export { m as A, c as I };

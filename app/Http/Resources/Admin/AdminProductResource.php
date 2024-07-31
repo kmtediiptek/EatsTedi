@@ -27,6 +27,11 @@ class AdminProductResource extends JsonResource
                 'name' => $this->category->name,
                 'slug' => $this->category->slug,
             ],
+            'supplier' => [
+                'id' => $this->supplier->id,
+                'name' => $this->supplier->name,
+                'username' => $this->supplier->username,
+            ],
             'order_id' => $request->order_id
         ];
     }

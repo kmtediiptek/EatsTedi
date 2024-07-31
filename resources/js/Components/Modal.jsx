@@ -1,7 +1,14 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 
-export default function MyModal({ isOpen, setIsOpen, size, title, children, type }) {
+export default function MyModal({
+    isOpen,
+    setIsOpen,
+    size,
+    title,
+    children,
+    type,
+}) {
     function closeModal() {
         setIsOpen(false);
     }
@@ -34,11 +41,11 @@ export default function MyModal({ isOpen, setIsOpen, size, title, children, type
                                 leaveTo="opacity-0 scale-95"
                             >
                                 <Dialog.Panel
-                                    className={`w-full sm:w-${size} transform overflow-hidden rounded bg-white mt-16 p-6 text-left align-middle shadow-xl transition-all`}
+                                    className={`w-full h-auto sm:w-${size} transform overflow-hidden rounded bg-white mt-16 p-6 text-left align-middle shadow-xl transition-all`}
                                 >
                                     <Dialog.Title
                                         as="h3"
-                                        className="text-lg text-slate-700 font-medium leading-6 mt-4"
+                                        className="text-lg text-fourth font-medium leading-6 mt-4"
                                     >
                                         Form{" "}
                                         {type === "create"

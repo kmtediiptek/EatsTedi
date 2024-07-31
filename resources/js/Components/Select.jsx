@@ -54,9 +54,9 @@ export default function Select({ className = 'w-full', data, value, onChange, pl
                                 <div
                                     className={clsx(
                                         'flex cursor-pointer items-center py-1.5 px-4',
-                                        active && 'bg-gray-100',
+                                        active && 'bg-secondary/50',
                                         selected &&
-                                        'bg-primary-50 font-semibold text-primary-600 hover:bg-primary-100'
+                                        'bg-primary-50 font-semibold text-primary hover:bg-primary'
                                     )}
                                 >
                                     <span className="capitalize line-clamp-1">{item.name}</span>

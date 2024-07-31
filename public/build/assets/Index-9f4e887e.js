@@ -1,1 +1,368 @@
-import{W as F,r as f,q as R,j as r,F as j,a as e,b as k,y as g}from"./app-50127253.js";import{A as y}from"./Actionbutton-61e1fa01.js";import{C as D}from"./Container-58708669.js";import{P as z}from"./Pagination-a95b02de.js";import{T as t}from"./Table-e4273544.js";import{A as M}from"./App-f48d50a9.js";import{n}from"./Helper-f0b8910d.js";import{T as o}from"./TextInput-01542f12.js";import{E as Q}from"./jspdf.plugin.autotable-3d752e56.js";import{A as $}from"./ActionLink-e34be557.js";import{c as T}from"./createReactComponent-f77338bd.js";import"./index-f4d5d2b2.js";import"./transition-42c9a528.js";import"./typeof-7fd5df1e.js";var q=T("filter","IconFilter",[["path",{d:"M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z",key:"svg-0"}]]),E=T("printer","IconPrinter",[["path",{d:"M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2",key:"svg-0"}],["path",{d:"M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4",key:"svg-1"}],["path",{d:"M7 13m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z",key:"svg-2"}]]);function O({total_invoices:h,...w}){const{data:c,meta:m,links:b}=w.invoices,{data:s,setData:x}=F({start_date:"",end_date:""}),[_,N]=f.useState(""),[p,v]=f.useState(!1),{errors:i}=R().props,u=a=>{x(a.target.name,a.target.value)},I=()=>{g.get("/admin/invoice",{start_date:s.start_date,end_date:s.end_date},{preserveState:!0}),v(!0)},C=a=>{if(p)try{const d=new Q("landscape"),A=[["Order ID","Name","Charge","Change","Table","Total Quantity","Total Price","Succeeded at"]],P=a.map(l=>[l.order_id,l.name,`Rp. ${n(l.money.charge)}`,`Rp. ${n(l.money.change)}`,l.table_id,l.total_quantity,`Rp. ${n(l.total_price)}`,l.succeeded_at]);d.autoTable({head:A,body:P,startY:20}),d.save("Report Order RANDA.pdf")}catch(d){console.error("Error generating PDF:",d)}else alert("Please apply the filter first.")},S=a=>{a.preventDefault(),N(a.target.value),g.get("/admin/invoice",{search:a.target.value},{preserveState:!0})};return r(j,{children:[e(k,{title:"History"}),r(D,{children:[e("h3",{className:"text-2xl mt-10 mb-4 font-semibold text-slate-700",children:"Invoices"}),e("div",{className:"flex  flex-wrap justify-between w-full item-center mt-2",children:e($,{href:route("admin.dashboard")})}),r("div",{className:"flex  flex-wrap justify-between w-full item-center my-2",children:[r("div",{className:"flex items-center flex-wrap sm:flex-nowrap gap-2 w-full mb-2 md:mb-0 sm:w-full md:w-1/2",children:[r("div",{className:"w-full flex gap-2",children:[r("div",{className:"w-full",children:[e(o,{type:"date",name:"start_date",id:"start_date",className:"w-full",onChange:u,value:s.start_date}),i.start_date?e("span",{className:"text-red-500",children:i.start_date}):null]}),r("div",{className:"w-full",children:[e(o,{type:"date",name:"end_date",id:"end_date",className:"w-full",onChange:u,value:s.end_date}),i.end_date?e("span",{className:"text-red-500",children:i.end_date}):null]})]}),r("div",{className:"w-full sm:w-auto flex gap-2 justify-end sm:justify-start",children:[e(y,{className:"w-10 h-10 bg-purple-500",onClick:I,type:"button",disabled:!s.start_date||!s.end_date,children:e(q,{size:26})}),e(y,{className:"w-10 h-10",onClick:()=>C(c),type:"button",disabled:!p,children:e(E,{size:26})})]})]}),e(o,{type:"search",className:"w-full md:w-1/4 ",placeholder:"Search invoice..",defaultValue:_,onChange:S})]}),e("div",{className:"w-full"}),r(t,{children:[e(t.Thead,{children:r("tr",{children:[e(t.Th,{children:"#"}),e(t.Th,{children:"Order ID"}),e(t.Th,{children:"Name"}),e(t.Th,{children:"Charge"}),e(t.Th,{children:"Change"}),e(t.Th,{children:"Table"}),e(t.Th,{children:"Total Quantity"}),e(t.Th,{children:"Total Price"}),e(t.Th,{children:"Succeeded at"}),e(t.Th,{children:"Status"})]})}),e(t.Tbody,{children:c.length>0?c.map((a,d)=>r("tr",{className:"bg-white border-b text-gray-500",children:[e(t.Td,{className:"w-5",children:m.from+d}),r(t.Td,{children:["#",a.order_id]}),e(t.Td,{children:a.name}),r(t.Td,{children:[e("sup",{children:" Rp."})," ",n(a.money.charge)]}),r(t.Td,{children:[e("sup",{children:" Rp."})," ",n(a.money.change)]}),e(t.Td,{children:a.table_id}),e(t.Td,{children:a.total_quantity}),r(t.Td,{children:[e("sup",{children:" Rp."})," ",n(a.total_price)]}),e(t.Td,{children:a.succeeded_at}),e(t.Td,{children:e("span",{className:`text-xs p-2 ${a.status==1?"bg-emerald-500 text-white rounded":"bg-yellow-400 text-white rounded"}`,children:a.status==1?"Done":"In Progress"})})]},d)):e("tr",{className:"bg-white border-b text-gray-500 text-center",children:e(t.Td,{colSpan:"10",children:"No data"})})})]}),c.length>0&&r("div",{className:"flex w-full justify-between items-center",children:[e(z,{meta:m,links:b}),r("p",{className:"text-sm text-slate-500 mt-10",children:["Total Invoices: ",e("span",{className:"font-bold",children:h})," "]})]})]})]})}O.layout=h=>e(M,{children:h});export{O as default};
+import {
+    W as F,
+    r as f,
+    q as R,
+    j as r,
+    F as j,
+    a as e,
+    b as k,
+    y as g,
+} from "./app-50127253.js";
+import { A as y } from "./Actionbutton-61e1fa01.js";
+import { C as D } from "./Container-58708669.js";
+import { P as z } from "./Pagination-a95b02de.js";
+import { T as t } from "./Table-e4273544.js";
+import { A as M } from "./App-f48d50a9.js";
+import { n } from "./Helper-f0b8910d.js";
+import { T as o } from "./TextInput-01542f12.js";
+import { E as Q } from "./jspdf.plugin.autotable-3d752e56.js";
+import { A as $ } from "./ActionLink-e34be557.js";
+import { c as T } from "./createReactComponent-f77338bd.js";
+import "./index-f4d5d2b2.js";
+import "./transition-42c9a528.js";
+import "./typeof-7fd5df1e.js";
+var q = T("filter", "IconFilter", [
+        [
+            "path",
+            {
+                d: "M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z",
+                key: "svg-0",
+            },
+        ],
+    ]),
+    E = T("printer", "IconPrinter", [
+        [
+            "path",
+            {
+                d: "M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2",
+                key: "svg-0",
+            },
+        ],
+        [
+            "path",
+            { d: "M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4", key: "svg-1" },
+        ],
+        [
+            "path",
+            {
+                d: "M7 13m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z",
+                key: "svg-2",
+            },
+        ],
+    ]);
+function O({ total_invoices: h, ...w }) {
+    const { data: c, meta: m, links: b } = w.invoices,
+        { data: s, setData: x } = F({ start_date: "", end_date: "" }),
+        [_, N] = f.useState(""),
+        [p, v] = f.useState(!1),
+        { errors: i } = R().props,
+        u = (a) => {
+            x(a.target.name, a.target.value);
+        },
+        I = () => {
+            g.get(
+                "/admin/invoice",
+                { start_date: s.start_date, end_date: s.end_date },
+                { preserveState: !0 }
+            ),
+                v(!0);
+        },
+        C = (a) => {
+            if (p)
+                try {
+                    const d = new Q("landscape"),
+                        A = [
+                            [
+                                "Order ID",
+                                "Name",
+                                "Charge",
+                                "Change",
+                                "Table",
+                                "Total Quantity",
+                                "Total Price",
+                                "Succeeded at",
+                            ],
+                        ],
+                        P = a.map((l) => [
+                            l.order_id,
+                            l.name,
+                            `Rp. ${n(l.money.charge)}`,
+                            `Rp. ${n(l.money.change)}`,
+                            l.table_id,
+                            l.total_quantity,
+                            `Rp. ${n(l.total_price)}`,
+                            l.succeeded_at,
+                        ]);
+                    d.autoTable({ head: A, body: P, startY: 20 }),
+                        d.save("Report Order RANDA.pdf");
+                } catch (d) {
+                    console.error("Error generating PDF:", d);
+                }
+            else alert("Please apply the filter first.");
+        },
+        S = (a) => {
+            a.preventDefault(),
+                N(a.target.value),
+                g.get(
+                    "/admin/invoice",
+                    { search: a.target.value },
+                    { preserveState: !0 }
+                );
+        };
+    return r(j, {
+        children: [
+            e(k, { title: "History" }),
+            r(D, {
+                children: [
+                    e("h3", {
+                        className:
+                            "text-2xl mt-10 mb-4 font-semibold text-fourth",
+                        children: "Invoices",
+                    }),
+                    e("div", {
+                        className:
+                            "flex  flex-wrap justify-between w-full item-center mt-2",
+                        children: e($, { href: route("admin.dashboard") }),
+                    }),
+                    r("div", {
+                        className:
+                            "flex  flex-wrap justify-between w-full item-center my-2",
+                        children: [
+                            r("div", {
+                                className:
+                                    "flex items-center flex-wrap sm:flex-nowrap gap-2 w-full mb-2 md:mb-0 sm:w-full md:w-1/2",
+                                children: [
+                                    r("div", {
+                                        className: "w-full flex gap-2",
+                                        children: [
+                                            r("div", {
+                                                className: "w-full",
+                                                children: [
+                                                    e(o, {
+                                                        type: "date",
+                                                        name: "start_date",
+                                                        id: "start_date",
+                                                        className: "w-full",
+                                                        onChange: u,
+                                                        value: s.start_date,
+                                                    }),
+                                                    i.start_date
+                                                        ? e("span", {
+                                                              className:
+                                                                  "text-red-500",
+                                                              children:
+                                                                  i.start_date,
+                                                          })
+                                                        : null,
+                                                ],
+                                            }),
+                                            r("div", {
+                                                className: "w-full",
+                                                children: [
+                                                    e(o, {
+                                                        type: "date",
+                                                        name: "end_date",
+                                                        id: "end_date",
+                                                        className: "w-full",
+                                                        onChange: u,
+                                                        value: s.end_date,
+                                                    }),
+                                                    i.end_date
+                                                        ? e("span", {
+                                                              className:
+                                                                  "text-red-500",
+                                                              children:
+                                                                  i.end_date,
+                                                          })
+                                                        : null,
+                                                ],
+                                            }),
+                                        ],
+                                    }),
+                                    r("div", {
+                                        className:
+                                            "w-full sm:w-auto flex gap-2 justify-end sm:justify-start",
+                                        children: [
+                                            e(y, {
+                                                className:
+                                                    "w-10 h-10 bg-violet",
+                                                onClick: I,
+                                                type: "button",
+                                                disabled:
+                                                    !s.start_date ||
+                                                    !s.end_date,
+                                                children: e(q, { size: 26 }),
+                                            }),
+                                            e(y, {
+                                                className: "w-10 h-10",
+                                                onClick: () => C(c),
+                                                type: "button",
+                                                disabled: !p,
+                                                children: e(E, { size: 26 }),
+                                            }),
+                                        ],
+                                    }),
+                                ],
+                            }),
+                            e(o, {
+                                type: "search",
+                                className: "w-full md:w-1/4 ",
+                                placeholder: "Search invoice..",
+                                defaultValue: _,
+                                onChange: S,
+                            }),
+                        ],
+                    }),
+                    e("div", { className: "w-full" }),
+                    r(t, {
+                        children: [
+                            e(t.Thead, {
+                                children: r("tr", {
+                                    children: [
+                                        e(t.Th, { children: "#" }),
+                                        e(t.Th, { children: "Order ID" }),
+                                        e(t.Th, { children: "Name" }),
+                                        e(t.Th, { children: "Charge" }),
+                                        e(t.Th, { children: "Change" }),
+                                        e(t.Th, { children: "Table" }),
+                                        e(t.Th, { children: "Total Quantity" }),
+                                        e(t.Th, { children: "Total Price" }),
+                                        e(t.Th, { children: "Succeeded at" }),
+                                        e(t.Th, { children: "Status" }),
+                                    ],
+                                }),
+                            }),
+                            e(t.Tbody, {
+                                children:
+                                    c.length > 0
+                                        ? c.map((a, d) =>
+                                              r(
+                                                  "tr",
+                                                  {
+                                                      className:
+                                                          "bg-white border-b text-secondary",
+                                                      children: [
+                                                          e(t.Td, {
+                                                              className: "w-5",
+                                                              children:
+                                                                  m.from + d,
+                                                          }),
+                                                          r(t.Td, {
+                                                              children: [
+                                                                  "#",
+                                                                  a.order_id,
+                                                              ],
+                                                          }),
+                                                          e(t.Td, {
+                                                              children: a.name,
+                                                          }),
+                                                          r(t.Td, {
+                                                              children: [
+                                                                  e("sup", {
+                                                                      children:
+                                                                          " Rp.",
+                                                                  }),
+                                                                  " ",
+                                                                  n(
+                                                                      a.money
+                                                                          .charge
+                                                                  ),
+                                                              ],
+                                                          }),
+                                                          r(t.Td, {
+                                                              children: [
+                                                                  e("sup", {
+                                                                      children:
+                                                                          " Rp.",
+                                                                  }),
+                                                                  " ",
+                                                                  n(
+                                                                      a.money
+                                                                          .change
+                                                                  ),
+                                                              ],
+                                                          }),
+                                                          e(t.Td, {
+                                                              children:
+                                                                  a.table_id,
+                                                          }),
+                                                          e(t.Td, {
+                                                              children:
+                                                                  a.total_quantity,
+                                                          }),
+                                                          r(t.Td, {
+                                                              children: [
+                                                                  e("sup", {
+                                                                      children:
+                                                                          " Rp.",
+                                                                  }),
+                                                                  " ",
+                                                                  n(
+                                                                      a.total_price
+                                                                  ),
+                                                              ],
+                                                          }),
+                                                          e(t.Td, {
+                                                              children:
+                                                                  a.succeeded_at,
+                                                          }),
+                                                          e(t.Td, {
+                                                              children: e(
+                                                                  "span",
+                                                                  {
+                                                                      className: `text-xs p-2 ${
+                                                                          a.status ==
+                                                                          1
+                                                                              ? "bg-emerald-500 text-white rounded"
+                                                                              : "bg-yellow-400 text-white rounded"
+                                                                      }`,
+                                                                      children:
+                                                                          a.status ==
+                                                                          1
+                                                                              ? "Done"
+                                                                              : "In Progress",
+                                                                  }
+                                                              ),
+                                                          }),
+                                                      ],
+                                                  },
+                                                  d
+                                              )
+                                          )
+                                        : e("tr", {
+                                              className:
+                                                  "bg-white border-b text-secondary text-center",
+                                              children: e(t.Td, {
+                                                  colSpan: "10",
+                                                  children: "No data",
+                                              }),
+                                          }),
+                            }),
+                        ],
+                    }),
+                    c.length > 0 &&
+                        r("div", {
+                            className:
+                                "flex w-full justify-between items-center",
+                            children: [
+                                e(z, { meta: m, links: b }),
+                                r("p", {
+                                    className: "text-sm text-third mt-10",
+                                    children: [
+                                        "Total Invoices: ",
+                                        e("span", {
+                                            className: "font-bold",
+                                            children: h,
+                                        }),
+                                        " ",
+                                    ],
+                                }),
+                            ],
+                        }),
+                ],
+            }),
+        ],
+    });
+}
+O.layout = (h) => e(M, { children: h });
+export { O as default };

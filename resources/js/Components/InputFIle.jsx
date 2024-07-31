@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-export default function InputFile({ picture, onChange, accept = '.jpg, .png, .jpeg' }) {
+export default function InputFile({
+    picture,
+    onChange,
+    accept = ".jpg, .png, .jpeg",
+}) {
     const [imagePreview, setImagePreview] = useState(null);
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -17,18 +21,37 @@ export default function InputFile({ picture, onChange, accept = '.jpg, .png, .jp
 
     const renderImage = () => {
         if (imagePreview) {
-            return <img src={imagePreview} alt="Preview" className="w-32 h-32 object-cover  border border-1 border-gray-300 rounded mb-2" />;
-        }
-        else {
-            const placeholderImageUrl = picture ? picture : 'https://via.placeholder.com/150';
-            return <img src={placeholderImageUrl} alt="Placeholder" className="w-32 h-32 object-cover rounded border border-1 border-gray-300 mb-2" />;
+            return (
+                <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="w-32 h-32 object-cover  border border-1 border-gray-300 rounded mb-2"
+                />
+            );
+        } else {
+            const placeholderImageUrl = picture
+                ? picture
+                : "https://via.placeholder.com/150";
+            return (
+                <img
+                    src={placeholderImageUrl}
+                    alt="Placeholder"
+                    className="w-32 h-32 object-cover rounded border border-1 border-gray-300 mb-2"
+                />
+            );
         }
     };
 
     return (
         <div className="flex flex-col items-center relative">
             {renderImage()}
-            <label className={`border border-gray-300 ${imagePreview ? 'bg-orange-500 hover:bg-orange-400 text-white active:bg-orange-500' : 'file:text-slate-700 hover:bg-orange-500 active:bg-orange-500 hover:text-white'} transition duration-200 text-sm font-medium px-3 py-2 rounded text-slate-700 cursor-pointer`}>
+            <label
+                className={`border border-gray-300 ${
+                    imagePreview
+                        ? "bg-primary hover:bg-orange-400 text-white active:bg-primary"
+                        : "file:text-fourth hover:bg-primary active:bg-primary hover:text-white"
+                } transition duration-200 text-sm font-medium px-3 py-2 rounded text-fourth cursor-pointer`}
+            >
                 Choose File
                 <input
                     accept={accept}
@@ -37,11 +60,12 @@ export default function InputFile({ picture, onChange, accept = '.jpg, .png, .jp
                     className="hidden"
                 />
             </label>
-            <span className='text-xs text-slate-500 mt-1'>The maximum image size is 2MB</span>
+            <span className="text-xs text-third mt-1">
+                The maximum image size is 2MB
+            </span>
         </div>
     );
 }
-
 
 // import React from 'react';
 

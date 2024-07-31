@@ -17,6 +17,7 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
+            'supplier_id' => rand(1, 5),
             'category_id' => rand(1, 3),
             'picture' => '',
             'name' => $name = str($this->faker->sentence(4))->title(),

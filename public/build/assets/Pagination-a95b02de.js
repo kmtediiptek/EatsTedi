@@ -1,1 +1,126 @@
-import{a as e,j as s,F as o,e as c}from"./app-50127253.js";import{c as u}from"./TextInput-01542f12.js";function x({meta:n,links:l}){return e("div",{children:n.links.length>2&&s(o,{children:[s("ul",{className:"flex mt-10 justify-between md:hidden items-center gap-x-0.5 bg-white",children:[l.prev?e("li",{children:e(c,{className:"rounded border inline-flex p-2 bg-fourth",href:l.prev,preserveScroll:!0,children:e(i,{})})}):e("li",{className:"rounded border inline-flex p-2 cursor-none",children:e(i,{})}),l.next?e("li",{children:e(c,{className:"rounded border inline-flex p-2",href:l.next,preserveScroll:!0,children:e(d,{})})}):e("li",{className:"rounded border inline-flex p-2 cursor-none",children:e(d,{})})]}),e("ul",{className:"hidden mt-10 justify-center md:flex items-center gap-x-1",children:n.links.map((r,t)=>r.url!=null?r.label.includes("Previous")?e(a,{active:r.active,href:r.url,children:e(i,{})},t):r.label.includes("Next")?e(a,{active:r.active,href:r.url,children:e(d,{})},t):e(a,{active:r.active,href:r.url,children:r.label},t):null)})," "]})})}function i(){return e("svg",{xmlns:"http://www.w3.org/2000/svg",className:"h-5 w-5 text-slate-700",viewBox:"0 0 20 20",fill:"currentColor",children:e("path",{fillRule:"evenodd",d:"M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z",clipRule:"evenodd"})})}function d(){return e("svg",{xmlns:"http://www.w3.org/2000/svg",className:"h-5 w-5 text-slate-700",viewBox:"0 0 20 20",fill:"currentColor",children:e("path",{fillRule:"evenodd",d:"M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z",clipRule:"evenodd"})})}function a({active:n,href:l,children:r}){return e("li",{children:e(c,{className:u(n&&"text-red-500 font-semibold border-orange-500 bg-white","w-11 h-9 text-sm rounded shadow-sm border border-gray-300 text-third flex items-center justify-center"),href:l,preserveScroll:!0,children:r})})}export{x as P};
+import { a as e, j as s, F as o, e as c } from "./app-50127253.js";
+import { c as u } from "./TextInput-01542f12.js";
+function x({ meta: n, links: l }) {
+    return e("div", {
+        children:
+            n.links.length > 2 &&
+            s(o, {
+                children: [
+                    s("ul", {
+                        className:
+                            "flex mt-10 justify-between md:hidden items-center gap-x-0.5 bg-white",
+                        children: [
+                            l.prev
+                                ? e("li", {
+                                      children: e(c, {
+                                          className:
+                                              "rounded border inline-flex p-2 bg-fourth",
+                                          href: l.prev,
+                                          preserveScroll: !0,
+                                          children: e(i, {}),
+                                      }),
+                                  })
+                                : e("li", {
+                                      className:
+                                          "rounded border inline-flex p-2 cursor-none",
+                                      children: e(i, {}),
+                                  }),
+                            l.next
+                                ? e("li", {
+                                      children: e(c, {
+                                          className:
+                                              "rounded border inline-flex p-2",
+                                          href: l.next,
+                                          preserveScroll: !0,
+                                          children: e(d, {}),
+                                      }),
+                                  })
+                                : e("li", {
+                                      className:
+                                          "rounded border inline-flex p-2 cursor-none",
+                                      children: e(d, {}),
+                                  }),
+                        ],
+                    }),
+                    e("ul", {
+                        className:
+                            "hidden mt-10 justify-center md:flex items-center gap-x-1",
+                        children: n.links.map((r, t) =>
+                            r.url != null
+                                ? r.label.includes("Previous")
+                                    ? e(
+                                          a,
+                                          {
+                                              active: r.active,
+                                              href: r.url,
+                                              children: e(i, {}),
+                                          },
+                                          t
+                                      )
+                                    : r.label.includes("Next")
+                                    ? e(
+                                          a,
+                                          {
+                                              active: r.active,
+                                              href: r.url,
+                                              children: e(d, {}),
+                                          },
+                                          t
+                                      )
+                                    : e(
+                                          a,
+                                          {
+                                              active: r.active,
+                                              href: r.url,
+                                              children: r.label,
+                                          },
+                                          t
+                                      )
+                                : null
+                        ),
+                    }),
+                    " ",
+                ],
+            }),
+    });
+}
+function i() {
+    return e("svg", {
+        xmlns: "http://www.w3.org/2000/svg",
+        className: "h-5 w-5 text-fourth",
+        viewBox: "0 0 20 20",
+        fill: "currentColor",
+        children: e("path", {
+            fillRule: "evenodd",
+            d: "M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z",
+            clipRule: "evenodd",
+        }),
+    });
+}
+function d() {
+    return e("svg", {
+        xmlns: "http://www.w3.org/2000/svg",
+        className: "h-5 w-5 text-fourth",
+        viewBox: "0 0 20 20",
+        fill: "currentColor",
+        children: e("path", {
+            fillRule: "evenodd",
+            d: "M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z",
+            clipRule: "evenodd",
+        }),
+    });
+}
+function a({ active: n, href: l, children: r }) {
+    return e("li", {
+        children: e(c, {
+            className: u(
+                n && "text-red-500 font-semibold border-primary bg-white",
+                "w-11 h-9 text-sm rounded shadow-sm border border-gray-300 text-third flex items-center justify-center"
+            ),
+            href: l,
+            preserveScroll: !0,
+            children: r,
+        }),
+    });
+}
+export { x as P };

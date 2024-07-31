@@ -10,9 +10,20 @@
 }
 
 .scrolling-wrapper::-webkit-scrollbar-track {
-    @apply bg-slate-200/80 rounded;
+    @apply bg-secondary/80 rounded;
 }
 
 .scrolling-wrapper::-webkit-scrollbar-thumb {
-    @apply bg-gradient-to-b from-slate-300 to-orange-500 rounded border;
+    @apply bg-gradient-to-b from-secondary to-primary rounded border;
+}
+
+/* Transition for Product exist */
+.transition-opacity {
+    transition: opacity 1s;
+}
+.opacity-0 {
+    opacity: 0;
+}
+.opacity-100 {
+    opacity: 1;
 }
