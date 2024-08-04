@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\AdminDailyMenuResource;
+use App\Models\Activity;
 use App\Models\Category;
 use App\Models\DailyStock;
 use App\Models\Product;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminDailyMenuController extends Controller
 {
@@ -84,6 +86,10 @@ class AdminDailyMenuController extends Controller
             );
         }
 
+        Activity::create([
+            "activity" => Auth::user()->name . " Update Daily Menu "
+        ]);
+
         // Redirect kembali dengan pesan sukses
         return redirect()->route('admin.product.today.index');
     }
@@ -94,6 +100,11 @@ class AdminDailyMenuController extends Controller
             'quantity' => 0,
             'sold' => 0,
         ]);
+
+        Activity::create([
+            "activity" => Auth::user()->name . " Reset Daily Menu "
+        ]);
+
         return redirect()->route('admin.product.today.index');
     }
 }

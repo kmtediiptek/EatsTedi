@@ -265,13 +265,13 @@ export default function Index({ total_products, suppliers, ...props }) {
                         href={route("admin.product.index")}
                         active={route().current("admin.product.index")}
                     >
-                        Semua Menu
+                        All Menu
                     </TabLink>
                     <TabLink
                         href={route("admin.product.today.index")}
                         active={route().current("admin.product.today.index")}
                     >
-                        Menu Hari Ini
+                        Daily Menu
                     </TabLink>
                 </div>
                 <Table>

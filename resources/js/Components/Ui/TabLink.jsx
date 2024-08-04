@@ -13,8 +13,9 @@ export default function TabLink({
             className={clsx(
                 "rounded py-2 px-3 text-base transition duration-150 ease-in-out",
                 {
-                    "bg-primary text-white hover:text-white": active,
-                    "border border-primary hover:bg-primary hover:text-white text-base text-primary":
+                    "md:bg-primary text-primary md:text-white hover:text-primary md:hover:text-white":
+                        active,
+                    "md:border md:border-primary md:hover:bg-primary hover:text-primary md:hover:text-white text-base text-fourth md:text-primary":
                         !active,
                 },
                 className

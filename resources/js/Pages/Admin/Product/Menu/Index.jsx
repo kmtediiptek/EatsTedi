@@ -19,7 +19,7 @@ import TabLink from "@/Components/Ui/TabLink";
 import Select2 from "react-select";
 import DailyMenuForm from "@/Components/DailyStock/DailyMenuForm";
 
-export default function Index({ total_products, suppliers, ...props }) {
+export default function Index({ total_daily_stocks, suppliers, ...props }) {
     const { data: daily_stocks, meta, links } = props.daily_stocks;
 
     let [isOpen, setIsOpen] = useState(false);
@@ -99,10 +99,10 @@ export default function Index({ total_products, suppliers, ...props }) {
             <Container>
                 {/* Start Products */}
                 <h3 className="text-2xl mt-10 mb-4 font-semibold text-fourth">
-                    Products
+                    Daily Menus
                 </h3>
-                <div className="flex justify-between gap-2 w-full item-center my-2">
-                    <div className="flex w-3/4 md:w-1/2 gap-2">
+                <div className="w-full flex justify-between my-2">
+                    <div className="flex w-full md:w-1/2 gap-2">
                         <ActionLink href={route("admin.dashboard")} />
 
                         <ActionButton
@@ -115,12 +115,12 @@ export default function Index({ total_products, suppliers, ...props }) {
                             <IconTrash size={18} />
                         </ActionButton>
                     </div>
-                    <div className="flex w-3/4 md:w-1/2 gap-2">
+                    <div className="flex w-full  md:w-1/2 gap-2">
                         <Select2
                             id="supplier-select"
                             value={selectedSupplierOption}
                             options={supplierOptions}
-                            className="w-full md:w-1/2"
+                            className="w-full md:w-1/2 md:order-1 order-2"
                             onChange={handleSupplierChange}
                             styles={{
                                 control: (provided, state) => ({
@@ -165,7 +165,7 @@ export default function Index({ total_products, suppliers, ...props }) {
                         />
                         <TextInput
                             type="search"
-                            className="w-full md:w-1/2"
+                            className="w-full md:order-2 order-1 md:w-1/2"
                             placeholder="Search menu.."
                             value={searchQuery}
                             onChange={handleSearch}
@@ -174,18 +174,18 @@ export default function Index({ total_products, suppliers, ...props }) {
                 </div>
 
                 {/* Navigation */}
-                <div className="flex items-center gap-2 py-2">
+                <div className="w-full flex items-center gap-2 py-2">
                     <TabLink
                         href={route("admin.product.index")}
                         active={route().current("admin.product.index")}
                     >
-                        Semua Daily Menu
+                        All Menu
                     </TabLink>
                     <TabLink
                         href={route("admin.product.today.index")}
                         active={route().current("admin.product.today.index")}
                     >
-                        Daily Menu Hari Ini
+                        Daily Menu
                     </TabLink>
                 </div>
                 <Table>
@@ -255,7 +255,9 @@ export default function Index({ total_products, suppliers, ...props }) {
                         <Pagination meta={meta} links={links} />
                         <p className="text-sm text-third mt-10">
                             Total Products:{" "}
-                            <span className="font-bold">{total_products}</span>{" "}
+                            <span className="font-bold">
+                                {total_daily_stocks}
+                            </span>{" "}
                         </p>
                     </div>
                 )}

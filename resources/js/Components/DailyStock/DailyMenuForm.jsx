@@ -123,76 +123,84 @@ export default function DailyMenuForm() {
 
             {selectedSupplier ? (
                 <form onSubmit={handleSubmit}>
-                    <hr />
-                    <h4 className="text-lg text-fourth font-medium leading-6 mt-4 mb-4">
-                        Perbarui Seluruh Stock
-                    </h4>
-                    {data.daily_stocks.map((daily_stock) => (
-                        <div
-                            key={daily_stock.product.id}
-                            className="flex w-full gap-2 mb-6"
-                        >
-                            <div className="w-full">
-                                <InputLabel
-                                    htmlFor={`name-${daily_stock.product.id}`}
-                                    value="Name"
-                                />
-                                <TextInput
-                                    name={`name-${daily_stock.product.id}`}
-                                    id={`name-${daily_stock.product.id}`}
-                                    readOnly
-                                    className="w-full"
-                                    value={daily_stock.product.name}
-                                />
+                    {data.daily_stocks.length ? (
+                        <>
+                            <hr />
+                            <h4 className="text-lg text-fourth font-medium leading-6 mt-4 mb-4">
+                                Perbarui Seluruh Stock
+                            </h4>
+                            {data.daily_stocks.map((daily_stock) => (
+                                <div
+                                    key={daily_stock.product.id}
+                                    className="flex w-full gap-2 mb-6"
+                                >
+                                    <div className="w-full">
+                                        <InputLabel
+                                            htmlFor={`name-${daily_stock.product.id}`}
+                                            value="Name"
+                                        />
+                                        <TextInput
+                                            name={`name-${daily_stock.product.id}`}
+                                            id={`name-${daily_stock.product.id}`}
+                                            readOnly
+                                            className="w-full"
+                                            value={daily_stock.product.name}
+                                        />
+                                    </div>
+                                    <div className="md:w-1/4">
+                                        <InputLabel
+                                            htmlFor={`quantity-${daily_stock.product.id}`}
+                                            value="Initial Quantity"
+                                        />
+                                        <TextInput
+                                            name={`quantity-${daily_stock.product.id}`}
+                                            id={`quantity-${daily_stock.product.id}`}
+                                            type="number"
+                                            className="w-full"
+                                            onChange={(e) =>
+                                                handleInputChange(
+                                                    e,
+                                                    daily_stock.product.id
+                                                )
+                                            }
+                                            value={daily_stock.quantity || ""}
+                                        />
+                                        {errors[
+                                            `quantity-${daily_stock.product.id}`
+                                        ] && (
+                                            <Error
+                                                value={
+                                                    errors[
+                                                        `quantity-${daily_stock.product.id}`
+                                                    ]
+                                                }
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                            <div className="flex justify-end gap-2">
+                                <SecondaryButton
+                                    type="button"
+                                    onClick={() => setSelectedSupplier(null)}
+                                >
+                                    Cancel
+                                </SecondaryButton>
+                                <PrimaryButton type="submit">
+                                    Update Stock
+                                </PrimaryButton>
                             </div>
-                            <div className="md:w-1/4">
-                                <InputLabel
-                                    htmlFor={`quantity-${daily_stock.product.id}`}
-                                    value="Initial Quantity"
-                                />
-                                <TextInput
-                                    name={`quantity-${daily_stock.product.id}`}
-                                    id={`quantity-${daily_stock.product.id}`}
-                                    type="number"
-                                    className="w-full"
-                                    onChange={(e) =>
-                                        handleInputChange(
-                                            e,
-                                            daily_stock.product.id
-                                        )
-                                    }
-                                    value={daily_stock.quantity || ""}
-                                />
-                                {errors[
-                                    `quantity-${daily_stock.product.id}`
-                                ] && (
-                                    <Error
-                                        value={
-                                            errors[
-                                                `quantity-${daily_stock.product.id}`
-                                            ]
-                                        }
-                                    />
-                                )}
-                            </div>
+                        </>
+                    ) : (
+                        <div className="flex w-full h-52 justify-center items-center text-fourth">
+                            <h3>There are no products from this supplier</h3>
                         </div>
-                    ))}
-                    <div className="flex justify-end gap-2">
-                        <SecondaryButton
-                            type="button"
-                            onClick={() => setSelectedSupplier(null)}
-                        >
-                            Cancel
-                        </SecondaryButton>
-                        <PrimaryButton type="submit">
-                            Update Stock
-                        </PrimaryButton>
-                    </div>
+                    )}
                 </form>
             ) : (
-                    <div className="flex w-full h-52 justify-center items-center text-fourth">
-                        <h3>Choose a Supplier First</h3>
-                    </div>
+                <div className="flex w-full h-52 justify-center items-center text-fourth">
+                    <h3>Choose a Supplier First</h3>
+                </div>
             )}
         </div>
     );
