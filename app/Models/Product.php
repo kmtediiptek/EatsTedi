@@ -31,13 +31,8 @@ class Product extends Model
         return 'slug';
     }
 
-    public function daily_stocks()
+    public function daily_stock()
     {
-        return $this->hasMany(DailyStock::class);
-    }
-
-    public function stock_movements()
-    {
-        return $this->hasMany(StockMovement::class);
+        return $this->hasOne(DailyStock::class);
     }
 }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('day', 20);
             $table->string('open', 20);
             $table->string('close', 20);
+            $table->boolean('is_break')->default(false);
             $table->timestamps();
         });
     }

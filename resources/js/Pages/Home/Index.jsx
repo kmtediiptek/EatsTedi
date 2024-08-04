@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Head, Link, usePage, router } from "@inertiajs/react";
 import Container from "@/Components/Container";
 import Pagination from "@/Components/Pagination";
-import { IconCalendarTime, IconCategory } from "@tabler/icons-react";
+import {
+    IconCalendarTime,
+    IconCategory,
+    IconMoodSmile,
+    IconMoodSmileBeam,
+} from "@tabler/icons-react";
 import Guest from "@/Layouts/Guest";
 import ProductItemUser from "@/Components/ProductItemUser";
 import Footer from "@/Components/Footer";
@@ -112,13 +117,13 @@ export default function Index({
                         </h3>
                     </div>
                     <div className="w-full mt-4">
-                        <h5 className="text-slate-600 text-xl">
+                        <h5 className="text-third text-xl">
                             {" "}
                             Here are some of the products we present to you
                         </h5>
                     </div>
                 </div>
-                <div className="w-full mt-4">
+                {/* <div className="w-full mt-4">
                     <p className="text-third">
                         In our diverse menu, there are various choices of
                         mouth-watering food and drinks.
@@ -129,35 +134,44 @@ export default function Index({
                         offer a variety of choices that can satisfy every
                         customer's desires and tastes.
                     </p>
-                </div>
+                </div> */}
             </Container>
 
             <Container>
                 <div className="flex flex-wrap md:flex-nowrap w-full gap-4">
                     <div className="w-full md:w-3/4 flex block rounded scrolling-wrapper relative gap-4 overflow-x-scroll flex-nowrap">
-                        {schedules.map((schedule, index) => (
-                            <div
-                                className="flex w-full py-4 items-center gap-2 text-center border border-gray-300 p-3 rounded"
-                                key={index}
-                            >
-                                <IconCalendarTime
-                                    size={50}
-                                    className="text-violet/70"
-                                />
-                                <div className="flex flex-col items-start">
-                                    <div className="flex gap-2 ">
-                                        <h6 className="text-third font-semibold">
-                                            {schedule.day}
-                                        </h6>
-                                    </div>
-                                    <div className="flex gap-2 w-32">
-                                        <span className="text-third ">
-                                            {schedule.open}-{schedule.close}
-                                        </span>
+                        {schedules.map((schedule, index) => {
+                            return (
+                                <div
+                                    className="flex w-full py-4 items-center gap-2 text-center border border-gray-300 p-3 rounded"
+                                    key={index}
+                                >
+                                    <IconCalendarTime
+                                        size={50}
+                                        className="text-violet/70"
+                                    />
+                                    <div className="flex flex-col items-start">
+                                        <div className="flex gap-2">
+                                            <h6 className="text-third font-semibold">
+                                                {schedule.day}
+                                            </h6>
+                                        </div>
+                                        <div className="flex gap-2 w-32">
+                                            {schedule.is_break ? (
+                                                <span className="text-red-500 font-semibold">
+                                                    Break Time
+                                                </span>
+                                            ) : (
+                                                <span className="text-third">
+                                                    {schedule.open}-
+                                                    {schedule.close}
+                                                </span>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                     <div className="w-full md:w-1/4">
                         <div className="flex flex-col py-4 rounded border border-gray-300">
@@ -227,7 +241,13 @@ export default function Index({
                     Special menu for you
                 </h3>
                 {products.length ? (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 w-full md:grid-cols-4 lg:grid-cols-5 sm:gap-10 gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 w-full md:grid-cols-5 lg:grid-cols-5 sm:gap-10 gap-4">
+                        {products.map((product) => (
+                            <ProductItemUser
+                                product={product}
+                                key={product.slug}
+                            />
+                        ))}
                         {products.map((product) => (
                             <ProductItemUser
                                 product={product}
@@ -235,7 +255,16 @@ export default function Index({
                             />
                         ))}
                     </div>
-                ) : null}
+                ) : (
+                    <div className="flex items-center justify-center w-full h-full text-third flex-col">
+                        <IconMoodSmileBeam
+                            className="text-third mb-4"
+                            size={72}
+                            stroke={1}
+                        />
+                        Menu tidak tersedia
+                    </div>
+                )}
             </Container>
 
             <Container className="flex justify-center">

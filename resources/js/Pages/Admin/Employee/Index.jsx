@@ -218,7 +218,7 @@ export default function Index({ total_employees, ...props }) {
                                             employee.is_active === 1
                                                 ? "bg-white"
                                                 : "bg-gray-300"
-                                        } border-b text-secondary`}
+                                        } border-b`}
                                         key={index}
                                     >
                                         <Table.Td className="w-5">
@@ -308,7 +308,8 @@ export default function Index({ total_employees, ...props }) {
                 {/* Modal */}
                 <MyModal
                     isOpen={isOpen}
-                    onClose={() => setIsOpen(false)}
+                    onClose={() => setIsOpen(setIsOpen)}
+                    setIsOpen={setIsOpen}
                     size={`2/3`}
                     type={modalType}
                     title={modalEmployee}

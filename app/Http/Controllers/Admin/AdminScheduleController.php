@@ -22,13 +22,13 @@ class AdminScheduleController extends Controller
         if ($search_schedules) {
             $schedules = Schedule::query()
                 ->where('day', 'LIKE', "%$search_schedules%")
-                ->select('id', 'day', 'open', 'close')
+                ->select('id', 'day', 'open', 'close', 'is_break')
                 ->latest()
                 ->fastPaginate(10)->withQueryString();
         } else {
             $schedules = Schedule::query()
                 ->where('day', 'LIKE', "%$search_schedules%")
-                ->select('id', 'day', 'open', 'close')
+                ->select('id', 'day', 'open', 'close', 'is_break')
                 ->latest()
                 ->fastPaginate(10);
         }
@@ -39,12 +39,14 @@ class AdminScheduleController extends Controller
         ]);
     }
 
-    public function store(AdminScheduleRequest $request)
+    public function store(Request $request)
     {
+        dd($request->all());
         Schedule::create([
             "day" => $request->day,
             "open" => $request->close,
             "close" => $request->close,
+            "is_break" => $request->is_break,
         ]);
 
         Activity::create([
@@ -54,13 +56,13 @@ class AdminScheduleController extends Controller
         return back();
     }
 
-
     public function update(AdminScheduleRequest $request, Schedule $schedule)
     {
         $schedule->update([
             "day" => $request->day ? $request->day : $schedule->day,
             "open" => $request->open ?: $schedule->open,
             "close" => $request->close ?: $schedule->close,
+            "is_break" => $request->is_break
         ]);
 
         Activity::create([

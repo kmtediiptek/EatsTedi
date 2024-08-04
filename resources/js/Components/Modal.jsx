@@ -47,12 +47,16 @@ export default function MyModal({
                                         as="h3"
                                         className="text-lg text-fourth font-medium leading-6 mt-4"
                                     >
-                                        Form{" "}
-                                        {type === "create"
-                                            ? "Create"
-                                            : type === "delete"
-                                            ? "Delete"
-                                            : "Edit"}{" "}
+                                        {type && (
+                                            <>
+                                                Form{" "}
+                                                {type === "create"
+                                                    ? "Create"
+                                                    : type === "delete"
+                                                    ? "Delete"
+                                                    : "Edit"}{" "}
+                                            </>
+                                        )}
                                         {title}
                                     </Dialog.Title>
                                     <div className="mt-2">{children}</div>

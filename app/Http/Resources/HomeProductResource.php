@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Admin;
+namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
 
-class AdminProductResource extends JsonResource
+class HomeProductResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -31,7 +31,10 @@ class AdminProductResource extends JsonResource
                 'name' => $this->supplier->name,
                 'username' => $this->supplier->username,
             ],
-            'order_id' => $request->order_id
+            'daily_stock' => [
+                'quantity' => $this->daily_stock->quantity,
+                'sold' => $this->daily_stock->sold,
+            ]
         ];
     }
 }

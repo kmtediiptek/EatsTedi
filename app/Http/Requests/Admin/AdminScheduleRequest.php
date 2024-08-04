@@ -27,6 +27,7 @@ class AdminScheduleRequest extends FormRequest
             "day" => ['required', 'string'],
             "open" => ['required', 'string'],
             "close" => ['required', 'string'],
+            "is_break" => ['required', 'boolean'],
         ];
     }
 }

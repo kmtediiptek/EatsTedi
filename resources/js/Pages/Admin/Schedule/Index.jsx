@@ -30,6 +30,7 @@ export default function Index({ total_payments, ...props }) {
         day: "",
         open: "",
         close: "",
+        is_break: "",
     });
 
     let [isOpen, setIsOpen] = useState(false);
@@ -41,38 +42,40 @@ export default function Index({ total_payments, ...props }) {
 
     const [modalType, setModalType] = useState("");
 
-    const [scheduleSlug, setScheduleSlug] = useState("");
+    const [scheduleId, setScheduleId] = useState("");
 
-    function openModalTable(scheduleSlug, type) {
+    function openModalTable(scheduleId, type) {
         setIsOpen(true);
         setModalSchedule("Schedule");
         setModalType(type);
-        setScheduleSlug(scheduleSlug);
-        if (scheduleSlug) {
+        setScheduleId(scheduleId);
+        if (scheduleId) {
             const selectedSchedule = schedules.find(
-                (schedule) => schedule.slug === scheduleSlug
+                (schedule) => schedule.id === scheduleId
             );
 
-            setScheduleSlug(scheduleSlug);
+            setScheduleId(scheduleId);
             setData({
                 day: selectedSchedule.day,
                 open: selectedSchedule.open,
                 close: selectedSchedule.close,
+                is_break: selectedSchedule.is_break,
             });
         } else {
-            setScheduleSlug("");
+            setScheduleId("");
             setData({
                 day: "",
                 open: "",
                 close: "",
+                is_break: "",
             });
         }
     }
 
-    function openToast(scheduleSlug, title) {
+    function openToast(scheduleId, title) {
         setIsToast(true);
         setToastTitle(title);
-        setScheduleSlug(scheduleSlug);
+        setScheduleId(scheduleId);
     }
 
     function onCancelModal() {
@@ -90,14 +93,14 @@ export default function Index({ total_payments, ...props }) {
             onSuccess: () => {
                 toast.success("Schedule has been created!");
                 setIsOpen(false);
-                setData({ day: "", open: "", close: "" });
+                setData({ day: "", open: "", close: "", is_break: "" });
             },
         });
     };
 
-    const onUpdate = (scheduleSlug) => (e) => {
+    const onUpdate = (scheduleId) => (e) => {
         e.preventDefault();
-        put(route("admin.schedule.update", scheduleSlug), {
+        put(route("admin.schedule.update", scheduleId), {
             ...data,
             onSuccess: () => {
                 toast.success("Schedule has been updated!"), setIsOpen(false);
@@ -105,8 +108,8 @@ export default function Index({ total_payments, ...props }) {
         });
     };
 
-    const onDelete = (scheduleSlug) => {
-        destroy(route("admin.schedule.destroy", scheduleSlug), {
+    const onDelete = (scheduleId) => {
+        destroy(route("admin.schedule.destroy", scheduleId), {
             onSuccess: () => {
                 toast.success("Schedule has been deleted!"), setIsToast(false);
             },
@@ -158,6 +161,7 @@ export default function Index({ total_payments, ...props }) {
                             <Table.Th>#</Table.Th>
                             <Table.Th>Day</Table.Th>
                             <Table.Th>Schedule</Table.Th>
+                            <Table.Th>Break</Table.Th>
                             <Table.Th>Action</Table.Th>
                         </tr>
                     </Table.Thead>
@@ -176,6 +180,17 @@ export default function Index({ total_payments, ...props }) {
                                         <Table.Td>
                                             {schedule.open} - {schedule.close}
                                         </Table.Td>
+                                        <Table.Td>
+                                            <span
+                                                className={`text-xs p-2 ${
+                                                    schedule.is_break
+                                                        ? "bg-emerald text-white rounded"
+                                                        : "bg-violet text-white rounded"
+                                                }`}
+                                            >
+                                                {schedule.is_break ? "Yes" : "No"}
+                                            </span>
+                                        </Table.Td>
                                         <Table.Td className="w-10">
                                             <div className="flex flex-nowrap gap-2">
                                                 <ActionButton
@@ -183,7 +198,7 @@ export default function Index({ total_payments, ...props }) {
                                                     type="button"
                                                     onClick={() =>
                                                         openModalTable(
-                                                            schedule.slug,
+                                                            schedule.id,
                                                             "edit"
                                                         )
                                                     }
@@ -195,7 +210,7 @@ export default function Index({ total_payments, ...props }) {
                                                     type="button"
                                                     onClick={() =>
                                                         openToast(
-                                                            schedule.slug,
+                                                            schedule.id,
                                                             "Schedule " +
                                                                 schedule.day
                                                         )
@@ -229,7 +244,8 @@ export default function Index({ total_payments, ...props }) {
                 {/* Modal */}
                 <MyModal
                     isOpen={isOpen}
-                    onClose={() => setIsOpen(false)}
+                    onClose={() => setIsOpen(setIsOpen)}
+                    setIsOpen={setIsOpen}
                     size={`1/3`}
                     type={modalType}
                     title={modalSchedule}
@@ -238,7 +254,7 @@ export default function Index({ total_payments, ...props }) {
                         onSubmit={
                             modalType == "create"
                                 ? onSubmit
-                                : onUpdate(scheduleSlug)
+                                : onUpdate(scheduleId)
                         }
                         className="mt-6"
                     >
@@ -264,7 +280,7 @@ export default function Index({ total_payments, ...props }) {
                         <SecondaryButton onClick={() => onCancelToast()}>
                             No
                         </SecondaryButton>
-                        <PrimaryButton onClick={() => onDelete(scheduleSlug)}>
+                        <PrimaryButton onClick={() => onDelete(scheduleId)}>
                             Yes
                         </PrimaryButton>
                     </div>
