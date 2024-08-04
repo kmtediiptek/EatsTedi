@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 
-export default function Toast({ isToast, name, title, children }) {
+export default function Toast({ isToast, title, children }) {
     function closeModal() {
         setIsOpen(false);
     }
@@ -35,9 +35,9 @@ export default function Toast({ isToast, name, title, children }) {
                                 <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded bg-white px-6 py-4 text-left align-middle shadow-xl transition-all">
                                     <Dialog.Title
                                         as="h3"
-                                        className="text-start text-primary leading-6 mb-5 mt-2 text-primary"
+                                        className="text-start text-primary leading-6 mb-8 mt-2 text-primary"
                                     >
-                                        <p className="font-normal text-primary">
+                                        <p className="font-normal text-fourth">
                                             {title}
                                         </p>
                                     </Dialog.Title>

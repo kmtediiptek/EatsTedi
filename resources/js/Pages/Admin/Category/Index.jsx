@@ -171,7 +171,7 @@ export default function Index({ total_categories, ...props }) {
                             <>
                                 {categories.map((category, index) => (
                                     <tr
-                                        className="bg-white border-b text-secondary"
+                                        className="bg-white border-b"
                                         key={index}
                                     >
                                         <Table.Td className="w-5">

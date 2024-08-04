@@ -61,7 +61,7 @@ const Index = ({ total_activities, ...props }) => {
                             {activities.length > 0 ? (
                                 activities.map((activity, index) => (
                                     <tr
-                                        className="bg-white border-b text-secondary"
+                                        className="bg-white border-b"
                                         key={index}
                                     >
                                         <Table.Td className="w-5">

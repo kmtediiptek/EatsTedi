@@ -18,7 +18,7 @@ function y({ className: a = "", ...r }) {
         ...r,
         type: "checkbox",
         className:
-            "rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 " +
+            "rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-secondary " +
             a,
     });
 }
@@ -178,7 +178,7 @@ function j({ status: a, canResetPassword: r }) {
                                             e(b, {
                                                 href: route("password.request"),
                                                 className:
-                                                    "text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500",
+                                                    "text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary",
                                                 children:
                                                     "Forgot your password?",
                                             }),

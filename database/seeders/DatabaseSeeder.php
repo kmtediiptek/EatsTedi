@@ -14,7 +14,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-
         $this->call([
             CategorySeeder::class,
             ScheduleSeeder::class,
@@ -41,8 +40,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\Supplier::factory(5)->create();
-        \App\Models\Product::factory(30)->create();
-        \App\Models\Invoice::factory(10)->create();
-        \App\Models\Cart::factory(15)->create();
+        // \App\Models\Product::factory(30)->create();
+        // \App\Models\Invoice::factory(10)->create();
+        // \App\Models\Cart::factory(15)->create();
     }
 }

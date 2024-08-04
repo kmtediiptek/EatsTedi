@@ -202,7 +202,7 @@ export default function Edit({
                             <>
                                 <div className="p-4 w-full space-y-8 rounded border border-1 border-gray-300">
                                     <div>
-                                        <h2 className="text-lg font-medium text-gray-700">
+                                        <h2 className="text-lg font-medium text-fourth">
                                             Information System
                                         </h2>
                                         <p className="mt-1 text-sm text-secondary">
@@ -217,7 +217,7 @@ export default function Edit({
                                         </p>
                                     </div>
                                     <div>
-                                        <h2 className="text-lg font-medium text-gray-700">
+                                        <h2 className="text-lg font-medium text-fourth">
                                             Profile Information
                                         </h2>
                                         <p className="mt-1 text-sm text-secondary">
@@ -230,7 +230,7 @@ export default function Edit({
                                 {auth.user && auth.user.status !== "owner" ? (
                                     <div className="p-4 rounded mt-4 border border-1 border-gray-300">
                                         <div>
-                                            <h2 className="text-lg font-medium text-gray-700">
+                                            <h2 className="text-lg font-medium text-fourth">
                                                 Salary Information
                                             </h2>
                                             <p className="mt-1 text-sm text-secondary">
@@ -311,7 +311,7 @@ export default function Edit({
                                 ) : null}
                                 <div className="p-4 w-full mt-4 mb-12 space-y-8 rounded border border-1 border-gray-300">
                                     <div>
-                                        <h2 className="text-lg font-medium text-gray-700">
+                                        <h2 className="text-lg font-medium text-fourth">
                                             Total Salary{" "}
                                         </h2>
                                         <p className="mt-1 text-sm text-secondary">

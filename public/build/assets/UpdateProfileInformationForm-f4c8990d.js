@@ -1,1 +1,230 @@
-import{q as N,W as b,j as t,a as e,e as x,y}from"./app-50127253.js";import{I as l}from"./InputError-2b9a135c.js";import{I as C,S as _}from"./Select-4bbdf47a.js";import{I as i}from"./InputLabel-cc2f457d.js";import{P as F}from"./PrimaryButton-56a0c82f.js";import{S as I}from"./SecondaryButton-bc962aa5.js";import{T as o}from"./TextInput-01542f12.js";import{T as k}from"./Textarea-7764c47a.js";import{_ as w}from"./index-f4d5d2b2.js";import"./listbox-64a6e69d.js";import"./transition-42c9a528.js";import"./keyboard-038d4531.js";function Y({mustVerifyEmail:u,status:d,className:c,onHandleTab:p,picture:h}){const m=N().props.auth.user,{data:r,setData:n,errors:s,processing:f}=b({name:m.name,username:m.username,email:m.email,number_phone:m.number_phone,address:m.address,status:m.status,picture:""}),v=a=>{a.preventDefault(),y.post(route("profile.update"),{_method:"patch",...r,status:r.status.name},{onSuccess:()=>{w.success("Profile has been updated!")}})},g=[{id:1,name:"owner"},{id:2,name:"admin"},{id:3,name:"employee"}];return t("div",{className:c,children:[t("header",{children:[e("h2",{className:"text-lg font-medium text-gray-900",children:"Profile Information"}),e("p",{className:"mt-1 text-sm text-gray-600",children:"Update your account's profile information and email address."})]}),t("form",{onSubmit:v,className:"mt-6 space-y-6",children:[t("div",{className:"mb-6",children:[e(i,{htmlFor:"picture",value:"Picture"}),e(C,{picture:h,name:"picture",id:"picture",className:"text-third",onChange:a=>n("picture",a.target.files[0])}),s.picture?e(Error,{className:"",value:s.picture}):null]}),t("div",{children:[e(i,{htmlFor:"name",value:"Name"}),e(o,{id:"name",className:"mt-1 block w-full",value:r.name,onChange:a=>n("name",a.target.value),required:!0,isFocused:!0,autoComplete:"name"}),e(l,{className:"mt-2",message:s.name})]}),t("div",{children:[e(i,{htmlFor:"username",value:"Username"}),e(o,{id:"username",className:"mt-1 block w-full",value:r.username,onChange:a=>n("username",a.target.value),required:!0,isFocused:!0,autoComplete:"username"}),e(l,{className:"mt-2",message:s.username})]}),t("div",{children:[e(i,{htmlFor:"email",value:"Email"}),e(o,{id:"email",type:"email",className:"mt-1 block w-full",value:r.email,onChange:a=>n("email",a.target.value),required:!0,autoComplete:"username"}),e(l,{className:"mt-2",message:s.email})]}),t("div",{children:[e(i,{htmlFor:"number_phone",value:"Number Phone"}),e(o,{id:"number_phone",className:"mt-1 block w-full",value:r.number_phone,onChange:a=>n("number_phone",a.target.value),required:!0,isFocused:!0,autoComplete:"number_phone"}),e(l,{className:"mt-2",message:s.number_phone})]}),t("div",{children:[e(i,{htmlFor:"status",value:"Status"}),e(_,{value:r.status,data:g,onChange:a=>n("status",a)}),s.status?e(Error,{className:"",value:s.status}):null,e(l,{className:"mt-2",message:s.status})]}),t("div",{children:[e(i,{htmlFor:"address",value:"Address"}),e(k,{rows:"6",name:"address",id:"address",onChange:a=>n("address",a.target.value),value:r.address}),s.address?e(Error,{className:"",value:s.address}):null,e(l,{className:"mt-2",message:s.address})]}),u&&m.email_verified_at===null&&t("div",{children:[t("p",{className:"text-sm mt-2 text-gray-800",children:["Your email address is unverified.",e(x,{href:route("verification.send"),method:"post",as:"button",className:"underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500",children:"Click here to re-send the verification email."})]}),d==="verification-link-sent"&&e("div",{className:"mt-2 font-medium text-sm text-green-600",children:"A new verification link has been sent to your email address."})]}),t("div",{className:"flex items-center gap-2",children:[e(I,{type:"button",onClick:p,children:"Cancel"}),e(F,{disabled:f,children:"Update"})]})]})]})}export{Y as default};
+import { q as N, W as b, j as t, a as e, e as x, y } from "./app-50127253.js";
+import { I as l } from "./InputError-2b9a135c.js";
+import { I as C, S as _ } from "./Select-4bbdf47a.js";
+import { I as i } from "./InputLabel-cc2f457d.js";
+import { P as F } from "./PrimaryButton-56a0c82f.js";
+import { S as I } from "./SecondaryButton-bc962aa5.js";
+import { T as o } from "./TextInput-01542f12.js";
+import { T as k } from "./Textarea-7764c47a.js";
+import { _ as w } from "./index-f4d5d2b2.js";
+import "./listbox-64a6e69d.js";
+import "./transition-42c9a528.js";
+import "./keyboard-038d4531.js";
+function Y({
+    mustVerifyEmail: u,
+    status: d,
+    className: c,
+    onHandleTab: p,
+    picture: h,
+}) {
+    const m = N().props.auth.user,
+        {
+            data: r,
+            setData: n,
+            errors: s,
+            processing: f,
+        } = b({
+            name: m.name,
+            username: m.username,
+            email: m.email,
+            number_phone: m.number_phone,
+            address: m.address,
+            status: m.status,
+            picture: "",
+        }),
+        v = (a) => {
+            a.preventDefault(),
+                y.post(
+                    route("profile.update"),
+                    { _method: "patch", ...r, status: r.status.name },
+                    {
+                        onSuccess: () => {
+                            w.success("Profile has been updated!");
+                        },
+                    }
+                );
+        },
+        g = [
+            { id: 1, name: "owner" },
+            { id: 2, name: "admin" },
+            { id: 3, name: "employee" },
+        ];
+    return t("div", {
+        className: c,
+        children: [
+            t("header", {
+                children: [
+                    e("h2", {
+                        className: "text-lg font-medium text-gray-900",
+                        children: "Profile Information",
+                    }),
+                    e("p", {
+                        className: "mt-1 text-sm text-gray-600",
+                        children:
+                            "Update your account's profile information and email address.",
+                    }),
+                ],
+            }),
+            t("form", {
+                onSubmit: v,
+                className: "mt-6 space-y-6",
+                children: [
+                    t("div", {
+                        className: "mb-6",
+                        children: [
+                            e(i, { htmlFor: "picture", value: "Picture" }),
+                            e(C, {
+                                picture: h,
+                                name: "picture",
+                                id: "picture",
+                                className: "text-third",
+                                onChange: (a) =>
+                                    n("picture", a.target.files[0]),
+                            }),
+                            s.picture
+                                ? e(Error, { className: "", value: s.picture })
+                                : null,
+                        ],
+                    }),
+                    t("div", {
+                        children: [
+                            e(i, { htmlFor: "name", value: "Name" }),
+                            e(o, {
+                                id: "name",
+                                className: "mt-1 block w-full",
+                                value: r.name,
+                                onChange: (a) => n("name", a.target.value),
+                                required: !0,
+                                isFocused: !0,
+                                autoComplete: "name",
+                            }),
+                            e(l, { className: "mt-2", message: s.name }),
+                        ],
+                    }),
+                    t("div", {
+                        children: [
+                            e(i, { htmlFor: "username", value: "Username" }),
+                            e(o, {
+                                id: "username",
+                                className: "mt-1 block w-full",
+                                value: r.username,
+                                onChange: (a) => n("username", a.target.value),
+                                required: !0,
+                                isFocused: !0,
+                                autoComplete: "username",
+                            }),
+                            e(l, { className: "mt-2", message: s.username }),
+                        ],
+                    }),
+                    t("div", {
+                        children: [
+                            e(i, { htmlFor: "email", value: "Email" }),
+                            e(o, {
+                                id: "email",
+                                type: "email",
+                                className: "mt-1 block w-full",
+                                value: r.email,
+                                onChange: (a) => n("email", a.target.value),
+                                required: !0,
+                                autoComplete: "username",
+                            }),
+                            e(l, { className: "mt-2", message: s.email }),
+                        ],
+                    }),
+                    t("div", {
+                        children: [
+                            e(i, {
+                                htmlFor: "number_phone",
+                                value: "Number Phone",
+                            }),
+                            e(o, {
+                                id: "number_phone",
+                                className: "mt-1 block w-full",
+                                value: r.number_phone,
+                                onChange: (a) =>
+                                    n("number_phone", a.target.value),
+                                required: !0,
+                                isFocused: !0,
+                                autoComplete: "number_phone",
+                            }),
+                            e(l, {
+                                className: "mt-2",
+                                message: s.number_phone,
+                            }),
+                        ],
+                    }),
+                    t("div", {
+                        children: [
+                            e(i, { htmlFor: "status", value: "Status" }),
+                            e(_, {
+                                value: r.status,
+                                data: g,
+                                onChange: (a) => n("status", a),
+                            }),
+                            s.status
+                                ? e(Error, { className: "", value: s.status })
+                                : null,
+                            e(l, { className: "mt-2", message: s.status }),
+                        ],
+                    }),
+                    t("div", {
+                        children: [
+                            e(i, { htmlFor: "address", value: "Address" }),
+                            e(k, {
+                                rows: "6",
+                                name: "address",
+                                id: "address",
+                                onChange: (a) => n("address", a.target.value),
+                                value: r.address,
+                            }),
+                            s.address
+                                ? e(Error, { className: "", value: s.address })
+                                : null,
+                            e(l, { className: "mt-2", message: s.address }),
+                        ],
+                    }),
+                    u &&
+                        m.email_verified_at === null &&
+                        t("div", {
+                            children: [
+                                t("p", {
+                                    className: "text-sm mt-2 text-fourth",
+                                    children: [
+                                        "Your email address is unverified.",
+                                        e(x, {
+                                            href: route("verification.send"),
+                                            method: "post",
+                                            as: "button",
+                                            className:
+                                                "underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary",
+                                            children:
+                                                "Click here to re-send the verification email.",
+                                        }),
+                                    ],
+                                }),
+                                d === "verification-link-sent" &&
+                                    e("div", {
+                                        className:
+                                            "mt-2 font-medium text-sm text-green-600",
+                                        children:
+                                            "A new verification link has been sent to your email address.",
+                                    }),
+                            ],
+                        }),
+                    t("div", {
+                        className: "flex items-center gap-2",
+                        children: [
+                            e(I, {
+                                type: "button",
+                                onClick: p,
+                                children: "Cancel",
+                            }),
+                            e(F, { disabled: f, children: "Update" }),
+                        ],
+                    }),
+                ],
+            }),
+        ],
+    });
+}
+export { Y as default };

@@ -10,17 +10,16 @@ import Toast from "@/Components/Toast";
 import App from "@/Layouts/App";
 import { Head, useForm, router } from "@inertiajs/react";
 import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { numberFormat } from "@/Libs/Helper";
 import TextInput from "@/Components/TextInput";
 import ActionLink from "@/Components/ActionLink";
+import TabLink from "@/Components/Ui/TabLink";
+import Select2 from "react-select";
 
-export default function Index({ total_products, ...props }) {
+export default function Index({ total_products, suppliers, ...props }) {
     const { data: products, meta, links } = props.products;
-
-    const [searchQuery, setSearchQuery] = useState();
-
     const {
         delete: destroy,
         data,
@@ -34,16 +33,15 @@ export default function Index({ total_products, ...props }) {
         picture: "",
     });
 
-    let [isOpen, setIsOpen] = useState(false);
-    let [isToast, setIsToast] = useState(false);
-
+    const [isOpen, setIsOpen] = useState(false);
+    const [isToast, setIsToast] = useState(false);
     const [modalProduct, setModalProduct] = useState("");
-
     const [toastTitle, setToastTitle] = useState("");
-
     const [modalType, setModalType] = useState("");
-
     const [productSlug, setProductSlug] = useState("");
+
+    const [searchQuery, setSearchQuery] = useState("");
+    const [selectedSupplier, setSelectedSupplier] = useState(null);
 
     function openModalCategory(productSlug, type) {
         setIsOpen(true);
@@ -54,7 +52,6 @@ export default function Index({ total_products, ...props }) {
             const selectedProduct = products.find(
                 (product) => product.slug === productSlug
             );
-            setProductSlug(productSlug);
             setData({
                 name: selectedProduct.name,
                 slug: selectedProduct.slug,
@@ -64,7 +61,6 @@ export default function Index({ total_products, ...props }) {
                 picture: selectedProduct.picture,
             });
         } else {
-            setProductSlug("");
             setData({
                 name: "",
                 supplier_id: "",
@@ -76,18 +72,14 @@ export default function Index({ total_products, ...props }) {
         }
     }
 
-    function openToast(productSlug, title) {
-        setIsToast(true);
-        setToastTitle(title);
-        setProductSlug(productSlug);
-    }
-
     function onCancelModal() {
         setIsOpen(false);
     }
 
-    function onCancelToast() {
-        setIsToast(false);
+    function openToast(productSlug, title) {
+        setIsToast(true);
+        setToastTitle(title);
+        setProductSlug(productSlug);
     }
 
     const onSubmit = (e) => {
@@ -96,7 +88,7 @@ export default function Index({ total_products, ...props }) {
             `/admin/setting/product`,
             {
                 ...data,
-                supplier_id: data.supplier_id.id,
+                supplier_id: data.supplier_id,
                 category_id: data.category_id.id,
             },
             {
@@ -106,7 +98,7 @@ export default function Index({ total_products, ...props }) {
                             name: "",
                             slug: "",
                             price: "",
-                            supplier_id_id: "",
+                            supplier_id: "",
                             category_id: "",
                             picture: "",
                         }),
@@ -123,7 +115,7 @@ export default function Index({ total_products, ...props }) {
             {
                 _method: "put",
                 ...data,
-                supplier_id: data.supplier_id.id,
+                supplier_id: data.supplier_id,
                 category_id: data.category_id.id,
             },
             {
@@ -142,6 +134,7 @@ export default function Index({ total_products, ...props }) {
             }
         );
     };
+
     const onDelete = (productSlug) => {
         destroy(route("admin.product.destroy", productSlug), {
             onSuccess: () => {
@@ -151,12 +144,12 @@ export default function Index({ total_products, ...props }) {
     };
 
     const handleSearch = (e) => {
-        e.preventDefault();
         setSearchQuery(e.target.value);
         router.get(
             `/admin/setting/product`,
             {
                 search: e.target.value,
+                supplier: selectedSupplier,
             },
             {
                 preserveState: true,
@@ -164,16 +157,42 @@ export default function Index({ total_products, ...props }) {
         );
     };
 
+    const handleSupplierChange = (selectedOption) => {
+        const value = selectedOption ? selectedOption.value : "";
+        setSelectedSupplier(value || "all");
+        router.get(
+            `/admin/setting/product`,
+            {
+                search: searchQuery,
+                supplier: value,
+            },
+            {
+                preserveState: true,
+            }
+        );
+    };
+
+    const supplierOptions = [
+        { value: "all", label: "All Suppliers" }, // Add this option
+        ...suppliers.map((supplier) => ({
+            value: supplier.id,
+            label: supplier.name,
+        })),
+    ];
+
+    const selectedSupplierOption = supplierOptions.find(
+        (option) => option.value === selectedSupplier
+    ) || { value: "all", label: "All Suppliers" };
+
     return (
         <>
             <Head title="Setting" />
             <Container>
-                {/* Start Menus */}
                 <h3 className="text-2xl mt-10 mb-4 font-semibold text-fourth">
-                    Menus
+                    Products
                 </h3>
                 <div className="flex justify-between gap-2 w-full item-center my-2">
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 w-min">
                         <ActionLink href={route("admin.dashboard")} />
 
                         <ActionButton
@@ -183,13 +202,77 @@ export default function Index({ total_products, ...props }) {
                             <IconPlus size={18} />
                         </ActionButton>
                     </div>
-                    <TextInput
-                        type="search"
-                        className="w-3/4 md:w-1/4"
-                        placeholder="Search menu.."
-                        defaultValue={searchQuery}
-                        onChange={handleSearch}
-                    />
+                    <div className="flex w-3/4 md:w-1/2 gap-2">
+                        <Select2
+                            id="supplier-select"
+                            value={selectedSupplierOption}
+                            options={supplierOptions}
+                            className="w-full md:w-1/2"
+                            onChange={handleSupplierChange}
+                            styles={{
+                                control: (provided, state) => ({
+                                    ...provided,
+                                    border: state.isFocused
+                                        ? "2px solid #d4d4d8"
+                                        : "2px solid #d4d4d8",
+                                    boxShadow: "none",
+                                    "&:hover": {
+                                        border: "2px solid #d4d4d8",
+                                    },
+                                    height: "44px",
+                                    borderRadius: "8px",
+                                }),
+                                option: (provided, state) => ({
+                                    ...provided,
+                                    backgroundColor: state.isSelected
+                                        ? "#d4d4d8"
+                                        : state.isFocused
+                                        ? "#d4d4d8"
+                                        : null,
+                                    color: "black",
+                                }),
+                                menu: (provided) => ({
+                                    ...provided,
+                                    borderRadius: "8px",
+                                }),
+                                menuList: (provided) => ({
+                                    ...provided,
+                                    borderRadius: "8px",
+                                }),
+                            }}
+                            theme={(theme) => ({
+                                ...theme,
+                                borderRadius: 8,
+                                colors: {
+                                    ...theme.colors,
+                                    primary25: "#d4d4d8",
+                                    primary: "black",
+                                },
+                            })}
+                        />
+                        <TextInput
+                            type="search"
+                            className="w-full md:w-1/2"
+                            placeholder="Search menu.."
+                            value={searchQuery}
+                            onChange={handleSearch}
+                        />
+                    </div>
+                </div>
+
+                <div className="flex items-center gap-2 py-2">
+                    <TabLink
+                        href={route("admin.product.index")}
+                        active={route().current("admin.product.index")}
+                    >
+                        Semua Menu
+                    </TabLink>
+                    <TabLink
+                        href={route("admin.product.today.index")}
+                        active={route().current("admin.product.today.index")}
+                    >
+                        Menu Hari Ini
+                    </TabLink>
                 </div>
                 <Table>
                     <Table.Thead>
@@ -197,7 +280,7 @@ export default function Index({ total_products, ...props }) {
                             <Table.Th>#</Table.Th>
                             <Table.Th>Supplier</Table.Th>
                             <Table.Th>Name</Table.Th>
-                            <Table.Th>Category </Table.Th>
+                            <Table.Th>Category</Table.Th>
                             <Table.Th>Price</Table.Th>
                             <Table.Th>Picture</Table.Th>
                             <Table.Th>Action</Table.Th>
@@ -205,81 +288,75 @@ export default function Index({ total_products, ...props }) {
                     </Table.Thead>
                     <Table.Tbody>
                         {products.length > 0 ? (
-                            <>
-                                {products.map((product, index) => (
-                                    <tr
-                                        className="bg-white border-b"
-                                        key={index}
-                                    >
-                                        <Table.Td className="w-5">
-                                            {meta.from + index}
-                                        </Table.Td>
-                                        <Table.Td className="font-bold">
-                                            {product.supplier.name.toUpperCase()}
-                                        </Table.Td>
-                                        <Table.Td>{product.name}</Table.Td>
-                                        <Table.Td>
-                                            <span
-                                                className={`text-xs p-2 ${
-                                                    product.category.id == 1
-                                                        ? "bg-sky text-white rounded"
-                                                        : product.category.id ==
-                                                          2
-                                                        ? "bg-emerald text-white rounded"
-                                                        : "bg-violet text-white rounded"
-                                                }`}
-                                            >
-                                                {product.category.name.toUpperCase()}
-                                            </span>
-                                        </Table.Td>
-                                        <Table.Td>
-                                            <sup> Rp.</sup>{" "}
-                                            {numberFormat(product.price)}
-                                        </Table.Td>
-                                        <Table.Td>
-                                            <img
-                                                src={
-                                                    product.picture
-                                                        ? product.picture
-                                                        : "https://flowbite.com/docs/images/blog/image-1.jpg"
+                            products.map((product, index) => (
+                                <tr className="bg-white border-b" key={index}>
+                                    <Table.Td className="w-5">
+                                        {meta.from + index}
+                                    </Table.Td>
+                                    <Table.Td className="font-bold">
+                                        {product.supplier.name.toUpperCase()}
+                                    </Table.Td>
+                                    <Table.Td>{product.name}</Table.Td>
+                                    <Table.Td>
+                                        <span
+                                            className={`text-xs p-2 ${
+                                                product.category.id === 1
+                                                    ? "bg-sky text-white rounded"
+                                                    : product.category.id === 2
+                                                    ? "bg-emerald text-white rounded"
+                                                    : "bg-violet text-white rounded"
+                                            }`}
+                                        >
+                                            {product.category.name.toUpperCase()}
+                                        </span>
+                                    </Table.Td>
+                                    <Table.Td>
+                                        <sup> Rp.</sup>{" "}
+                                        {numberFormat(product.price)}
+                                    </Table.Td>
+                                    <Table.Td>
+                                        <img
+                                            src={
+                                                product.picture
+                                                    ? product.picture
+                                                    : "https://flowbite.com/docs/images/blog/image-1.jpg"
+                                            }
+                                            className="rounded w-12 h-12"
+                                        />
+                                    </Table.Td>
+                                    <Table.Td className="w-10">
+                                        <div className="flex flex-nowrap gap-2">
+                                            <ActionButton
+                                                className="w-8 h-8 bg-yellow-400"
+                                                type="button"
+                                                onClick={() =>
+                                                    openModalCategory(
+                                                        product.slug,
+                                                        "edit"
+                                                    )
                                                 }
-                                                className="rounded w-12 h-12"
-                                            />
-                                        </Table.Td>
-                                        <Table.Td className="w-10">
-                                            <div className="flex flex-nowrap gap-2">
-                                                <ActionButton
-                                                    className="w-8 h-8 bg-yellow-400"
-                                                    type="button"
-                                                    onClick={() =>
-                                                        openModalCategory(
-                                                            product.slug,
-                                                            "edit"
-                                                        )
-                                                    }
-                                                >
-                                                    <IconEdit size={18} />
-                                                </ActionButton>
-                                                <ActionButton
-                                                    className="w-8 h-8 bg-red-500"
-                                                    type="button"
-                                                    onClick={() =>
-                                                        openToast(
-                                                            product.slug,
-                                                            product.name
-                                                        )
-                                                    }
-                                                >
-                                                    <IconTrash size={18} />
-                                                </ActionButton>
-                                            </div>
-                                        </Table.Td>
-                                    </tr>
-                                ))}
-                            </>
+                                            >
+                                                <IconEdit size={18} />
+                                            </ActionButton>
+                                            <ActionButton
+                                                className="w-8 h-8 bg-red-500"
+                                                type="button"
+                                                onClick={() =>
+                                                    openToast(
+                                                        product.slug,
+                                                        product.name
+                                                    )
+                                                }
+                                            >
+                                                <IconTrash size={18} />
+                                            </ActionButton>
+                                        </div>
+                                    </Table.Td>
+                                </tr>
+                            ))
                         ) : (
                             <tr className="bg-white border-b text-secondary text-center">
-                                <Table.Td colSpan="6">No data</Table.Td>
+                                <Table.Td colSpan="7">No data</Table.Td>
                             </tr>
                         )}
                     </Table.Tbody>
@@ -288,12 +365,11 @@ export default function Index({ total_products, ...props }) {
                     <div className="flex w-full justify-between items-center">
                         <Pagination meta={meta} links={links} />
                         <p className="text-sm text-third mt-10">
-                            Total Menus:{" "}
+                            Total Products:{" "}
                             <span className="font-bold">{total_products}</span>{" "}
                         </p>
                     </div>
                 )}
-                {/* End Menus */}
 
                 {/* Modal */}
                 <MyModal
@@ -304,7 +380,7 @@ export default function Index({ total_products, ...props }) {
                     title={modalProduct}
                 >
                     <form
-                        onSubmit={modalType == "create" ? onSubmit : onUpdate}
+                        onSubmit={modalType === "create" ? onSubmit : onUpdate}
                         className="mt-6"
                     >
                         <ProductForm {...{ data, setData }} />
@@ -313,7 +389,7 @@ export default function Index({ total_products, ...props }) {
                                 Cancel
                             </SecondaryButton>
                             <PrimaryButton type="submit">
-                                {modalType == "create" ? "Create" : "Update"}
+                                {modalType === "create" ? "Create" : "Update"}
                             </PrimaryButton>
                         </div>
                     </form>
@@ -323,13 +399,19 @@ export default function Index({ total_products, ...props }) {
                 <Toast
                     isToast={isToast}
                     onClose={() => setIsToast(false)}
-                    title={toastTitle}
+                    title={`This action will start the Product deletion process. Do you want to delete the Product? ${toastTitle}? `}
                 >
-                    <div className="flex justify-end gap-2 justify-center">
-                        <SecondaryButton onClick={() => onCancelToast()}>
+                    <div className="flex justify-end gap-2 justify-end">
+                        <SecondaryButton
+                            onClick={() => setIsToast(false)}
+                            className="w-32"
+                        >
                             No
                         </SecondaryButton>
-                        <PrimaryButton onClick={() => onDelete(productSlug)}>
+                        <PrimaryButton
+                            onClick={() => onDelete(productSlug)}
+                            className="w-32"
+                        >
                             Yes
                         </PrimaryButton>
                     </div>

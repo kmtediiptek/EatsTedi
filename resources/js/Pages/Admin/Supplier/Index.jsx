@@ -185,7 +185,7 @@ export default function Index({ total_suppliers, ...props }) {
                                             supplier.is_active === 1
                                                 ? "bg-white"
                                                 : "bg-secondary"
-                                        } border-b text-secondary`}
+                                        } border-b`}
                                         key={index}
                                     >
                                         <Table.Td className="w-5">

@@ -76,7 +76,7 @@ const p = d.createContext(),
         e(h, {
             ...n,
             className:
-                "block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out " +
+                "block w-full px-4 py-2 text-left text-sm leading-5 text-fourth hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out " +
                 t,
             children: i,
         });
@@ -90,7 +90,7 @@ function m({ active: t = !1, className: i = "", children: n, ...a }) {
             "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none " +
             (t
                 ? "border-indigo-400 text-gray-900 focus:border-indigo-700 "
-                : "border-transparent text-secondary hover:text-gray-700 hover:border-gray-300 focus:text-gray-700 focus:border-gray-300 ") +
+                : "border-transparent text-secondary hover:text-fourth hover:border-gray-300 focus:text-fourth focus:border-gray-300 ") +
             i,
         children: n,
     });
@@ -101,7 +101,7 @@ function c({ active: t = !1, className: i = "", children: n, ...a }) {
         className: `w-full flex items-start pl-3 pr-4 py-2 border-l-4 ${
             t
                 ? "border-indigo-400 text-indigo-700 bg-indigo-50 focus:text-indigo-800 focus:bg-indigo-100 focus:border-indigo-700"
-                : "border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300"
+                : "border-transparent text-gray-600 hover:text-fourth hover:bg-gray-50 hover:border-gray-300 focus:text-fourth focus:bg-gray-50 focus:border-gray-300"
         } text-base font-medium focus:outline-none transition duration-150 ease-in-out ${i}`,
         children: n,
     });
@@ -230,7 +230,7 @@ function L() {
                                                 children: r("button", {
                                                     type: "button",
                                                     className:
-                                                        "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-secondary bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150",
+                                                        "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-secondary bg-white hover:text-fourth focus:outline-none transition ease-in-out duration-150",
                                                     children: [
                                                         r("div", {
                                                             className:
@@ -361,7 +361,7 @@ function L() {
                                 children: [
                                     e("div", {
                                         className:
-                                            "font-medium text-base text-gray-800",
+                                            "font-medium text-base text-fourth",
                                         children: t.user.name,
                                     }),
                                     e("div", {

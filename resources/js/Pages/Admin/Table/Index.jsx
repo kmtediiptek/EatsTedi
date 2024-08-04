@@ -163,7 +163,7 @@ export default function Index({ total_tables, ...props }) {
                             <>
                                 {tables.map((table, index) => (
                                     <tr
-                                        className="bg-white border-b text-secondary"
+                                        className="bg-white border-b"
                                         key={index}
                                     >
                                         <Table.Td className="w-5">

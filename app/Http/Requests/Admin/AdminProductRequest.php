@@ -29,6 +29,7 @@ class AdminProductRequest extends FormRequest
                 'name' => ['required', 'string', 'min:3'],
                 'price' => ['required', 'numeric', 'min:3'],
                 'category_id' => ['nullable'],
+                'supplier_id' => ['nullable'],
             ];
         }
 
@@ -37,6 +38,7 @@ class AdminProductRequest extends FormRequest
             'name' => ['required', 'string', 'min:3'],
             'price' => ['required', 'numeric', 'min:3'],
             'category_id' => ['required'],
+            'supplier_id' => ['required'],
         ];
     }
 }

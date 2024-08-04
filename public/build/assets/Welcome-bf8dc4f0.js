@@ -60,7 +60,7 @@ function n(t) {
                                         r("a", {
                                             href: "https://laravel.com/docs",
                                             className:
-                                                "scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-secondary/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500",
+                                                "scale-100 p-6 bg-white dark:bg-fourth/50 dark:bg-gradient-to-bl from-fourth/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-secondary/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500",
                                             children: [
                                                 r("div", {
                                                     children: [
@@ -120,7 +120,7 @@ function n(t) {
                                         r("a", {
                                             href: "https://laracasts.com",
                                             className:
-                                                "scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-secondary/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500",
+                                                "scale-100 p-6 bg-white dark:bg-fourth/50 dark:bg-gradient-to-bl from-fourth/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-secondary/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500",
                                             children: [
                                                 r("div", {
                                                     children: [
@@ -178,7 +178,7 @@ function n(t) {
                                         r("a", {
                                             href: "https://laravel-news.com",
                                             className:
-                                                "scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-secondary/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500",
+                                                "scale-100 p-6 bg-white dark:bg-fourth/50 dark:bg-gradient-to-bl from-fourth/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-secondary/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500",
                                             children: [
                                                 r("div", {
                                                     children: [
@@ -237,7 +237,7 @@ function n(t) {
                                         }),
                                         e("div", {
                                             className:
-                                                "scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-secondary/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500",
+                                                "scale-100 p-6 bg-white dark:bg-fourth/50 dark:bg-gradient-to-bl from-fourth/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-secondary/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500",
                                             children: r("div", {
                                                 children: [
                                                     e("div", {
@@ -278,7 +278,7 @@ function n(t) {
                                                             e("a", {
                                                                 href: "https://forge.laravel.com",
                                                                 className:
-                                                                    "underline hover:text-gray-700 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
+                                                                    "underline hover:text-fourth dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
                                                                 children:
                                                                     "Forge",
                                                             }),
@@ -287,7 +287,7 @@ function n(t) {
                                                             e("a", {
                                                                 href: "https://vapor.laravel.com",
                                                                 className:
-                                                                    "underline hover:text-gray-700 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
+                                                                    "underline hover:text-fourth dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
                                                                 children:
                                                                     "Vapor",
                                                             }),
@@ -296,7 +296,7 @@ function n(t) {
                                                             e("a", {
                                                                 href: "https://nova.laravel.com",
                                                                 className:
-                                                                    "underline hover:text-gray-700 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
+                                                                    "underline hover:text-fourth dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
                                                                 children:
                                                                     "Nova",
                                                             }),
@@ -305,7 +305,7 @@ function n(t) {
                                                             e("a", {
                                                                 href: "https://envoyer.io",
                                                                 className:
-                                                                    "underline hover:text-gray-700 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
+                                                                    "underline hover:text-fourth dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
                                                                 children:
                                                                     "Envoyer",
                                                             }),
@@ -315,7 +315,7 @@ function n(t) {
                                                             e("a", {
                                                                 href: "https://laravel.com/docs/billing",
                                                                 className:
-                                                                    "underline hover:text-gray-700 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
+                                                                    "underline hover:text-fourth dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
                                                                 children:
                                                                     "Cashier",
                                                             }),
@@ -324,7 +324,7 @@ function n(t) {
                                                             e("a", {
                                                                 href: "https://laravel.com/docs/dusk",
                                                                 className:
-                                                                    "underline hover:text-gray-700 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
+                                                                    "underline hover:text-fourth dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
                                                                 children:
                                                                     "Dusk",
                                                             }),
@@ -333,7 +333,7 @@ function n(t) {
                                                             e("a", {
                                                                 href: "https://laravel.com/docs/broadcasting",
                                                                 className:
-                                                                    "underline hover:text-gray-700 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
+                                                                    "underline hover:text-fourth dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
                                                                 children:
                                                                     "Echo",
                                                             }),
@@ -342,7 +342,7 @@ function n(t) {
                                                             e("a", {
                                                                 href: "https://laravel.com/docs/horizon",
                                                                 className:
-                                                                    "underline hover:text-gray-700 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
+                                                                    "underline hover:text-fourth dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
                                                                 children:
                                                                     "Horizon",
                                                             }),
@@ -351,7 +351,7 @@ function n(t) {
                                                             e("a", {
                                                                 href: "https://laravel.com/docs/sanctum",
                                                                 className:
-                                                                    "underline hover:text-gray-700 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
+                                                                    "underline hover:text-fourth dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
                                                                 children:
                                                                     "Sanctum",
                                                             }),
@@ -360,7 +360,7 @@ function n(t) {
                                                             e("a", {
                                                                 href: "https://laravel.com/docs/telescope",
                                                                 className:
-                                                                    "underline hover:text-gray-700 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
+                                                                    "underline hover:text-fourth dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
                                                                 children:
                                                                     "Telescope",
                                                             }),
@@ -386,7 +386,7 @@ function n(t) {
                                             children: r("a", {
                                                 href: "https://github.com/sponsors/taylorotwell",
                                                 className:
-                                                    "group inline-flex items-center hover:text-gray-700 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
+                                                    "group inline-flex items-center hover:text-fourth dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500",
                                                 children: [
                                                     e("svg", {
                                                         xmlns: "http://www.w3.org/2000/svg",

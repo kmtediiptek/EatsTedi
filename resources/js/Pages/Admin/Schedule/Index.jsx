@@ -166,7 +166,7 @@ export default function Index({ total_payments, ...props }) {
                             <>
                                 {schedules.map((schedule, index) => (
                                     <tr
-                                        className="bg-white border-b text-secondary"
+                                        className="bg-white border-b"
                                         key={index}
                                     >
                                         <Table.Td className="w-5">

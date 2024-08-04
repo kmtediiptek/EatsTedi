@@ -20,7 +20,7 @@ export default function Select({ className = 'w-full', data, value, onChange, pl
             onChange={handleSelect}
             open={isOpen}
         >
-            <Listbox.Button className={clsx("flex h-11 w-full items-center justify-between rounded border border-gray-300 px-4 focus:outline-none", className)}>
+            <Listbox.Button className={clsx("flex h-11 w-full items-center justify-between rounded border border-secondary px-4 focus:outline-none", className)}>
                 <span className="capitalize line-clamp-1">{value.name || value || placeholder}</span>
                 <div onClick={() => setIsOpen(!isOpen)}>
                     <svg
@@ -56,7 +56,7 @@ export default function Select({ className = 'w-full', data, value, onChange, pl
                                         'flex cursor-pointer items-center py-1.5 px-4',
                                         active && 'bg-secondary/50',
                                         selected &&
-                                        'bg-primary-50 font-semibold text-primary hover:bg-primary'
+                                        'bg-primary font-semibold text-primary hover:bg-primary'
                                     )}
                                 >
                                     <span className="capitalize line-clamp-1">{item.name}</span>

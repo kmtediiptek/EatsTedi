@@ -71,7 +71,7 @@ function N({ isToast: a, name: t, onClose: o, title: i, children: d }) {
                                         s(l.Title, {
                                             as: "h3",
                                             className:
-                                                "text-center mt-5 text-fourth leading-6 mb-5 mt-4 text-gray-700",
+                                                "text-center mt-5 text-fourth leading-6 mb-5 mt-4 text-fourth",
                                             children: [
                                                 e("p", {
                                                     className:

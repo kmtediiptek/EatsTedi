@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\AdminProductRequest;
 use App\Http\Resources\Admin\AdminProductResource;
 use App\Models\Activity;
 use App\Models\Category;
+use App\Models\DailyStock;
 use App\Models\Product;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
@@ -26,31 +27,36 @@ class AdminProductController extends Controller
 
     public function index(Request $request)
     {
-        $total_products = Product::get()->count();
+        // Get total products count
+        $total_products = Product::count();
 
+        // Retrieve search term and supplier filter from request
         $search_products = $request->input('search');
+        $selected_supplier = $request->input('supplier');
 
+        // Build the query
+        $query = Product::query()
+            ->select('id', 'supplier_id', 'category_id', 'name', 'slug', 'price', 'picture')
+            ->with([
+                "category" => fn ($query) => $query->select('name', 'slug', 'id'),
+                "supplier" => fn ($query) => $query->select('name', 'username', 'id'),
+            ])
+            ->latest();
+
+        // Apply search filter
         if ($search_products) {
-            $products = Product::query()
-                ->where('name', 'LIKE', "%$search_products%")
-                ->select('id', 'category_id', 'name', 'slug', 'price', 'picture')
-                ->with([
-                    "category" => fn ($query) => $query->select('name', 'slug', 'id'),
-                    "supplier" => fn ($query) => $query->select('name', 'username', 'id'),
-                ])
-                ->latest()
-                ->fastPaginate(10)->withQueryString();
-        } else {
-            $products = Product::query()
-                ->select('id', 'supplier_id', 'supplier_id', 'category_id', 'name', 'slug', 'price', 'picture')
-                ->with([
-                    "category" => fn ($query) => $query->select('name', 'slug', 'id'),
-                    "supplier" => fn ($query) => $query->select('name', 'username', 'id'),
-                ])
-                ->latest()
-                ->fastPaginate(10);
+            $query->where('name', 'LIKE', "%$search_products%");
         }
 
+        // Apply supplier filter
+        if ($selected_supplier && $selected_supplier !== 'all') {
+            $query->where('supplier_id', $selected_supplier);
+        }
+
+        // Fetch filtered products with pagination
+        $products = $query->fastPaginate(10)->withQueryString();
+
+        // Return view with data
         return inertia('Admin/Product/Index', [
             "products" => AdminProductResource::collection($products),
             "total_products" => $total_products,
@@ -63,13 +69,19 @@ class AdminProductController extends Controller
     {
         $picture = $request->file('picture');
 
-        Product::create([
+        $product = Product::create([
             "name" => $request->name,
             "slug" => $slug = str($request->name . '-' .  rand(10, 100))->slug(),
             "supplier_id" => $request->supplier_id,
             "category_id" => $request->category_id,
             "price" => $request->price,
             "picture" => $request->hasFile('picture') ? $picture->storeAs('images/products', $slug . '.' . $picture->extension()) : null
+        ]);
+
+        DailyStock::create([
+            "product_id" => $product->id,
+            "quantity" => 0,
+            "sold" => 0
         ]);
 
         Activity::create([
@@ -81,8 +93,6 @@ class AdminProductController extends Controller
 
     public function update(AdminProductRequest $request, Product $product)
     {
-
-
         $picture = $request->file('picture');
         if ($picture) {
             $request->validate([

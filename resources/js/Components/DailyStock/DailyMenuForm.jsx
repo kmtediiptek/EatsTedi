@@ -1,0 +1,199 @@
+import React, { useState } from "react";
+import { useForm, usePage, router } from "@inertiajs/react";
+import Select2 from "react-select";
+import InputLabel from "../InputLabel";
+import TextInput from "../TextInput";
+import Error from "../Error";
+import SecondaryButton from "../SecondaryButton";
+import PrimaryButton from "../PrimaryButton";
+
+export default function DailyMenuForm() {
+    const { data, setData, post } = useForm({
+        supplier_id: "",
+        daily_stocks: [],
+    });
+
+    const { errors, suppliers, daily_stocks } = usePage().props;
+    const [selectedSupplier, setSelectedSupplier] = useState(null);
+
+    const handleSupplierChange = (selectedOption) => {
+        const value = selectedOption ? selectedOption.value : "";
+        setSelectedSupplier(value || "all");
+        router.get(
+            `/admin/setting/product/today`,
+            {
+                supplier: value,
+            },
+            {
+                preserveState: true,
+                onSuccess: (page) => {
+                    setData("daily_stocks", page.props.daily_stocks.data);
+                },
+            }
+        );
+    };
+
+    const handleInputChange = (e, productId) => {
+        const newProducts = data.daily_stocks.map((product) =>
+            product.product.id === productId
+                ? { ...product, quantity: e.target.value }
+                : product
+        );
+        setData("daily_stocks", newProducts);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        post("/admin/setting/product/update-stock", {
+            onSuccess: () => {
+                setSelectedSupplier(null);
+                setData({
+                    supplier_id: "",
+                    daily_stocks: [],
+                });
+                setIsOpen(false);
+                toast.success("Stock updated successfully!");
+            },
+        });
+    };
+
+    const supplierOptions = suppliers.map((supplier) => ({
+        value: supplier.id,
+        label: supplier.name,
+    }));
+
+    const selectedSupplierOption = supplierOptions.find(
+        (option) => option.value === selectedSupplier
+    );
+
+    return (
+        <div>
+            <div className="mb-6">
+                <InputLabel htmlFor="supplier" value="Supplier" />
+                <Select2
+                    id="supplier-select"
+                    value={selectedSupplierOption}
+                    options={supplierOptions}
+                    className="w-full"
+                    onChange={handleSupplierChange}
+                    styles={{
+                        control: (provided, state) => ({
+                            ...provided,
+                            border: state.isFocused
+                                ? "2px solid #d4d4d8"
+                                : "2px solid #d4d4d8",
+                            boxShadow: "none",
+                            "&:hover": {
+                                border: "2px solid #d4d4d8",
+                            },
+                            height: "44px",
+                            borderRadius: "8px",
+                            zIndex: 9999,
+                        }),
+                        option: (provided, state) => ({
+                            ...provided,
+                            backgroundColor: state.isSelected
+                                ? "#d4d4d8"
+                                : state.isFocused
+                                ? "#d4d4d8"
+                                : null,
+                            color: "black",
+                        }),
+                        menu: (provided) => ({
+                            ...provided,
+                            borderRadius: "8px",
+                        }),
+                        menuList: (provided) => ({
+                            ...provided,
+                            borderRadius: "8px",
+                        }),
+                    }}
+                    theme={(theme) => ({
+                        ...theme,
+                        borderRadius: 8,
+                        colors: {
+                            ...theme.colors,
+                            primary25: "#d4d4d8",
+                            primary: "black",
+                        },
+                    })}
+                />
+                {errors.supplier_id && <Error value={errors.supplier_id} />}
+            </div>
+
+            {selectedSupplier ? (
+                <form onSubmit={handleSubmit}>
+                    <hr />
+                    <h4 className="text-lg text-fourth font-medium leading-6 mt-4 mb-4">
+                        Perbarui Seluruh Stock
+                    </h4>
+                    {data.daily_stocks.map((daily_stock) => (
+                        <div
+                            key={daily_stock.product.id}
+                            className="flex w-full gap-2 mb-6"
+                        >
+                            <div className="w-full">
+                                <InputLabel
+                                    htmlFor={`name-${daily_stock.product.id}`}
+                                    value="Name"
+                                />
+                                <TextInput
+                                    name={`name-${daily_stock.product.id}`}
+                                    id={`name-${daily_stock.product.id}`}
+                                    readOnly
+                                    className="w-full"
+                                    value={daily_stock.product.name}
+                                />
+                            </div>
+                            <div className="md:w-1/4">
+                                <InputLabel
+                                    htmlFor={`quantity-${daily_stock.product.id}`}
+                                    value="Initial Quantity"
+                                />
+                                <TextInput
+                                    name={`quantity-${daily_stock.product.id}`}
+                                    id={`quantity-${daily_stock.product.id}`}
+                                    type="number"
+                                    className="w-full"
+                                    onChange={(e) =>
+                                        handleInputChange(
+                                            e,
+                                            daily_stock.product.id
+                                        )
+                                    }
+                                    value={daily_stock.quantity || ""}
+                                />
+                                {errors[
+                                    `quantity-${daily_stock.product.id}`
+                                ] && (
+                                    <Error
+                                        value={
+                                            errors[
+                                                `quantity-${daily_stock.product.id}`
+                                            ]
+                                        }
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                    <div className="flex justify-end gap-2">
+                        <SecondaryButton
+                            type="button"
+                            onClick={() => setSelectedSupplier(null)}
+                        >
+                            Cancel
+                        </SecondaryButton>
+                        <PrimaryButton type="submit">
+                            Update Stock
+                        </PrimaryButton>
+                    </div>
+                </form>
+            ) : (
+                    <div className="flex w-full h-52 justify-center items-center text-fourth">
+                        <h3>Choose a Supplier First</h3>
+                    </div>
+            )}
+        </div>
+    );
+}

@@ -1234,7 +1234,7 @@ function Sn({
                                         K(te.Title, {
                                             as: "h3",
                                             className:
-                                                "text-lg text-fourth font-medium leading-6 mt-4 text-gray-700",
+                                                "text-lg text-fourth font-medium leading-6 mt-4 text-fourth",
                                             children: [
                                                 "Form ",
                                                 o == "create"

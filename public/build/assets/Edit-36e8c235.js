@@ -273,7 +273,7 @@ function $({
                                                         children: [
                                                             e("h2", {
                                                                 className:
-                                                                    "text-lg font-medium text-gray-700",
+                                                                    "text-lg font-medium text-fourth",
                                                                 children:
                                                                     "Information System",
                                                             }),
@@ -289,7 +289,7 @@ function $({
                                                         children: [
                                                             e("h2", {
                                                                 className:
-                                                                    "text-lg font-medium text-gray-700",
+                                                                    "text-lg font-medium text-fourth",
                                                                 children:
                                                                     "Profile Information",
                                                             }),
@@ -320,7 +320,7 @@ function $({
                                                               children: [
                                                                   e("h2", {
                                                                       className:
-                                                                          "text-lg font-medium text-gray-700",
+                                                                          "text-lg font-medium text-fourth",
                                                                       children:
                                                                           "Salary Information",
                                                                   }),
@@ -446,7 +446,7 @@ function $({
                                                     children: [
                                                         r("h2", {
                                                             className:
-                                                                "text-lg font-medium text-gray-700",
+                                                                "text-lg font-medium text-fourth",
                                                             children: [
                                                                 "Total Salary",
                                                                 " ",

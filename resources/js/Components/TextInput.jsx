@@ -26,7 +26,7 @@ export default forwardRef(function TextInput(
             {...props}
             type={type}
             className={clsx(
-                "border-gray-300 text-third focus:border-indigo-500 border-1 focus:ring-indigo-200 focus:bg-white rounded-md shadow-sm bg-white",
+                "border-gray-300 text-third focus:border-secondary border-1 focus:ring-indigo-200 focus:bg-white rounded-md shadow-sm bg-white",
                 className
             )}
             ref={input}

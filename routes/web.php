@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminActivityController;
 use App\Http\Controllers\Admin\AdminCartController;
 use App\Http\Controllers\Admin\AdminCategoryController;
+use App\Http\Controllers\Admin\AdminDailyMenuController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminInvoiceController;
 use App\Http\Controllers\Admin\AdminPaymentController;
@@ -80,6 +81,13 @@ Route::prefix('admin')->middleware('role:owner|admin|employee', 'auth')->group(f
         Route::post('/setting/product', 'store')->name('admin.product.store')->can('product_store');
         Route::put('/setting/product/{product:slug}', 'update')->name('admin.product.update')->can('product_update');
         Route::delete('/setting/product/{product:slug}', 'destroy')->name('admin.product.destroy')->can('product_destroy');
+    });
+
+    // Admin Daily Menu
+    Route::controller(AdminDailyMenuController::class)->group(function () {
+        Route::get('/setting/product/today', 'index')->name('admin.product.today.index');
+        Route::post('/setting/product/update-stock', 'update_stock')->name('admin.product.today.update_stock');
+        Route::post('/setting/product/reset-stock', 'reset_stock')->name('admin.product.today.reset_stock');
     });
 
     // Admin Cart

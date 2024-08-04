@@ -13,11 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('stocks', function (Blueprint $table) {
+        Schema::create('daily_stocks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade'); // Relasi ke tabel products
-            $table->bigInteger('quantity');
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->integer('sold');
+            $table->integer('quantity');
             $table->timestamps();
+
+            $table->unique(['product_id']);
         });
     }
 
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stocks');
+        Schema::dropIfExists('daily_stocks');
     }
 };

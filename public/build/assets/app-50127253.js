@@ -7890,7 +7890,7 @@ var Rk = (function () {
     Rc = {
         alwaysOpen: !1,
         activeClasses:
-            "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white",
+            "bg-gray-100 dark:bg-fourth text-gray-900 dark:text-white",
         inactiveClasses: "text-secondary dark:text-gray-400",
         onOpen: function () {},
         onClose: function () {},
@@ -8117,9 +8117,9 @@ var io =
         defaultPosition: 0,
         indicators: {
             items: [],
-            activeClasses: "bg-white dark:bg-gray-800",
+            activeClasses: "bg-white dark:bg-fourth",
             inactiveClasses:
-                "bg-white/50 dark:bg-gray-800/50 hover:bg-white dark:hover:bg-gray-800",
+                "bg-white/50 dark:bg-fourth/50 hover:bg-white dark:hover:bg-fourth",
         },
         interval: 3e3,
         onNext: function () {},
@@ -10497,7 +10497,7 @@ var Mc =
         activeClasses:
             "text-blue-600 hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-500 border-blue-600 dark:border-blue-500",
         inactiveClasses:
-            "dark:border-transparent text-secondary hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300",
+            "dark:border-transparent text-secondary hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-fourth dark:hover:text-gray-300",
         onShow: function () {},
     },
     R_ = (function () {

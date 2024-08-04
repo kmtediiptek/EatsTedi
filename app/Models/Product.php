@@ -11,15 +11,18 @@ class Product extends Model
 
     protected $guarded = [];
 
-    public function supplier () {
+    public function supplier()
+    {
         return $this->belongsTo(Supplier::class);
     }
 
-    public function category () {
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
 
-    public function carts() {
+    public function carts()
+    {
         return $this->hasMany(Cart::class);
     }
 
@@ -28,8 +31,13 @@ class Product extends Model
         return 'slug';
     }
 
-    public function stocks()
+    public function daily_stocks()
     {
-        return $this->hasMany(Stock::class);
+        return $this->hasMany(DailyStock::class);
+    }
+
+    public function stock_movements()
+    {
+        return $this->hasMany(StockMovement::class);
     }
 }
