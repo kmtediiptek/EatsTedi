@@ -10,7 +10,7 @@ import Toast from "@/Components/Toast";
 import App from "@/Layouts/App";
 import { Head, useForm, router } from "@inertiajs/react";
 import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { numberFormat } from "@/Libs/Helper";
 import TextInput from "@/Components/TextInput";

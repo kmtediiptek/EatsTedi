@@ -5,19 +5,20 @@ import Pagination from "@/Components/Pagination";
 import {
     IconCalendarTime,
     IconCategory,
-    IconMoodSmile,
     IconMoodSmileBeam,
 } from "@tabler/icons-react";
 import Guest from "@/Layouts/Guest";
 import ProductItemUser from "@/Components/ProductItemUser";
 import Footer from "@/Components/Footer";
 import TextInput from "@/Components/TextInput";
+import Select2 from "react-select";
 
 export default function Index({
     categories,
     total_categories,
     payments,
     schedules,
+    suppliers,
     ...props
 }) {
     const { url } = usePage();
@@ -25,6 +26,35 @@ export default function Index({
     const { data: products, meta, links } = props.products;
 
     const [searchQuery, setSearchQuery] = useState("");
+    const [selectedSupplier, setSelectedSupplier] = useState("all");
+
+    // Opsi untuk Select2
+    const supplierOptions = [
+        { value: "all", label: "All Suppliers" }, // Tambahkan opsi ini
+        ...suppliers.map((supplier) => ({
+            value: supplier.id,
+            label: supplier.name,
+        })),
+    ];
+
+    const selectedSupplierOption = supplierOptions.find(
+        (option) => option.value === selectedSupplier
+    ) || { value: "all", label: "All Suppliers" };
+
+    const handleSupplierChange = (selectedOption) => {
+        const value = selectedOption ? selectedOption.value : "";
+        setSelectedSupplier(value || "all");
+        router.get(
+            url,
+            {
+                search: searchQuery,
+                supplier: value,
+            },
+            {
+                preserveState: true,
+            }
+        );
+    };
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -32,7 +62,8 @@ export default function Index({
         router.get(
             url,
             {
-                search: searchQuery,
+                search: e.target.value,
+                supplier: selectedSupplier,
             },
             {
                 preserveState: true,
@@ -188,8 +219,8 @@ export default function Index({
                 </div>
             </Container>
             <Container className="">
-                <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
-                    <div className="w-full">
+                <div className="w-full flex items-center justify-end">
+                    <div className="w-full md:w-1/4">
                         <TextInput
                             type="search"
                             className="w-full border-r border-b-none border-r "
@@ -198,10 +229,62 @@ export default function Index({
                             onChange={handleSearch}
                         />
                     </div>
-                    <div className="w-full flex relative rounded scrolling-wrapper border border-gray-300 relative gap-x-4 overflow-x-scroll flex-nowrap">
+                </div>
+                <div className="w-full gap-4 flex items-center justify-between  mt-4">
+                    {/* Select2 nya disini */}
+                    <div className="w-full md:w-1/4">
+                        <Select2
+                            id="supplier-select"
+                            value={selectedSupplierOption}
+                            options={supplierOptions}
+                            className="w-full"
+                            onChange={handleSupplierChange}
+                            styles={{
+                                control: (provided, state) => ({
+                                    ...provided,
+                                    border: state.isFocused
+                                        ? "2px solid #d4d4d8"
+                                        : "2px solid #d4d4d8",
+                                    boxShadow: "none",
+                                    "&:hover": {
+                                        border: "2px solid #d4d4d8",
+                                    },
+                                    height: "44px",
+                                    borderRadius: "8px",
+                                }),
+                                option: (provided, state) => ({
+                                    ...provided,
+                                    backgroundColor: state.isSelected
+                                        ? "#d4d4d8"
+                                        : state.isFocused
+                                        ? "#d4d4d8"
+                                        : null,
+                                    color: "black",
+                                }),
+                                menu: (provided) => ({
+                                    ...provided,
+                                    borderRadius: "8px",
+                                }),
+                                menuList: (provided) => ({
+                                    ...provided,
+                                    borderRadius: "8px",
+                                }),
+                            }}
+                            theme={(theme) => ({
+                                ...theme,
+                                borderRadius: 8,
+                                colors: {
+                                    ...theme.colors,
+                                    primary25: "#d4d4d8",
+                                    primary: "black",
+                                },
+                            })}
+                        />
+                    </div>
+                    <div className="w-full md:w-3/4 flex relative rounded scrolling-wrapper relative gap-x-4 overflow-x-scroll flex-nowrap">
                         <Link
                             href={route("home.index")}
-                            className="px-2 gap-x-2 flex text-white text-slate-600 border-gray-300 border-r"
+                            className="px-2 gap-x-2 flex text-white text-fourth border border-secondary rounded-md px-4 "
                         >
                             <IconCategory
                                 className="my-2 text-primary"
@@ -216,7 +299,7 @@ export default function Index({
                         {categories.map((category, index) => (
                             <button
                                 onClick={() => onCategory(category.slug)}
-                                className="justify-between gap-x-2 flex items-center text-white border-gray-300 text-slate-600 border-r"
+                                className="justify-between gap-x-2 flex items-center text-white border-secondary rounded-md px-4 text-fourth border"
                                 key={index}
                             >
                                 <div
