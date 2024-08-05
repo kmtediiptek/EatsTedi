@@ -54,7 +54,6 @@ export default function Index({ total_invoices, ...props }) {
                         "Name",
                         "Charge",
                         "Change",
-                        "Table",
                         "Total Quantity",
                         "Total Price",
                         "Succeeded at",
@@ -62,11 +61,10 @@ export default function Index({ total_invoices, ...props }) {
                 ];
 
                 const rows = data.map((invoice) => [
-                    invoice.order_id,
+                    invoice.cart_id,
                     invoice.name,
                     `Rp. ${numberFormat(invoice.money.charge)}`,
                     `Rp. ${numberFormat(invoice.money.change)}`,
-                    invoice.table_id,
                     invoice.total_quantity,
                     `Rp. ${numberFormat(invoice.total_price)}`,
                     invoice.succeeded_at,
@@ -182,7 +180,6 @@ export default function Index({ total_invoices, ...props }) {
                             <Table.Th>Name</Table.Th>
                             <Table.Th>Charge</Table.Th>
                             <Table.Th>Change</Table.Th>
-                            <Table.Th>Table</Table.Th>
                             <Table.Th>Total Quantity</Table.Th>
                             <Table.Th>Total Price</Table.Th>
                             <Table.Th>Succeeded at</Table.Th>
@@ -199,7 +196,7 @@ export default function Index({ total_invoices, ...props }) {
                                     <Table.Td className="w-5">
                                         {meta.from + index}
                                     </Table.Td>
-                                    <Table.Td>#{invoice.order_id}</Table.Td>
+                                    <Table.Td>#{invoice.cart_id}</Table.Td>
                                     <Table.Td>{invoice.name}</Table.Td>
                                     <Table.Td>
                                         <sup> Rp.</sup>{" "}
@@ -209,7 +206,6 @@ export default function Index({ total_invoices, ...props }) {
                                         <sup> Rp.</sup>{" "}
                                         {numberFormat(invoice.money.change)}
                                     </Table.Td>
-                                    <Table.Td>{invoice.table_id}</Table.Td>
                                     <Table.Td>
                                         {invoice.total_quantity}
                                     </Table.Td>

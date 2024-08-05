@@ -22,7 +22,7 @@ class SalaryFactory extends Factory
         $invoice = Invoice::factory()->create();
         return [
                 'user_id' => User::factory(),
-                'order_id' => $invoice->order_id,
+                'cart_id' => $invoice->cart_id,
                 'transaction_date' => $date = $invoice->succeeded_at,
                 'salary' => 100000,
                 'total_salary' => 100000,

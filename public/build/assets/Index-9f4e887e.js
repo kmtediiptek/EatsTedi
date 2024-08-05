@@ -88,7 +88,6 @@ function O({ total_invoices: h, ...w }) {
                             l.name,
                             `Rp. ${n(l.money.charge)}`,
                             `Rp. ${n(l.money.change)}`,
-                            l.table_id,
                             l.total_quantity,
                             `Rp. ${n(l.total_price)}`,
                             l.succeeded_at,

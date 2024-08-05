@@ -36,9 +36,9 @@ export default function Navbar() {
                         <div className="flex items-center w-full">
                             <Link
                                 href="/"
-                                className="text-3xl font-bold text-primary"
+                                className="text-2xl font-bold text-primary"
                             >
-                                <h3>
+                                <h3 className="flex">
                                     Eat's{" "}
                                     <span className="font-light">TEDI</span>
                                 </h3>

@@ -14,19 +14,19 @@ class AdminCartController extends Controller
 {
     public function store(Request $request, Product $product)
     {
-        if ($request->order_id) {
-            $checkOrder = Invoice::where('user_id', Auth::user()->id)->where('order_id', $request->order_id)->first();
-        }else {
-            $checkOrder = Invoice::where('user_id', Auth::user()->id)->where('table_id', '-')->first();
-            $order_id = Auth::user()->id . date('Ymd') . rand(1, 100);
+        dd($request->all());
+        if ($request->cart_id) {
+            $checkOrder = Invoice::where('user_id', Auth::user()->id)->where('cart_id', $request->cart_id)->first();
+        } else {
+            $checkOrder = Invoice::where('user_id', Auth::user()->id)->first();
+            $cart_id = Auth::user()->id . date('Ymd') . rand(1, 100);
         }
 
         if (empty($checkOrder)) {
             $dataOrder['user_id'] = Auth::user()->id;
             $dataOrder['succeeded_at'] = now();
             $dataOrder['status'] = 0;
-            $dataOrder['order_id'] = $order_id;
-            $dataOrder['table_id'] = '-';
+            $dataOrder['cart_id'] = $cart_id;
             $dataOrder['payment_id'] = 1;
             $dataOrder['paid'] = 2;
             $dataOrder['name'] = '-';
@@ -41,17 +41,17 @@ class AdminCartController extends Controller
 
 
         // Invoice Details
-        if ($request->order_id) {
-            $checkInvoice = Invoice::where('user_id', Auth::user()->id)->where('status', 0)->where('order_id', $request->order_id)->first();
-            $checkOrderDetails = Cart::where('product_id', $product->id)->where('order_id', $request->order_id)->first();
-        }else {
-            $checkInvoice = Invoice::where('user_id', Auth::user()->id)->where('status', 0)->where('table_id', '-')->first();
-            $checkOrderDetails = Cart::where('product_id', $product->id)->where('order_id', $checkInvoice->order_id)->where('status', 0)->first();
+        if ($request->cart_id) {
+            $checkInvoice = Invoice::where('user_id', Auth::user()->id)->where('status', 0)->where('id', $request->cart_id)->first();
+            $checkOrderDetails = Cart::where('product_id', $product->id)->where('id', $request->cart_id)->first();
+        } else {
+            $checkInvoice = Invoice::where('user_id', Auth::user()->id)->where('status', 0)->first();
+            $checkOrderDetails = Cart::where('product_id', $product->id)->where('id', $checkInvoice->cart_id)->where('status', 0)->first();
         }
 
         if (empty($checkOrderDetails)) {
             $dataOrderDetails['product_id'] = $product->id;
-            $dataOrderDetails['order_id'] = $checkInvoice->order_id;
+            $dataOrderDetails['id'] = $checkInvoice->cart_id;
             $dataOrderDetails['quantity'] = 1;
             $dataOrderDetails['price'] = $product->price;
             Auth::user()->carts()->create($dataOrderDetails);
@@ -70,17 +70,16 @@ class AdminCartController extends Controller
 
     public function increment(Request $request, Product $product)
     {
-
-        if($request->order_id) {
+        if ($request->cart_id) {
             $cart = Cart::where('user_id', $request->user()->id)
-            ->where('product_id', $product->id)
-            ->where('order_id', $request->order_id)
-            ->first();
-        }else {
+                ->where('product_id', $product->id)
+                ->where('id', $request->cart_id)
+                ->first();
+        } else {
             $cart = Cart::where('user_id', $request->user()->id)
-            ->where('product_id', $product->id)
-            ->where('status', 0)
-            ->first();
+                ->where('product_id', $product->id)
+                ->where('status', 0)
+                ->first();
         }
 
 
@@ -104,16 +103,16 @@ class AdminCartController extends Controller
 
     public function decrement(Request $request, Product $product)
     {
-        if($request->order_id) {
+        if ($request->cart_id) {
             $cart = Cart::where('user_id', $request->user()->id)
-            ->where('product_id', $product->id)
-            ->where('order_id', $request->order_id)
-            ->first();
-        }else {
+                ->where('product_id', $product->id)
+                ->where('id', $request->cart_id)
+                ->first();
+        } else {
             $cart = Cart::where('user_id', $request->user()->id)
-            ->where('product_id', $product->id)
-            ->where('status', 0)
-            ->first();
+                ->where('product_id', $product->id)
+                ->where('status', 0)
+                ->first();
         }
         if ($cart) {
             if ($cart->quantity > 1) {
@@ -138,12 +137,11 @@ class AdminCartController extends Controller
         return redirect()->back();
     }
 
-
     public function destroy(Cart $cart)
     {
 
-        $count = $cart->where('order_id', $cart->order_id)->count();
-        $count == 1 ?  Invoice::where('order_id', $cart->order_id)->delete() : null;
+        $count = $cart->where('id', $cart->cart_id)->count();
+        $count == 1 ?  Invoice::where('cart_id', $cart->cart_id)->delete() : null;
         $cart->delete();
 
         return back();

@@ -331,12 +331,6 @@ export default function Index({
                                 key={product.slug}
                             />
                         ))}
-                        {products.map((product) => (
-                            <ProductItemUser
-                                product={product}
-                                key={product.slug}
-                            />
-                        ))}
                     </div>
                 ) : (
                     <div className="flex items-center justify-center w-full h-full text-third flex-col">

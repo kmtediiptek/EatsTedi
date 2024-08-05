@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import TextInput from "./TextInput";
 import Error from "./Error";
 import { usePage, router } from "@inertiajs/react";
-import SelectPayment from "./SelectPayment";
 import PrimaryButton from "./PrimaryButton";
 import MyModal from "./Modal";
 import SecondaryButton from "./SecondaryButton";
@@ -10,11 +9,13 @@ import {
     IconCash,
     IconChecks,
     IconExchange,
-    IconMail,
-    IconSend,
+    // IconMail,
+    // IconSend,
     IconX,
 } from "@tabler/icons-react";
 import toast from "react-hot-toast";
+import Select from "./Select";
+import { IconSend } from "@tabler/icons-react";
 
 export default function InvoiceForm({
     data,
@@ -53,26 +54,26 @@ export default function InvoiceForm({
 
     const difference = charge - total_price;
 
-    const sendBill = async () => {
-        try {
-            await router.post(
-                `/admin/send-email`,
-                {
-                    ...data,
-                    carts: carts,
-                    total_price: total_price,
-                },
-                {
-                    onSuccess: () => {
-                        setIsOpen(false);
-                        toast.success("Invoice has been send Email");
-                    },
-                }
-            );
-        } catch (error) {
-            console.error("Error sending email:", error);
-        }
-    };
+    // const sendBill = async () => {
+    //     try {
+    //         await router.post(
+    //             `/admin/send-email`,
+    //             {
+    //                 ...data,
+    //                 carts: carts,
+    //                 total_price: total_price,
+    //             },
+    //             {
+    //                 onSuccess: () => {
+    //                     setIsOpen(false);
+    //                     toast.success("Invoice has been send Email");
+    //                 },
+    //             }
+    //         );
+    //     } catch (error) {
+    //         console.error("Error sending email:", error);
+    //     }
+    // };
 
     return (
         <>
@@ -139,7 +140,7 @@ export default function InvoiceForm({
             <div className="flex justify-between w-full gap-x-4">
                 {showPaymentOptions || data.paid == 1 ? (
                     <div className="flex flex-col w-full">
-                        <SelectPayment
+                        <Select
                             value={data.payment_id}
                             data={payments}
                             className="w-full"
@@ -230,7 +231,7 @@ export default function InvoiceForm({
                         <IconExchange color="orange" />{" "}
                         <sup className="ml-1">Rp.</sup>
                     </div>
-                    <input
+                    <TextInput
                         type="number"
                         readOnly
                         disabled
@@ -241,7 +242,7 @@ export default function InvoiceForm({
                         placeholder="Change.."
                     />
                 </div>
-                <div className="mb-6 relative">
+                {/* <div className="mb-6 relative">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
                         <IconMail color="red" />
                     </div>
@@ -254,7 +255,7 @@ export default function InvoiceForm({
                         value={data.email || ""}
                         placeholder="Email.."
                     />
-                </div>
+                </div> */}
                 <div className="flex gap-4">
                     <SecondaryButton onClick={() => onCancelModal()}>
                         <IconX />

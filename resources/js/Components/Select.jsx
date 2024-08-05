@@ -21,7 +21,7 @@ export default function Select({ className = 'w-full', data, value, onChange, pl
             open={isOpen}
         >
             <Listbox.Button className={clsx("flex h-11 w-full items-center justify-between rounded border border-secondary px-4 focus:outline-none", className)}>
-                <span className="capitalize line-clamp-1">{value.name || value || placeholder}</span>
+                <span className="capitalize line-clamp-1 text-fourth">{value.name || value || placeholder}</span>
                 <div onClick={() => setIsOpen(!isOpen)}>
                     <svg
                         className="h-5 w-5 text-gray-400"
@@ -47,7 +47,7 @@ export default function Select({ className = 'w-full', data, value, onChange, pl
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
             >
-                <Listbox.Options className="z-50 absolute right-0 mt-1 max-h-[10rem] w-full overflow-y-auto rounded border border-gray-300 bg-white py-1 shadow-sm">
+                <Listbox.Options className="z-50 absolute right-0 mt-1 max-h-[10rem] w-full overflow-y-auto rounded border border-secondary bg-white py-1 shadow-sm">
                     {filteredData.map((item) => (
                         <Listbox.Option key={item.id} value={item}>
                             {({ selected, active }) => (
@@ -59,7 +59,7 @@ export default function Select({ className = 'w-full', data, value, onChange, pl
                                         'bg-primary font-semibold text-primary hover:bg-primary'
                                     )}
                                 >
-                                    <span className="capitalize line-clamp-1">{item.name}</span>
+                                    <span className="capitalize line-clamp-1 text-fourth">{item.name}</span>
                                 </div>
                             )}
                         </Listbox.Option>

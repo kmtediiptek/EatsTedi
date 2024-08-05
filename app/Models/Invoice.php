@@ -19,10 +19,11 @@ class Invoice extends Model
 
     public function carts()
     {
-        return $this->hasMany(Cart::class, 'order_id');
+        return $this->hasMany(Cart::class);
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 }

@@ -52,11 +52,7 @@ export default function OrderItem({ invoice, onClick }) {
 
     return (
         <div className="flex gap-x-4 p-2 border border-gray-300 rounded text-white">
-            <div className="w-20 h-20 bg-sky rounded p-2 flex justify-center items-center">
-                <h3 className="text-4xl font-semibold text-center">
-                    T{invoice.table_id}
-                </h3>
-            </div>
+            <div className="w-20 h-20 bg-sky rounded p-2 flex justify-center items-center"></div>
             <div className="flex">
                 <div className="h-16 w-32 text-fourth flex flex-col flex-1 justify-between">
                     <h5 className="font-semibold text-xl text-fourth truncate">
@@ -70,7 +66,7 @@ export default function OrderItem({ invoice, onClick }) {
                     <button
                         onClick={() => {
                             if (invoice.charge !== 0) {
-                                openToast(invoice.order_id, invoice.name);
+                                openToast(invoice.cart_id, invoice.name);
                             }
                         }}
                         className={`font-semibold text-sm flex items-center gap-x-2 py-1 h-full px-2 rounded text-white ${
@@ -118,7 +114,7 @@ export default function OrderItem({ invoice, onClick }) {
                             <button
                                 type="button"
                                 onClick={() =>
-                                    callVoice(invoice.name, invoice.table_id)
+                                    callVoice(invoice.name)
                                 }
                                 className="flex justify-center items-center rounded bg-primary w-full h-full"
                             >

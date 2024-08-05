@@ -102,7 +102,7 @@ Route::prefix('admin')->middleware('role:owner|admin|employee', 'auth')->group(f
     Route::controller(AdminInvoiceController::class)->group(function () {
         Route::get('/invoice', 'index')->name('admin.invoice.index')->can('invoice_index');
         Route::post('/invoice', 'store')->name('admin.invoice.store')->can('invoice_store');
-        Route::put('/invoice/{invoice:order_id}', 'update')->name('admin.invoice.update')->can('invoice_update');
+        Route::put('/invoice/{invoice:cart_id}', 'update')->name('admin.invoice.update')->can('invoice_update');
     });
 
     // Admin Log

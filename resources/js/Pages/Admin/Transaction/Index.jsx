@@ -10,7 +10,6 @@ import { Head, Link, useForm, router, usePage } from "@inertiajs/react";
 import {
     IconArrowsMaximize,
     IconArrowsMinimize,
-    IconCategory,
     IconTrashX,
 } from "@tabler/icons-react";
 import React, { useState } from "react";
@@ -40,7 +39,7 @@ export default function Index({
         name: "",
         payment_id: "",
         charge: "",
-        order_id: "",
+        cart_id: "",
         total_price: "",
         paid: "",
     });
@@ -52,11 +51,11 @@ export default function Index({
     const toggleOrderList = (order) => {
         if (order) {
             setData({
-                id: order.order_id,
+                id: order.cart_id,
                 name: order.name,
                 charge: order.charge,
                 paid: order.paid,
-                payment_id: order.payment_id,
+                payment_id: order.payment_id.id,
                 carts: carts,
                 total_price: total,
                 quantity: quantity,
@@ -64,7 +63,7 @@ export default function Index({
             router.get(
                 `/admin/transaction`,
                 {
-                    order_id: order.order_id,
+                    cart_id: order.cart_id,
                 },
                 {
                     preserveState: true,
@@ -80,14 +79,17 @@ export default function Index({
 
     const onSubmit = (e) => {
         e.preventDefault();
+        console.log(data.cart_id);
+
         router.post(
             `/admin/invoice`,
             {
                 ...data,
+                id: data.cart_id,
                 carts: carts,
                 total: total,
                 quantity: quantity,
-                order_id: data.order_id,
+                cart_id: data.cart_id,
                 payment_id: data.payment_id.id,
             },
             {
@@ -160,8 +162,8 @@ export default function Index({
                                 </>
                             ) : (
                                 <div className="flex justify-start items-center flex-1">
-                                    <h1 className="text-slate-300 mr-2">
-                                        <IconTrashX size={32} />{" "}
+                                    <h1 className="text-third mr-2">
+                                        <IconTrashX size={24} />{" "}
                                     </h1>
                                     <p className="text-third text-lg">
                                         Empty Order List
@@ -171,17 +173,15 @@ export default function Index({
                         </div>
                         {/* End Order List */}
 
+                        <hr className="my-4" />
+
                         {/* Start Categories */}
-                        <h3 className="text-2xl mt-10 mb-4 font-semibold text-fourth">
-                            Categories
-                        </h3>
                         <div className="flex w-full scrolling-wrapper overflow-x-scroll pb-1 flex-nowrap gap-x-4">
                             <Link
                                 href={route("admin.transaction")}
                                 className="flex text-white"
                             >
-                                <div className="w-32 h-32 bg-primary rounded p-2 shadow">
-                                    <IconCategory className="my-2" />
+                                <div className="w-32 h-18 bg-primary rounded p-2 shadow">
                                     <p className="block">All Menu</p>
                                     <h6 className="text-lg font-semibold">
                                         {total_categories} items
@@ -194,13 +194,7 @@ export default function Index({
                                     className="flex rounded text-white"
                                     key={index}
                                 >
-                                    <div className="w-32 h-32  rounded border border-gray-300 text-slate-600 p-2">
-                                        <div
-                                            className="w-8 h-8 mb-2"
-                                            dangerouslySetInnerHTML={{
-                                                __html: category.icon,
-                                            }}
-                                        />
+                                    <div className="w-32 h-18 text-left rounded border border-secondary text-fourth p-2">
                                         <p className="text-third">
                                             {category.name}
                                         </p>
@@ -215,15 +209,13 @@ export default function Index({
 
                         {/* Start Special Menu */}
                         <div className="w-full">
-                            <h3 className="text-2xl mt-10 mb-4 font-semibold text-fourth">
-                                Special menu for you
-                            </h3>
+                            <hr className="my-4" />
                             {products.length > 0 ? (
                                 <div
                                     className={`grid grid-cols-1 sm:grid-cols-2 ${
                                         isOrderListOpen
-                                            ? "md:grid-cols-3"
-                                            : "md:grid-cols-4"
+                                            ? "md:grid-cols-4"
+                                            : "md:grid-cols-5"
                                     }  lg:grid-cols-lg-4 gap-4 gap-y-8 w-full flex-wrap`}
                                 >
                                     {products.map((product, index) => (
@@ -238,7 +230,7 @@ export default function Index({
                                 </div>
                             ) : (
                                 <div className="flex justify-center items-center flex-col flex-1 h-[280px]">
-                                    <h1 className="text-slate-300">
+                                    <h1 className="text-third">
                                         <IconTrashX size={64} />{" "}
                                     </h1>
                                     <p className="text-third mt-4 text-lg">

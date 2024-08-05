@@ -5,11 +5,13 @@ import { IconShoppingBagPlus } from "@tabler/icons-react";
 import { numberFormat } from "@/Libs/Helper";
 
 export default function ProductItem({ product, setIsOrderListOpen }) {
+    console.log(product);
+
     const addToCart = () => {
         router.post(
             `/admin/cart/${product.slug}`,
             {
-                order_id: product.order_id,
+                cart_id: product.cart_id,
             },
             {
                 onSuccess: () => {
@@ -39,7 +41,7 @@ export default function ProductItem({ product, setIsOrderListOpen }) {
                             : `https://via.placeholder.com/400`
                     }
                     alt={product.name}
-                    className="rounded h-[300px] w-full"
+                    className="rounded h-[250px] w-full"
                 />
             </div>
             <div className="py-2">

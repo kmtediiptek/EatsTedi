@@ -31,7 +31,6 @@ export default function Index(props) {
                             <Table.Th>Name</Table.Th>
                             <Table.Th>Charge</Table.Th>
                             <Table.Th>Change</Table.Th>
-                            <Table.Th>Table</Table.Th>
                             <Table.Th>Total Quantity</Table.Th>
                             <Table.Th>Total Price</Table.Th>
                             <Table.Th>Succeeded at</Table.Th>
@@ -49,7 +48,7 @@ export default function Index(props) {
                                         <Table.Td className="w-5">
                                             {meta.from + index}
                                         </Table.Td>
-                                        <Table.Td>#{invoice.order_id}</Table.Td>
+                                        <Table.Td>#{invoice.cart_id}</Table.Td>
                                         <Table.Td>{invoice.name}</Table.Td>
                                         <Table.Td>
                                             <sup> Rp.</sup>{" "}
@@ -59,7 +58,6 @@ export default function Index(props) {
                                             <sup> Rp.</sup>{" "}
                                             {numberFormat(invoice.money.change)}
                                         </Table.Td>
-                                        <Table.Td>{invoice.table_id}</Table.Td>
                                         <Table.Td>
                                             {invoice.total_quantity}
                                         </Table.Td>

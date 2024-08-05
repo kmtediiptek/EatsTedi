@@ -25,6 +25,6 @@ class Cart extends Model
 
     public function invoice()
     {
-        return $this->belongsTo(Invoice::class, 'order_id');
+        return $this->belongsTo(Invoice::class);
     }
 }

@@ -10,13 +10,13 @@ import { numberFormat } from "@/Libs/Helper";
 export default function CartItem({ cart }) {
     const quantityIncrement = () => {
         router.post(`/admin/cart/increment/${cart.product_slug}`, {
-            order_id: cart.order_id,
+            cart_id: cart.cart_id,
         });
     };
 
     const quantityDecrement = () => {
         router.post(`/admin/cart/decrement/${cart.product_slug}`, {
-            order_id: cart.order_id,
+            cart_id: cart.cart_id,
         });
     };
 
