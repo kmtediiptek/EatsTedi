@@ -39,7 +39,7 @@ export default function Index({
         name: "",
         payment_id: "",
         charge: "",
-        cart_id: "",
+        order_id: "",
         total_price: "",
         paid: "",
     });
@@ -51,7 +51,7 @@ export default function Index({
     const toggleOrderList = (order) => {
         if (order) {
             setData({
-                id: order.cart_id,
+                id: order.order_id,
                 name: order.name,
                 charge: order.charge,
                 paid: order.paid,
@@ -63,7 +63,7 @@ export default function Index({
             router.get(
                 `/admin/transaction`,
                 {
-                    cart_id: order.cart_id,
+                    order_id: order.order_id,
                 },
                 {
                     preserveState: true,
@@ -79,17 +79,15 @@ export default function Index({
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(data.cart_id);
-
         router.post(
             `/admin/invoice`,
             {
                 ...data,
-                id: data.cart_id,
+                id: data.order_id,
                 carts: carts,
                 total: total,
                 quantity: quantity,
-                cart_id: data.cart_id,
+                order_id: data.order_id,
                 payment_id: data.payment_id.id,
             },
             {
@@ -144,10 +142,7 @@ export default function Index({
                         }`}
                     >
                         {/* Start Order List */}
-                        <h3 className="text-2xl mt-10 mb-4 font-semibold text-fourth">
-                            Order List
-                        </h3>
-                        <div className="flex w-full scrolling-wrapper overflow-x-scroll overflow-y-hidden pb-1 flex-nowrap gap-x-4">
+                        <div className="flex w-full mt-6 scrolling-wrapper overflow-x-scroll overflow-y-hidden pb-1 flex-nowrap gap-x-4">
                             {invoices.length > 0 ? (
                                 <>
                                     {invoices.map((invoice, index) => (
@@ -273,8 +268,8 @@ export default function Index({
                                     </>
                                 ) : (
                                     <div className="flex justify-center items-center flex-col flex-1 h-[280px]">
-                                        <h1 className="text-slate-300">
-                                            <IconTrashX size={64} />{" "}
+                                        <h1 className="text-secondary">
+                                            <IconTrashX size={64} stroke={1} />{" "}
                                         </h1>
                                         <p className="text-third mt-4 text-lg">
                                             Empty Order

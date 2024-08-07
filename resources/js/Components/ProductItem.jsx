@@ -5,13 +5,12 @@ import { IconShoppingBagPlus } from "@tabler/icons-react";
 import { numberFormat } from "@/Libs/Helper";
 
 export default function ProductItem({ product, setIsOrderListOpen }) {
-    console.log(product);
-
     const addToCart = () => {
+        console.log(product);
         router.post(
             `/admin/cart/${product.slug}`,
             {
-                cart_id: product.cart_id,
+                order_id: product.order_id,
             },
             {
                 onSuccess: () => {

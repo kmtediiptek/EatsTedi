@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TextInput from "./TextInput";
 import Error from "./Error";
-import { usePage, router } from "@inertiajs/react";
+import { usePage } from "@inertiajs/react";
 import PrimaryButton from "./PrimaryButton";
 import MyModal from "./Modal";
 import SecondaryButton from "./SecondaryButton";
@@ -13,7 +13,6 @@ import {
     // IconSend,
     IconX,
 } from "@tabler/icons-react";
-import toast from "react-hot-toast";
 import Select from "./Select";
 import { IconSend } from "@tabler/icons-react";
 
@@ -183,8 +182,7 @@ export default function InvoiceForm({
                             onClick={() => openModalOrder("create")}
                             disabled={
                                 charge < total_price ||
-                                data.payment_id == "" ||
-                                data.name == ""
+                                data.payment_id == ""
                             }
                             className="bg-violet-600 text-white px-3 py-4 w-full rounded"
                         >
@@ -195,7 +193,7 @@ export default function InvoiceForm({
                     <>
                         <PrimaryButton
                             className="bg-violet-600 text-white px-3 py-4 w-full rounded"
-                            disabled={data.name == "" || data.paid == ""}
+                            disabled={data.paid == ""}
                         >
                             Confirm
                         </PrimaryButton>

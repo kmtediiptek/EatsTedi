@@ -22,7 +22,7 @@ class InvoiceFactory extends Factory
         $user = User::factory()->create();
         return [
             'user_id' => User::factory(),
-            'cart_id' => $cart->cart_id,
+            'order_id' => $cart->order_id,
             'payment_id' => rand(1, 3),
             'total_quantity' => $quantity = $cart->quantity,
             'total_price' => $total_price = $cart->price * $quantity,

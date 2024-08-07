@@ -31,7 +31,7 @@ class AdminProductResource extends JsonResource
                 'name' => $this->supplier->name,
                 'username' => $this->supplier->username,
             ],
-            'cart_id' => $request->cart_id
+            'order_id' => $request->order_id
         ];
     }
 }

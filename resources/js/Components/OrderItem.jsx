@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import {
     IconBell,
+    IconChecklist,
     IconChecks,
+    IconCheckupList,
+    IconCircle,
     IconCircleFilled,
     IconClick,
+    IconEyeDollar,
     IconProgress,
 } from "@tabler/icons-react";
 import toast from "react-hot-toast";
@@ -11,15 +15,17 @@ import Toast from "@/Components/Toast";
 import SecondaryButton from "./SecondaryButton";
 import PrimaryButton from "./PrimaryButton";
 import { router } from "@inertiajs/react";
+import { IconCurrencyDollar } from "@tabler/icons-react";
+import { IconCircleCheck } from "@tabler/icons-react";
 
 export default function OrderItem({ invoice, onClick }) {
     let [isToast, setIsToast] = useState(false);
     const [toastTitle, setToastTitle] = useState("");
     const [orderId, setOrderId] = useState("");
 
-    const callVoice = (name, table) => {
+    const callVoice = (name) => {
         const speech = new SpeechSynthesisUtterance(
-            `Pesanan atas Nama ${name} di Meja ${table}`
+            `Pesanan atas Nama ${name}`
         );
         speech.lang = "id-ID";
         window.speechSynthesis.speak(speech);
@@ -51,25 +57,24 @@ export default function OrderItem({ invoice, onClick }) {
     };
 
     return (
-        <div className="flex gap-x-4 p-2 border border-gray-300 rounded text-white">
-            <div className="w-20 h-20 bg-sky rounded p-2 flex justify-center items-center"></div>
-            <div className="flex">
-                <div className="h-16 w-32 text-fourth flex flex-col flex-1 justify-between">
-                    <h5 className="font-semibold text-xl text-fourth truncate">
+        <div className="flex gap-x-2 p-2 w-1/4 border border-secondary rounded text-white">
+            <div className="flex w-full gap-x-1">
+                <div className="h-16 w-full text-fourth flex flex-col justify-between">
+                    <h5 className="w-full font-semibold text-base text-fourth">
                         {invoice.name}
                     </h5>
-                    <span className="text-third text-left">
+                    <span className="text-third text-sm text-left">
                         {invoice.total_quantity} Item
                     </span>
                 </div>
-                <div className="flex items-end flex-col flex-1 gap-y-2 h-full justify-between h-16 w-32 text-fourth">
+                <div className="bg-white flex items-end flex-col flex-1 gap-y-2 h-full justify-between h-16 w-full text-fourth">
                     <button
                         onClick={() => {
                             if (invoice.charge !== 0) {
-                                openToast(invoice.cart_id, invoice.name);
+                                openToast(invoice.order_id, invoice.name);
                             }
                         }}
-                        className={`font-semibold text-sm flex items-center gap-x-2 py-1 h-full px-2 rounded text-white ${
+                        className={`font-semibold text-sm flex items-center gap-x-2 h-full px-1 rounded text-white ${
                             invoice.status == 1
                                 ? "bg-green-500"
                                 : "bg-yellow-400"
@@ -81,7 +86,7 @@ export default function OrderItem({ invoice, onClick }) {
                         disabled={invoice.charge == 0 || invoice.status == 1}
                     >
                         {invoice.charge == 0 ? (
-                            "In Progress"
+                            <IconProgress size={26} />
                         ) : (
                             <>
                                 {invoice.status == 1 ? (
@@ -89,34 +94,27 @@ export default function OrderItem({ invoice, onClick }) {
                                 ) : (
                                     <IconProgress size={26} />
                                 )}
-                                {invoice.status == 1 ? "Done" : "In Progress"}
                             </>
                         )}
                     </button>
-                    <div className="text-third h-full flex items-center gap-x-2">
+                    <div className="bg-sky font-semibold text-sm flex items-center gap-x-2 h-full px-1 rounded text-white">
                         {" "}
-                        <IconCircleFilled
-                            size={16}
-                            className={`${
-                                invoice.charge !== 0
-                                    ? "text-green-500"
-                                    : "text-red-500"
-                            }`}
-                        />
-                        {invoice.charge !== 0 ? "Paid" : "Unpaid"}
+                        {invoice.charge == 0 ? (
+                            <IconCircle size={26} />
+                        ) : (
+                            <IconCircleCheck size={26} />
+                        )}
                     </div>
                 </div>
                 {invoice.status == 1 ? (
                     <>""</>
                 ) : (
                     <>
-                        <div className="flex flex-col justify-between item-center w-8 gap-y-2 ml-2">
+                        <div className="flex flex-col justify-between item-center gap-y-2">
                             <button
                                 type="button"
-                                onClick={() =>
-                                    callVoice(invoice.name)
-                                }
-                                className="flex justify-center items-center rounded bg-primary w-full h-full"
+                                onClick={() => callVoice(invoice.name)}
+                                className="flex justify-center items-center rounded bg-primary px-1 h-full"
                             >
                                 <IconBell
                                     size={26}
@@ -125,7 +123,7 @@ export default function OrderItem({ invoice, onClick }) {
                             </button>
                             <button
                                 onClick={onClick}
-                                className="flex justify-center items-center rounded bg-violet w-full h-full"
+                                className="flex justify-center items-center rounded bg-violet px-1 h-full"
                             >
                                 <IconClick />{" "}
                             </button>

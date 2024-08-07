@@ -267,12 +267,16 @@ export default function Index({ total_products, suppliers, ...props }) {
                     >
                         All Menu
                     </TabLink>
-                    <TabLink
-                        href={route("admin.product.today.index")}
-                        active={route().current("admin.product.today.index")}
-                    >
-                        Daily Menu
-                    </TabLink>
+                    {products.length > 0 ? (
+                        <TabLink
+                            href={route("admin.product.today.index")}
+                            active={route().current(
+                                "admin.product.today.index"
+                            )}
+                        >
+                            Daily Menu
+                        </TabLink>
+                    ) : null}
                 </div>
                 <Table>
                     <Table.Thead>

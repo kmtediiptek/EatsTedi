@@ -14,14 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('carts', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('product_id')->constrained();
-            $table->double('price');
-            $table->double('status')->default(0);
-            $table->integer('quantity')->default(0);
-            $table->dateTime('paid_at')->nullable();
-            $table->timestamps();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->double('total_price');
+            $table->boolean('status')->default(false);
         });
     }
 

@@ -61,7 +61,7 @@ export default function Index({ total_invoices, ...props }) {
                 ];
 
                 const rows = data.map((invoice) => [
-                    invoice.cart_id,
+                    invoice.order_id,
                     invoice.name,
                     `Rp. ${numberFormat(invoice.money.charge)}`,
                     `Rp. ${numberFormat(invoice.money.change)}`,
@@ -196,7 +196,7 @@ export default function Index({ total_invoices, ...props }) {
                                     <Table.Td className="w-5">
                                         {meta.from + index}
                                     </Table.Td>
-                                    <Table.Td>#{invoice.cart_id}</Table.Td>
+                                    <Table.Td>#{invoice.order_id}</Table.Td>
                                     <Table.Td>{invoice.name}</Table.Td>
                                     <Table.Td>
                                         <sup> Rp.</sup>{" "}

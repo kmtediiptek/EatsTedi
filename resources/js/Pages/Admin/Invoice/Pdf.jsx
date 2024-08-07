@@ -48,7 +48,7 @@ export default function Index(props) {
                                         <Table.Td className="w-5">
                                             {meta.from + index}
                                         </Table.Td>
-                                        <Table.Td>#{invoice.cart_id}</Table.Td>
+                                        <Table.Td>#{invoice.order_id}</Table.Td>
                                         <Table.Td>{invoice.name}</Table.Td>
                                         <Table.Td>
                                             <sup> Rp.</sup>{" "}

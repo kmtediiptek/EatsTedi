@@ -17,18 +17,17 @@ class AdminTransactionController extends Controller
 {
     public function index(Request $request)
     {
-
-        if ($request->cart_id) {
+        if ($request->order_id) {
             $payments = Payment::select('id', 'name', 'slug')->where('status', 1)->get();
         } else {
             $payments = Payment::select('id', 'name', 'slug')->where('status', 1)->get();
         }
 
-        if ($request->cart_id) {
+        if ($request->order_id) {
             $carts = DB::table('carts')
                 ->join('products', 'carts.product_id', '=', 'products.id')
                 ->select('carts.id', 'carts.price', 'carts.quantity', 'products.name AS product_name', 'products.slug AS product_slug', 'products.price AS product_price', 'products.picture AS product_picture')
-                ->where('cart_id', $request->cart_id)
+                ->where('order_id', $request->order_id)
                 ->where('carts.user_id', $request->user()->id)
                 ->get();
         } else {
@@ -71,7 +70,6 @@ class AdminTransactionController extends Controller
             ->get();
 
         $total_categories = Product::get()->count();
-
 
         return inertia('Admin/Transaction/Index', [
             "categories" => $categories,

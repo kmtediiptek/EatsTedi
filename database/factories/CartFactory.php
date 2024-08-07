@@ -25,7 +25,7 @@ class CartFactory extends Factory
         return [
             'user_id' => User::factory(),
             'product_id' => Product::factory(),
-            'cart_id' =>  rand(10000, 100000),
+            'order_id' =>  rand(10000, 100000),
             'status' => 1,
             'quantity' => $quantity = rand(1, 10),
             'price' => $product->price * $quantity,

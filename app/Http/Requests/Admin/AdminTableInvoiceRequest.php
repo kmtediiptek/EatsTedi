@@ -24,7 +24,6 @@ class AdminTableInvoiceRequest extends FormRequest
     public function rules()
     {
         return [
-            "name" => ['required', 'string', 'min:3'],
             "paid" => ['required', 'numeric', 'min:1'],
             'payment_id' => ['nullable']
         ];
