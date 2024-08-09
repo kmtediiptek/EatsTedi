@@ -14,13 +14,13 @@ import TextInput from "@/Components/TextInput";
 import Select2 from "react-select";
 
 export default function Index({
-    categories,
-    total_categories,
-    payments,
-    schedules,
-    suppliers,
-    ...props
-}) {
+                                  categories,
+                                  total_categories,
+                                  payments,
+                                  schedules,
+                                  suppliers,
+                                  ...props
+                              }) {
     const { url } = usePage();
 
     const { data: products, meta, links } = props.products;
@@ -96,27 +96,27 @@ export default function Index({
             const currentDate = new Date();
 
             const days = [
-                "Sunday",
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday",
+                "Minggu",
+                "Senin",
+                "Selasa",
+                "Rabu",
+                "Kamis",
+                "Jumat",
+                "Sabtu",
             ];
             const months = [
-                "January",
-                "February",
-                "March",
+                "Januari",
+                "Februari",
+                "Maret",
                 "April",
-                "May",
-                "June",
-                "July",
-                "August",
+                "Mei",
+                "Juni",
+                "Juli",
+                "Agustus",
                 "September",
-                "October",
+                "Oktober",
                 "November",
-                "December",
+                "Desember",
             ];
 
             setDateTimeInfo({
@@ -140,17 +140,18 @@ export default function Index({
     return (
         <>
             <Head title="Our Menus" />
+            <img src={'/images/banner.png'} className={'w-full h-auto object-fill'} />
             <Container className="w-full text-center pt- p4b-0">
                 <div className="w-full mt-4">
                     <div>
                         <h3 className="text-fourth text-3xl font-semibold">
-                            Our Menus
+                            Menu Kami
                         </h3>
                     </div>
                     <div className="w-full mt-4">
                         <h5 className="text-third text-xl">
                             {" "}
-                            Here are some of the products we present to you
+                            Beberapa menu yang tersedia untukmu
                         </h5>
                     </div>
                 </div>
@@ -179,7 +180,7 @@ export default function Index({
                                 >
                                     <IconCalendarTime
                                         size={50}
-                                        className="text-violet/70"
+                                        className="text-red-700"
                                     />
                                     <div className="flex flex-col items-start">
                                         <div className="flex gap-2">
@@ -207,8 +208,8 @@ export default function Index({
                     <div className="w-full md:w-1/4">
                         <div className="flex flex-col py-4 rounded border border-gray-300">
                             <h6 className="text-center w-full text-xl text-slate-600">
-                                {dateTimeInfo.dayName}, {dateTimeInfo.month}{" "}
-                                {dateTimeInfo.day} {dateTimeInfo.year}
+                                {dateTimeInfo.dayName}, {dateTimeInfo.day}{" "}
+                                {dateTimeInfo.month} {dateTimeInfo.year}
                             </h6>
                             <h1 className="text-center w-full text-4xl font-bold text-fourth">
                                 {dateTimeInfo.hours}:{dateTimeInfo.minutes}:
@@ -257,8 +258,8 @@ export default function Index({
                                     backgroundColor: state.isSelected
                                         ? "#d4d4d8"
                                         : state.isFocused
-                                        ? "#d4d4d8"
-                                        : null,
+                                            ? "#d4d4d8"
+                                            : null,
                                     color: "black",
                                 }),
                                 menu: (provided) => ({
@@ -321,7 +322,7 @@ export default function Index({
 
             <Container>
                 <h3 className="text-2xl mb-4 font-semibold text-fourth">
-                    Special menu for you
+                    Menu kami
                 </h3>
                 {products.length ? (
                     <div className="grid grid-cols-2 sm:grid-cols-3 w-full md:grid-cols-5 lg:grid-cols-5 sm:gap-10 gap-4">

@@ -5,7 +5,7 @@ import React from "react";
 
 export default function Footer() {
     return (
-        <div className="border-t border-violet-800 bg-violet py-10 mt-8 md:mt-16">
+        <div className="border-t border-violet-800 bg-red-600 py-10 mt-8 md:mt-16">
             <Container>
                 <div className="max-w-2xl mx-auto text-center">
                     <Link href="/" className="text-3xl font-bold text-white">
@@ -27,7 +27,7 @@ export default function Footer() {
                         satisfaction.
                     </p>
                     <p className="mt-8 text-white font-mono text-xs">
-                        Copyright {new Date().getFullYear()} All right reserved.
+                        Copyright {new Date().getFullYear()}. Developed by Rachel Ardan Putra Ginting. All right reserved.
                     </p>
                 </div>
             </Container>

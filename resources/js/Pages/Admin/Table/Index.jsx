@@ -1,5 +1,5 @@
 import ActionButton from "@/Components/Actionbutton";
-import TableForm from "@/Components/TableForm";
+// import TableForm from "@/Components/TableForm";
 import Container from "@/Components/Container";
 import MyModal from "@/Components/Modal";
 import Pagination from "@/Components/Pagination";
@@ -251,7 +251,7 @@ export default function Index({ total_tables, ...props }) {
                         }
                         className="mt-6"
                     >
-                        <TableForm {...{ data, setData }} />
+                        {/*<TableForm {...{ data, setData }} />*/}
                         <div className="flex justify-end gap-2">
                             <SecondaryButton onClick={() => onCancelModal()}>
                                 Cancel
