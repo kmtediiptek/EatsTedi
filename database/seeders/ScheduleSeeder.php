@@ -15,11 +15,11 @@ class ScheduleSeeder extends Seeder
     public function run()
     {
         collect([
-            ['day' => "Senin", 'open' => "08:00", 'close' => '12:00'],
-            ['day' => "Selasa", 'open' => "08:00", 'close' => '12:00'],
-            ['day' => "Rabu", 'open' => "08:00", 'close' => '12:00'],
-            ['day' => "Kamis", 'open' => "08:00", 'close' => '10:00'],
-            ['day' => "Jumat", 'open' => "08:00", 'close' => '12:00'],
+            ['day' => "Senin", 'open' => "07:15", 'close' => '16:00'],
+            ['day' => "Selasa", 'open' => "07:15", 'close' => '16:00'],
+            ['day' => "Rabu", 'open' => "07:15", 'close' => '16:00'],
+            ['day' => "Kamis", 'open' => "07:15", 'close' => '16:00'],
+            ['day' => "Jumat", 'open' => "07:15", 'close' => '16:00'],
         ])->each(fn ($category) => Schedule::create($category));
     }
 }
