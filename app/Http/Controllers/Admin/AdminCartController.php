@@ -95,49 +95,56 @@ class AdminCartController extends Controller
         return redirect()->back();
     }
 
-
     public function decrement(Request $request, Product $product)
     {
-        if ($request->order_id) {
-            $cart = Cart::where('user_id', $request->user()->id)
-                ->where('product_id', $product->id)
-                ->where('order_id', $request->order_id)
-                ->first();
-        } else {
-            $cart = Cart::where('user_id', $request->user()->id)
-                ->where('product_id', $product->id)
-                ->where('status', 0)
-                ->first();
-        }
+        $userId = $request->user()->id;
+
+        // Cari cart aktif untuk user
+        $cart = Cart::where('user_id', $userId)
+            ->where('status', false) // status false berarti cart belum checkout
+            ->first();
+
         if ($cart) {
-            if ($cart->quantity > 1) {
-                $cart->update([
-                    "quantity" => $cart->quantity - 1,
-                    "price" => $product->price * ($cart->quantity - 1),
-                ]);
-            } else {
-                // Jika kuantitas adalah 1, hapus item dari keranjang
-                $cart->delete();
+            // Cari item di dalam cart
+            $cartItem = CartItem::where('cart_id', $cart->id)
+                ->where('product_id', $product->id)
+                ->first();
+
+            if ($cartItem) {
+                if ($cartItem->quantity > 1) {
+                    // Kurangi kuantitas item
+                    $cartItem->quantity--;
+                    $cartItem->price = $product->price * $cartItem->quantity;
+                    $cartItem->save();
+
+                    // Update total price di cart
+                    $cart->total_price -= $product->price;
+                    $cart->save();
+                } else {
+                    // Hapus item dari cart jika kuantitasnya 1
+                    $cartItem->delete();
+
+                    // Update total price di cart
+                    $cart->total_price -= $product->price;
+                    $cart->save();
+
+                    // Hapus cart jika tidak ada item tersisa
+                    if ($cart->cartItems()->count() === 0) {
+                        $cart->delete();
+                    }
+                }
             }
-        } else {
-            // Tidak ditemukan item di keranjang, tambahkan item baru
-            Cart::create([
-                "user_id" => $request->user()->id,
-                "product_id" => $product->id,
-                "quantity" => 1,
-                "price" => $product->price,
-            ]);
         }
 
         return redirect()->back();
     }
 
-
     public function destroy(Cart $cart)
     {
+        // Hapus semua item terkait dengan cart
+        $cart->cartItems()->delete();
 
-        $count = $cart->where('order_id', $cart->order_id)->count();
-        $count == 1 ?  Invoice::where('order_id', $cart->order_id)->delete() : null;
+        // Hapus cart
         $cart->delete();
 
         return back();
