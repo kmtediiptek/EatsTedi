@@ -1,8 +1,5 @@
-import { IconTrash, IconX } from "@tabler/icons-react";
-import { IconPlus } from "@tabler/icons-react";
+import { IconTrash, IconX, IconPlus, IconMinus } from "@tabler/icons-react";
 import React from "react";
-import TextInput from "./TextInput";
-import { IconMinus } from "@tabler/icons-react";
 import { router } from "@inertiajs/react";
 import toast from "react-hot-toast";
 import { numberFormat } from "@/Libs/Helper";
@@ -22,7 +19,7 @@ export default function CartItem({ cart }) {
 
     const deleteCart = () => {
         router.delete(`/admin/cart/${cart.id}`, {
-            onSuccess: () => toast.success("Delete Item!"),
+            onSuccess: () => toast.success("Deleted Item!"),
         });
     };
 
@@ -69,12 +66,12 @@ export default function CartItem({ cart }) {
                         <IconMinus
                             size={32}
                             className={
-                                cart.quantity == 1
+                                cart.quantity === 1
                                     ? "bg-gray-400 text-white border p-1 rounded"
                                     : "text-red-500 border p-1 rounded cursor-pointer"
                             }
                             onClick={
-                                cart.quantity == 1 ? null : quantityDecrement
+                                cart.quantity === 1 ? null : quantityDecrement
                             }
                         />
                     </div>

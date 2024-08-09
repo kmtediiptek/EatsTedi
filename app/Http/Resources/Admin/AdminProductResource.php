@@ -22,16 +22,44 @@ class AdminProductResource extends JsonResource
             'name' => $this->name,
             'picture' => $this->picture ? Storage::url($this->picture) : null,
             'category' => [
-                'id' => $this->category->id,
-                'name' => $this->category->name,
-                'slug' => $this->category->slug,
+                'id' => $this->category->id ?? null,
+                'name' => $this->category->name ?? null,
+                'slug' => $this->category->slug ?? null,
             ],
             'supplier' => [
-                'id' => $this->supplier->id,
-                'name' => $this->supplier->name,
-                'username' => $this->supplier->username,
+                'id' => $this->supplier->id ?? null,
+                'name' => $this->supplier->name ?? null,
+                'username' => $this->supplier->username ?? null,
             ],
-            'order_id' => $request->order_id
+            'cart_items' => $this->whenLoaded('cartItems', function () {
+                return $this->cartItems->map(function ($cartItem) {
+                    return [
+                        'id' => $cartItem->id,
+                        'cart_id' => $cartItem->cart_id,
+                        'price' => $cartItem->price,
+                        'quantity' => $cartItem->quantity,
+                        'product' => [
+                            'id' => $cartItem->product->id,
+                            'name' => $cartItem->product->name,
+                            'slug' => $cartItem->product->slug,
+                            'price' => $cartItem->product->price,
+                            'picture' => $cartItem->product->picture ? Storage::url($cartItem->product->picture) : null,
+                        ]
+                    ];
+                });
+            }),
+            'invoices' => $this->whenLoaded('invoices', function () {
+                return $this->invoices->map(function ($invoice) {
+                    return [
+                        'id' => $invoice->id,
+                        'total_price' => $invoice->total_price,
+                        'total_quantity' => $invoice->total_quantity,
+                        'status' => $invoice->status,
+                        'customer_name' => $invoice->customer_name,
+                        'succeeded_at' => $invoice->succeeded_at,
+                    ];
+                });
+            }),
         ];
     }
 }

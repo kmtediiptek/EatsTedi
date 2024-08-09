@@ -6,11 +6,10 @@ import { numberFormat } from "@/Libs/Helper";
 
 export default function ProductItem({ product, setIsOrderListOpen }) {
     const addToCart = () => {
-        console.log(product);
         router.post(
-            `/admin/cart/${product.slug}`,
+            `/admin/cart/${product.slug}`, // Endpoint untuk menambah ke cart
             {
-                order_id: product.order_id,
+                quantity: 1, // Menambahkan quantity 1 selalu
             },
             {
                 onSuccess: () => {
@@ -46,7 +45,6 @@ export default function ProductItem({ product, setIsOrderListOpen }) {
             <div className="py-2">
                 <p className="text-third py-4 text-lg">{product.name}</p>
                 <h6 className="text-3xl font-bold text-fourth">
-                    {" "}
                     <sup className="font-light"> Rp.</sup>{" "}
                     {numberFormat(product.price)}
                 </h6>
