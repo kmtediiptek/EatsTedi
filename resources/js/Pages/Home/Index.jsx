@@ -219,26 +219,15 @@ export default function Index({
                     </div>
                 </div>
             </Container>
-            <Container className="">
-                <div className="w-full flex items-center justify-end">
-                    <div className="w-full md:w-1/4">
-                        <TextInput
-                            type="search"
-                            className="w-full border-r border-b-none border-r "
-                            placeholder="Search menu.."
-                            defaultValue={searchQuery}
-                            onChange={handleSearch}
-                        />
-                    </div>
-                </div>
-                <div className="w-full gap-4 flex items-center justify-between  mt-4">
+            <Container className={'px-6 lg:px-10'}>
+                <div className="w-full gap-4 flex flex-col-reverse md:flex-row items-center justify-between  mt-4">
                     {/* Select2 nya disini */}
-                    <div className="w-full md:w-1/4">
+                    <div className="w-full md:w-3/4 flex gap-4">
                         <Select2
                             id="supplier-select"
                             value={selectedSupplierOption}
                             options={supplierOptions}
-                            className="w-full"
+                            className="w-full lg:w-1/4"
                             onChange={handleSupplierChange}
                             styles={{
                                 control: (provided, state) => ({
@@ -281,46 +270,53 @@ export default function Index({
                                 },
                             })}
                         />
-                    </div>
-                    <div className="w-full md:w-3/4 flex relative rounded scrolling-wrapper relative gap-x-4 overflow-x-scroll flex-nowrap">
-                        <Link
-                            href={route("home.index")}
-                            className="px-2 gap-x-2 flex text-white text-fourth border border-secondary rounded-md px-4 "
-                        >
-                            <IconCategory
-                                className="my-2 text-primary"
-                                size={20}
-                            />
-                            <div className="flex h-10 items-center justify-center">
-                                <p className="text-third font-semibold pr-2">
-                                    All
-                                </p>
-                            </div>
-                        </Link>
-                        {categories.map((category, index) => (
-                            <button
-                                onClick={() => onCategory(category.slug)}
-                                className="justify-between gap-x-2 flex items-center text-white border-secondary rounded-md px-4 text-fourth border"
-                                key={index}
+                        <div className="w-full md:w-2/4 flex relative rounded scrolling-wrapper relative gap-x-4 overflow-x-scroll flex-nowrap">
+                            <Link
+                                href={route("home.index")}
+                                className="px-2 gap-x-2 flex text-white text-fourth border border-secondary rounded-md px-4 "
                             >
-                                <div
+                                <IconCategory
                                     className="my-2 text-primary"
-                                    dangerouslySetInnerHTML={{
-                                        __html: category.icon,
-                                    }}
+                                    size={20}
                                 />
                                 <div className="flex h-10 items-center justify-center">
                                     <p className="text-third font-semibold pr-2">
-                                        {category.name}
+                                        All
                                     </p>
                                 </div>
-                            </button>
-                        ))}
+                            </Link>
+                            {categories.map((category, index) => (
+                                <button
+                                    onClick={() => onCategory(category.slug)}
+                                    className="justify-between gap-x-2 flex items-center text-white border-secondary rounded-md px-4 text-fourth border"
+                                    key={index}
+                                >
+                                    <div
+                                        className="my-2 text-primary"
+                                        dangerouslySetInnerHTML={{
+                                            __html: category.icon,
+                                        }}
+                                    />
+                                    <div className="flex h-10 items-center justify-center">
+                                        <p className="text-third font-semibold pr-2">
+                                            {category.name}
+                                        </p>
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
                     </div>
+                    <TextInput
+                        type="search"
+                        className="w-full md:w-1/4 border-r border-b-none border-r "
+                        placeholder="Search menu.."
+                        defaultValue={searchQuery}
+                        onChange={handleSearch}
+                    />
                 </div>
             </Container>
 
-            <Container>
+            <Container className={'px-6 lg:px-10'}>
                 <h3 className="text-2xl mb-4 font-semibold text-fourth">
                     Menu kami
                 </h3>
