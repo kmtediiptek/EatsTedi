@@ -1,33 +1,34 @@
 import React, { useState } from "react";
 import {
     IconBell,
-    IconChecklist,
+    IconCash,
     IconChecks,
-    IconCheckupList,
     IconCircle,
-    IconCircleFilled,
     IconClick,
-    IconEyeDollar,
+    IconExchange,
+    IconMoodDollar,
     IconProgress,
+    IconSend,
+    IconX,
+    IconCircleCheck,
 } from "@tabler/icons-react";
 import toast from "react-hot-toast";
 import Toast from "@/Components/Toast";
 import SecondaryButton from "./SecondaryButton";
 import PrimaryButton from "./PrimaryButton";
 import { router } from "@inertiajs/react";
-import { IconCurrencyDollar } from "@tabler/icons-react";
-import { IconCircleCheck } from "@tabler/icons-react";
+import MyModal from "./Modal";
+import TextInput from "./TextInput";
 
 export default function OrderItem({ invoice, onClick }) {
     let [isToast, setIsToast] = useState(false);
     const [toastTitle, setToastTitle] = useState("");
     const [orderId, setOrderId] = useState("");
 
-    const callVoice = (name) => {
+    const callVoice = (customer_name) => {
         const speech = new SpeechSynthesisUtterance(
-            `Pesanan atas Nama ${name}`
+            `The order under the name ${customer_name} has been completed`
         );
-        speech.lang = "id-ID";
         window.speechSynthesis.speak(speech);
     };
 
@@ -56,12 +57,65 @@ export default function OrderItem({ invoice, onClick }) {
         );
     };
 
+    // Open Modal Payment
+    const [data, setData] = useState({ charge: invoice.charge });
+    const [change, setChange] = useState(invoice.total_price); // State untuk change
+    let [isOpen, setIsOpen] = useState(false);
+    const [modalType, setModalType] = useState("");
+    const [modalPayment, setModalPayment] = useState("");
+
+    function openModalOrder(type) {
+        setIsOpen(true);
+        setModalPayment("Invoice");
+        setModalType(type);
+    }
+
+    function onCancelModal() {
+        setIsOpen(false);
+    }
+
+    const onChange = (e) => {
+        const { name, value } = e.target;
+        setData({
+            ...data,
+            [name]: value,
+        });
+
+        if (name === "charge") {
+            const chargeValue = parseFloat(value) || 0;
+            const totalPrice = parseFloat(invoice.total_price);
+            const calculatedChange = chargeValue - totalPrice;
+            setChange(calculatedChange);
+        }
+    };
+
+    const onPay = (e) => {
+        e.preventDefault();
+        router.put(
+            `/admin/invoice/${invoice.id}/pay`,
+            {
+                ...data,
+                charge: data.charge,
+            },
+            {
+                onSuccess: () => {
+                    setData({
+                        id: "",
+                        charge: "",
+                    }),
+                        toast.success("Order has been paid!");
+                    setIsOrderListOpen(false);
+                },
+            }
+        );
+    };
+
     return (
-        <div className="flex gap-x-2 p-2 w-1/4 border border-secondary rounded text-white">
+        <div className="flex gap-x-2 p-2 w-1/5 border border-secondary rounded text-white">
             <div className="flex w-full gap-x-1">
                 <div className="h-16 w-full text-fourth flex flex-col justify-between">
                     <h5 className="w-full font-semibold text-base text-fourth">
-                        {invoice.name}
+                        {invoice.customer_name}
                     </h5>
                     <span className="text-third text-sm text-left">
                         {invoice.total_quantity} Item
@@ -69,24 +123,13 @@ export default function OrderItem({ invoice, onClick }) {
                 </div>
                 <div className="bg-white flex items-end flex-col flex-1 gap-y-2 h-full justify-between h-16 w-full text-fourth">
                     <button
-                        onClick={() => {
-                            if (invoice.charge !== 0) {
-                                openToast(invoice.order_id, invoice.name);
-                            }
-                        }}
-                        className={`font-semibold text-sm flex items-center gap-x-2 h-full px-1 rounded text-white ${
-                            invoice.status == 1
-                                ? "bg-green-500"
-                                : "bg-yellow-400"
-                        } ${
-                            invoice.charge == 0 || invoice.status == 1
-                                ? "cursor-not-allowed"
-                                : ""
-                        }`}
-                        disabled={invoice.charge == 0 || invoice.status == 1}
+                        className="bg-emerald font-semibold text-sm flex items-center gap-x-2 h-full px-1 rounded text-white"
+                        type="button"
+                        onClick={() => openModalOrder("create")}
+                        disabled={invoice.charge != 0}
                     >
                         {invoice.charge == 0 ? (
-                            <IconProgress size={26} />
+                            <IconMoodDollar size={26} />
                         ) : (
                             <>
                                 {invoice.status == 1 ? (
@@ -106,14 +149,12 @@ export default function OrderItem({ invoice, onClick }) {
                         )}
                     </div>
                 </div>
-                {invoice.status == 1 ? (
-                    <>""</>
-                ) : (
+                {invoice.status == 1 ? null : (
                     <>
                         <div className="flex flex-col justify-between item-center gap-y-2">
                             <button
                                 type="button"
-                                onClick={() => callVoice(invoice.name)}
+                                onClick={() => callVoice(invoice.customer_name)}
                                 className="flex justify-center items-center rounded bg-primary px-1 h-full"
                             >
                                 <IconBell
@@ -148,6 +189,63 @@ export default function OrderItem({ invoice, onClick }) {
                     </PrimaryButton>
                 </div>
             </Toast>
+
+            {/* Modal */}
+            <MyModal
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                size={`1/3`}
+                type={modalType}
+                title={modalPayment}
+            >
+                <div className="mb-6 relative">
+                    <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                        <IconCash color="green" />{" "}
+                        <sup className="ml-1">Rp.</sup>
+                    </div>
+                    <TextInput
+                        type="number"
+                        name="charge"
+                        id="charge"
+                        className="w-full pl-16"
+                        value={data.charge || ""}
+                        onChange={onChange}
+                        placeholder="Charge.."
+                    />
+                </div>
+                <div className="mb-6 relative">
+                    <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                        <IconExchange color="orange" />{" "}
+                        <sup className="ml-1">Rp.</sup>
+                    </div>
+                    <TextInput
+                        type="number"
+                        readOnly
+                        disabled
+                        name="change"
+                        id="change"
+                        className="w-full pl-16"
+                        value={change}
+                        placeholder="Change.."
+                    />
+                </div>
+                <div className="flex gap-4">
+                    <SecondaryButton onClick={() => onCancelModal()}>
+                        <IconX />
+                    </SecondaryButton>
+                    <PrimaryButton
+                        onClick={(e) => {
+                            e.preventDefault();
+                            onPay(e);
+                            setIsOpen(false);
+                        }}
+                        className="bg-primary text-white px-3 py-4 w-full rounded"
+                        disabled={change < 0 || data.charge === ""}
+                    >
+                        <IconChecks />
+                    </PrimaryButton>
+                </div>
+            </MyModal>
         </div>
     );
 }

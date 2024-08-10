@@ -6,15 +6,11 @@ import { numberFormat } from "@/Libs/Helper";
 
 export default function CartItem({ cart }) {
     const quantityIncrement = () => {
-        router.post(`/admin/cart/increment/${cart.product_slug}`, {
-            order_id: cart.order_id,
-        });
+        router.post(`/admin/cart/increment/${cart.product_slug}`);
     };
 
     const quantityDecrement = () => {
-        router.post(`/admin/cart/decrement/${cart.product_slug}`, {
-            order_id: cart.order_id,
-        });
+        router.post(`/admin/cart/decrement/${cart.product_slug}`);
     };
 
     const deleteCart = () => {
@@ -29,7 +25,7 @@ export default function CartItem({ cart }) {
         <>
             <div className="flex order py-4 flex-flex-column gap-4">
                 <div className="flex gap-2 w-1/2 sm:w-2/3 overflow-hidden">
-                    <img
+                    {/* <img
                         src={
                             cart.product_picture
                                 ? picture
@@ -37,7 +33,7 @@ export default function CartItem({ cart }) {
                         }
                         alt=""
                         className="rounded h-16 w-16 hidden md:block"
-                    />
+                    /> */}
                     <div className="flex flex flex-col justify-between">
                         <h6 className="text-base text-fourth">
                             {cart.product_name}
@@ -49,20 +45,12 @@ export default function CartItem({ cart }) {
                 </div>
                 <div className="w-1/2 sm:w-1/3 text-end flex flex-col flex-1 justify-between">
                     <IconTrash
-                        size={16}
+                        size={20}
                         color="red"
-                        className="ml-auto rounded border"
+                        className="ml-auto"
                         onClick={deleteCart}
                     />
-                    <div className="flex justify-between align-center  mt-5 ">
-                        <IconPlus
-                            size={32}
-                            className="text-white bg-primary border p-1 rounded cursor-pointer"
-                            onClick={quantityIncrement}
-                        />
-                        <span className="border-0 w-12 px-0 h-8 text-lg text-center mx-auto text-lg">
-                            {cart.quantity}
-                        </span>
+                    <div className="flex justify-between align-center mt-3 ">
                         <IconMinus
                             size={32}
                             className={
@@ -73,6 +61,14 @@ export default function CartItem({ cart }) {
                             onClick={
                                 cart.quantity === 1 ? null : quantityDecrement
                             }
+                        />
+                        <span className="border-0 w-12 px-0 h-8 text-lg text-center mx-auto text-lg">
+                            {cart.quantity}
+                        </span>
+                        <IconPlus
+                            size={32}
+                            className="text-white bg-primary border p-1 rounded cursor-pointer"
+                            onClick={quantityIncrement}
                         />
                     </div>
                 </div>

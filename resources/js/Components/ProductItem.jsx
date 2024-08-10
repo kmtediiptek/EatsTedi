@@ -21,34 +21,30 @@ export default function ProductItem({ product, setIsOrderListOpen }) {
     };
 
     return (
-        <div className="max-h-[420px] mb-4 relative flex flex-1 justify-between flex-col">
+        <button
+            onClick={addToCart}
+            className="border border-secondary rounded-md h-[180px] mb-4 relative flex flex-1 justify-end flex-col bg-cover bg-center"
+            style={{
+                backgroundImage: `url(${
+                    product.picture
+                        ? product.picture
+                        : "https://asset.kompas.com/crops/FDAcmidsNYJDL80i55bj7pbXqyk=/95x0:939x563/750x500/data/photo/2022/07/10/62ca309364500.jpeg"
+                })`,
+            }}
+        >
             <span className="bg-white opacity-50 text-sm text-black absolute p-1 px-1.5 rounded opacity-[0.8] shadow right-4 top-4">
                 {product.category.name}
             </span>
-            <div>
-                <button
-                    className="rounded text-center hover:bg-primary hover:text-white flex items-center justify-center bg-white w-16 text-violet h-16 absolute right-4 bottom-32"
-                    onClick={addToCart}
-                >
-                    <IconShoppingBagPlus size={32} />{" "}
-                </button>
-                <img
-                    src={
-                        product.picture
-                            ? product.picture
-                            : `https://via.placeholder.com/400`
-                    }
-                    alt={product.name}
-                    className="rounded h-[250px] w-full"
-                />
-            </div>
-            <div className="py-2">
-                <p className="text-third py-4 text-lg">{product.name}</p>
-                <h6 className="text-3xl font-bold text-fourth">
+
+            <div className="p-2 text-left w-full bg-opacity-60 bg-white">
+                <p className="text-fourth rounded text-lg font-bold line-clamp-2">
+                    {product.name} Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis, officiis.
+                </p>
+                <h6 className="text-lg font-bold rounded">
                     <sup className="font-light"> Rp.</sup>{" "}
                     {numberFormat(product.price)}
                 </h6>
             </div>
-        </div>
+        </button>
     );
 }

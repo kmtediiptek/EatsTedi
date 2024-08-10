@@ -17,9 +17,6 @@ class AdminCartController extends Controller
 {
     public function store(Request $request, Product $product)
     {
-        // Cek apakah data pada Product ID yang sama, jika sama, jangan buat keranjang baru, tetapi tambahkan saja jumlahnya.
-        $id = "EATS-" . date('dhis');
-
         // ambil ID user
         $userId = auth()->id();
 

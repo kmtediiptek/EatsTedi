@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\AdminProductResource;
-use App\Http\Resources\Admin\AdminTableResource;
 use App\Models\Category;
 use App\Models\Invoice;
 use App\Models\Payment;
@@ -24,6 +23,8 @@ class AdminTransactionController extends Controller
         $carts = DB::table('carts')
             ->join('cart_items', 'carts.id', '=', 'cart_items.cart_id')
             ->join('products', 'cart_items.product_id', '=', 'products.id')
+            ->leftJoin('cart_invoices', 'carts.id', '=', 'cart_invoices.cart_id')
+            ->leftJoin('invoices', 'cart_invoices.invoice_id', '=', 'invoices.id')
             ->select(
                 'carts.id',
                 'cart_items.price',
@@ -34,7 +35,7 @@ class AdminTransactionController extends Controller
                 'products.picture AS product_picture'
             )
             ->when($request->order_id, function ($query) use ($request) {
-                return $query->where('cart_invoices.invoice_id', $request->order_id);
+                return $query->where('invoices.id', $request->order_id);
             }, function ($query) use ($request) {
                 return $query->where('carts.status', 0);
             })
