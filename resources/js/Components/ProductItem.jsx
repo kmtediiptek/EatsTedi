@@ -38,7 +38,7 @@ export default function ProductItem({ product, setIsOrderListOpen }) {
 
             <div className="p-2 text-left w-full bg-opacity-60 bg-white">
                 <p className="text-fourth rounded text-lg font-bold line-clamp-2">
-                    {product.name} Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis, officiis.
+                    {product.name}
                 </p>
                 <h6 className="text-lg font-bold rounded">
                     <sup className="font-light"> Rp.</sup>{" "}

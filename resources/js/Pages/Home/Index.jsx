@@ -12,6 +12,7 @@ import ProductItemUser from "@/Components/ProductItemUser";
 import Footer from "@/Components/Footer";
 import TextInput from "@/Components/TextInput";
 import Select2 from "react-select";
+import {numberFormat} from "@/Libs/Helper";
 
 export default function Index({
                                   categories,
@@ -297,6 +298,7 @@ export default function Index({
                                             __html: category.icon,
                                         }}
                                     />
+
                                     <div className="flex h-10 items-center justify-center">
                                         <p className="text-third font-semibold pr-2">
                                             {category.name}

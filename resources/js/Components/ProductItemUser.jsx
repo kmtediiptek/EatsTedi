@@ -14,44 +14,34 @@ export default function ProductItemUser({ product }) {
 
     return (
         <>
-            <a
-                href="#"
+            <button
                 onClick={(e) => {
                     e.preventDefault();
                     handleProductClick(product);
                 }}
-                className="max-h-[400px] mb-4 relative flex flex-1 justify-between flex-col"
+                className="border border-secondary rounded-md h-[180px] mb-4 relative flex flex-1 justify-end flex-col bg-cover bg-center"
+                style={{
+                    backgroundImage: `url(${
+                        product.picture
+                            ? product.picture
+                            : "https://asset.kompas.com/crops/FDAcmidsNYJDL80i55bj7pbXqyk=/95x0:939x563/750x500/data/photo/2022/07/10/62ca309364500.jpeg"
+                    })`,
+                }}
             >
-                <span className="bg-white opacity-50 text-sm text-black absolute p-1 px-1.5 rounded opacity-[0.8] shadow right-4 top-4">
-                    {product.category.name}
-                </span>
+            <span className="bg-white opacity-50 text-sm text-black absolute p-1 px-1.5 rounded opacity-[0.8] shadow right-4 top-4">
+                {product.category.name}
+            </span>
 
-                <span className="flex items-center gap-x-2 bg-white opacity-50 text-sm text-black absolute p-1 px-1.5 rounded opacity-[0.8] shadow left-4 top-4">
-                    {/* <Icon className="text-fourth" /> */}
-                    Qty: {product.daily_stock.quantity}
-                </span>
-                <div>
-                    <img
-                        src={
-                            product.picture
-                                ? product.picture
-                                : `https://via.placeholder.com/400`
-                        }
-                        alt={product.name}
-                        className="rounded h-[200px] sm:h-[200px] w-full"
-                    />
-                </div>
-                <div className="py-2">
-                    <p className="text-third py-2 text-base sm:text-lg">
+                <div className="p-2 text-left w-full bg-opacity-60 bg-white">
+                    <p className="text-fourth rounded text-lg font-bold line-clamp-2">
                         {product.name}
                     </p>
-                    <h6 className="text-xl sm:text-3xl font-bold text-fourth">
-                        {" "}
-                        <sup className="font-light">Rp.</sup>{" "}
+                    <h6 className="text-lg font-bold rounded">
+                        <sup className="font-light"> Rp.</sup>{" "}
                         {numberFormat(product.price)}
                     </h6>
                 </div>
-            </a>
+            </button>
 
             {/* Modal Component */}
             <MyModal
