@@ -35,4 +35,9 @@ class Product extends Model
     {
         return $this->hasOne(DailyStock::class);
     }
+
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
 }

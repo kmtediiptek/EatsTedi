@@ -39,7 +39,6 @@ export default function Index({
         name: "",
         payment_id: "",
         charge: "",
-        order_id: "",
         total_price: "",
         paid: "",
     });
@@ -51,7 +50,6 @@ export default function Index({
     const toggleOrderList = (order) => {
         if (order) {
             setData({
-                id: order.order_id,
                 name: order.name,
                 charge: order.charge,
                 paid: order.paid,
@@ -62,9 +60,7 @@ export default function Index({
             });
             router.get(
                 `/admin/transaction`,
-                {
-                    order_id: order.order_id,
-                },
+                {},
                 {
                     preserveState: true,
                 }
@@ -83,11 +79,9 @@ export default function Index({
             `/admin/invoice`,
             {
                 ...data,
-                id: data.order_id,
                 carts: carts,
                 total: total,
                 quantity: quantity,
-                order_id: data.order_id,
                 payment_id: data.payment_id.id,
             },
             {
@@ -209,8 +203,8 @@ export default function Index({
                                 <div
                                     className={`grid grid-cols-1 sm:grid-cols-2 ${
                                         isOrderListOpen
-                                            ? "md:grid-cols-4"
-                                            : "md:grid-cols-5"
+                                            ? "md:grid-cols-6"
+                                            : "md:grid-cols-7"
                                     }  lg:grid-cols-lg-4 gap-4 gap-y-8 w-full flex-wrap`}
                                 >
                                     {products.map((product, index) => (

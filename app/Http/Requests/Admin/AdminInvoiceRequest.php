@@ -25,7 +25,7 @@ class AdminInvoiceRequest extends FormRequest
     {
         return [
             "name" => ['required', 'string', 'min:3'],
-            "paid" => ['required', 'numeric', 'min:1'],
+            "is_paid" => ['required', 'numeric', 'min:1'],
         ];
     }
 }

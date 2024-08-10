@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean('is_paid')->default(false);
             $table->decimal('total_price');
             $table->integer('total_quantity');
-            $table->string('status')->default('pending');
+            $table->integer('status')->default(0);
             $table->decimal('charge')->default(0);
             $table->string('customer_name', 50);
             $table->dateTime('succeeded_at')->nullable();

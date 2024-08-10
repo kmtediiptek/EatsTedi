@@ -9,18 +9,14 @@ import {
     IconCash,
     IconChecks,
     IconExchange,
-    // IconMail,
-    // IconSend,
     IconX,
 } from "@tabler/icons-react";
 import Select from "./Select";
-import { IconSend } from "@tabler/icons-react";
 
 export default function InvoiceForm({
     data,
     setData,
     onSubmit,
-    carts,
     total_price,
 }) {
     let [isOpen, setIsOpen] = useState(false);
@@ -94,13 +90,13 @@ export default function InvoiceForm({
                     <TextInput
                         id="bordered-radio-1"
                         type="radio"
-                        checked={data.paid == 1}
+                        checked={data.is_paid == 1}
                         onChange={(e) => {
                             onChange(e);
                             handleRadioChange(e);
                         }}
                         value="1"
-                        name="paid"
+                        name="is_paid"
                         className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary"
                     />
                     <label
@@ -119,13 +115,13 @@ export default function InvoiceForm({
                         id="bordered-radio-2"
                         type="radio"
                         disabled={data.charge != 0 && data.payment_id !== ""}
-                        checked={data.paid == 2}
+                        checked={data.is_paid == 2}
                         onChange={(e) => {
                             onChange(e);
                             handleRadioChange(e);
                         }}
                         value="2"
-                        name="paid"
+                        name="is_paid"
                         className=" w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary"
                     />
                     <label
@@ -137,7 +133,7 @@ export default function InvoiceForm({
                 </div>
             </div>
             <div className="flex justify-between w-full gap-x-4">
-                {showPaymentOptions || data.paid == 1 ? (
+                {showPaymentOptions || data.is_paid == 1 ? (
                     <div className="flex flex-col w-full">
                         <Select
                             value={data.payment_id}
@@ -154,11 +150,11 @@ export default function InvoiceForm({
                     ""
                 )}
             </div>
-            {showPaymentOptions || data.paid == 1 ? (
+            {showPaymentOptions || data.is_paid == 1 ? (
                 <>
                     <TextInput
                         type="number"
-                        min={data.paid == 1 ? 1 : ""}
+                        min={data.is_paid == 1 ? 1 : ""}
                         name="charge"
                         id="charge"
                         className="w-full"
@@ -175,7 +171,7 @@ export default function InvoiceForm({
             )}
 
             <div className="pb-4 flex items-end flex-1 justify-end">
-                {data.charge != 0 || data.paid == 1 ? (
+                {data.charge != 0 || data.is_paid == 1 ? (
                     <>
                         <PrimaryButton
                             type="button"
@@ -193,7 +189,7 @@ export default function InvoiceForm({
                     <>
                         <PrimaryButton
                             className="bg-violet-600 text-white px-3 py-4 w-full rounded"
-                            disabled={data.paid == ""}
+                            disabled={data.is_paid == ""}
                         >
                             Confirm
                         </PrimaryButton>
@@ -258,7 +254,7 @@ export default function InvoiceForm({
                     <SecondaryButton onClick={() => onCancelModal()}>
                         <IconX />
                     </SecondaryButton>
-                    <PrimaryButton
+                    {/* <PrimaryButton
                         onClick={(e) => {
                             e.preventDefault();
                             sendBill();
@@ -273,7 +269,7 @@ export default function InvoiceForm({
                         }
                     >
                         <IconSend />
-                    </PrimaryButton>
+                    </PrimaryButton> */}
                     <PrimaryButton
                         onClick={(e) => {
                             e.preventDefault();
