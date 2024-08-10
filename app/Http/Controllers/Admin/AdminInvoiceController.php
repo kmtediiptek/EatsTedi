@@ -25,35 +25,19 @@ class AdminInvoiceController extends Controller
 
         if ($start_date && $end_date) {
             if ($search_invoices) {
-                $invoices = Invoice::query()
-                    ->where('name', 'LIKE', "%$search_invoices%")
-                    ->select('id', 'name', 'order_id', 'status', 'payment_id', 'charge', 'succeeded_at', 'total_price', 'total_quantity')
-                    ->where('status', 1)
+                $invoices = Invoice::where('status', 1)
+                    ->where('customer_name', 'LIKE', "%$search_invoices%")
                     ->whereBetween('created_at', [$start_date, $end_date])
                     ->latest()
                     ->fastPaginate(10)->withQueryString();
             } else {
-                $invoices = Invoice::query()
-                    ->select('id', 'name', 'order_id', 'status', 'payment_id', 'charge', 'succeeded_at', 'total_price', 'total_quantity')
-                    ->where('status', 1)
-                    ->whereBetween('created_at', [$start_date, $end_date])
-                    ->latest()
-                    ->fastPaginate(10);
+                $invoices = Invoice::where('status', 1)->whereBetween('created_at', [$start_date, $end_date])->latest()->fastPaginate(10);
             }
         } else {
             if ($search_invoices) {
-                $invoices = Invoice::query()
-                    ->select('id', 'name', 'order_id', 'status', 'payment_id', 'charge', 'succeeded_at', 'total_price', 'total_quantity')
-                    ->where('name', 'LIKE', "%$search_invoices%")
-                    ->where('status', 1)
-                    ->latest()
-                    ->fastPaginate(10)->withQueryString();
+                $invoices = Invoice::where('status', 1)->where('customer_name', 'LIKE', "%$search_invoices%")->latest()->fastPaginate(10);
             } else {
-                $invoices = Invoice::query()
-                    ->select('id', 'name', 'order_id', 'status', 'payment_id', 'charge', 'succeeded_at', 'total_price', 'total_quantity')
-                    ->where('status', 1)
-                    ->latest()
-                    ->fastPaginate(10);
+                $invoices = Invoice::where('status', 1)->latest()->fastPaginate(10);
             }
         }
 

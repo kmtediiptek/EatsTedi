@@ -20,6 +20,7 @@ export default function Index({ total_invoices, ...props }) {
         end_date: "",
     });
 
+    console.log(invoices)
     const [searchQuery, setSearchQuery] = useState("");
     const [isFilterApplied, setIsFilterApplied] = useState(false);
 
@@ -76,7 +77,7 @@ export default function Index({ total_invoices, ...props }) {
                     startY: 20,
                 });
 
-                doc.save("Report Order RANDA.pdf");
+                doc.save("Report Order Eatstedi.pdf");
             } catch (error) {
                 console.error("Error generating PDF:", error);
             }
@@ -215,10 +216,11 @@ export default function Index({ total_invoices, ...props }) {
                                     </Table.Td>
                                     <Table.Td>{invoice.succeeded_at}</Table.Td>
                                     <Table.Td>
+
                                         <span
                                             className={`text-xs p-2 ${
                                                 invoice.status == 1
-                                                    ? "bg-emerald-500 text-white rounded"
+                                                    ? "bg-green-500 text-white rounded"
                                                     : "bg-yellow-400 text-white rounded"
                                             }`}
                                         >
