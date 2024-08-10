@@ -47,11 +47,11 @@ export default function Login({ status, canResetPassword }) {
             <div className="flex">
                 <div className="w-full sm:w-1/2 md:w-1/4 hidden sm:flex border-r border-gray-300 p-8 py-16  sm:flex-col sm:justify-between">
                     <div>
-                        <img
-                            src={`/app/Logo Title X.png`}
-                            alt=""
-                            width="180px"
-                        />
+                        {/*<img*/}
+                        {/*    src={`/app/Logo Title X.png`}*/}
+                        {/*    alt=""*/}
+                        {/*    width="180px"*/}
+                        {/*/>*/}
                     </div>
                     <div>
                         <img
@@ -63,7 +63,7 @@ export default function Login({ status, canResetPassword }) {
                     </div>
                     <div>
                         <h6 className="text-xl font-semibold text-fourth">
-                            RANDA
+                            EATSTEDI
                         </h6>
                         <p className="text-third">
                             Optimizing Business Processes with Point of Sales
