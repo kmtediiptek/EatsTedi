@@ -191,14 +191,14 @@ export default function Index({ total_daily_stocks, suppliers, ...props }) {
                 <Table>
                     <Table.Thead>
                         <tr>
-                            <Table.Th>#</Table.Th>
+                            <Table.Th>No</Table.Th>
                             <Table.Th>Supplier</Table.Th>
-                            <Table.Th>Name</Table.Th>
-                            <Table.Th>Price</Table.Th>
-                            <Table.Th>Sold</Table.Th>
-                            <Table.Th>Rest</Table.Th>
-                            <Table.Th>Total Quantity</Table.Th>
-                            <Table.Th>Total Price</Table.Th>
+                            <Table.Th>Nama</Table.Th>
+                            <Table.Th>Harga</Table.Th>
+                            <Table.Th>Terjual</Table.Th>
+                            <Table.Th>Sisa Stok</Table.Th>
+                            <Table.Th>Total Jumlah</Table.Th>
+                            <Table.Th>Total Harga</Table.Th>
                         </tr>
                     </Table.Thead>
                     <Table.Tbody>

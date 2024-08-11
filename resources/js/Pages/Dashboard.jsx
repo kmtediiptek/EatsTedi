@@ -19,6 +19,8 @@ export default function Dashboard({
     total,
     paid_later,
     paid_now,
+    pay_cash,
+    pay_qris,
     weeklyIncome,
     dailyIncome,
     monthlyIncome,
@@ -334,10 +336,10 @@ export default function Dashboard({
                             </h3>
                         </div>
                         <div className="text-third flex flex-col flex-1 justify-around">
-                            <h5 className="font-semibold text-xl">Paid Now</h5>
+                            <h5 className="font-semibold text-xl">Pay Cash</h5>
                             <span className="text-fourth text-3xl font-bold">
                                 {" "}
-                                <sup>Rp.</sup> {numberFormat(paid_now)}
+                                <sup>Rp.</sup> {numberFormat(total.pay_cash)}
                             </span>
                         </div>
                     </div>
@@ -349,11 +351,11 @@ export default function Dashboard({
                         </div>
                         <div className="text-third flex flex-col flex-1 justify-around">
                             <h5 className="font-semibold text-xl">
-                                Paid Later
+                                Pay Qris
                             </h5>
                             <span className="text-fourth text-3xl font-bold">
                                 {" "}
-                                <sup>Rp.</sup> {numberFormat(paid_later)}
+                                <sup>Rp.</sup> {numberFormat(total.pay_qris)}
                             </span>
                         </div>
                     </div>

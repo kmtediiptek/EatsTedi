@@ -18,8 +18,10 @@ class AdminInvoiceController extends Controller
 {
     public function index(Request $request)
     {
-        $start_date = $request->input('start_date');
-        $end_date = $request->input('end_date');
+        $start_date = $request->input('start_date') ?? now()->startOfDay();
+        $end_date = $request->input('end_date') ?? now()->endOfDay();
+
+
 
         $search_invoices = $request->input('search');
 
@@ -88,6 +90,14 @@ class AdminInvoiceController extends Controller
         }
 
         $invoice = Invoice::create($invoiceData);
+
+//        update on daily stock
+        foreach ($cartItems as $cartItem) {
+            $cartItem->product->daily_stock->update([
+                'quantity' => $cartItem->product->daily_stock->quantity - $cartItem->quantity,
+                'sold' => $cartItem->product->daily_stock->sold + $cartItem->quantity,
+            ]);
+        }
 
         CartInvoice::create([
             'cart_id' => $cart->id,

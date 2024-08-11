@@ -39,7 +39,7 @@ class AdminCartController extends Controller
             ['cart_id' => $cart->id, 'product_id' => $product->id],
             [
                 'quantity' => DB::raw('quantity + 1'),
-                'price' => $product->price
+                'price' => DB::raw('price + ' . $product->price),
             ]
         );
 
@@ -47,10 +47,10 @@ class AdminCartController extends Controller
         $cart->total_price += $product->price;
         $cart->save();
 
-        // Update stok di daily_stocks
-        $dailyStock->quantity -= 1;
-        $dailyStock->sold += 1;
-        $dailyStock->save();
+//        // Update stok di daily_stocks
+//        $dailyStock->quantity -= 1;
+//        $dailyStock->sold += 1;
+//        $dailyStock->save();
 
         Activity::create([
             "activity" => Auth::user()->name . " Added Order " . $product->name

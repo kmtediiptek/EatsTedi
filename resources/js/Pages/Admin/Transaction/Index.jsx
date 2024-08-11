@@ -21,6 +21,7 @@ export default function Index({
     carts,
     invoices,
     payments,
+    filter_category,
     ...props
 }) {
     const [isOrderListOpen, setIsOrderListOpen] = useState(true);
@@ -170,7 +171,7 @@ export default function Index({
                                 href={route("admin.transaction")}
                                 className="flex text-white"
                             >
-                                <div className="w-32 h-18 bg-primary rounded p-2 shadow">
+                                <div className={`w-32 h-18 ${!filter_category? 'bg-primary text-white': 'text-fourth'} rounded rounded border border-secondary p-2 shadow`}>
                                     <p className="block">All Menu</p>
                                     <h6 className="text-lg font-semibold">
                                         {total_categories} items
@@ -180,11 +181,11 @@ export default function Index({
                             {categories.map((category, index) => (
                                 <button
                                     onClick={() => onCategory(category.slug)}
-                                    className="flex rounded text-white"
+                                    className={`flex rounded ${filter_category?.toLowerCase() === category.name.toLowerCase() ? 'bg-primary text-white': 'hover:bg-orange-300'} text-white `}
                                     key={index}
                                 >
-                                    <div className="w-32 h-18 text-left rounded border border-secondary text-fourth p-2">
-                                        <p className="text-third">
+                                    <div className={`w-32 h-18 text-left rounded border border-secondary text-fourth hover:text-white p-2 ${filter_category?.toLowerCase() === category.name.toLowerCase() ? 'text-white': ''}`}>
+                                        <p className="">
                                             {category.name}
                                         </p>
                                         <h6 className="text-lg font-semibold">

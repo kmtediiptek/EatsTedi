@@ -27,6 +27,7 @@ export default function DailyMenuForm() {
             {
                 preserveState: true,
                 onSuccess: (page) => {
+                    console.log(page.props.daily_stocks.data);
                     setData("daily_stocks", page.props.daily_stocks.data);
                 },
             }
@@ -163,7 +164,8 @@ export default function DailyMenuForm() {
                                                     daily_stock.product.id
                                                 )
                                             }
-                                            value={daily_stock.quantity || ""}
+                                            defaultValue={daily_stock.rest || ""}
+                                            // value={daily_stock.quantity || ""}
                                         />
                                         {errors[
                                             `quantity-${daily_stock.product.id}`

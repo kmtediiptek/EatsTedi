@@ -71,13 +71,15 @@ class AdminTransactionController extends Controller
         $total_categories = Product::count();
 
         // Mengirim data ke view dengan Inertia
+
         return inertia('Admin/Transaction/Index', [
             "categories" => $categories,
             "total_categories" => $total_categories,
             "products" => AdminProductResource::collection($products),
             "carts" => $carts,
             "payments" => $payments,
-            "invoices" => $invoices
+            "invoices" => $invoices,
+            "filter_category" => $request->category,
         ]);
     }
 }

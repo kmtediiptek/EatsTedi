@@ -28,10 +28,22 @@ class AdminDashboardController extends Controller
             'today_income' => Invoice::whereDate('created_at', today())->sum('total_price'),
             'paid_now' => Invoice::whereNotNull('succeeded_at')->whereDate('created_at', today())->sum('total_price'),
             'paid_later' => Invoice::whereNull('succeeded_at')->whereDate('created_at', today())->sum('total_price'),
+            'pay_cash'=> Invoice::where('payment_id', 1)->whereNotNull('succeeded_at')->whereDate('created_at', today())->sum('total_price'),
+            'pay_qris'=> Invoice::where('payment_id', 2)->whereNotNull('succeeded_at')->whereDate('created_at', today())->sum('total_price'),
         ];
 
+//        $weeklyIncome = Invoice::select(
+//            \DB::raw('WEEK(created_at) as week'),
+//            \DB::raw('SUM(total_price) as total')
+//        )
+//            ->whereMonth('created_at', Carbon::now()->month)
+//            ->whereYear('created_at', Carbon::now()->year)
+//            ->groupBy('week')
+//            ->orderBy('week', 'asc')
+//            ->get();
+//        weekly income by month example 1st week august, 2nd week august, make week string '1st week august'
         $weeklyIncome = Invoice::select(
-            \DB::raw('WEEK(created_at) as week'),
+            \DB::raw('CONCAT("Week ", WEEK(created_at, 1) - WEEK(DATE_SUB(created_at, INTERVAL DAYOFMONTH(created_at)-1 DAY), 1) + 1, " ", MONTHNAME(created_at)) as week'),
             \DB::raw('SUM(total_price) as total')
         )
             ->whereMonth('created_at', Carbon::now()->month)
@@ -39,6 +51,7 @@ class AdminDashboardController extends Controller
             ->groupBy('week')
             ->orderBy('week', 'asc')
             ->get();
+//        dd($weeklyIncome);
 
         $dailyIncome = Invoice::select(
             \DB::raw('DATE(created_at) as date'),
