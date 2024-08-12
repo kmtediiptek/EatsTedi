@@ -154,19 +154,6 @@ export default function UpdateProfileInformation({
                     />
                 </div>
                 <div>
-                    <InputLabel htmlFor="status" value="Status" />
-                    <Select
-                        value={data.status}
-                        data={statuses}
-                        onChange={(e) => setData("status", e)}
-                    />
-                    {errors.status ? (
-                        <Error className="" value={errors.status} />
-                    ) : null}
-
-                    <InputError className="mt-2" message={errors.status} />
-                </div>
-                <div>
                     <InputLabel htmlFor="address" value="Address" />
 
                     <Textarea

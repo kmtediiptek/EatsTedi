@@ -18,6 +18,7 @@ import toast from "react-hot-toast";
 
 export default function Index({ total_suppliers, ...props }) {
     const { data: suppliers, meta, links } = props.suppliers;
+    console.log(suppliers)
 
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -114,7 +115,8 @@ export default function Index({ total_suppliers, ...props }) {
     };
 
     const onDelete = (supplierUsername) => {
-        destroy(route("admin.supplier.destroy", supplierUsername), {
+        console.log(supplierUsername, "adsjnwekj")
+        destroy(route("admin.supplier.destroy", supplierUsername.id), {
             onSuccess: () => {
                 toast.success("Supplier has been deleted!"), setIsToast(false);
             },
@@ -227,7 +229,7 @@ export default function Index({ total_suppliers, ...props }) {
                                                     type="button"
                                                     onClick={() =>
                                                         openToast(
-                                                            supplier.username,
+                                                            supplier,
                                                             supplier.name
                                                         )
                                                     }
@@ -300,7 +302,9 @@ export default function Index({ total_suppliers, ...props }) {
                         </SecondaryButton>
                         <PrimaryButton
                             className="w-32"
-                            onClick={() => onDelete(supplierUsername)}
+                            onClick={() =>{ onDelete(supplierUsername)
+                            // console.log(supplier)
+                            }}
                         >
                             Yes
                         </PrimaryButton>

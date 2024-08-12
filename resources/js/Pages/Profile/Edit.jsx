@@ -127,20 +127,7 @@ export default function Edit({
                                 >
                                     Account
                                 </SecondaryButton>
-                                {auth.user.status === "employee" ? (
-                                    ""
-                                ) : (
-                                    <SecondaryButton
-                                        className={`w-full my-2 text-secondary border rounded border-gray-300 hover:bg-primary hover:text-white ${
-                                            activeTab === "Delete"
-                                                ? "bg-primary border-none text-white"
-                                                : ""
-                                        }`}
-                                        onClick={() => handleTabClick("Delete")}
-                                    >
-                                        Delete
-                                    </SecondaryButton>
-                                )}
+
                             </div>
                         </div>
                         <div className="gap-2 px-4 space-y-2 mt-4">

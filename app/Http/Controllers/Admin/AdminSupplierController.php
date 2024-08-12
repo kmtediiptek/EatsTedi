@@ -79,12 +79,13 @@ class AdminSupplierController extends Controller
 
     public function destroy(Supplier $supplier)
     {
-        if ($supplier->products()->count() > 0 || $supplier->invoices()->count() > 0) {
-            $supplier->update([
-                "is_active" => false,
-            ]);
-            return false;
-        } else {
+//        if ($supplier->products()->count() > 0 || $supplier->invoices()->count() > 0) {
+//            $supplier->update([
+//                "is_active" => false,
+//            ]);
+//            return false;
+//        } else {
+//        dd($supplier);
             if ($supplier->picture) {
                 Storage::delete($supplier->picture);
             }
@@ -95,6 +96,6 @@ class AdminSupplierController extends Controller
 
             $supplier->delete();
             return back();
-        }
+
     }
 }

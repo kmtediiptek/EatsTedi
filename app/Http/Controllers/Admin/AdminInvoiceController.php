@@ -10,6 +10,7 @@ use App\Models\Cart;
 use App\Models\CartInvoice;
 use App\Models\CartItem;
 use App\Models\Invoice;
+use App\Models\ProductSold;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -96,6 +97,18 @@ class AdminInvoiceController extends Controller
             $cartItem->product->daily_stock->update([
                 'quantity' => $cartItem->product->daily_stock->quantity - $cartItem->quantity,
                 'sold' => $cartItem->product->daily_stock->sold + $cartItem->quantity,
+            ]);
+        }
+
+//        add to product sold
+        foreach ($cartItems as $cartItem) {
+            ProductSold::create([
+                'invoice_id' => $invoice->id,
+                'supplier_id' => $cartItem->product->supplier_id,
+                'product_id' => $cartItem->product_id,
+                'price' => $cartItem->price,
+                'purchased_at' => now(),
+                'quantity' => $cartItem->quantity,
             ]);
         }
 

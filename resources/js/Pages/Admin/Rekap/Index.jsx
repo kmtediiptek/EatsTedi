@@ -11,9 +11,12 @@ import TextInput from "@/Components/TextInput";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import ActionLink from "@/Components/ActionLink";
+import Select2 from "react-select";
 
-export default function Index({ total_invoices, ...props }) {
+export default function Index({ banyak_transaksi,suppliers,rekap_transaksi,total_invoices, ...props }) {
     const { data: invoices, meta, links } = props.invoices;
+    console.log(suppliers, "aaa")
+    const { url } = usePage();
 
     const { data, setData } = useForm({
         start_date: "",
@@ -23,6 +26,7 @@ export default function Index({ total_invoices, ...props }) {
     console.log(invoices)
     const [searchQuery, setSearchQuery] = useState("");
     const [isFilterApplied, setIsFilterApplied] = useState(false);
+    const [selectedSupplier, setSelectedSupplier] = useState("all");
 
     const { errors } = usePage().props;
 
@@ -30,9 +34,24 @@ export default function Index({ total_invoices, ...props }) {
         setData(e.target.name, e.target.value);
     };
 
+    const handleSupplierChange = (selectedOption) => {
+        const value = selectedOption ? selectedOption.value : "";
+        setSelectedSupplier(value || "all");
+        router.get(
+            url,
+            {
+                search: searchQuery,
+                supplier: value,
+            },
+            {
+                preserveState: true,
+            }
+        );
+    };
+
     const filterInvoice = () => {
         router.get(
-            `/admin/invoice`,
+            `/admin/rekap`,
             {
                 start_date: data.start_date,
                 end_date: data.end_date,
@@ -44,6 +63,7 @@ export default function Index({ total_invoices, ...props }) {
         setIsFilterApplied(true);
     };
 
+
     const generatePDF = (data) => {
         if (isFilterApplied) {
             try {
@@ -51,24 +71,24 @@ export default function Index({ total_invoices, ...props }) {
 
                 const headers = [
                     [
-                        "Order ID",
-                        "Name",
-                        "Charge",
-                        "Change",
-                        "Total Quantity",
-                        "Total Price",
-                        "Succeeded at",
+                        "Invoice ID",
+                        "Nama Supplier",
+                        "Nama Customer",
+                        "Harga",
+                        "Jumlah",
+                        "Total Harga",
+                        "Waktu Pembelian",
                     ],
                 ];
 
-                const rows = data.map((invoice) => [
-                    invoice.order_id,
-                    invoice.name,
-                    `Rp. ${numberFormat(invoice.money.charge)}`,
-                    `Rp. ${numberFormat(invoice.money.change)}`,
-                    invoice.total_quantity,
-                    `Rp. ${numberFormat(invoice.total_price)}`,
-                    invoice.succeeded_at,
+                const rows = rekap_transaksi.map((transaksi) => [
+                    transaksi.invoice_id,
+                    transaksi.supplier.name,
+                    transaksi.invoice.customer_name,
+                    `Rp. ${numberFormat(transaksi.price)}`,
+                    transaksi.quantity,
+                    `Rp. ${numberFormat(transaksi.price * transaksi.quantity)}`,
+                    transaksi.purchased_at,
                 ]);
 
                 doc.autoTable({
@@ -100,13 +120,24 @@ export default function Index({ total_invoices, ...props }) {
         );
     };
 
+    const supplierOptions = [
+        { value: "all", label: "All Suppliers" }, // Tambahkan opsi ini
+        ...suppliers.map((supplier) => ({
+            value: supplier.id,
+            label: supplier.name,
+        })),
+    ];
+
+    const selectedSupplierOption = supplierOptions.find(
+        (option) => option.value === selectedSupplier
+    ) || { value: "all", label: "All Suppliers" };
     return (
         <>
             <Head title="History" />
             <Container>
                 {/* Start Invoices */}
                 <h3 className="text-2xl mt-10 mb-4 font-semibold text-fourth">
-                    Invoices
+                    Rekap Transaksi
                 </h3>
                 <div className="flex  flex-wrap justify-between w-full item-center mt-2">
                     <ActionLink href={route("admin.dashboard")} />
@@ -164,12 +195,59 @@ export default function Index({ total_invoices, ...props }) {
                             </ActionButton>
                         </div>
                     </div>
-                    <TextInput
-                        type="search"
-                        className="w-full md:w-1/4 "
-                        placeholder="Search invoice.."
-                        defaultValue={searchQuery}
-                        onChange={handleSearch}
+                    {/*<TextInput*/}
+                    {/*    type="search"*/}
+                    {/*    className="w-full md:w-1/4 "*/}
+                    {/*    placeholder="Search invoice.."*/}
+                    {/*    defaultValue={searchQuery}*/}
+                    {/*    onChange={handleSearch}*/}
+                    {/*/>*/}
+                    <Select2
+                        id="supplier-select"
+                        value={selectedSupplierOption}
+                        options={supplierOptions}
+                        className="w-full lg:w-1/4"
+                        onChange={handleSupplierChange}
+                        styles={{
+                            control: (provided, state) => ({
+                                ...provided,
+                                border: state.isFocused
+                                    ? "2px solid #d4d4d8"
+                                    : "2px solid #d4d4d8",
+                                boxShadow: "none",
+                                "&:hover": {
+                                    border: "2px solid #d4d4d8",
+                                },
+                                height: "44px",
+                                borderRadius: "8px",
+                            }),
+                            option: (provided, state) => ({
+                                ...provided,
+                                backgroundColor: state.isSelected
+                                    ? "#d4d4d8"
+                                    : state.isFocused
+                                        ? "#d4d4d8"
+                                        : null,
+                                color: "black",
+                            }),
+                            menu: (provided) => ({
+                                ...provided,
+                                borderRadius: "8px",
+                            }),
+                            menuList: (provided) => ({
+                                ...provided,
+                                borderRadius: "8px",
+                            }),
+                        }}
+                        theme={(theme) => ({
+                            ...theme,
+                            borderRadius: 8,
+                            colors: {
+                                ...theme.colors,
+                                primary25: "#d4d4d8",
+                                primary: "black",
+                            },
+                        })}
                     />
                 </div>
                 <div className="w-full"></div>
@@ -177,11 +255,11 @@ export default function Index({ total_invoices, ...props }) {
                     <Table.Thead>
                         <tr>
                             <Table.Th>#</Table.Th>
-                            <Table.Th>Order ID</Table.Th>
+                            <Table.Th>Invoice ID</Table.Th>
+                            <Table.Th>Nama Supplier</Table.Th>
                             <Table.Th>Nama Customer</Table.Th>
-                            <Table.Th>Uang Masuk</Table.Th>
-                            <Table.Th>Kembalian</Table.Th>
-                            <Table.Th>Total Quantity</Table.Th>
+                            <Table.Th>Harga</Table.Th>
+                            <Table.Th>Jumlah</Table.Th>
                             <Table.Th>Total Harga</Table.Th>
                             <Table.Th>Waktu Pembelian</Table.Th>
                             <Table.Th>Status</Table.Th>
@@ -189,7 +267,7 @@ export default function Index({ total_invoices, ...props }) {
                     </Table.Thead>
                     <Table.Tbody>
                         {invoices.length > 0 ? (
-                            invoices.map((invoice, index) => (
+                            rekap_transaksi.map((rekap, index) => (
                                 <tr
                                     className="bg-white border-b"
                                     key={index}
@@ -197,34 +275,38 @@ export default function Index({ total_invoices, ...props }) {
                                     <Table.Td className="w-5">
                                         {meta.from + index}
                                     </Table.Td>
-                                    <Table.Td>#{invoice.order_id}</Table.Td>
-                                    <Table.Td>{invoice.name}</Table.Td>
+                                    <Table.Td>#{
+                                        rekap.invoice_id
+                                    }</Table.Td>
+                                    <Table.Td>{rekap.supplier.name}</Table.Td>
                                     <Table.Td>
-                                        <sup> Rp.</sup>{" "}
-                                        {numberFormat(invoice.money.charge)}
+                                        {rekap.invoice.customer_name}
+                                        {/*{numberFormat(invoice.money.charge)}*/}
                                     </Table.Td>
                                     <Table.Td>
                                         <sup> Rp.</sup>{" "}
-                                        {numberFormat(invoice.money.change)}
+                                        {numberFormat(rekap.price)}
                                     </Table.Td>
                                     <Table.Td>
-                                        {invoice.total_quantity}
+                                        {numberFormat(rekap.quantity)}
                                     </Table.Td>
                                     <Table.Td>
                                         <sup> Rp.</sup>{" "}
-                                        {numberFormat(invoice.total_price)}
+                                        {numberFormat(rekap.price * rekap.quantity)}
                                     </Table.Td>
-                                    <Table.Td>{invoice.succeeded_at}</Table.Td>
+                                    <Table.Td>{
+                                        rekap.purchased_at
+                                    }</Table.Td>
                                     <Table.Td>
 
                                         <span
                                             className={`text-xs p-2 ${
-                                                invoice.status == 1
+                                                rekap.invoice.status == 1
                                                     ? "bg-green-500 text-white rounded"
                                                     : "bg-yellow-400 text-white rounded"
                                             }`}
                                         >
-                                            {invoice.status == 1
+                                            {rekap.invoice.status == 1
                                                 ? "Done"
                                                 : "In Progress"}
                                         </span>
@@ -242,8 +324,8 @@ export default function Index({ total_invoices, ...props }) {
                     <div className="flex w-full justify-between items-center">
                         <Pagination meta={meta} links={links} />
                         <p className="text-sm text-third mt-10">
-                            Total Invoices:{" "}
-                            <span className="font-bold">{total_invoices}</span>{" "}
+                            Total Rekap:{" "}
+                            <span className="font-bold">{banyak_transaksi}</span>{" "}
                         </p>
                     </div>
                 )}

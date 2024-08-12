@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminInvoiceController;
 use App\Http\Controllers\Admin\AdminPaymentController;
 use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\AdminRekapController;
 use App\Http\Controllers\Admin\AdminScheduleController;
 use App\Http\Controllers\Admin\AdminSupplierController;
 use App\Http\Controllers\Admin\AdminTransactionController;
@@ -72,7 +73,7 @@ Route::prefix('admin')->middleware('role:owner|admin|employee', 'auth')->group(f
         Route::get('/setting/supplier', 'index')->name('admin.supplier.index');
         Route::post('/setting/supplier', 'store')->name('admin.supplier.store');
         Route::put('/setting/supplier/{supplier:username}', 'update')->name('admin.supplier.update');
-        Route::delete('/setting/supplier/{user:username}', 'destroy')->name('admin.supplier.destroy');
+        Route::delete('/setting/supplier/{supplier}', 'destroy')->name('admin.supplier.destroy');
     });
 
     // Admin Product
@@ -104,6 +105,14 @@ Route::prefix('admin')->middleware('role:owner|admin|employee', 'auth')->group(f
         Route::post('/invoice', 'store')->name('admin.invoice.store')->can('invoice_store');
         Route::put('/invoice/{invoice:order_id}', 'update')->name('admin.invoice.update')->can('invoice_update');
         Route::put('/invoice/{invoice}/pay/', 'pay')->name('admin.invoice.pay');
+    });
+
+//    Admin Rekap
+    Route::controller(AdminRekapController::class)->group(function () {
+        Route::get('/rekap', 'index')->name('admin.rekap.index');
+        Route::post('/rekap', 'store')->name('admin.rekap.store')->can('rekap_store');
+        Route::put('/rekap/{rekap}', 'update')->name('admin.rekap.update')->can('rekap_update');
+        Route::delete('/rekap/{rekap}', 'destroy')->name('admin.rekap.destroy')->can('rekap_destroy');
     });
 
     // Admin Log

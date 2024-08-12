@@ -82,6 +82,14 @@ export default function Navbar() {
                                     >
                                         History
                                     </NavLink>
+                                    <NavLink
+                                        href={route("admin.rekap.index")}
+                                        active={route().current(
+                                            "admin.rekap.index"
+                                        )}
+                                    >
+                                        Rekap
+                                    </NavLink>
                                 </>
                             ) : null}
                             {(auth.user && auth.user.status == "admin") ||
