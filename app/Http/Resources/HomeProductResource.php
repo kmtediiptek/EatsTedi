@@ -32,8 +32,8 @@ class HomeProductResource extends JsonResource
                 'username' => $this->supplier->username,
             ],
             'daily_stock' => [
-                'quantity' => $this->daily_stock->quantity,
-                'sold' => $this->daily_stock->sold,
+                'quantity' => $this->daily_stock ? $this->daily_stok->quantity : 0,
+                'sold' => $this->daily_stock ? $this->daily_stock->sold : 0,
             ]
         ];
     }
