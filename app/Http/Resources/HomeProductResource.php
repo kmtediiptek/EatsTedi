@@ -15,6 +15,9 @@ class HomeProductResource extends JsonResource
      */
     public function toArray($request)
     {
+        $daily_stock_is_null = $this->daily_stock == null;
+//        dd($this->daily_stock->quantity);
+
         return [
             'id' => $this->id,
             'price' => $this->price,
@@ -31,9 +34,10 @@ class HomeProductResource extends JsonResource
                 'name' => $this->supplier->name,
                 'username' => $this->supplier->username,
             ],
+
             'daily_stock' => [
-                'quantity' => 0,//$this->daily_stock ? $this->daily_stok->quantity : 0,
-                'sold' => 0//$this->daily_stock ? $this->daily_stock->sold : 0,
+                'quantity' => $this->daily_stock->quantity,
+                'sold' => $this->daily_stock->sold,
             ]
         ];
     }
