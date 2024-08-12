@@ -100,10 +100,11 @@ class AdminProductController extends Controller
             ]);
         }
 
+
         $product->update([
             "name" => $request->name ? $request->name : $product->name,
             "slug" => str($request->name . '-' .  rand(10, 100))->slug(),
-            "supplier_id" => $request->supplier_id ? $request->supplier_id : $product->supplier_id,
+            "supplier_id" => gettype($request->supplier_id) != "array" ? $request->supplier_id : $product->supplier_id,
             "category_id" => $request->category_id ? $request->category_id : $product->category_id,
             "price" => $request->price ? $request->price : $product->price,
             "picture" => $request->hasFile('picture') ? $picture->storeAs('images/products', $product->slug . '.' . $picture->extension())  : $product->picture
