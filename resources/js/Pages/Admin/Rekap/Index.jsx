@@ -325,7 +325,7 @@ export default function Index({ banyak_transaksi,suppliers,rekap_transaksi,total
                         <Pagination meta={meta} links={links} />
                         <p className="text-sm text-third mt-10">
                             Total Rekap:{" "}
-                            <span className="font-bold">{banyak_transaksi}</span>{" "}
+                            <span className="font-bold">{numberFormat(banyak_transaksi)}</span>{" "}
                         </p>
                     </div>
                 )}

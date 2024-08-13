@@ -22,6 +22,7 @@ export default function Index({
     invoices,
     payments,
     filter_category,
+    error,
     ...props
 }) {
     const [isOrderListOpen, setIsOrderListOpen] = useState(true);
@@ -111,6 +112,7 @@ export default function Index({
             {}
         );
     };
+
 
     return (
         <>

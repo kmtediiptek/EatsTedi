@@ -1,10 +1,12 @@
 import React from "react";
-import { router } from "@inertiajs/react";
+import {router, usePage} from "@inertiajs/react";
 import { toast } from "react-hot-toast";
 import { IconShoppingBagPlus } from "@tabler/icons-react";
 import { numberFormat } from "@/Libs/Helper";
 
 export default function ProductItem({ product, setIsOrderListOpen }) {
+    const props = usePage().props
+    console.log(props.csrf_token)
     const addToCart = () => {
         router.post(
             `/admin/cart/${product.slug}`, // Endpoint untuk menambah ke cart
@@ -12,12 +14,39 @@ export default function ProductItem({ product, setIsOrderListOpen }) {
                 quantity: 1, // Menambahkan quantity 1 selalu
             },
             {
-                onSuccess: () => {
+                onSuccess: (e) => {
+                    console.log(e, 'a')
                     setIsOrderListOpen(true);
                     toast.success("Add to Cart!");
                 },
+                onFinish: (res) => {
+                    console.log(res)
+                },
+                onError: (e) => {
+                    toast.error(e['0']);
+                }
+
             }
         );
+
+        // fetch(`/admin/cart/${product.slug}`, {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         Accept: "application/json",
+        //         "X-CSRF-TOKEN": props.csrf_token,
+        //     },
+        //     body: JSON.stringify({
+        //         quantity: 1,
+        //     }),
+        // }).then((res) => {
+        //     if (res.status === 200) {
+        //         setIsOrderListOpen(true);
+        //         toast.success("Add to Cart!");
+        //     } else {
+        //         toast.error("Failed to add to cart!");
+        //     }
+        // });
     };
 
     return (

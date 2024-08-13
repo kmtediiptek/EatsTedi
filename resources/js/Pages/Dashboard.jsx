@@ -13,7 +13,7 @@ import {
 import { IconMenuOrder } from "@tabler/icons-react";
 import Chart from "react-apexcharts";
 import React from "react";
-import { numberFormat } from "@/Libs/Helper";
+import {mergeTransactions, numberFormat} from "@/Libs/Helper";
 
 export default function Dashboard({
     total,
@@ -24,6 +24,9 @@ export default function Dashboard({
     weeklyIncome,
     dailyIncome,
     monthlyIncome,
+    monthlyPayment,
+    dailyPayment,
+    weeklyPayment,
 }) {
     const { auth } = usePage().props;
 
@@ -35,6 +38,16 @@ export default function Dashboard({
 
     const monthLabels = monthlyIncome.map((item) => item.month);
     const monthData = monthlyIncome.map((item) => item.total);
+
+    const dailyMerged = mergeTransactions(dailyPayment, "date");
+    const payCashDaily = dailyMerged.map((item) => item.cash);
+    const payQrisDaily = dailyMerged.map((item) => item.qris);
+    const weeklyMerged = mergeTransactions(weeklyPayment, "week");
+    const payCashWeek = weeklyMerged.map((item) => item.cash);
+    const payQrisWeek = weeklyMerged.map((item) => item.qris);
+    const monthlyMerged = mergeTransactions(monthlyPayment, "month");
+    const payCashMonth = monthlyMerged.map((item) => item.cash);
+    const payQrisMonth = monthlyMerged.map((item) => item.qris);
 
     const optionsWeekly = {
         chart: {
@@ -73,6 +86,14 @@ export default function Dashboard({
         {
             name: "Total Price (Weekly)",
             data: weekData,
+        },
+        {
+            name: "Total Cash (Weekly)",
+            data: payCashWeek,
+        },
+        {
+            name: "Total Qris (Weekly)",
+            data: payQrisWeek,
         },
     ];
 
@@ -113,6 +134,14 @@ export default function Dashboard({
             name: "Total Price (Daily)",
             data: dayData,
         },
+        {
+            name: "Total Cash (Daily)",
+            data: payCashDaily,
+        },
+        {
+            name: "Total Qris (Daily)",
+            data: payQrisDaily,
+        },
     ];
 
     const optionsMonthly = {
@@ -152,6 +181,14 @@ export default function Dashboard({
         {
             name: "Total Price (Monthly)",
             data: monthData,
+        },
+        {
+            name: "Total Cash (Monthly)",
+            data: payCashMonth,
+        },
+        {
+            name: "Total Qris (Monthly)",
+            data: payQrisMonth,
         },
     ];
 

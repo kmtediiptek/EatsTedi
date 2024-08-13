@@ -75,12 +75,59 @@ class AdminDashboardController extends Controller
             ->whereYear('created_at', Carbon::now()->year)
             ->get();
 
+//        monthly income group by payment id with payment name
+        $monthlyIncomeByPayment = Invoice::select(
+            \DB::raw('YEAR(created_at) as year'),
+            \DB::raw('MONTHNAME(created_at) as month'),
+            \DB::raw('SUM(total_price) as total'),
+            'payment_id'
+        )
+            ->with('payment')
+            ->groupBy('year', 'month', 'payment_id')
+            ->orderBy('year', 'asc')
+            ->orderBy('month', 'asc')
+            ->whereYear('created_at', Carbon::now()->year)
+            ->get();
+
+//        daily income group by payment id with payment name
+        $dailyIncomeByPayment = Invoice::select(
+            \DB::raw('DATE(created_at) as date'),
+            \DB::raw('MONTHNAME(created_at) as month'),
+            \DB::raw('SUM(total_price) as total'),
+            'payment_id'
+        )
+            ->with('payment')
+            ->groupBy('date', 'month', 'payment_id')
+            ->orderBy('date', 'asc')
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->get();
+
+//        weekly income group by payment id with payment name
+        $weeklyIncomeByPayment = Invoice::select(
+            \DB::raw('CONCAT("Week ", WEEK(created_at, 1) - WEEK(DATE_SUB(created_at, INTERVAL DAYOFMONTH(created_at)-1 DAY), 1) + 1, " ", MONTHNAME(created_at)) as week'),
+            \DB::raw('SUM(total_price) as total'),
+            'payment_id'
+        )
+            ->with('payment')
+            ->groupBy('week', 'payment_id')
+            ->orderBy('week', 'asc')
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->get();
+
         return inertia('Dashboard', [
             'total' => $total,
             'monthlyIncome' => $monthlyIncome,
             'weeklyIncome' => $weeklyIncome,
             'dailyIncome' => $dailyIncome,
             'categories' => Category::select('id', 'name', 'icon', 'slug')->get(),
+            'monthlyPayment' => $monthlyIncomeByPayment,
+            'dailyPayment' => $dailyIncomeByPayment,
+            'weeklyPayment' => $weeklyIncomeByPayment
         ]);
+
+
+
     }
 }

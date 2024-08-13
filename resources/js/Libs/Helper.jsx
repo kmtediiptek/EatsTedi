@@ -20,3 +20,35 @@ export const numberFormat = (number, decimals, dec_point, thousands_sep = '.') =
     }
     return s.join(dec);
 };
+
+
+export const mergeTransactions = function mergeTransactions(data, group) {
+    const result = data.reduce((acc, transaction) => {
+        const totalAmount = parseFloat(transaction.total);
+        const date = transaction[group];
+
+        // Find if the date already exists in the accumulated result
+        const existingTransaction = acc.find(item => item[group] === date);
+
+        if (existingTransaction) {
+            // Update existing entry for the date
+            if (transaction.payment.name === "cash") {
+                existingTransaction.cash += totalAmount;
+            } else if (transaction.payment.name === "qris") {
+                existingTransaction.qris += totalAmount;
+            }
+        } else {
+            // Add a new entry for the date
+            const newObj2 = {
+                cash: transaction.payment.name === "cash" ? totalAmount : 0,
+                qris: transaction.payment.name === "qris" ? totalAmount : 0,
+            }
+            newObj2[group] = date;
+            acc.push(newObj2);
+        }
+
+        return acc;
+    }, []);
+
+    return result;
+}

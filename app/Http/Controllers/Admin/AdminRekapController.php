@@ -42,13 +42,17 @@ class AdminRekapController extends Controller
         $rekap_transaksi = ProductSold::whereBetween('created_at', [$start_date, $end_date])
             ->with('product', 'invoice', 'supplier');
 
-        if ($request->supplier) {
+        if ($request->supplier && $request->supplier != 'all') {
             $rekap_transaksi = $rekap_transaksi->where('supplier_id', $request->supplier);
         }
 
         $rekap_transaksi = $rekap_transaksi->get();
 
-        $banyak_transaksi = $rekap_transaksi->count();
+//        $banyak_transaksi =  $rekap_transaksi->sum('total_price');
+//          banyak transaksi sum by price times quantity
+        $banyak_transaksi = $rekap_transaksi->sum(function ($item) {
+            return $item->price * $item->quantity;
+        });
 
         $suppliers = Supplier::select('id', 'name', 'username')->get();
 

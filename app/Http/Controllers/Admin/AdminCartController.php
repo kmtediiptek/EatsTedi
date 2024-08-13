@@ -29,9 +29,8 @@ class AdminCartController extends Controller
         // Cek stok produk
         $dailyStock = DailyStock::where('product_id', $product->id)->first();
         if (!$dailyStock || $dailyStock->quantity < 1) {
-            return inertia('Cart', [
-                'message' => 'Not enough stock available.',
-            ]);
+
+            return redirect()->back()->withErrors('Stock is empty');
         }
 
         // Tambahkan atau update item ke cart dengan quantity selalu 1
@@ -46,11 +45,6 @@ class AdminCartController extends Controller
         // Update total price di cart
         $cart->total_price += $product->price;
         $cart->save();
-
-//        // Update stok di daily_stocks
-//        $dailyStock->quantity -= 1;
-//        $dailyStock->sold += 1;
-//        $dailyStock->save();
 
         Activity::create([
             "activity" => Auth::user()->name . " Added Order " . $product->name
