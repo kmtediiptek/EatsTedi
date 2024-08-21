@@ -27,7 +27,7 @@ export default function Footer() {
                         satisfaction.
                     </p>
                     <p className="mt-8 text-white font-mono text-xs">
-                        Copyright {new Date().getFullYear()}. Developed by Rachel Ardan Putra Ginting. All right reserved.
+                        Copyright {new Date().getFullYear()}. Developed by Rachel Ardan Putra Ginting with <a target={"_blank"} className={"text-blue-500 underline"} href={'https://nafhan.site'}> Ghifari Nafhan</a>. All right reserved.
                     </p>
                 </div>
             </Container>

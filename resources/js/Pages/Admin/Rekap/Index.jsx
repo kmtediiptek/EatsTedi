@@ -13,7 +13,7 @@ import "jspdf-autotable";
 import ActionLink from "@/Components/ActionLink";
 import Select2 from "react-select";
 
-export default function Index({ banyak_transaksi,suppliers,rekap_transaksi,total_invoices, ...props }) {
+export default function Index({ total_qris, total_cash, banyak_transaksi,suppliers,rekap_transaksi,total_invoices, ...props }) {
     const { data: invoices, meta, links } = props.invoices;
     console.log(suppliers, "aaa")
     const { url } = usePage();
@@ -74,6 +74,7 @@ export default function Index({ banyak_transaksi,suppliers,rekap_transaksi,total
                         "Invoice ID",
                         "Nama Supplier",
                         "Nama Customer",
+                        "Jenis Pembayaran",
                         "Harga",
                         "Jumlah",
                         "Total Harga",
@@ -85,6 +86,7 @@ export default function Index({ banyak_transaksi,suppliers,rekap_transaksi,total
                     transaksi.invoice_id,
                     transaksi.supplier.name,
                     transaksi.invoice.customer_name,
+                    transaksi.invoice.payment_name,
                     `Rp. ${numberFormat(transaksi.price)}`,
                     transaksi.quantity,
                     `Rp. ${numberFormat(transaksi.price * transaksi.quantity)}`,
@@ -258,6 +260,7 @@ export default function Index({ banyak_transaksi,suppliers,rekap_transaksi,total
                             <Table.Th>Invoice ID</Table.Th>
                             <Table.Th>Nama Supplier</Table.Th>
                             <Table.Th>Nama Customer</Table.Th>
+                            <Table.Th>Jenis Pembayaran</Table.Th>
                             <Table.Th>Harga</Table.Th>
                             <Table.Th>Jumlah</Table.Th>
                             <Table.Th>Total Harga</Table.Th>
@@ -281,7 +284,9 @@ export default function Index({ banyak_transaksi,suppliers,rekap_transaksi,total
                                     <Table.Td>{rekap.supplier.name}</Table.Td>
                                     <Table.Td>
                                         {rekap.invoice.customer_name}
-                                        {/*{numberFormat(invoice.money.charge)}*/}
+                                    </Table.Td>
+                                    <Table.Td>
+                                        {rekap.payment_name}
                                     </Table.Td>
                                     <Table.Td>
                                         <sup> Rp.</sup>{" "}
@@ -323,10 +328,20 @@ export default function Index({ banyak_transaksi,suppliers,rekap_transaksi,total
                 {invoices.length > 0 && (
                     <div className="flex w-full justify-between items-center">
                         <Pagination meta={meta} links={links} />
-                        <p className="text-sm text-third mt-10">
-                            Total Rekap:{" "}
-                            <span className="font-bold">{numberFormat(banyak_transaksi)}</span>{" "}
-                        </p>
+                        <div className={"flex gap-3"}>
+                            <p className="text-sm text-third mt-10">
+                                Total Rekap:{" "}
+                                <span className="font-bold">{numberFormat(banyak_transaksi)}</span>{" "}
+                            </p>
+                            <p className="text-sm text-third mt-10">
+                                Total Qris:{" "}
+                                <span className="font-bold">{numberFormat(total_qris)}</span>{" "}
+                            </p>
+                            <p className="text-sm text-third mt-10">
+                                Total Cash:{" "}
+                                <span className="font-bold">{numberFormat(total_cash)}</span>{" "}
+                           </p>
+                        </div>
                     </div>
                 )}
                 {/* End Invoices */}

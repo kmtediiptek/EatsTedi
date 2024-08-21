@@ -322,7 +322,39 @@ export default function Dashboard({
                         </div>
                         {/* End Dashboard */}
                     </>
-                ) : null}
+                ) :
+                    (
+                        <>
+                            {/* Start Dashboard */}
+                            <h3 className="text-2xl mt-10 mb-4 font-semibold text-fourth">
+                                Dashboard
+                            </h3>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 w-full gap-x-4">
+                                {/* Start Dashboard */}
+                                <Link
+                                    href={route("admin.product.today.index")}
+                                    className="w-full flex gap-x-4 p-4 border border-secondary rounded text-white mb-4"
+                                >
+                                    <div className="rounded bg-primary w-16 h-16 flex justify-center items-center">
+                                        <h3 className="text-4xl font-semibold text-center">
+                                            <IconMenuOrder size={36} />
+                                        </h3>
+                                    </div>
+                                    <div className="text-fourth flex flex-col flex-1 justify-around">
+                                        <h5 className="font-semibold text-xl">
+                                            Atur Stok
+                                        </h5>
+                                        <span className="text-third">
+                                        {total.products} Item
+                                    </span>
+                                    </div>
+                                </Link>
+                                {/* End Dashboard */}
+                            </div>
+                            {/* End Dashboard */}
+                        </>
+                    )}
 
                 {/* Start Dashboard */}
             </Container>
@@ -341,7 +373,7 @@ export default function Dashboard({
                         </div>
                         <div className="text-third flex flex-col flex-1 justify-around">
                             <h5 className="font-semibold text-xl">
-                                Total Income
+                                Total Pendapatan
                             </h5>
                             <span className="text-fourth text-3xl font-bold">
                                 {" "}
@@ -357,7 +389,7 @@ export default function Dashboard({
                         </div>
                         <div className="text-third flex flex-col flex-1 justify-around">
                             <h5 className="font-semibold text-xl">
-                                Today's Income
+                                Pendapatan Hari Ini
                             </h5>
                             <span className="text-fourth text-3xl font-bold">
                                 {" "}
@@ -373,7 +405,24 @@ export default function Dashboard({
                             </h3>
                         </div>
                         <div className="text-third flex flex-col flex-1 justify-around">
-                            <h5 className="font-semibold text-xl">Pay Cash</h5>
+                            <h5 className="font-semibold text-xl">
+                                Komisi Kantin
+                            </h5>
+                            <span className="text-fourth text-3xl font-bold">
+                                {" "}
+                                <sup>Rp.</sup>{" "}
+                                {numberFormat(total.today_income * 0.1)}
+                            </span>
+                        </div>
+                    </div>
+                    <div className="w-full flex gap-x-4 p-4 border border-secondary rounded text-white mb-4">
+                        <div className="rounded bg-primary w-24 h-24 flex justify-center items-center">
+                            <h3 className="text-4xl font-semibold text-center">
+                                <IconCreditCard size={72} />
+                            </h3>
+                        </div>
+                        <div className="text-third flex flex-col flex-1 justify-around">
+                            <h5 className="font-semibold text-xl"> Cash Hari Ini</h5>
                             <span className="text-fourth text-3xl font-bold">
                                 {" "}
                                 <sup>Rp.</sup> {numberFormat(total.pay_cash)}
@@ -388,7 +437,7 @@ export default function Dashboard({
                         </div>
                         <div className="text-third flex flex-col flex-1 justify-around">
                             <h5 className="font-semibold text-xl">
-                                Pay Qris
+                                 Qris Hari Ini
                             </h5>
                             <span className="text-fourth text-3xl font-bold">
                                 {" "}

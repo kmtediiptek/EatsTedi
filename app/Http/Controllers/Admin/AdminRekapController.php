@@ -13,7 +13,6 @@ class AdminRekapController extends Controller
 {
     public function index(Request $request)
     {
-//        @dd($request->all());
         $start_date = $request->input('start_date') ?? now()->startOfDay();
         $end_date = $request->input('end_date') ?? now()->endOfDay();
 
@@ -46,11 +45,25 @@ class AdminRekapController extends Controller
             $rekap_transaksi = $rekap_transaksi->where('supplier_id', $request->supplier);
         }
 
-        $rekap_transaksi = $rekap_transaksi->get();
 
-//        $banyak_transaksi =  $rekap_transaksi->sum('total_price');
-//          banyak transaksi sum by price times quantity
+//        get payment name from payment_id on invoice
+        $rekap_transaksi = $rekap_transaksi->get()->map(function ($item) {
+            $item->payment_name = $item->invoice->payment->name;
+            $item->payment_id = $item->invoice->payment->id;
+            return $item;
+        });
+
         $banyak_transaksi = $rekap_transaksi->sum(function ($item) {
+            return $item->price * $item->quantity;
+        });
+
+//        banyak transaksi qris sum by price times quantity
+        $total_qris = $rekap_transaksi->where('payment_id', 2)->sum(function ($item) {
+            return $item->price * $item->quantity;
+        });
+
+//        banyak transaksi cash sum by price times quantity
+        $total_cash = $rekap_transaksi->where('payment_id', 1)->sum(function ($item) {
             return $item->price * $item->quantity;
         });
 
@@ -61,7 +74,9 @@ class AdminRekapController extends Controller
             "total_invoices" => $total_invoices,
             "rekap_transaksi" => $rekap_transaksi,
             "suppliers" => $suppliers,
-            "banyak_transaksi" => $banyak_transaksi
+            "banyak_transaksi" => $banyak_transaksi,
+            "total_qris" => $total_qris,
+            "total_cash" => $total_cash,
         ]);
     }
 }
