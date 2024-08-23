@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\AdminInvoiceResource;
+use App\Models\Activity;
 use App\Models\Invoice;
 use App\Models\ProductSold;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminRekapController extends Controller
 {
@@ -79,4 +81,23 @@ class AdminRekapController extends Controller
             "total_cash" => $total_cash,
         ]);
     }
+
+    public function destroy(ProductSold $rekap)
+    {
+//        delete rekap and update invoice total_price, total_quantity
+        $rekap->delete();
+
+        $invoice = Invoice::find($rekap->invoice_id);
+        $invoice->total_price = $invoice->total_price - ($rekap->price * $rekap->quantity);
+        $invoice->total_quantity = $invoice->total_quantity - $rekap->quantity;
+        $invoice->save();
+
+//        create activity
+        Activity::create([
+            "activity" => Auth::user()->name . " Deleted Rekap Transaksi " . $rekap->product->name . " sebanyak " . $rekap->quantity . " "
+        ]);
+
+        return back()->with('success', 'Rekap transaksi berhasil dihapus');
+    }
+
 }

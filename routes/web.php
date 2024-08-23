@@ -105,14 +105,15 @@ Route::prefix('admin')->middleware('role:owner|admin|employee', 'auth')->group(f
         Route::post('/invoice', 'store')->name('admin.invoice.store')->can('invoice_store');
         Route::put('/invoice/{invoice:order_id}', 'update')->name('admin.invoice.update')->can('invoice_update');
         Route::put('/invoice/{invoice}/pay/', 'pay')->name('admin.invoice.pay');
+        Route::delete('/invoice/{invoice}', 'destroy')->name('admin.invoice.destroy')->can('invoice_update');
     });
 
-//    Admin Rekap
+    // Admin Rekap
     Route::controller(AdminRekapController::class)->group(function () {
         Route::get('/rekap', 'index')->name('admin.rekap.index');
         Route::post('/rekap', 'store')->name('admin.rekap.store')->can('rekap_store');
         Route::put('/rekap/{rekap}', 'update')->name('admin.rekap.update')->can('rekap_update');
-        Route::delete('/rekap/{rekap}', 'destroy')->name('admin.rekap.destroy')->can('rekap_destroy');
+        Route::delete('/rekap/{rekap}', 'destroy')->name('admin.rekap.destroy');
     });
 
     // Admin Log

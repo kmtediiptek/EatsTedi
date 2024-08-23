@@ -4,7 +4,7 @@ import Pagination from "@/Components/Pagination";
 import Table from "@/Components/Table";
 import App from "@/Layouts/App";
 import { Head, useForm, router, usePage } from "@inertiajs/react";
-import { IconFilter, IconPrinter } from "@tabler/icons-react";
+import {IconFilter, IconPrinter, IconTrash} from "@tabler/icons-react";
 import React, { useState } from "react";
 import { numberFormat } from "@/Libs/Helper";
 import TextInput from "@/Components/TextInput";
@@ -12,13 +12,14 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import ActionLink from "@/Components/ActionLink";
 import Select2 from "react-select";
+import MyModal from "@/Components/Modal";
 
 export default function Index({ total_qris, total_cash, banyak_transaksi,suppliers,rekap_transaksi,total_invoices, ...props }) {
     const { data: invoices, meta, links } = props.invoices;
     console.log(suppliers, "aaa")
     const { url } = usePage();
 
-    const { data, setData } = useForm({
+    const { data, setData, delete:destroy } = useForm({
         start_date: "",
         end_date: "",
     });
@@ -27,6 +28,8 @@ export default function Index({ total_qris, total_cash, banyak_transaksi,supplie
     const [searchQuery, setSearchQuery] = useState("");
     const [isFilterApplied, setIsFilterApplied] = useState(false);
     const [selectedSupplier, setSelectedSupplier] = useState("all");
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedRekap, setSelectedRekap] = useState({});
 
     const { errors } = usePage().props;
 
@@ -266,6 +269,7 @@ export default function Index({ total_qris, total_cash, banyak_transaksi,supplie
                             <Table.Th>Total Harga</Table.Th>
                             <Table.Th>Waktu Pembelian</Table.Th>
                             <Table.Th>Status</Table.Th>
+                            <Table.Th>Action</Table.Th>
                         </tr>
                     </Table.Thead>
                     <Table.Tbody>
@@ -316,6 +320,19 @@ export default function Index({ total_qris, total_cash, banyak_transaksi,supplie
                                                 : "In Progress"}
                                         </span>
                                     </Table.Td>
+                                    <Table.Td>
+                                        <ActionButton
+                                            type={"button"}
+                                            onClick={() =>{
+                                                setIsOpen(true)
+                                                setSelectedRekap(rekap)
+                                            }
+                                            }
+                                            className="w-10 h-10"
+                                        >
+                                            <IconTrash size={26} />
+                                        </ActionButton>
+                                    </Table.Td>
                                 </tr>
                             ))
                         ) : (
@@ -346,6 +363,21 @@ export default function Index({ total_qris, total_cash, banyak_transaksi,supplie
                 )}
                 {/* End Invoices */}
             </Container>
+            <MyModal isOpen={isOpen} setIsOpen={setIsOpen} size={"1/3"} title={"Delete Confirmation"}  >
+                <div>
+                    Are you sure you want to delete this data?
+                </div>
+                <ActionButton
+                type={"button"}
+                className={"w-10 h-10 mt-5"}
+                onClick={() => destroy(route("admin.rekap.destroy", selectedRekap.id), {
+                    preserveScroll: true,
+                    onSuccess: () => setIsOpen(false),
+                })}
+                >
+                    <IconTrash size={20} />
+                </ActionButton>
+            </MyModal>
         </>
     );
 }

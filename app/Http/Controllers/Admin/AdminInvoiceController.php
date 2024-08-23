@@ -106,7 +106,7 @@ class AdminInvoiceController extends Controller
                 'invoice_id' => $invoice->id,
                 'supplier_id' => $cartItem->product->supplier_id,
                 'product_id' => $cartItem->product_id,
-                'price' => $cartItem->price,
+                'price' => $cartItem->price / $cartItem->quantity,
                 'purchased_at' => now(),
                 'quantity' => $cartItem->quantity,
             ]);
@@ -145,6 +145,17 @@ class AdminInvoiceController extends Controller
 
         Activity::create([
             "activity" => Auth::user()->name . " Confirm Order " . $invoice->name
+        ]);
+
+        return back();
+    }
+
+    public function destroy(Invoice $invoice)
+    {
+        $invoice->delete();
+
+        Activity::create([
+            "activity" => Auth::user()->name . " Deleted Invoice " . $invoice->customer_name
         ]);
 
         return back();

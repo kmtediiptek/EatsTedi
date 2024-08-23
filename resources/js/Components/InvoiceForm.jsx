@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import TextInput from "./TextInput";
 import Error from "./Error";
 import { usePage } from "@inertiajs/react";
@@ -22,6 +22,7 @@ export default function InvoiceForm({
     let [isOpen, setIsOpen] = useState(false);
     const [modalType, setModalType] = useState("");
     const [modalPayment, setModalPayment] = useState("");
+    const [paymentId, setPaymentId] = useState(0);
 
     function openModalOrder(type) {
         setIsOpen(true);
@@ -37,6 +38,12 @@ export default function InvoiceForm({
     const onChange = (e) => {
         setData(e.target.name, e.target.value);
     };
+
+    useEffect(() => {
+        if (paymentId.name === "qris") {
+            setData("charge", total_price)
+        }
+    }, [paymentId]);
 
     const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
@@ -140,7 +147,9 @@ export default function InvoiceForm({
                             data={payments}
                             className="w-full"
                             placeholder="Payment"
-                            onChange={(e) => setData("payment_id", e)}
+                            onChange={(e) => {setData("payment_id", e)
+                            setPaymentId(e)
+                            console.log(e)}}
                         />
                         {errors.payment_id ? (
                             <Error className="" value={errors.payment_id} />
@@ -150,7 +159,7 @@ export default function InvoiceForm({
                     ""
                 )}
             </div>
-            {showPaymentOptions || data.is_paid == 1 ? (
+            {(showPaymentOptions || data.is_paid == 1) && paymentId ? (
                 <>
                     <TextInput
                         type="number"
@@ -158,7 +167,8 @@ export default function InvoiceForm({
                         name="charge"
                         id="charge"
                         className="w-full"
-                        value={data.charge}
+                        // value={data.charge}
+                        defaultValue={ paymentId.name === "qris" ? total_price : null }
                         onChange={onChange}
                         placeholder="Charge.."
                     />
