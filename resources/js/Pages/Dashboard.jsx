@@ -373,11 +373,11 @@ export default function Dashboard({
                         </div>
                         <div className="text-third flex flex-col flex-1 justify-around">
                             <h5 className="font-semibold text-xl">
-                                Total Pendapatan
+                                Pendapatan Mingguan
                             </h5>
                             <span className="text-fourth text-3xl font-bold">
                                 {" "}
-                                <sup>Rp.</sup> {numberFormat(total.income)}
+                                <sup>Rp.</sup> {numberFormat(weekData)}
                             </span>
                         </div>
                     </div>
