@@ -51,7 +51,7 @@ class AdminUserController extends Controller
             "number_phone" => $request->number_phone,
             "address" => $request->address,
             "status" => $request->status,
-            "password" => Hash::make("randa091100"),
+            "password" => Hash::make("password"),
             'is_active' => $request->is_active == 1 ? true : ($request->is_active == 0 ? false : null),
             "picture" => $request->hasFile('picture') ? $picture->storeAs('images/employees', $name . '.' . $picture->extension()) : null
         ]);
@@ -101,7 +101,7 @@ class AdminUserController extends Controller
                 "is_active" => false,
             ]);
             return false;
-            
+
         } else {
             if ($user->picture) {
                 Storage::delete($user->picture);

@@ -44,7 +44,7 @@ class EatstediUserSeeder extends Seeder
         $newEmployee2 = User::create([
             'username' => 'kasir2',
             'name' => 'Kasir 2',
-            'email' => 'eatstedi.trpl.tech@gmail.com',
+            'email' => 'eatstedi.trpl.tech2@gmail.com',
             'password' => bcrypt("EatsKasir975"),
             'number_phone' => '081234567890',
             'address' => 'Jogja',
