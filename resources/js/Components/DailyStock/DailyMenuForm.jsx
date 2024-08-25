@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useForm, usePage, router } from "@inertiajs/react";
 import Select2 from "react-select";
 import InputLabel from "../InputLabel";
@@ -15,7 +15,51 @@ export default function DailyMenuForm() {
 
     const { errors, suppliers, daily_stocks } = usePage().props;
     const [selectedSupplier, setSelectedSupplier] = useState(null);
+    const [loading, setLoading] = useState(false);
 
+    useEffect(() => {
+        setLoading(true)
+        const queryParams = new URLSearchParams(window.location.search);
+        const initialSupplier = queryParams.get('supplier') || null;
+        if(initialSupplier){
+            setSelectedSupplier(initialSupplier);
+            router.get(
+                `/admin/setting/product/today`,
+                {
+                    supplier: initialSupplier,
+                },
+                {
+                    preserveState: true,
+                    onSuccess: (page) => {
+                        setData("daily_stocks", page.props.daily_stocks.data);
+                        setLoading(false)
+                    },
+                }
+            );
+        }
+    }, []);
+
+    const queryParams = new URLSearchParams(window.location.search);
+    const initialSupplier = queryParams.get('supplier') || null;
+    useEffect(() => {
+        setLoading(true)
+        if(initialSupplier){
+            setSelectedSupplier(initialSupplier);
+            router.get(
+                `/admin/setting/product/today`,
+                {
+                    supplier: initialSupplier,
+                },
+                {
+                    preserveState: true,
+                    onSuccess: (page) => {
+                        setData("daily_stocks", page.props.daily_stocks.data);
+                        setLoading(false)
+                    },
+                }
+            );
+        }
+    }, [initialSupplier]);
     const handleSupplierChange = (selectedOption) => {
         const value = selectedOption ? selectedOption.value : "";
         setSelectedSupplier(value || "all");
@@ -27,7 +71,6 @@ export default function DailyMenuForm() {
             {
                 preserveState: true,
                 onSuccess: (page) => {
-                    console.log(page.props.daily_stocks.data);
                     setData("daily_stocks", page.props.daily_stocks.data);
                 },
             }
@@ -121,89 +164,95 @@ export default function DailyMenuForm() {
                 />
                 {errors.supplier_id && <Error value={errors.supplier_id} />}
             </div>
-
-            {selectedSupplier ? (
-                <form onSubmit={handleSubmit}>
-                    {data.daily_stocks.length ? (
-                        <>
-                            <hr />
-                            <h4 className="text-lg text-fourth font-medium leading-6 mt-4 mb-4">
-                                Perbarui Seluruh Stock
-                            </h4>
-                            {data.daily_stocks.map((daily_stock) => (
-                                <div
-                                    key={daily_stock.product.id}
-                                    className="flex w-full gap-2 mb-6"
-                                >
-                                    <div className="w-full">
-                                        <InputLabel
-                                            htmlFor={`name-${daily_stock.product.id}`}
-                                            value="Name"
-                                        />
-                                        <TextInput
-                                            name={`name-${daily_stock.product.id}`}
-                                            id={`name-${daily_stock.product.id}`}
-                                            readOnly
-                                            className="w-full"
-                                            value={daily_stock.product.name}
-                                        />
+            {loading ? (<>
+                <div className="h-8 bg-gray-300 rounded-full animate-pulse dark:bg-gray-700 max-w-[640px] mb-2.5 mx-auto"></div>
+            </>) : (
+                <>
+                    {selectedSupplier || data.daily_stocks ? (
+                        <form onSubmit={handleSubmit}>
+                            {data.daily_stocks.length ? (
+                                <>
+                                    <hr />
+                                    <h4 className="text-lg text-fourth font-medium leading-6 mt-4 mb-4">
+                                        Perbarui Seluruh Stock
+                                    </h4>
+                                    {data.daily_stocks.map((daily_stock) => (
+                                        <div
+                                            key={daily_stock.product.id}
+                                            className="flex w-full gap-2 mb-6"
+                                        >
+                                            <div className="w-full">
+                                                <InputLabel
+                                                    htmlFor={`name-${daily_stock.product.id}`}
+                                                    value="Name"
+                                                />
+                                                <TextInput
+                                                    name={`name-${daily_stock.product.id}`}
+                                                    id={`name-${daily_stock.product.id}`}
+                                                    readOnly
+                                                    className="w-full"
+                                                    value={daily_stock.product.name}
+                                                />
+                                            </div>
+                                            <div className="md:w-1/4">
+                                                <InputLabel
+                                                    htmlFor={`quantity-${daily_stock.product.id}`}
+                                                    value="Initial Quantity"
+                                                />
+                                                <TextInput
+                                                    name={`quantity-${daily_stock.product.id}`}
+                                                    id={`quantity-${daily_stock.product.id}`}
+                                                    type="number"
+                                                    className="w-full"
+                                                    onChange={(e) =>
+                                                        handleInputChange(
+                                                            e,
+                                                            daily_stock.product.id
+                                                        )
+                                                    }
+                                                    defaultValue={daily_stock.rest || ""}
+                                                    // value={daily_stock.quantity || ""}
+                                                />
+                                                {errors[
+                                                    `quantity-${daily_stock.product.id}`
+                                                    ] && (
+                                                    <Error
+                                                        value={
+                                                            errors[
+                                                                `quantity-${daily_stock.product.id}`
+                                                                ]
+                                                        }
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                    <div className="flex justify-end gap-2">
+                                        <SecondaryButton
+                                            type="button"
+                                            onClick={() => setSelectedSupplier(null)}
+                                        >
+                                            Cancel
+                                        </SecondaryButton>
+                                        <PrimaryButton type="submit">
+                                            Update Stock
+                                        </PrimaryButton>
                                     </div>
-                                    <div className="md:w-1/4">
-                                        <InputLabel
-                                            htmlFor={`quantity-${daily_stock.product.id}`}
-                                            value="Initial Quantity"
-                                        />
-                                        <TextInput
-                                            name={`quantity-${daily_stock.product.id}`}
-                                            id={`quantity-${daily_stock.product.id}`}
-                                            type="number"
-                                            className="w-full"
-                                            onChange={(e) =>
-                                                handleInputChange(
-                                                    e,
-                                                    daily_stock.product.id
-                                                )
-                                            }
-                                            defaultValue={daily_stock.rest || ""}
-                                            // value={daily_stock.quantity || ""}
-                                        />
-                                        {errors[
-                                            `quantity-${daily_stock.product.id}`
-                                        ] && (
-                                            <Error
-                                                value={
-                                                    errors[
-                                                        `quantity-${daily_stock.product.id}`
-                                                    ]
-                                                }
-                                            />
-                                        )}
-                                    </div>
+                                </>
+                            ) : (
+                                <div className="flex w-full h-52 justify-center items-center text-fourth">
+                                    <h3>There are no products from this supplier</h3>
                                 </div>
-                            ))}
-                            <div className="flex justify-end gap-2">
-                                <SecondaryButton
-                                    type="button"
-                                    onClick={() => setSelectedSupplier(null)}
-                                >
-                                    Cancel
-                                </SecondaryButton>
-                                <PrimaryButton type="submit">
-                                    Update Stock
-                                </PrimaryButton>
-                            </div>
-                        </>
+                            )}
+                        </form>
                     ) : (
                         <div className="flex w-full h-52 justify-center items-center text-fourth">
-                            <h3>There are no products from this supplier</h3>
+                            <h3>Choose a Supplier First</h3>
                         </div>
                     )}
-                </form>
-            ) : (
-                <div className="flex w-full h-52 justify-center items-center text-fourth">
-                    <h3>Choose a Supplier First</h3>
-                </div>
+                </>
             )}
+
         </div>
     );
 }

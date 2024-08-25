@@ -199,6 +199,7 @@ export default function Index({ total_daily_stocks, suppliers, ...props }) {
                             <Table.Th>Sisa Stok</Table.Th>
                             <Table.Th>Total Jumlah</Table.Th>
                             <Table.Th>Total Harga</Table.Th>
+                            <Table.Th>Action</Table.Th>
                         </tr>
                     </Table.Thead>
                     <Table.Tbody>
@@ -239,6 +240,27 @@ export default function Index({ total_daily_stocks, suppliers, ...props }) {
                                                 daily_stock.quantity *
                                                     daily_stock.product.price
                                             )}
+                                        </Table.Td>
+                                        <Table.Td>
+                                            <SecondaryButton
+                                                onClick={() =>{
+
+                                                    router.get(
+                                                        `/admin/setting/product/today`,
+                                                        {supplier: daily_stock.product.supplier.id},
+                                                        {
+                                                            preserveState: true,
+                                                        }
+                                                    )
+                                                    openModalCategory(
+                                                        daily_stock,
+                                                        "update"
+                                                    )
+                                                }
+                                                }
+                                            >
+                                                Edit
+                                            </SecondaryButton>
                                         </Table.Td>
                                     </tr>
                                 ))}
