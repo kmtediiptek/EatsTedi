@@ -30,6 +30,9 @@ export default function Index({ total_daily_stocks, suppliers, ...props }) {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedSupplier, setSelectedSupplier] = useState(null);
 
+    const queryParams = new URLSearchParams(window.location.search);
+    const initialSupplier = queryParams.get('supplier') || null;
+
     function openModalCategory() {
         setIsOpen(true);
         setModalDailyMenu("Daily Menu");
@@ -249,13 +252,14 @@ export default function Index({ total_daily_stocks, suppliers, ...props }) {
                                                         `/admin/setting/product/today`,
                                                         {
                                                             supplier: daily_stock.product.supplier.id,
-                                                            page: meta.current_page,
-                                                            search: searchQuery,
+                                                            page: initialSupplier === 'all' || !initialSupplier ? 1 : meta.current_page,
+                                                            search: daily_stock.product.name,
                                                         },
                                                         {
                                                             preserveState: true,
                                                         }
                                                     )
+
                                                     openModalCategory(
                                                         daily_stock,
                                                         "update"
