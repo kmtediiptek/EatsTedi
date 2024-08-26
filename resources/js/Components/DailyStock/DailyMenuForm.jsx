@@ -21,12 +21,14 @@ export default function DailyMenuForm() {
         setLoading(true)
         const queryParams = new URLSearchParams(window.location.search);
         const initialSupplier = queryParams.get('supplier') || null;
+        const page = queryParams.get('page') || 1;
         if(initialSupplier){
             setSelectedSupplier(initialSupplier);
             router.get(
                 `/admin/setting/product/today`,
                 {
                     supplier: initialSupplier,
+                    page: page,
                 },
                 {
                     preserveState: true,
@@ -41,6 +43,7 @@ export default function DailyMenuForm() {
 
     const queryParams = new URLSearchParams(window.location.search);
     const initialSupplier = queryParams.get('supplier') || null;
+    const page = queryParams.get('page') || 1;
     useEffect(() => {
         setLoading(true)
         if(initialSupplier){
@@ -49,6 +52,7 @@ export default function DailyMenuForm() {
                 `/admin/setting/product/today`,
                 {
                     supplier: initialSupplier,
+                    page: page,
                 },
                 {
                     preserveState: true,
