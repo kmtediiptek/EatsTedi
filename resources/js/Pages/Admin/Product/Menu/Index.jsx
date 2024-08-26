@@ -250,6 +250,7 @@ export default function Index({ total_daily_stocks, suppliers, ...props }) {
                                                         {
                                                             supplier: daily_stock.product.supplier.id,
                                                             page: meta.current_page,
+                                                            search: searchQuery,
                                                         },
                                                         {
                                                             preserveState: true,
