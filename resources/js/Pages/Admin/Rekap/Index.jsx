@@ -16,7 +16,6 @@ import MyModal from "@/Components/Modal";
 
 export default function Index({ total_qris, total_cash, banyak_transaksi,suppliers,rekap_transaksi,total_invoices, ...props }) {
     const { data: invoices, meta, links } = props.invoices;
-    console.log(suppliers, "aaa")
     const { url } = usePage();
 
     const { data, setData, delete:destroy } = useForm({
@@ -24,7 +23,6 @@ export default function Index({ total_qris, total_cash, banyak_transaksi,supplie
         end_date: "",
     });
 
-    console.log(invoices)
     const [searchQuery, setSearchQuery] = useState("");
     const [isFilterApplied, setIsFilterApplied] = useState(false);
     const [selectedSupplier, setSelectedSupplier] = useState("all");

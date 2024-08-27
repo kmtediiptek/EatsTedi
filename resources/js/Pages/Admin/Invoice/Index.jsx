@@ -21,7 +21,6 @@ export default function Index({ total_invoices, ...props }) {
         end_date: "",
     });
 
-    console.log(invoices)
     const [searchQuery, setSearchQuery] = useState("");
     const [isFilterApplied, setIsFilterApplied] = useState(false);
     const [isOpen, setIsOpen] = useState(false);

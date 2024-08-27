@@ -18,7 +18,6 @@ import toast from "react-hot-toast";
 
 export default function Index({ total_suppliers, ...props }) {
     const { data: suppliers, meta, links } = props.suppliers;
-    console.log(suppliers)
 
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -115,7 +114,6 @@ export default function Index({ total_suppliers, ...props }) {
     };
 
     const onDelete = (supplierUsername) => {
-        console.log(supplierUsername, "adsjnwekj")
         destroy(route("admin.supplier.destroy", supplierUsername.id), {
             onSuccess: () => {
                 toast.success("Supplier has been deleted!"), setIsToast(false);
