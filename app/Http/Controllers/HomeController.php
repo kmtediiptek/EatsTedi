@@ -31,6 +31,7 @@ class HomeController extends Controller
                 "supplier" => fn ($query) => $query->select('name', 'username', 'id'),
                 "daily_stock" => fn ($query) => $query->select('id', 'product_id', 'quantity', 'sold'),
             ])
+            ->orderBy('name', 'asc')
             ->when($search_products, fn ($q) => $q->where('name', 'LIKE', "%$search_products%"))
             ->when($supplier_id, fn ($q) => $q->where('supplier_id', $supplier_id))
             ->when($request->category, fn ($q, $v) => $q->whereBelongsTo(Category::where('slug', $v)->first()))
