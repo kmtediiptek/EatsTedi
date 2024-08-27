@@ -93,7 +93,7 @@ Route::prefix('admin')->middleware('role:owner|admin|employee', 'auth')->group(f
 
     // Admin Cart
     Route::controller(AdminCartController::class)->group(function () {
-        Route::delete('/cart/{cart}', 'destroy')->name('admin.cart.delete')->can('cart_destroy');
+        Route::delete('/cart/{product:slug}', 'destroy')->name('admin.cart.delete')->can('cart_destroy');
         Route::post('/cart/{product:slug}', 'store')->name('admin.cart.store')->can('cart_store');
         Route::post('/cart/increment/{product:slug}', 'increment')->name('admin.cart.increment')->can('cart_increment');
         Route::post('/cart/decrement/{product:slug}', 'decrement')->name('admin.cart.decrement')->can('cart_decrement');

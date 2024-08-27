@@ -22,8 +22,6 @@ class AdminInvoiceController extends Controller
         $start_date = $request->input('start_date') ?? now()->startOfDay();
         $end_date = $request->input('end_date') ?? now()->endOfDay();
 
-
-
         $search_invoices = $request->input('search');
 
         if ($start_date && $end_date) {

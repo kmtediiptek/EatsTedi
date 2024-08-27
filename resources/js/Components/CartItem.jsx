@@ -14,7 +14,7 @@ export default function CartItem({ cart }) {
     };
 
     const deleteCart = () => {
-        router.delete(`/admin/cart/${cart.id}`, {
+        router.delete(`/admin/cart/${cart.product_slug}`, {
             onSuccess: () => toast.success("Deleted Item!"),
         });
     };
@@ -54,12 +54,12 @@ export default function CartItem({ cart }) {
                         <IconMinus
                             size={32}
                             className={
-                                cart.quantity === 1
+                                cart.quantity === 0
                                     ? "bg-gray-400 text-white border p-1 rounded"
                                     : "text-red-500 border p-1 rounded cursor-pointer"
                             }
                             onClick={
-                                cart.quantity === 1 ? null : quantityDecrement
+                                cart.quantity === 0 ? null : quantityDecrement
                             }
                         />
                         <span className="border-0 w-12 px-0 h-8 text-lg text-center mx-auto text-lg">

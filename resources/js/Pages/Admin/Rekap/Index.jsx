@@ -77,6 +77,7 @@ export default function Index({ total_qris, total_cash, banyak_transaksi,supplie
                         "Invoice ID",
                         "Nama Supplier",
                         "Nama Customer",
+                        "Nama Produk",
                         "Jenis Pembayaran",
                         "Harga",
                         "Jumlah",
@@ -89,6 +90,7 @@ export default function Index({ total_qris, total_cash, banyak_transaksi,supplie
                     transaksi.invoice_id,
                     transaksi.supplier.name,
                     transaksi.invoice.customer_name,
+                    transaksi.product.name,
                     transaksi.invoice.payment_name,
                     `Rp. ${numberFormat(transaksi.price)}`,
                     transaksi.quantity,
@@ -263,6 +265,7 @@ export default function Index({ total_qris, total_cash, banyak_transaksi,supplie
                             <Table.Th>Invoice ID</Table.Th>
                             <Table.Th>Nama Supplier</Table.Th>
                             <Table.Th>Nama Customer</Table.Th>
+                            <Table.Th>Nama Produk</Table.Th>
                             <Table.Th>Jenis Pembayaran</Table.Th>
                             <Table.Th>Harga</Table.Th>
                             <Table.Th>Jumlah</Table.Th>
@@ -288,6 +291,9 @@ export default function Index({ total_qris, total_cash, banyak_transaksi,supplie
                                     <Table.Td>{rekap.supplier.name}</Table.Td>
                                     <Table.Td>
                                         {rekap.invoice.customer_name}
+                                    </Table.Td>
+                                    <Table.Td>
+                                        {rekap.product.name}
                                     </Table.Td>
                                     <Table.Td>
                                         {rekap.payment_name}

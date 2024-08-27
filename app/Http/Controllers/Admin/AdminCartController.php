@@ -119,10 +119,10 @@ class AdminCartController extends Controller
                     $cart->total_price -= $product->price;
                     $cart->save();
 
-                    // Hapus cart jika tidak ada item tersisa
-                    if ($cart->cartItems()->count() === 0) {
-                        $cart->delete();
-                    }
+//                    // Hapus cart jika tidak ada item tersisa
+//                    if ($cart->cartItems()->count() === 0) {
+//                        $cart->delete();
+//                    }
                 }
             }
         }
@@ -130,13 +130,30 @@ class AdminCartController extends Controller
         return redirect()->back();
     }
 
-    public function destroy(Cart $cart)
+    public function destroy(Request $request, Product $product)
     {
-        // Hapus semua item terkait dengan cart
-        $cart->cartItems()->delete();
+        $userId = $request->user()->id;
 
-        // Hapus cart
-        $cart->delete();
+        // Cari cart aktif untuk user
+        $cart = Cart::where('user_id', $userId)
+            ->where('status', false) // status false berarti cart belum checkout
+            ->first();
+
+        if ($cart) {
+            // Cari item di dalam cart
+            $cartItem = CartItem::where('cart_id', $cart->id)
+                ->where('product_id', $product->id)
+                ->first();
+
+            if ($cartItem) {
+                // Kurangi total price di cart
+                $cart->total_price -= $cartItem->price;
+                $cart->save();
+
+                // Hapus item dari cart
+                $cartItem->delete();
+            }
+        }
 
         return back();
     }
