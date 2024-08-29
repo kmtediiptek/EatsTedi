@@ -23,7 +23,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $search_products = $request->input('search');
-        $supplier_id = $request->input('supplier');
+        $supplier_id = $request->input('supplier') === "all" ? null : $request->input('supplier');
 
         $products = Product::query()
             ->select('id', 'category_id', 'supplier_id', 'name', 'slug', 'price', 'picture')

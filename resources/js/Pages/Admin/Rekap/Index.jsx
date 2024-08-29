@@ -89,7 +89,7 @@ export default function Index({ total_qris, total_cash, banyak_transaksi,supplie
                     transaksi.supplier.name,
                     transaksi.invoice.customer_name,
                     transaksi.product.name,
-                    transaksi.invoice.payment_name,
+                    transaksi.invoice.payment.name,
                     `Rp. ${numberFormat(transaksi.price)}`,
                     transaksi.quantity,
                     `Rp. ${numberFormat(transaksi.price * transaksi.quantity)}`,
