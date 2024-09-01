@@ -62,7 +62,7 @@ export default function InvoiceForm({
                     <TextInput
                         id="bordered-radio-1"
                         type="radio"
-                        checked={data.payment_id === 1}
+                        checked={data.payment_id == 1}
                         onChange={(e) => {
                             onChange(e);
                             handleRadioChange(e);
@@ -84,7 +84,7 @@ export default function InvoiceForm({
                     <TextInput
                         id="bordered-radio-2"
                         type="radio"
-                        checked={data.payment_id === 2}
+                        checked={data.payment_id == 2}
                         onChange={(e) => {
                             onChange(e);
                             handleRadioChange(e);
