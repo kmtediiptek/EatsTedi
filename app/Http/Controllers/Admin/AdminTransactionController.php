@@ -50,6 +50,7 @@ class AdminTransactionController extends Controller
             ->when($request->category, fn ($q, $v) => $q->whereBelongsTo(Category::where('slug', $v)->first()))
             ->with([
                 "supplier" => fn ($query) => $query->select('name', 'username', 'id'),
+                "daily_stock" => fn ($query) => $query->select('product_id', 'quantity'),
             ])
             ->latest()
             ->fastPaginate(12)->withQueryString();

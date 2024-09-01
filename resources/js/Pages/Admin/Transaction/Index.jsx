@@ -75,8 +75,8 @@ export default function Index({
         }
     };
 
-    const onSubmit = (e) => {
-        e.preventDefault();
+    const onSubmit = (e=null) => {
+        e?.preventDefault();
         router.post(
             `/admin/invoice`,
             {
@@ -85,7 +85,7 @@ export default function Index({
                 total: total,
                 is_paid: 1,
                 quantity: quantity,
-                payment_id: data.payment_id.id,
+                payment_id: data.payment_id,
             },
             {
                 onSuccess: () => {
@@ -113,7 +113,6 @@ export default function Index({
             {}
         );
     };
-
 
     return (
         <>

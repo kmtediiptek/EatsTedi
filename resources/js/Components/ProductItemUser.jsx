@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { numberFormat } from "@/Libs/Helper";
 import MyModal from "./Modal";
-import { IconUserDollar } from "@tabler/icons-react";
+import {IconBox, IconUserDollar} from "@tabler/icons-react";
 
 export default function ProductItemUser({ product }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -30,6 +30,9 @@ export default function ProductItemUser({ product }) {
             >
             <span className="bg-white opacity-50 text-sm text-black absolute p-1 px-1.5 rounded opacity-[0.8] shadow right-4 top-4">
                 {product.category.name}
+            </span>
+            <span className="bg-white opacity-50 flex items-center gap-2 text-sm text-black absolute p-1 px-1.5 rounded opacity-[0.8] shadow left-4 top-4">
+               <IconBox/> {product.daily_stock.quantity}
             </span>
 
                 <div className="p-2 text-left w-full bg-opacity-60 bg-white">

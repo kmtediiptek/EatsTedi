@@ -97,7 +97,7 @@ class AdminDailyMenuController extends Controller
     public function reset_stock()
     {
         DailyStock::whereHas('product', function ($q) {
-            $q->where('category_id', '!=', 3);
+            $q->whereNotIn('category_id', [3, 2]);
         })->update([
             'quantity' => 0,
             'sold' => 0,

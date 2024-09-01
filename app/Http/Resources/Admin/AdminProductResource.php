@@ -31,6 +31,12 @@ class AdminProductResource extends JsonResource
                 'name' => $this->supplier->name ?? null,
                 'username' => $this->supplier->username ?? null,
             ],
+            'daily_stock' => $this->whenLoaded('daily_stock', function () {
+                return [
+                    'product_id' => $this->daily_stock->product_id,
+                    'quantity' => $this->daily_stock->quantity,
+                ];
+            }),
             'cart_items' => $this->whenLoaded('cartItems', function () {
                 return $this->cartItems->map(function ($cartItem) {
                     return [

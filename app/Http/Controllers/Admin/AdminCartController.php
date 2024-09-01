@@ -130,6 +130,35 @@ class AdminCartController extends Controller
         return redirect()->back();
     }
 
+    public function quantity(Request $request, Product $product)
+    {
+        $userId = $request->user()->id;
+
+        // Cari cart aktif untuk user
+        $cart = Cart::where('user_id', $userId)
+            ->where('status', false) // status false berarti cart belum checkout
+            ->first();
+
+        if ($cart) {
+            // Cari item di dalam cart
+            $cartItem = CartItem::where('cart_id', $cart->id)
+                ->where('product_id', $product->id)
+                ->first();
+
+            if ($cartItem) {
+                $cartItem->quantity = $request->quantity ?? 0;
+                $cartItem->price = $product->price * $request->quantity;
+                $cartItem->save();
+
+                // Update total price di cart
+                $cart->total_price = $cart->cartItems()->sum('price');
+                $cart->save();
+            }
+        }
+
+        return redirect()->back();
+    }
+
     public function destroy(Request $request, Product $product)
     {
         $userId = $request->user()->id;

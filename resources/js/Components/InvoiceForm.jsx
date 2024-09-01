@@ -21,6 +21,7 @@ export default function InvoiceForm({
     let [isOpen, setIsOpen] = useState(false);
     const [modalType, setModalType] = useState("");
     const [modalPayment, setModalPayment] = useState("");
+    const [payment_id, setPaymentId] = useState(0);
 
     function openModalOrder(type) {
         setIsOpen(true);
@@ -36,6 +37,32 @@ export default function InvoiceForm({
     const onChange = (e) => {
         setData(e.target.name, e.target.value);
     };
+
+    // on enter pressed
+    const onEnterPressed = (e) => {
+        if (e.key === "Enter" && payment_id && data.charge !== 0) {
+            console.log(payment_id, data.charge, isOpen)
+            if (isOpen){
+                console.log(
+                    "a"
+                )
+                if (charge < total_price) {
+                    return;
+                }
+                onSubmit(e);
+                setIsOpen(false);
+            } else {
+                openModalOrder("create")
+            }
+        }
+    }
+
+    useEffect(() => {
+        window.addEventListener("keydown", onEnterPressed);
+        return () => {
+            window.removeEventListener("keydown", onEnterPressed);
+        };
+    }, [payment_id, isOpen, data.payment_id, data.charge, total_price]);
 
     useEffect(() => {
             setData("charge", total_price)
@@ -66,6 +93,7 @@ export default function InvoiceForm({
                         onChange={(e) => {
                             onChange(e);
                             handleRadioChange(e);
+                            setPaymentId(1)
                         }}
                         value="1"
                         name="payment_id"
@@ -88,6 +116,7 @@ export default function InvoiceForm({
                         onChange={(e) => {
                             onChange(e);
                             handleRadioChange(e);
+                            setPaymentId(2)
                         }}
                         value="2"
                         name="payment_id"
@@ -186,6 +215,7 @@ export default function InvoiceForm({
                         className="w-full pl-16"
                         value={difference}
                         placeholder="Change.."
+
                     />
                 </div>
                 <div className="flex gap-4">

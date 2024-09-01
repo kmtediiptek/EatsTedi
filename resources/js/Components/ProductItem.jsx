@@ -1,12 +1,10 @@
 import React from "react";
 import {router, usePage} from "@inertiajs/react";
 import { toast } from "react-hot-toast";
-import { IconShoppingBagPlus } from "@tabler/icons-react";
+import {IconBox, IconShoppingBagPlus, IconShoppingCart} from "@tabler/icons-react";
 import { numberFormat } from "@/Libs/Helper";
 
 export default function ProductItem({ product, setIsOrderListOpen }) {
-    const props = usePage().props
-    console.log(props.csrf_token)
     const addToCart = () => {
         router.post(
             `/admin/cart/${product.slug}`, // Endpoint untuk menambah ke cart
@@ -48,7 +46,6 @@ export default function ProductItem({ product, setIsOrderListOpen }) {
         //     }
         // });
     };
-
     return (
         <button
             onClick={addToCart}
@@ -63,6 +60,9 @@ export default function ProductItem({ product, setIsOrderListOpen }) {
         >
             <span className="bg-white opacity-50 text-sm text-black absolute p-1 px-1.5 rounded opacity-[0.8] shadow right-4 top-4">
                 {product.category.name}
+            </span>
+            <span className="bg-white opacity-50 flex items-center gap-2 text-sm text-black absolute p-1 px-1.5 rounded opacity-[0.8] shadow left-4 top-4">
+               <IconBox/> {product.daily_stock.quantity}
             </span>
 
             <div className="p-2 text-left w-full bg-opacity-60 bg-white">
