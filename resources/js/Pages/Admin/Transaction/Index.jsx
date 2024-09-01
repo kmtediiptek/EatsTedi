@@ -83,6 +83,7 @@ export default function Index({
                 ...data,
                 carts: carts,
                 total: total,
+                is_paid: 1,
                 quantity: quantity,
                 payment_id: data.payment_id.id,
             },

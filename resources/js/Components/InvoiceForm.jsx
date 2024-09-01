@@ -11,7 +11,6 @@ import {
     IconExchange,
     IconX,
 } from "@tabler/icons-react";
-import Select from "./Select";
 
 export default function InvoiceForm({
     data,
@@ -22,7 +21,6 @@ export default function InvoiceForm({
     let [isOpen, setIsOpen] = useState(false);
     const [modalType, setModalType] = useState("");
     const [modalPayment, setModalPayment] = useState("");
-    const [paymentId, setPaymentId] = useState(0);
 
     function openModalOrder(type) {
         setIsOpen(true);
@@ -34,18 +32,16 @@ export default function InvoiceForm({
         setIsOpen(false);
     }
 
-    const { errors, payments } = usePage().props;
+    const { errors } = usePage().props;
     const onChange = (e) => {
         setData(e.target.name, e.target.value);
     };
 
     useEffect(() => {
-        if (paymentId.name === "qris") {
             setData("charge", total_price)
-        }
-    }, [paymentId]);
+    }, [data.payment_id]);
 
-    const [showPaymentOptions, setShowPaymentOptions] = useState(false);
+    const [_, setShowPaymentOptions] = useState(false);
 
     const handleRadioChange = (e) => {
         const isRadioValue1 = e.target.value === 1;
@@ -56,119 +52,65 @@ export default function InvoiceForm({
 
     const difference = charge - total_price;
 
-    // const sendBill = async () => {
-    //     try {
-    //         await router.post(
-    //             `/admin/send-email`,
-    //             {
-    //                 ...data,
-    //                 carts: carts,
-    //                 total_price: total_price,
-    //             },
-    //             {
-    //                 onSuccess: () => {
-    //                     setIsOpen(false);
-    //                     toast.success("Invoice has been send Email");
-    //                 },
-    //             }
-    //         );
-    //     } catch (error) {
-    //         console.error("Error sending email:", error);
-    //     }
-    // };
-
     return (
         <>
-            <TextInput
-                name="name"
-                id="name"
-                className="w-full"
-                onChange={onChange}
-                value={data.name}
-                placeholder="Customer name.."
-            />
             {errors.name ? <Error className="" value={errors.name} /> : null}
             <div className="flex items-center gap-4">
                 <div
-                    className={`w-1/2 ${
-                        data.charge != "" ? "w-full" : ""
-                    } flex items-center pl-4 border border-gray-300 rounded`}
+                    className={`w-1/2 flex items-center pl-4 border border-gray-300 rounded`}
                 >
                     <TextInput
                         id="bordered-radio-1"
                         type="radio"
-                        checked={data.is_paid == 1}
+                        checked={data.payment_id === 1}
                         onChange={(e) => {
                             onChange(e);
                             handleRadioChange(e);
                         }}
                         value="1"
-                        name="is_paid"
+                        name="payment_id"
                         className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary"
                     />
                     <label
                         htmlFor="bordered-radio-1"
                         className="w-full py-2 ml-2 font-medium text-third"
                     >
-                        Paid Now
+                        Pay Cash
                     </label>
                 </div>
                 <div
-                    className={`${
-                        data.charge != "" ? "hidden" : ""
-                    } w-1/2 flex items-center pl-4 border border-gray-300 rounded`}
+                    className={`w-1/2 flex items-center pl-4 border border-gray-300 rounded`}
                 >
                     <TextInput
                         id="bordered-radio-2"
                         type="radio"
-                        disabled={data.charge != 0 && data.payment_id !== ""}
-                        checked={data.is_paid == 2}
+                        checked={data.payment_id === 2}
                         onChange={(e) => {
                             onChange(e);
                             handleRadioChange(e);
                         }}
                         value="2"
-                        name="is_paid"
+                        name="payment_id"
                         className=" w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary"
                     />
                     <label
                         htmlFor="bordered-radio-2"
                         className="w-full py-2 ml-2 font-medium text-third"
                     >
-                        Paid Later
+                        Pay Qris
                     </label>
                 </div>
             </div>
-            <div className="flex justify-between w-full gap-x-4">
-                {showPaymentOptions || data.is_paid == 1 ? (
-                    <div className="flex flex-col w-full">
-                        <Select
-                            value={data.payment_id}
-                            data={payments}
-                            className="w-full"
-                            placeholder="Payment"
-                            onChange={(e) => {setData("payment_id", e)
-                            setPaymentId(e)
-                            console.log(e)}}
-                        />
-                        {errors.payment_id ? (
-                            <Error className="" value={errors.payment_id} />
-                        ) : null}
-                    </div>
-                ) : (
-                    ""
-                )}
-            </div>
-            {(showPaymentOptions || data.is_paid == 1) && paymentId ? (
+            {data.payment_id ? (
                 <>
                     <TextInput
                         type="number"
-                        min={data.is_paid == 1 ? 1 : ""}
+                        min={data.is_paid === 1 ? 1 : ""}
                         name="charge"
                         id="charge"
                         className="w-full"
                         // value={data.charge}
-                        defaultValue={ paymentId.name === "qris" ? total_price : null }
+                        defaultValue={ total_price  }
                         onChange={onChange}
                         placeholder="Charge.."
                     />
@@ -181,14 +123,14 @@ export default function InvoiceForm({
             )}
 
             <div className="pb-4 flex items-end flex-1 justify-end">
-                {data.charge != 0 || data.is_paid == 1 ? (
+                {data.charge !== 0 || data.is_paid === 1 ? (
                     <>
                         <PrimaryButton
                             type="button"
                             onClick={() => openModalOrder("create")}
                             disabled={
                                 charge < total_price ||
-                                data.payment_id == ""
+                                data.payment_id === ""
                             }
                             className="bg-violet-600 text-white px-3 py-4 w-full rounded"
                         >
@@ -199,7 +141,7 @@ export default function InvoiceForm({
                     <>
                         <PrimaryButton
                             className="bg-violet-600 text-white px-3 py-4 w-full rounded"
-                            disabled={data.is_paid == ""}
+                            disabled={data.is_paid === ""}
                         >
                             Confirm
                         </PrimaryButton>
@@ -246,40 +188,10 @@ export default function InvoiceForm({
                         placeholder="Change.."
                     />
                 </div>
-                {/* <div className="mb-6 relative">
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
-                        <IconMail color="red" />
-                    </div>
-                    <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        className="w-full pl-16"
-                        onChange={onChange}
-                        value={data.email || ""}
-                        placeholder="Email.."
-                    />
-                </div> */}
                 <div className="flex gap-4">
                     <SecondaryButton onClick={() => onCancelModal()}>
                         <IconX />
                     </SecondaryButton>
-                    {/* <PrimaryButton
-                        onClick={(e) => {
-                            e.preventDefault();
-                            sendBill();
-                            onSubmit(e);
-                            setIsOpen(false);
-                        }}
-                        className="bg-orange-600 text-white px-3 py-4 w-full rounded"
-                        disabled={
-                            charge < total_price ||
-                            data.email == null ||
-                            data.email == ""
-                        }
-                    >
-                        <IconSend />
-                    </PrimaryButton> */}
                     <PrimaryButton
                         onClick={(e) => {
                             e.preventDefault();
