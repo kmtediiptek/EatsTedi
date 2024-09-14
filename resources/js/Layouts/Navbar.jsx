@@ -90,6 +90,14 @@ export default function Navbar() {
                                     >
                                         Rekap
                                     </NavLink>
+                                    <NavLink
+                                        href={route("admin.laporan.index")}
+                                        active={route().current(
+                                            "admin.laporan.index"
+                                        )}
+                                    >
+                                        Laporan
+                                    </NavLink>
                                 </>
                             ) : null}
                             {(auth.user && auth.user.status == "admin") ||

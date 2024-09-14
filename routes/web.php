@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminDailyMenuController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminInvoiceController;
+use App\Http\Controllers\Admin\AdminLaporanController;
 use App\Http\Controllers\Admin\AdminPaymentController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminRekapController;
@@ -115,6 +116,14 @@ Route::prefix('admin')->middleware('role:owner|admin|employee', 'auth')->group(f
         Route::post('/rekap', 'store')->name('admin.rekap.store')->can('rekap_store');
         Route::put('/rekap/{rekap}', 'update')->name('admin.rekap.update')->can('rekap_update');
         Route::delete('/rekap/{rekap}', 'destroy')->name('admin.rekap.destroy');
+    });
+
+    // Admin Laporan
+    Route::controller(AdminLaporanController::class)->group(function () {
+        Route::get('/laporan', 'index')->name('admin.laporan.index');
+        Route::post('/laporan', 'store')->name('admin.laporan.store')->can('laporan_store');
+        Route::put('/laporan/{laporan}', 'update')->name('admin.laporan.update')->can('laporan_update');
+        Route::delete('/laporan/{laporan}', 'destroy')->name('admin.laporan.destroy');
     });
 
     // Admin Log

@@ -33,9 +33,9 @@ const Tbody = ({ children, className }) => {
     return <tbody className={clsx("px-6 py-3 text-fourth", className)}>{children}</tbody>;
 };
 
-const Th = ({ children, className }) => {
+const Th = ({ children, className, colSpan=1 }) => {
     return (
-        <th scope="col" className={clsx("px-6 py-3", className)}>
+        <th colSpan={colSpan} scope="col" className={clsx("px-6 py-3", className)}>
             {children}
         </th>
     );
