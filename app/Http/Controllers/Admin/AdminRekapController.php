@@ -92,6 +92,11 @@ class AdminRekapController extends Controller
         $invoice->total_quantity = $invoice->total_quantity - $rekap->quantity;
         $invoice->save();
 
+//        add stock to product
+        $product = $rekap->product;
+        $product->stock = $product->stock + $rekap->quantity;
+        $product->save();
+
 //        create activity
         Activity::create([
             "activity" => Auth::user()->name . " Deleted Rekap Transaksi " . $rekap->product->name . " sebanyak " . $rekap->quantity . " "

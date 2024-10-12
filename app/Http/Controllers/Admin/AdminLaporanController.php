@@ -37,9 +37,28 @@ class AdminLaporanController extends Controller
         $suppliers = Supplier::select('id', 'name', 'username')->get();
         $products_sold = $products_sold->get();
 
+        $banyak_transaksi = $products_sold->sum(function ($item) {
+            return $item->price * $item->quantity;
+        });
+
+//        total qris from productsold with invoice.payment_id = 1
+        $total_qris = $products_sold->where('invoice.payment_id', 1)->sum(function ($item) {
+            return $item->price * $item->quantity;
+        });
+
+//        total cash from productsold with invoice.payment_id = 2
+        $total_cash = $products_sold->where('invoice.payment_id', 2)->sum(function ($item) {
+            return $item->price * $item->quantity;
+        });
+
+//        dd($total_qris);
+
         return inertia('Admin/Laporan/Index', [
             'products_sold' => $products_sold,
             "suppliers" => $suppliers,
+            "banyak_transaksi" => $banyak_transaksi,
+            "total_qris" => $total_qris,
+            "total_cash" => $total_cash,
         ]);
     }
 

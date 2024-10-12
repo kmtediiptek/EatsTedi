@@ -15,7 +15,7 @@ import "jspdf-autotable";
 
 
 
-export default function Index({ products_sold, suppliers }) {
+export default function Index({ products_sold, suppliers, banyak_transaksi, total_qris, total_cash}) {
     const [isFilterApplied, setIsFilterApplied] = useState(false);
     const { errors } = usePage().props;
     const [selectedSupplier, setSelectedSupplier] = useState("all");
@@ -97,7 +97,6 @@ export default function Index({ products_sold, suppliers }) {
                 const qrisKomisi = (data.price * data.totalTransactionsQris) - komisi
                 tableRows.push([index + 1, data.supplierName, productName, numberFormat(data.price), numberFormat(data.price * data.totalTransactionsCash), numberFormat(data.price * data.totalTransactionsQris), numberFormat(data.totalTransactionsCash), numberFormat(data.totalTransactionsQris), numberFormat(omset), numberFormat(komisi), numberFormat(qrisKomisi), numberFormat(data.totalOmsetBersih)])
             });
-            console.log(doc)
             doc.autoTable(
                 {
                     head: [tableColumn],
@@ -107,6 +106,13 @@ export default function Index({ products_sold, suppliers }) {
             );
             // add generated on
             doc.text(`Generated on ${new Date().toLocaleString()}`, 14, doc.internal.pageSize.height - 10);
+            // add banyak transaksi, total qris bersih, total cash
+            doc.text(`Total Rekap: ${numberFormat(banyak_transaksi)}`, 14, doc.internal.pageSize.height - 60);
+            doc.text(`Total Qris Kotor: ${numberFormat(total_qris)}`, 14, doc.internal.pageSize.height - 50);
+            doc.text(`Total Komisi Kantin (10%): ${numberFormat(banyak_transaksi/10)}`, 14, doc.internal.pageSize.height - 40);
+            doc.text(`Total Qris Bersih: ${numberFormat(total_qris - (banyak_transaksi/10))}`, 14, doc.internal.pageSize.height - 30);
+            doc.text(`Total Cash: ${numberFormat(total_cash)}`, 14, doc.internal.pageSize.height - 20);
+
             doc.save('Laporan.pdf');
         } catch (e) {
             console.error("Error generating PDF:", e);
@@ -314,6 +320,33 @@ export default function Index({ products_sold, suppliers }) {
                     )})}
                     </tbody>
                 </table>
+                {/* End Invoices */}
+                {(
+                    <div className="flex w-full justify-between items-center">
+                        <div className={"flex gap-3"}>
+                            <p className="text-sm text-third mt-10">
+                                Total Rekap:{" "}
+                                <span className="font-bold">{numberFormat(banyak_transaksi)}</span>{" "}
+                            </p>
+                            <p className="text-sm text-third mt-10">
+                                Total Qris Kotor:{" "}
+                                <span className="font-bold">{numberFormat(total_qris)}</span>{" "}
+                            </p>
+                            <p className="text-sm text-third mt-10">
+                                Total Komisi:{" "}
+                                <span className="font-bold">{numberFormat(banyak_transaksi/10)}</span>{" "}
+                            </p>
+                            <p className="text-sm text-third mt-10">
+                                Total Qris Bersih:{" "}
+                                <span className="font-bold">{numberFormat(total_qris - (banyak_transaksi/10))}</span>{" "}
+                            </p>
+                            <p className="text-sm text-third mt-10">
+                                Total Cash:{" "}
+                                <span className="font-bold">{numberFormat(total_cash)}</span>{" "}
+                            </p>
+                        </div>
+                    </div>
+                )}
             </Container>
         </>
     );
