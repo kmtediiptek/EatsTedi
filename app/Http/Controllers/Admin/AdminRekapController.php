@@ -94,7 +94,10 @@ class AdminRekapController extends Controller
 
 //        add stock to product
         $product = $rekap->product;
-        $product->stock = $product->stock + $rekap->quantity;
+        $product->daily_stock->update([
+            "quantity" => $product->daily_stock->quantity + $rekap->quantity,
+            "sold" => $product->daily_stock->sold - $rekap->quantity
+        ]);
         $product->save();
 
 //        create activity
