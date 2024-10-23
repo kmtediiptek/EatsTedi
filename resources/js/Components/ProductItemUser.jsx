@@ -24,7 +24,7 @@ export default function ProductItemUser({ product }) {
                     backgroundImage: `url(${
                         product.picture
                             ? product.picture
-                            : "https://asset.kompas.com/crops/FDAcmidsNYJDL80i55bj7pbXqyk=/95x0:939x563/750x500/data/photo/2022/07/10/62ca309364500.jpeg"
+                            : '/images/no_image.jpg'
                     })`,
                 }}
             >
