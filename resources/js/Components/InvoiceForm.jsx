@@ -1,29 +1,23 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import TextInput from "./TextInput";
 import Error from "./Error";
 import { usePage } from "@inertiajs/react";
 import PrimaryButton from "./PrimaryButton";
 import MyModal from "./Modal";
 import SecondaryButton from "./SecondaryButton";
-import {
-    IconCash,
-    IconChecks,
-    IconExchange,
-    IconX,
-} from "@tabler/icons-react";
+import { IconCash, IconChecks, IconExchange, IconX } from "@tabler/icons-react";
 
-export default function InvoiceForm({
-    data,
-    setData,
-    onSubmit,
-    total_price,
-}) {
+export default function InvoiceForm({ data, setData, onSubmit, total_price }) {
     let [isOpen, setIsOpen] = useState(false);
     const [modalType, setModalType] = useState("");
     const [modalPayment, setModalPayment] = useState("");
     const [payment_id, setPaymentId] = useState(0);
 
     function openModalOrder(type) {
+        if (!data.payment_id) {
+            alert("Please select a payment method first");
+            return;
+        }
         setIsOpen(true);
         setModalPayment("Invoice");
         setModalType(type);
@@ -41,21 +35,24 @@ export default function InvoiceForm({
     // on enter pressed
     const onEnterPressed = (e) => {
         if (e.key === "Enter" && payment_id && data.charge !== 0) {
-            console.log(payment_id, data.charge, isOpen)
-            if (isOpen){
-                console.log(
-                    "a"
-                )
+            if (!data.payment_id) {
+                alert("Please select a payment method first");
+                return;
+            }
+
+            console.log(payment_id, data.charge, isOpen);
+            if (isOpen) {
+                console.log("a");
                 if (charge < total_price) {
                     return;
                 }
                 onSubmit(e);
                 setIsOpen(false);
             } else {
-                openModalOrder("create")
+                openModalOrder("create");
             }
         }
-    }
+    };
 
     useEffect(() => {
         window.addEventListener("keydown", onEnterPressed);
@@ -65,7 +62,7 @@ export default function InvoiceForm({
     }, [payment_id, isOpen, data.payment_id, data.charge, total_price]);
 
     useEffect(() => {
-            setData("charge", total_price)
+        setData("charge", total_price);
     }, [data.payment_id]);
 
     const [_, setShowPaymentOptions] = useState(false);
@@ -73,6 +70,16 @@ export default function InvoiceForm({
     const handleRadioChange = (e) => {
         const isRadioValue1 = e.target.value === 1;
         setShowPaymentOptions(isRadioValue1);
+    };
+
+    const handleSubmit = (e) => {
+        if (!data.payment_id) {
+            e.preventDefault();
+            alert("Please select a payment method first");
+            return;
+        }
+        onSubmit(e);
+        setIsOpen(false);
     };
 
     const charge = parseFloat(data.charge) || 0;
@@ -93,7 +100,7 @@ export default function InvoiceForm({
                         onChange={(e) => {
                             onChange(e);
                             handleRadioChange(e);
-                            setPaymentId(1)
+                            setPaymentId(1);
                         }}
                         value="1"
                         name="payment_id"
@@ -116,7 +123,7 @@ export default function InvoiceForm({
                         onChange={(e) => {
                             onChange(e);
                             handleRadioChange(e);
-                            setPaymentId(2)
+                            setPaymentId(2);
                         }}
                         value="2"
                         name="payment_id"
@@ -139,7 +146,7 @@ export default function InvoiceForm({
                         id="charge"
                         className="w-full"
                         // value={data.charge}
-                        defaultValue={ total_price  }
+                        defaultValue={total_price}
                         onChange={onChange}
                         placeholder="Charge.."
                     />
@@ -157,10 +164,7 @@ export default function InvoiceForm({
                         <PrimaryButton
                             type="button"
                             onClick={() => openModalOrder("create")}
-                            disabled={
-                                charge < total_price ||
-                                data.payment_id === ""
-                            }
+                            disabled={charge < total_price || !data.payment_id}
                             className="bg-violet-600 text-white px-3 py-4 w-full rounded"
                         >
                             Buy
@@ -170,7 +174,7 @@ export default function InvoiceForm({
                     <>
                         <PrimaryButton
                             className="bg-violet-600 text-white px-3 py-4 w-full rounded"
-                            disabled={data.is_paid === ""}
+                            disabled={!data.payment_id || data.is_paid === ""}
                         >
                             Confirm
                         </PrimaryButton>
@@ -185,6 +189,9 @@ export default function InvoiceForm({
                 size={`1/3`}
                 type={modalType}
                 title={modalPayment}
+                className={`transition-opacity duration-1000 ease-out ${
+                    isOpen ? "opacity-100" : "opacity-0"
+                }`} // Tambahkan logika kelas opacity
             >
                 <div className="mb-6 relative">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
@@ -215,7 +222,6 @@ export default function InvoiceForm({
                         className="w-full pl-16"
                         value={difference}
                         placeholder="Change.."
-
                     />
                 </div>
                 <div className="flex gap-4">
@@ -225,8 +231,7 @@ export default function InvoiceForm({
                     <PrimaryButton
                         onClick={(e) => {
                             e.preventDefault();
-                            onSubmit(e);
-                            setIsOpen(false);
+                            handleSubmit(e);
                         }}
                         className="bg-violet-600 text-white px-3 py-4 w-full rounded"
                         disabled={charge < total_price}

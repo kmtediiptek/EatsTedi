@@ -74,11 +74,19 @@ export default function Index({
 
     const onCategory = (category) => {
         router.get(
-            url,
+            route('home.index'), // Use the route helper to get base URL
             {
                 category: category,
+                // Don't include any pagination parameters
+                // Reset all other filters to avoid conflicts
+                search: searchQuery,
+                supplier: selectedSupplier !== 'all' ? selectedSupplier : null,
             },
-            {}
+            {
+                preserveState: false, // Don't preserve state when changing categories
+                preserveScroll: false, // Don't preserve scroll position
+                replace: true, // Replace the current history entry
+            }
         );
     };
 

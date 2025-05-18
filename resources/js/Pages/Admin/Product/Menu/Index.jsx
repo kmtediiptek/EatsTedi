@@ -31,7 +31,7 @@ export default function Index({ total_daily_stocks, suppliers, ...props }) {
     const [selectedSupplier, setSelectedSupplier] = useState(null);
 
     const queryParams = new URLSearchParams(window.location.search);
-    const initialSupplier = queryParams.get('supplier') || null;
+    const initialSupplier = queryParams.get("supplier") || null;
 
     function openModalCategory() {
         setIsOpen(true);
@@ -85,11 +85,14 @@ export default function Index({ total_daily_stocks, suppliers, ...props }) {
     };
 
     const supplierOptions = [
-        { value: "all", label: "All Suppliers" }, // Add this option
-        ...suppliers.map((supplier) => ({
-            value: supplier.id,
-            label: supplier.name,
-        })),
+        { value: "all", label: "All Suppliers" },
+        ...suppliers
+            .slice() // Create a copy to avoid mutating the original array
+            .sort((a, b) => a.name.localeCompare(b.name)) // Sort alphabetically by name
+            .map((supplier) => ({
+                value: supplier.id,
+                label: supplier.name,
+            })),
     ];
 
     const selectedSupplierOption = supplierOptions.find(
@@ -246,26 +249,34 @@ export default function Index({ total_daily_stocks, suppliers, ...props }) {
                                         </Table.Td>
                                         <Table.Td>
                                             <SecondaryButton
-                                                onClick={() =>{
-
+                                                onClick={() => {
                                                     router.get(
                                                         `/admin/setting/product/today`,
                                                         {
-                                                            supplier: daily_stock.product.supplier.id,
-                                                            page: initialSupplier === 'all' || !initialSupplier ? 1 : meta.current_page,
-                                                            search: daily_stock.product.name,
+                                                            supplier:
+                                                                daily_stock
+                                                                    .product
+                                                                    .supplier
+                                                                    .id,
+                                                            page:
+                                                                initialSupplier ===
+                                                                    "all" ||
+                                                                !initialSupplier
+                                                                    ? 1
+                                                                    : meta.current_page,
+                                                            search: daily_stock
+                                                                .product.name,
                                                         },
                                                         {
                                                             preserveState: true,
                                                         }
-                                                    )
+                                                    );
 
                                                     openModalCategory(
                                                         daily_stock,
                                                         "update"
-                                                    )
-                                                }
-                                                }
+                                                    );
+                                                }}
                                             >
                                                 Edits
                                             </SecondaryButton>

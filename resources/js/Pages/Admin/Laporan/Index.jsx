@@ -3,29 +3,36 @@ import Container from "@/Components/Container";
 import Pagination from "@/Components/Pagination";
 import Table from "@/Components/Table";
 import App from "@/Layouts/App";
-import {Head, router, useForm, usePage} from "@inertiajs/react";
-import React, {useState} from "react";
+import { Head, router, useForm, usePage } from "@inertiajs/react";
+import React, { useState } from "react";
 import { numberFormat } from "@/Libs/Helper";
 import ActionLink from "@/Components/ActionLink";
 import TextInput from "@/Components/TextInput";
-import {IconFilter, IconPrinter} from "@tabler/icons-react";
+import { IconFilter, IconPrinter } from "@tabler/icons-react";
 import Select2 from "react-select";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
-
-
-export default function Index({ products_sold, suppliers, banyak_transaksi, total_qris, total_cash}) {
+export default function Index({
+    products_sold,
+    suppliers,
+    banyak_transaksi,
+    total_qris,
+    total_cash,
+}) {
     const [isFilterApplied, setIsFilterApplied] = useState(false);
     const { errors } = usePage().props;
     const [selectedSupplier, setSelectedSupplier] = useState("all");
     const [searchQuery, setSearchQuery] = useState("");
     const { url } = usePage();
 
-
+    // Sort products by purchased_at in descending order (newest first)
+    const sortedProducts = [...products_sold].sort((a, b) => 
+        new Date(b.purchased_at) - new Date(a.purchased_at)
+    );
 
     // Grouping and aggregating data by product name
-    const aggregatedProducts = products_sold.reduce((acc, product) => {
+    const aggregatedProducts = sortedProducts.reduce((acc, product) => {
         const { name } = product.product;
         const supplierName = product.supplier.name;
         if (!acc[name]) {
@@ -39,21 +46,23 @@ export default function Index({ products_sold, suppliers, banyak_transaksi, tota
                 totalQrisKomisi: 0,
                 totalOmsetBersih: 0,
                 price: product.product.price, // assuming price is the same for each product
-                supplierName: supplierName
+                supplierName: supplierName,
             };
         }
         const paymentType = product.invoice.payment.name;
         const totalAmount = product.price * product.quantity;
-        const komisi = paymentType === 'qris' ? totalAmount * 0.1 : 0;
+        const komisi = paymentType === "qris" ? totalAmount * 0.1 : 0;
         const omsetBersih = totalAmount - komisi;
 
-        acc[name].totalCash += paymentType === 'cash' ? totalAmount : 0;
-        acc[name].totalQris += paymentType === 'qris' ? totalAmount : 0;
-        acc[name].totalTransactionsCash += paymentType === 'cash' ? product.quantity : 0;
-        acc[name].totalTransactionsQris += paymentType === 'qris' ? product.quantity : 0;
+        acc[name].totalCash += paymentType === "cash" ? totalAmount : 0;
+        acc[name].totalQris += paymentType === "qris" ? totalAmount : 0;
+        acc[name].totalTransactionsCash +=
+            paymentType === "cash" ? product.quantity : 0;
+        acc[name].totalTransactionsQris +=
+            paymentType === "qris" ? product.quantity : 0;
         acc[name].totalOmset += totalAmount;
-        acc[name].totalKomisi += paymentType === 'qris' ? komisi : 0;
-        acc[name].totalQrisKomisi += paymentType === 'qris' ? komisi : 0;
+        acc[name].totalKomisi += paymentType === "qris" ? komisi : 0;
+        acc[name].totalQrisKomisi += paymentType === "qris" ? komisi : 0;
         acc[name].totalOmsetBersih += omsetBersih;
 
         return acc;
@@ -73,9 +82,11 @@ export default function Index({ products_sold, suppliers, banyak_transaksi, tota
         setIsFilterApplied(true);
     };
 
-
-
-    const { data, setData, delete:destroy } = useForm({
+    const {
+        data,
+        setData,
+        delete: destroy,
+    } = useForm({
         start_date: "",
         end_date: "",
     });
@@ -87,38 +98,104 @@ export default function Index({ products_sold, suppliers, banyak_transaksi, tota
     const generatePDF = (products_sold) => {
         try {
             const doc = new jsPDF("landscape");
-            const tableColumn = ["No", "Nama Penitip", "Nama Produk", "Harga Produk Satuan", "Jumlah Pendapatan Cash", "Jumlah Pendapatan Qris", "Jumlah Transaksi Cash", "Jumlah Transaksi Qris", "Total Omset", "Komisi 10%", "Total Qris - Komisi", "Omset Bersih"];
+            const tableColumn = [
+                "No",
+                "Nama Penitip",
+                "Nama Produk",
+                "Harga Produk Satuan",
+                "Jumlah Pendapatan Cash",
+                "Jumlah Pendapatan Qris",
+                "Jumlah Transaksi Cash",
+                "Jumlah Transaksi Qris",
+                "Total Omset",
+                "Komisi 10%",
+                "Total Qris - Komisi",
+                "Omset Bersih",
+                "Tanggal Transaksi", // Add column for transaction date
+            ];
             const tableRows = [];
-            let index = 1;
-            Object.entries(aggregatedProducts).map(([productName, data], index) =>
-            {
-                const omset = data.price * data.totalTransactionsCash + data.price * data.totalTransactionsQris;
-                const komisi = (data.price * data.totalTransactionsCash + data.price * data.totalTransactionsQris) * 0.1;
-                const qrisKomisi = (data.price * data.totalTransactionsQris) - komisi
-                tableRows.push([index + 1, data.supplierName, productName, numberFormat(data.price), numberFormat(data.price * data.totalTransactionsCash), numberFormat(data.price * data.totalTransactionsQris), numberFormat(data.totalTransactionsCash), numberFormat(data.totalTransactionsQris), numberFormat(omset), numberFormat(komisi), numberFormat(qrisKomisi), numberFormat(data.totalOmsetBersih)])
-            });
-            doc.autoTable(
-                {
-                    head: [tableColumn],
-                    body: tableRows,
-                    startY: 20,
-                }
+            
+            // Sort products by purchased_at in descending order (newest first) for PDF
+            const sortedProductsForPDF = [...products_sold].sort((a, b) => 
+                new Date(b.purchased_at) - new Date(a.purchased_at)
             );
-            // add generated on
-            doc.text(`Generated on ${new Date().toLocaleString()}`, 14, doc.internal.pageSize.height - 10);
-            // add banyak transaksi, total qris bersih, total cash
-            doc.text(`Total Rekap: ${numberFormat(banyak_transaksi)}`, 14, doc.internal.pageSize.height - 60);
-            doc.text(`Total Qris Kotor: ${numberFormat(total_qris)}`, 14, doc.internal.pageSize.height - 50);
-            doc.text(`Total Komisi Kantin (10%): ${numberFormat(banyak_transaksi/10)}`, 14, doc.internal.pageSize.height - 40);
-            doc.text(`Total Qris Bersih: ${numberFormat(total_qris - (banyak_transaksi/10))}`, 14, doc.internal.pageSize.height - 30);
-            doc.text(`Total Cash: ${numberFormat(total_cash)}`, 14, doc.internal.pageSize.height - 20);
+            
+            sortedProductsForPDF.forEach((product, index) => {
+                const omset = product.price * product.quantity;
+                const komisi =
+                    product.invoice.payment.name === "qris" ? omset * 0.1 : 0;
+                const qrisKomisi =
+                    product.invoice.payment.name === "qris"
+                        ? omset - komisi
+                        : 0;
+                const formattedDate = product.purchased_at
+                    ? new Date(product.purchased_at).toLocaleString("id-ID", {
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          second: "2-digit",
+                      })
+                    : "-"; // Format transaction date
+                tableRows.push([
+                    index + 1,
+                    product.supplier.name,
+                    product.product.name,
+                    numberFormat(product.price),
+                    product.invoice.payment.name === "cash"
+                        ? numberFormat(omset)
+                        : "-",
+                    product.invoice.payment.name === "qris"
+                        ? numberFormat(omset)
+                        : "-",
+                    product.invoice.payment.name === "cash"
+                        ? product.quantity
+                        : "-",
+                    product.invoice.payment.name === "qris"
+                        ? product.quantity
+                        : "-",
+                    numberFormat(omset),
+                    numberFormat(komisi),
+                    numberFormat(qrisKomisi),
+                    numberFormat(omset - komisi),
+                    formattedDate, // Use formatted date
+                ]);
+            });
 
-            doc.save('Laporan.pdf');
+            // Generate the table on the first page
+            doc.autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: 20,
+            });
+
+            // Add additional information on the second page
+            doc.addPage();
+            doc.text("Informasi Tambahan:", 14, 20);
+            doc.text(`Total Rekap: ${numberFormat(banyak_transaksi)}`, 14, 40);
+            doc.text(`Total Qris Kotor: ${numberFormat(total_qris)}`, 14, 50);
+            doc.text(
+                `Total Komisi Kantin (10%): ${numberFormat(
+                    banyak_transaksi / 10
+                )}`,
+                14,
+                60
+            );
+            doc.text(
+                `Total Qris Bersih: ${numberFormat(
+                    total_qris - banyak_transaksi / 10
+                )}`,
+                14,
+                70
+            );
+            doc.text(`Total Cash: ${numberFormat(total_cash)}`, 14, 80);
+
+            doc.save("Laporan.pdf");
         } catch (e) {
             console.error("Error generating PDF:", e);
         }
-
-    }
+    };
 
     const handleSupplierChange = (selectedOption) => {
         const value = selectedOption ? selectedOption.value : "";
@@ -136,11 +213,14 @@ export default function Index({ products_sold, suppliers, banyak_transaksi, tota
     };
 
     const supplierOptions = [
-        { value: "all", label: "All Suppliers" }, // Tambahkan opsi ini
-        ...suppliers.map((supplier) => ({
-            value: supplier.id,
-            label: supplier.name,
-        })),
+        { value: "all", label: "All Suppliers" },
+        ...suppliers
+            .slice() // Create a copy to avoid mutating the original array
+            .sort((a, b) => a.name.localeCompare(b.name)) // Sort alphabetically by name
+            .map((supplier) => ({
+                value: supplier.id,
+                label: supplier.name,
+            })),
     ];
 
     const selectedSupplierOption = supplierOptions.find(
@@ -242,8 +322,8 @@ export default function Index({ products_sold, suppliers, banyak_transaksi, tota
                                 backgroundColor: state.isSelected
                                     ? "#d4d4d8"
                                     : state.isFocused
-                                        ? "#d4d4d8"
-                                        : null,
+                                    ? "#d4d4d8"
+                                    : null,
                                 color: "black",
                             }),
                             menu: (provided) => ({
@@ -269,84 +349,173 @@ export default function Index({ products_sold, suppliers, banyak_transaksi, tota
                 <div className="w-full"></div>
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
-                    <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Penitip</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Produk</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga Produk Satuan</th>
-                        <th colSpan="2" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah Pendapatan</th>
-                        <th colSpan="2" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah Transaksi</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Omset</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Komisi 10%</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Qris - Komisi</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Omset Bersih</th>
-                    </tr>
-                    <tr>
-                        <th className="px-6 py-3"></th>
-                        <th className="px-6 py-3"></th>
-                        <th className="px-6 py-3"></th>
-                        <th className="px-6 py-3"></th>
-                        <th className="px-6 py-3">Cash</th>
-                        <th className="px-6 py-3">Qris</th>
-                        <th className="px-6 py-3">Cash</th>
-                        <th className="px-6 py-3">Qris</th>
-                        <th className="px-6 py-3"></th>
-                        <th className="px-6 py-3"></th>
-                        <th className="px-6 py-3"></th>
-                        <th className="px-6 py-3"></th>
-                    </tr>
+                        <tr>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                No
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Nama Penitip
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Nama Produk
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Harga Produk Satuan
+                            </th>
+                            <th
+                                colSpan="2"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                                Jumlah Pendapatan
+                            </th>
+                            <th
+                                colSpan="2"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                                Jumlah Transaksi
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Total Omset
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Komisi 10%
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Total Qris - Komisi
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Omset Bersih
+                            </th>
+                        </tr>
+                        <tr>
+                            <th className="px-6 py-3"></th>
+                            <th className="px-6 py-3"></th>
+                            <th className="px-6 py-3"></th>
+                            <th className="px-6 py-3"></th>
+                            <th className="px-6 py-3">Cash</th>
+                            <th className="px-6 py-3">Qris</th>
+                            <th className="px-6 py-3">Cash</th>
+                            <th className="px-6 py-3">Qris</th>
+                            <th className="px-6 py-3"></th>
+                            <th className="px-6 py-3"></th>
+                            <th className="px-6 py-3"></th>
+                            <th className="px-6 py-3"></th>
+                        </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                    {Object.entries(aggregatedProducts).map(([productName, data], index) =>
-                    {
-                        const omset = data.price * data.totalTransactionsCash + data.price * data.totalTransactionsQris;
-                        const komisi = (data.price * data.totalTransactionsCash + data.price * data.totalTransactionsQris) * 0.1;
-                        const qrisKomisi = (data.price * data.totalTransactionsQris) - komisi
-                        return (
-                        <tr key={index}>
-                            <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{data.supplierName}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{productName}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{numberFormat(data.price)}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{numberFormat(data.price * data.totalTransactionsCash)}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{numberFormat(data.price * data.totalTransactionsQris)}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{numberFormat(data.totalTransactionsCash)}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{numberFormat(data.totalTransactionsQris)}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{numberFormat(omset)}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{numberFormat(komisi)}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{numberFormat(qrisKomisi)}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{numberFormat(data.totalOmsetBersih)}</td>
-                        </tr>
-                    )})}
+                        {Object.entries(aggregatedProducts).map(
+                            ([productName, data], index) => {
+                                const omset =
+                                    data.price * data.totalTransactionsCash +
+                                    data.price * data.totalTransactionsQris;
+                                const komisi =
+                                    (data.price * data.totalTransactionsCash +
+                                        data.price *
+                                            data.totalTransactionsQris) *
+                                    0.1;
+                                const qrisKomisi =
+                                    data.price * data.totalTransactionsQris -
+                                    komisi;
+                                return (
+                                    <tr key={index}>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {index + 1}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {data.supplierName}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {productName}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {numberFormat(data.price)}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {numberFormat(
+                                                data.price *
+                                                    data.totalTransactionsCash
+                                            )}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {numberFormat(
+                                                data.price *
+                                                    data.totalTransactionsQris
+                                            )}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {numberFormat(
+                                                data.totalTransactionsCash
+                                            )}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {numberFormat(
+                                                data.totalTransactionsQris
+                                            )}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {numberFormat(omset)}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {numberFormat(komisi)}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {numberFormat(qrisKomisi)}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {numberFormat(
+                                                data.totalOmsetBersih
+                                            )}
+                                        </td>
+                                    </tr>
+                                );
+                            }
+                        )}
                     </tbody>
                 </table>
                 {/* End Invoices */}
-                {(
-                    <div className="flex w-full justify-between items-center">
-                        <div className={"flex gap-3"}>
-                            <p className="text-sm text-third mt-10">
+                {
+                    <div className="flex flex-wrap gap-3">
+                        {/* First row */}
+                        <div className="w-full flex gap-3">
+                            <p className="text-sm text-third">
                                 Total Rekap:{" "}
-                                <span className="font-bold">{numberFormat(banyak_transaksi)}</span>{" "}
+                                <span className="font-bold">
+                                    {numberFormat(banyak_transaksi)}
+                                </span>{" "}
                             </p>
-                            <p className="text-sm text-third mt-10">
-                                Total Qris Kotor:{" "}
-                                <span className="font-bold">{numberFormat(total_qris)}</span>{" "}
+                            <p className="text-sm text-third">
+                                Total Qris:{" "}
+                                <span className="font-bold">
+                                    {numberFormat(total_qris)}
+                                </span>{" "}
                             </p>
-                            <p className="text-sm text-third mt-10">
-                                Total Komisi:{" "}
-                                <span className="font-bold">{numberFormat(banyak_transaksi/10)}</span>{" "}
-                            </p>
-                            <p className="text-sm text-third mt-10">
-                                Total Qris Bersih:{" "}
-                                <span className="font-bold">{numberFormat(total_qris - (banyak_transaksi/10))}</span>{" "}
-                            </p>
-                            <p className="text-sm text-third mt-10">
+                            <p className="text-sm text-third">
                                 Total Cash:{" "}
-                                <span className="font-bold">{numberFormat(total_cash)}</span>{" "}
+                                <span className="font-bold">
+                                    {numberFormat(total_cash)}
+                                </span>{" "}
+                            </p>
+                        </div>
+
+                        {/* Second row */}
+                        <div className="w-full flex gap-3">
+                            <p className="text-sm text-third">
+                                Total Komisi:{" "}
+                                <span className="font-bold">
+                                    {numberFormat(banyak_transaksi / 10)}
+                                </span>{" "}
+                            </p>
+                            <p className="text-sm text-third">
+                                Total Qris Bersih:{" "}
+                                <span className="font-bold">
+                                    {numberFormat(
+                                        total_qris - banyak_transaksi / 10
+                                    )}
+                                </span>{" "}
                             </p>
                         </div>
                     </div>
-                )}
+                }
             </Container>
         </>
     );

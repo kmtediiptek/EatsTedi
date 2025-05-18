@@ -54,7 +54,7 @@ export default function ProductItem({ product, setIsOrderListOpen }) {
                 backgroundImage: `url(${
                     product.picture
                         ? product.picture
-                        : "https://asset.kompas.com/crops/FDAcmidsNYJDL80i55bj7pbXqyk=/95x0:939x563/750x500/data/photo/2022/07/10/62ca309364500.jpeg"
+                        : "https://estore.mandom.co.id/assets/images/product/no_image.jpg"
                 })`,
             }}
         >

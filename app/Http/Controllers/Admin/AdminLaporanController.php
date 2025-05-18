@@ -18,18 +18,18 @@ class AdminLaporanController extends Controller
     {
         // Fetch all data for export
         $products_sold = ProductSold::with('invoice', 'supplier', 'product', 'invoice.payment')
-            ->whereHas('invoice', function($query) {
+            ->whereHas('invoice', function ($query) {
                 $query->where('is_paid', true); // Only export paid invoices
             });
 
-//        filter by date with default today
+        //        filter by date with default today
         if (request()->has('start_date') && request()->has('end_date')) {
             $products_sold = $products_sold->whereBetween('created_at', [request('start_date'), request('end_date')]);
         } else {
             $products_sold = $products_sold->whereDate('created_at', now());
         }
 
-//        filter by supplier
+        //        filter by supplier
         if (request()->has('supplier') && request('supplier') != 'all') {
             $products_sold = $products_sold->where('supplier_id', request('supplier'));
         }
@@ -37,21 +37,26 @@ class AdminLaporanController extends Controller
         $suppliers = Supplier::select('id', 'name', 'username')->get();
         $products_sold = $products_sold->get();
 
+        $products_sold = $products_sold->map(function ($item) {
+            $item->purchased_at = $item->created_at; // Use purchased_at directly from the database
+            return $item;
+        });
+
         $banyak_transaksi = $products_sold->sum(function ($item) {
             return $item->price * $item->quantity;
         });
 
-//        total qris from productsold with invoice.payment_id = 1
-        $total_qris = $products_sold->where('invoice.payment_id', 1)->sum(function ($item) {
+        //        total qris from productsold with invoice.payment_id = 2
+        $total_qris = $products_sold->where('invoice.payment_id', 2)->sum(function ($item) {
             return $item->price * $item->quantity;
         });
 
-//        total cash from productsold with invoice.payment_id = 2
-        $total_cash = $products_sold->where('invoice.payment_id', 2)->sum(function ($item) {
+        //        total cash from productsold with invoice.payment_id = 1
+        $total_cash = $products_sold->where('invoice.payment_id', 1)->sum(function ($item) {
             return $item->price * $item->quantity;
         });
 
-//        dd($total_qris);
+        //        dd($total_qris);
 
         return inertia('Admin/Laporan/Index', [
             'products_sold' => $products_sold,

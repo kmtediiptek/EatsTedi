@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, usePage, router } from "@inertiajs/react";
 import Select2 from "react-select";
 import InputLabel from "../InputLabel";
@@ -6,8 +6,9 @@ import TextInput from "../TextInput";
 import Error from "../Error";
 import SecondaryButton from "../SecondaryButton";
 import PrimaryButton from "../PrimaryButton";
+import toast from "react-hot-toast";
 
-export default function DailyMenuForm() {
+export default function DailyMenuForm({ setIsOpen }) {
     const { data, setData, post } = useForm({
         supplier_id: "",
         daily_stocks: [],
@@ -17,26 +18,37 @@ export default function DailyMenuForm() {
     const [selectedSupplier, setSelectedSupplier] = useState(null);
     const [loading, setLoading] = useState(false);
 
+    // Add this function to prevent scroll wheel from changing number input values
+    const preventScrollChange = (e) => {
+        e.target.blur();
+    };
+
     useEffect(() => {
-        setLoading(true)
+        setLoading(true);
         const queryParams = new URLSearchParams(window.location.search);
-        const initialSupplier = queryParams.get('supplier') || null;
-        const page = queryParams.get('page') || 1;
-        const search = queryParams.get('search') || null;
-        if(initialSupplier){
+        const initialSupplier = queryParams.get("supplier") || null;
+        const page = queryParams.get("page") || 1;
+        const search = queryParams.get("search") || null;
+        if (initialSupplier) {
             setSelectedSupplier(initialSupplier);
             router.get(
                 `/admin/setting/product/today`,
                 {
                     supplier: initialSupplier,
                     page: page,
-                    search: search
+                    search: search,
                 },
                 {
                     preserveState: true,
                     onSuccess: (page) => {
-                        setData("daily_stocks", page.props.daily_stocks.data);
-                        setLoading(false)
+                        // Initialize quantities properly when loading data
+                        const stocksWithQuantities =
+                            page.props.daily_stocks.data.map((stock) => ({
+                                ...stock,
+                                quantity: stock.rest || 0,
+                            }));
+                        setData("daily_stocks", stocksWithQuantities);
+                        setLoading(false);
                     },
                 }
             );
@@ -44,30 +56,37 @@ export default function DailyMenuForm() {
     }, []);
 
     const queryParams = new URLSearchParams(window.location.search);
-    const initialSupplier = queryParams.get('supplier') || null;
-    const page = queryParams.get('page') || 1;
-    const search = queryParams.get('search') || null;
+    const initialSupplier = queryParams.get("supplier") || null;
+    const page = queryParams.get("page") || 1;
+    const search = queryParams.get("search") || null;
     useEffect(() => {
-        setLoading(true)
-        if(initialSupplier){
+        setLoading(true);
+        if (initialSupplier) {
             setSelectedSupplier(initialSupplier);
             router.get(
                 `/admin/setting/product/today`,
                 {
                     supplier: initialSupplier,
                     page: page,
-                    search: search
+                    search: search,
                 },
                 {
                     preserveState: true,
                     onSuccess: (page) => {
-                        setData("daily_stocks", page.props.daily_stocks.data);
-                        setLoading(false)
+                        // Initialize quantities properly when loading data
+                        const stocksWithQuantities =
+                            page.props.daily_stocks.data.map((stock) => ({
+                                ...stock,
+                                quantity: stock.rest || 0,
+                            }));
+                        setData("daily_stocks", stocksWithQuantities);
+                        setLoading(false);
                     },
                 }
             );
         }
     }, [initialSupplier]);
+
     const handleSupplierChange = (selectedOption) => {
         const value = selectedOption ? selectedOption.value : "";
         setSelectedSupplier(value || "all");
@@ -79,7 +98,13 @@ export default function DailyMenuForm() {
             {
                 preserveState: true,
                 onSuccess: (page) => {
-                    setData("daily_stocks", page.props.daily_stocks.data);
+                    // Initialize quantities properly when changing supplier
+                    const stocksWithQuantities =
+                        page.props.daily_stocks.data.map((stock) => ({
+                            ...stock,
+                            quantity: stock.rest || 0,
+                        }));
+                    setData("daily_stocks", stocksWithQuantities);
                 },
             }
         );
@@ -96,23 +121,62 @@ export default function DailyMenuForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        // Set the supplier_id in the form data
+        setData("supplier_id", selectedSupplier);
+
         post("/admin/setting/product/update-stock", {
             onSuccess: () => {
-                setSelectedSupplier(null);
+                // Save the current supplier ID before resetting
+                const currentSupplierId = selectedSupplier;
+
+                // Only reset the daily_stocks array, keep the supplier_id
                 setData({
-                    supplier_id: "",
+                    supplier_id: currentSupplierId, // Keep the current supplier ID
                     daily_stocks: [],
                 });
-                setIsOpen(false);
+
+                // Close modal if needed
+                if (typeof setIsOpen === "function") {
+                    setIsOpen(false);
+                }
+
+                // Show success message
                 toast.success("Stock updated successfully!");
+
+                // Refetch the data for the same supplier to get updated stock values
+                router.get(
+                    `/admin/setting/product/today`,
+                    {
+                        supplier: currentSupplierId,
+                    },
+                    {
+                        preserveState: true,
+                        onSuccess: (page) => {
+                            // Update with fresh data after stock update
+                            const stocksWithQuantities =
+                                page.props.daily_stocks.data.map((stock) => ({
+                                    ...stock,
+                                    quantity: stock.rest || 0,
+                                }));
+                            setData({
+                                supplier_id: currentSupplierId, // Ensure supplier ID is preserved
+                                daily_stocks: stocksWithQuantities,
+                            });
+                        },
+                    }
+                );
             },
         });
     };
 
-    const supplierOptions = suppliers.map((supplier) => ({
-        value: supplier.id,
-        label: supplier.name,
-    }));
+    const supplierOptions = suppliers
+        .slice() // Create a copy to avoid mutating the original array
+        .sort((a, b) => a.name.localeCompare(b.name)) // Sort alphabetically by name
+        .map((supplier) => ({
+            value: supplier.id,
+            label: supplier.name,
+        }));
 
     const selectedSupplierOption = supplierOptions.find(
         (option) => option.value === selectedSupplier
@@ -172,9 +236,11 @@ export default function DailyMenuForm() {
                 />
                 {errors.supplier_id && <Error value={errors.supplier_id} />}
             </div>
-            {loading ? (<>
-                <div className="h-8 bg-gray-300 rounded-full animate-pulse dark:bg-gray-700 max-w-[640px] mb-2.5 mx-auto"></div>
-            </>) : (
+            {loading ? (
+                <>
+                    <div className="h-8 bg-gray-300 rounded-full animate-pulse dark:bg-gray-700 max-w-[640px] mb-2.5 mx-auto"></div>
+                </>
+            ) : (
                 <>
                     {selectedSupplier || data.daily_stocks ? (
                         <form onSubmit={handleSubmit}>
@@ -199,7 +265,9 @@ export default function DailyMenuForm() {
                                                     id={`name-${daily_stock.product.id}`}
                                                     readOnly
                                                     className="w-full"
-                                                    value={daily_stock.product.name}
+                                                    value={
+                                                        daily_stock.product.name
+                                                    }
                                                 />
                                             </div>
                                             <div className="md:w-1/4">
@@ -211,24 +279,32 @@ export default function DailyMenuForm() {
                                                     name={`quantity-${daily_stock.product.id}`}
                                                     id={`quantity-${daily_stock.product.id}`}
                                                     type="number"
-                                                    className="w-full"
+                                                    className="w-full noSpinner"
+                                                    inputMode="numeric"
+                                                    pattern="[0-9]*"
+                                                    onWheel={
+                                                        preventScrollChange
+                                                    }
                                                     onChange={(e) =>
                                                         handleInputChange(
                                                             e,
-                                                            daily_stock.product.id
+                                                            daily_stock.product
+                                                                .id
                                                         )
                                                     }
-                                                    defaultValue={daily_stock.rest || ""}
-                                                    // value={daily_stock.quantity || ""}
+                                                    value={
+                                                        daily_stock.quantity ||
+                                                        ""
+                                                    }
                                                 />
                                                 {errors[
                                                     `quantity-${daily_stock.product.id}`
-                                                    ] && (
+                                                ] && (
                                                     <Error
                                                         value={
                                                             errors[
                                                                 `quantity-${daily_stock.product.id}`
-                                                                ]
+                                                            ]
                                                         }
                                                     />
                                                 )}
@@ -238,7 +314,9 @@ export default function DailyMenuForm() {
                                     <div className="flex justify-end gap-2">
                                         <SecondaryButton
                                             type="button"
-                                            onClick={() => setSelectedSupplier(null)}
+                                            onClick={() =>
+                                                setSelectedSupplier(null)
+                                            }
                                         >
                                             Cancel
                                         </SecondaryButton>
@@ -249,7 +327,9 @@ export default function DailyMenuForm() {
                                 </>
                             ) : (
                                 <div className="flex w-full h-52 justify-center items-center text-fourth">
-                                    <h3>There are no products from this supplier</h3>
+                                    <h3>
+                                        There are no products from this supplier
+                                    </h3>
                                 </div>
                             )}
                         </form>
@@ -260,7 +340,6 @@ export default function DailyMenuForm() {
                     )}
                 </>
             )}
-
         </div>
     );
 }

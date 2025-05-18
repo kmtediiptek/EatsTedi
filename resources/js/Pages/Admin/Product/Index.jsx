@@ -173,11 +173,14 @@ export default function Index({ total_products, suppliers, ...props }) {
     };
 
     const supplierOptions = [
-        { value: "all", label: "All Suppliers" }, // Add this option
-        ...suppliers.map((supplier) => ({
-            value: supplier.id,
-            label: supplier.name,
-        })),
+        { value: "all", label: "All Suppliers" },
+        ...suppliers
+            .slice() // Create a copy to avoid mutating the original array
+            .sort((a, b) => a.name.localeCompare(b.name)) // Sort alphabetically by name
+            .map((supplier) => ({
+                value: supplier.id,
+                label: supplier.name,
+            })),
     ];
 
     const selectedSupplierOption = supplierOptions.find(

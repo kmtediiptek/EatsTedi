@@ -28,9 +28,19 @@
     opacity: 1;
 }
 
-
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+/* Add this to your CSS file */
+.noSpinner::-webkit-inner-spin-button,
+.noSpinner::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.noSpinner {
+    -moz-appearance: textfield;
 }

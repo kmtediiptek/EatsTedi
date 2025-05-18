@@ -28,9 +28,10 @@ class AdminDailyMenuController extends Controller
         // Get total daily_stocks count
         $total_daily_stocks = DailyStock::count();
 
-        // Retrieve search term and supplier filter from request
+        // Retrieve search term, supplier filter, and product filter from request
         $search_daily_menu = $request->input('search');
         $selected_supplier = $request->input('supplier');
+        $selected_product = $request->input('product'); // Tambahkan parameter untuk filter produk tunggal
 
         // Create query for DailyStock with product and supplier relationships
         $query = DailyStock::query()
@@ -53,6 +54,13 @@ class AdminDailyMenuController extends Controller
             });
         }
 
+        // Apply product filter (for single product editing)
+        if ($selected_product) {
+            $query->whereHas('product', function ($q) use ($selected_product) {
+                $q->where('id', $selected_product);
+            });
+        }
+
         // Fetch filtered daily_stocks with pagination
         $daily_stocks = $query->fastPaginate(10)->withQueryString();
 
@@ -62,9 +70,9 @@ class AdminDailyMenuController extends Controller
             "total_daily_stocks" => $total_daily_stocks,
             "categories" => $this->categories,
             "suppliers" => $this->suppliers,
+            "filters" => $request->only(['supplier', 'search', 'product']), // Tambahkan filters ke props
         ]);
     }
-
 
     public function update_stock(Request $request)
     {
@@ -90,8 +98,8 @@ class AdminDailyMenuController extends Controller
             "activity" => Auth::user()->name . " Update Daily Menu "
         ]);
 
-        // Redirect kembali dengan pesan sukses
-        return redirect()->route('admin.product.today.index');
+        // Redirect kembali dengan pesan sukses dan mempertahankan parameter URL
+        return redirect()->route('admin.product.today.index', request()->only(['supplier', 'product', 'search']));
     }
 
     public function reset_stock()

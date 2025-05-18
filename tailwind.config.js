@@ -27,6 +27,25 @@ module.exports = {
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
             },
+            animation: {
+                fadeIn: "fadeIn 0.5s ease-in-out",
+                "pulse-light": "pulse-light 2s infinite",
+                slideInRight: "slideInRight 0.5s ease-in-out",
+            },
+            keyframes: {
+                fadeIn: {
+                    "0%": { opacity: "0" },
+                    "100%": { opacity: "1" },
+                },
+                "pulse-light": {
+                    "0%, 100%": { opacity: "1" },
+                    "50%": { opacity: "0.8" },
+                },
+                slideInRight: {
+                    "0%": { transform: "translateX(100%)" },
+                    "100%": { transform: "translateX(0)" },
+                },
+            },
         },
     },
 
