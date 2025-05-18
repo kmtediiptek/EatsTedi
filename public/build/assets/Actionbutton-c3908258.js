@@ -1,0 +1,1 @@
+import{a as i}from"./app-519d4450.js";function a({className:e="w-10 h-10 ",disabled:t,children:n,type:o=button,...r}){return i("button",{...r,type:o,className:`flex justify-center items-center bg-primary text-white rounded ${t&&"opacity-25"} `+e,disabled:t,children:n})}export{a as A};
