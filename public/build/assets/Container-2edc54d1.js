@@ -1,1 +1,0 @@
-import{a}from"./app-519d4450.js";import{c as r}from"./TextInput-8e01371f.js";function s({children:m,className:x}){return a("div",{className:r(x,"max-w-8xl mx-auto px-4 mt-16 mb-4 sm:px-4 lg:px-8 flex flex-wrap items-center"),children:m})}export{s as C};
